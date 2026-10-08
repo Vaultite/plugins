@@ -15,7 +15,7 @@ export const vauAt = (base) => (...a) => execFileSync(process.execPath, [path.jo
   { encoding: "utf8", env: { ...ENV, VAULTITE_URL: base } })
 
 /** Plugin `id` from this repository, as it is now, in the server's vault and on (so allowed on this machine).
- *  `edits`: its folder's later changes run too (Vim's init.vim is in it, and would make it wait to be allowed again). */
+ *  `edits`: its folder's later changes run too (a file it writes there would make it wait to be allowed again). */
 export function install(base, id, { edits = false } = {}) {
   const vau = vauAt(base)
   if (JSON.parse(vau("plugins", "--json")).some((p) => p.id === id)) vau("plugin", "uninstall", id)

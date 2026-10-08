@@ -65,8 +65,8 @@ const server = net.createServer((c) => {
 })
 await new Promise((r) => server.listen(0, "127.0.0.1", r))
 const port = server.address().port
-// Screen sharing installed and on (and Vim, turned on below), from this repository.
-install(B, "screens"); install(B, "vim")
+// Screen sharing installed and on from this repository (and the app's Vim, turned on below).
+install(B, "screens")
 await fetch(new URL("api/config/plugins", B), { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ enabled: ["screens"] }) })
 mkdirSync(path.join(VAULT, ".vaultite/plugins/screens"), { recursive: true })
 writeFileSync(path.join(VAULT, ".vaultite/plugins/screens/data.json"), JSON.stringify({ localPort: port }))
