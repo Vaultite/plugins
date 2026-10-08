@@ -94,6 +94,8 @@ export class EditableFileView extends FileView {}
 export class TextFileView extends EditableFileView {
   data = ""
   dirty = false
+  /** It shows the file's text on its own; false for a note, whose text is the app's editor (it follows the disk itself). */
+  protected followsDisk = true
   /** The file's text as last read or written here: a save writes only when the view's text differs from it. */
   private disk = ""
   requestSave = Object.assign(() => { this.dirty = true; clearTimeout(this.saving); this.saving = setTimeout(() => void this.save(), 2000) }, { cancel: () => clearTimeout(this.saving), run: () => void this.save() })
@@ -102,7 +104,7 @@ export class TextFileView extends EditableFileView {
     super(leaf)
     // (changed elsewhere while it shows it, nothing unsaved here: it shows the new text)
     this.registerEvent(this.app.vault.on("modify", async (f: TFile) => {
-      if (f !== this.file || this.dirty) return
+      if (f !== this.file || this.dirty || !this.followsDisk) return
       const d = await this.app.vault.read(f)
       if (d === this.disk) return
       this.disk = d
@@ -130,6 +132,8 @@ export class TextFileView extends EditableFileView {
 export class MarkdownView extends TextFileView {
   editor: Editor
   previewMode: any
+  // (the disk's text lags what's typed: setting it would undo the last keystrokes and move the cursor)
+  protected followsDisk = false
   currentMode: any
   constructor(leaf: WorkspaceLeaf, editor: Editor, file: TFile | null) {
     super(leaf)
