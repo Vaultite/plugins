@@ -1,0 +1,357 @@
+/* Obsidian's CSS variables, as the app's colours and sizes, and the elements plugins build from Obsidian's class names
+   (modals, settings rows, menus, suggesters, trees, views), drawn like the app's own. Written here, not Obsidian's. */
+
+/* Names the app doesn't use: on the root, so plugins' own styles find them anywhere (light, dark, colour schemes). */
+:root {
+  --background-primary: var(--card); --background-primary-alt: color-mix(in srgb, var(--foreground) 3%, var(--card));
+  --background-secondary: var(--background); --background-secondary-alt: color-mix(in srgb, var(--foreground) 5%, var(--background));
+  --background-modifier-border: var(--border); --background-modifier-border-hover: color-mix(in srgb, var(--foreground) 30%, transparent);
+  --background-modifier-border-focus: var(--ring); --background-modifier-hover: color-mix(in srgb, var(--foreground) 7%, transparent);
+  --background-modifier-active-hover: color-mix(in srgb, var(--primary) 15%, transparent); --background-modifier-form-field: var(--card);
+  --background-modifier-form-field-highlighted: var(--card); --background-modifier-box-shadow: rgb(0 0 0 / 0.15);
+  --background-modifier-error: var(--red); --background-modifier-error-hover: var(--red); --background-modifier-error-rgb: 255, 59, 48;
+  --background-modifier-success: var(--green); --background-modifier-success-rgb: 52, 199, 89; --background-modifier-message: color-mix(in srgb, var(--foreground) 85%, transparent);
+  --background-modifier-cover: rgb(0 0 0 / 0.3);
+  --text-normal: var(--foreground); --text-muted: var(--muted-foreground); --text-faint: color-mix(in srgb, var(--muted-foreground) 60%, transparent);
+  --text-on-accent: var(--primary-foreground); --text-on-accent-inverted: var(--primary); --text-accent: var(--primary); --text-accent-hover: color-mix(in srgb, var(--primary) 80%, var(--foreground));
+  --text-error: var(--red); --text-success: var(--green); --text-warning: var(--orange);
+  --text-highlight-bg: color-mix(in srgb, var(--yellow) 40%, transparent); --text-highlight-bg-active: color-mix(in srgb, var(--orange) 40%, transparent);
+  --text-selection: color-mix(in srgb, var(--primary) 25%, transparent);
+  --interactive-normal: color-mix(in srgb, var(--foreground) 6%, var(--card)); --interactive-hover: color-mix(in srgb, var(--foreground) 10%, var(--card));
+  --interactive-accent: var(--primary); --interactive-accent-hover: color-mix(in srgb, var(--primary) 85%, var(--foreground)); --interactive-accent-rgb: 0, 122, 255;
+  --interactive-success: var(--green);
+  --color-red: var(--red); --color-orange: var(--orange); --color-yellow: var(--yellow); --color-green: var(--green); --color-cyan: var(--teal);
+  --color-blue: var(--blue); --color-purple: var(--purple); --color-pink: var(--pink);
+  --color-red-rgb: 255, 59, 48; --color-orange-rgb: 255, 149, 0; --color-yellow-rgb: 255, 204, 0; --color-green-rgb: 52, 199, 89;
+  --color-cyan-rgb: 48, 176, 199; --color-blue-rgb: 0, 122, 255; --color-purple-rgb: 175, 82, 222; --color-pink-rgb: 255, 45, 85;
+  --color-base-00: var(--card); --color-base-05: color-mix(in srgb, var(--foreground) 3%, var(--card)); --color-base-10: color-mix(in srgb, var(--foreground) 5%, var(--card));
+  --color-base-20: var(--background); --color-base-25: color-mix(in srgb, var(--foreground) 10%, var(--card)); --color-base-30: color-mix(in srgb, var(--foreground) 15%, var(--card));
+  --color-base-35: color-mix(in srgb, var(--foreground) 22%, var(--card)); --color-base-40: color-mix(in srgb, var(--foreground) 30%, var(--card));
+  --color-base-50: color-mix(in srgb, var(--foreground) 45%, var(--card)); --color-base-60: color-mix(in srgb, var(--foreground) 60%, var(--card));
+  --color-base-70: color-mix(in srgb, var(--foreground) 75%, var(--card)); --color-base-100: var(--foreground);
+  --accent-h: 211; --accent-s: 100%; --accent-l: 50%;
+  --font-interface: var(--font-sans); --font-interface-theme: var(--font-sans); --font-default: var(--font-sans);
+  --font-monospace: var(--font-code); --font-monospace-theme: var(--font-code); --font-monospace-default: var(--font-code);
+  --font-text-theme: var(--font-text, var(--font-sans)); --font-mermaid: var(--font-sans);
+  --font-text-size: 16px; --font-ui-smaller: 11px; --font-ui-small: 12px; --font-ui-medium: 13px; --font-ui-large: 15px;
+  --font-smallest: 0.8em; --font-smaller: 0.875em; --font-small: 0.933em;
+  --font-thin: 100; --font-extralight: 200; --font-light: 300; --font-normal: 400; --font-medium: 500; --font-semibold: 600; --font-bold: 700; --font-extrabold: 800; --font-black: 900;
+  --line-height-normal: 1.5; --line-height-tight: 1.3;
+  --size-2-1: 2px; --size-2-2: 4px; --size-2-3: 6px; --size-4-1: 4px; --size-4-2: 8px; --size-4-3: 12px; --size-4-4: 16px; --size-4-5: 20px;
+  --size-4-6: 24px; --size-4-8: 32px; --size-4-9: 36px; --size-4-12: 48px; --size-4-16: 64px; --size-4-18: 72px;
+  --radius-s: 4px; --radius-m: 8px; --radius-l: 12px;
+  --border-width: 1px; --input-height: 28px; --input-radius: 6px; --input-font-weight: 400; --input-border-width: 1px;
+  --icon-size: 16px; --icon-stroke: 2px; --icon-xs: 14px; --icon-s: 16px; --icon-m: 18px; --icon-l: 18px;
+  --icon-xs-stroke-width: 2px; --icon-s-stroke-width: 2px; --icon-m-stroke-width: 1.75px; --icon-l-stroke-width: 1.75px;
+  --icon-color: var(--muted-foreground); --icon-color-hover: var(--foreground); --icon-color-active: var(--primary); --icon-color-focused: var(--foreground); --icon-opacity: 1;
+  --clickable-icon-radius: 4px;
+  --shadow-s: 0 1px 2px rgb(0 0 0 / 0.08), 0 2px 8px rgb(0 0 0 / 0.08); --shadow-l: 0 8px 30px rgb(0 0 0 / 0.18);
+  --nav-item-size: 13px; --nav-item-color: var(--muted-foreground); --nav-item-color-hover: var(--foreground); --nav-item-color-active: var(--foreground);
+  --nav-item-color-selected: var(--foreground); --nav-item-background-hover: color-mix(in srgb, var(--foreground) 7%, transparent);
+  --nav-item-background-active: color-mix(in srgb, var(--foreground) 10%, transparent); --nav-item-background-selected: color-mix(in srgb, var(--primary) 15%, transparent);
+  --nav-item-padding: 3px 8px; --nav-item-radius: 4px; --nav-indentation-guide-color: var(--border);
+  --checkbox-color: var(--primary); --checkbox-color-hover: var(--primary); --checkbox-border-color: var(--muted-foreground); --checkbox-marker-color: var(--primary-foreground); --checkbox-radius: 4px; --checkbox-size: 16px;
+  --checklist-done-color: var(--muted-foreground); --checklist-done-decoration: line-through;
+  --toggle-thumb-color: white; --toggle-width: 36px; --toggle-thumb-height: 18px; --toggle-thumb-width: 18px; --toggle-radius: 11px;
+  --table-border-color: var(--border); --table-header-background: transparent; --table-row-background-hover: transparent;
+  --code-background: color-mix(in srgb, var(--foreground) 5%, transparent); --code-normal: var(--foreground); --code-comment: var(--muted-foreground);
+  --code-size: 0.875em; --code-radius: 6px;
+  --blockquote-border-color: var(--primary); --blockquote-border-thickness: 3px;
+  --link-color: var(--primary); --link-color-hover: var(--primary); --link-external-color: var(--primary); --link-unresolved-color: var(--muted-foreground);
+  --link-unresolved-opacity: 0.8; --link-decoration: underline; --tag-color: var(--primary); --tag-background: color-mix(in srgb, var(--primary) 10%, transparent);
+  --tag-radius: 999px; --tag-size: 0.875em; --tag-padding-x: 0.5em; --tag-padding-y: 0.1em;
+  --hr-color: var(--border); --hr-thickness: 1px; --bold-weight: 600; --italic-color: inherit;
+  --h1-size: 1.5em; --h2-size: 1.25em; --h3-size: 1.1em; --h4-size: 1em; --h5-size: 0.95em; --h6-size: 0.9em;
+  --h1-weight: 700; --h2-weight: 700; --h3-weight: 600; --h4-weight: 600; --h5-weight: 600; --h6-weight: 600;
+  --h1-color: var(--h1); --h2-color: var(--h2); --h3-color: var(--h3); --h4-color: var(--h4); --h5-color: var(--h5); --h6-color: var(--h6);
+  --file-line-width: var(--line-width); --file-margins: 32px; --p-spacing: 14px; --list-indent: 1.35em; --list-spacing: 6px;
+  --callout-radius: 8px; --callout-padding: 12px 16px; --callout-default: 0, 122, 255; --callout-info: 0, 122, 255; --callout-todo: 0, 122, 255;
+  --callout-tip: 48, 176, 199; --callout-success: 52, 199, 89; --callout-question: 255, 149, 0; --callout-warning: 255, 149, 0;
+  --callout-fail: 255, 59, 48; --callout-error: 255, 59, 48; --callout-bug: 255, 59, 48; --callout-example: 175, 82, 222; --callout-quote: 142, 142, 147;
+  --callout-summary: 48, 176, 199; --callout-important: 48, 176, 199;
+  --modal-background: var(--card); --modal-width: 560px; --modal-height: 85vh; --modal-max-width: calc(100vw - 32px); --modal-radius: 14px;
+  --modal-border-width: 0.5px; --modal-border-color: var(--border);
+  --prompt-width: 640px; --prompt-max-width: calc(100vw - 32px); --prompt-border-width: 0.5px; --prompt-border-color: var(--border);
+  --menu-background: var(--popover); --menu-radius: 10px; --menu-padding: 4px; --menu-border-color: var(--border);
+  --tab-text-color: var(--muted-foreground); --tab-text-color-focused: var(--foreground); --tab-text-color-focused-active: var(--foreground);
+  --titlebar-background: var(--background); --ribbon-background: var(--background); --status-bar-background: var(--background); --status-bar-text-color: var(--muted-foreground);
+  --scrollbar-bg: transparent; --scrollbar-thumb-bg: var(--scrollbar, rgb(0 0 0 / 0.2)); --scrollbar-active-thumb-bg: var(--scrollbar-hover, rgb(0 0 0 / 0.35));
+  --divider-color: var(--border); --divider-width: 1px; --sidebar-markdown-font-size: 13px;
+  --layer-cover: 5; --layer-sidedock: 10; --layer-status-bar: 15; --layer-popover: 70; --layer-slides: 45; --layer-modal: 60; --layer-notice: 75; --layer-menu: 65; --layer-tooltip: 80; --layer-dragged-item: 80;
+  --anim-duration-fast: 140ms; --anim-duration-moderate: 300ms; --anim-motion-smooth: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --cursor: pointer; --cursor-link: pointer;
+  --safe-area-inset-top: env(safe-area-inset-top, 0px); --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px); --safe-area-inset-right: env(safe-area-inset-right, 0px); --keyboard-height: 0px;
+  --button-radius: 6px; --interactive-accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l); --input-shadow: inset 0 0 0 0.5px var(--input);
+  --input-shadow-hover: inset 0 0 0 0.5px var(--ring); --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.06); --tag-border-color: transparent; --tag-border-width: 0px;
+  --header-height: 40px; --view-header-height: 40px; --setting-items-radius: 12px; --setting-items-background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  --setting-items-border-color: var(--border); --setting-items-padding-y: 8px; --dialog-width: 560px; --text-error-hover: var(--red);
+  --nav-item-weight-active: 500; --mono-rgb-0: 255, 255, 255; --mono-rgb-100: 0, 0, 0; --inline-title-size: 1.6em; --icon-opacity-hover: 1;
+  --content-margin: 0; --code-string: var(--green); --code-property: var(--blue); --code-keyword: var(--pink); --code-function: var(--orange);
+  --code-value: var(--purple); --code-tag: var(--red); --code-operator: var(--muted-foreground); --code-important: var(--orange); --code-punctuation: var(--muted-foreground);
+  --background-modifier-active: color-mix(in srgb, var(--foreground) 10%, transparent); --font-text: var(--font-sans);
+}
+.dark { --mono-rgb-0: 0, 0, 0; --mono-rgb-100: 255, 255, 255; }
+/* --color-accent is Tailwind's hover grey in the app: Obsidian's accent only inside what Obsidian plugins draw. */
+:is(.modal-container, .menu, .suggestion-container, .popover, .notice-container, .obsidian-compat-leaf, .obsidian-compat-fence, .obsidian-compat-side,
+  .markdown-rendered, .workspace-leaf, .status-bar-item, .vertical-tab-content, .setting-page-root) {
+  --color-accent: var(--primary); --color-accent-1: color-mix(in srgb, var(--primary) 85%, var(--foreground)); --color-accent-2: color-mix(in srgb, var(--primary) 70%, var(--foreground));
+}
+@media (max-width: 767px) {
+  :root { --font-ui-smaller: 13px; --font-ui-small: 15px; --font-ui-medium: 17px; --font-ui-large: 20px; --input-height: 36px; --nav-item-size: 17px; --icon-size: 20px; }
+}
+
+/* --- icons and buttons */
+.svg-icon { width: var(--icon-size); height: var(--icon-size); stroke-width: var(--icon-stroke); flex: none; }
+.clickable-icon { display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 4px; border-radius: var(--clickable-icon-radius);
+  color: var(--icon-color); cursor: pointer; background: none; border: 0; box-shadow: none; }
+.clickable-icon:hover { background: var(--background-modifier-hover); color: var(--icon-color-hover); }
+.clickable-icon.is-active { color: var(--icon-color-active); }
+.clickable-icon.is-disabled { opacity: 0.4; cursor: default; }
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover)
+  button:not(.clickable-icon, .md-copy, .footnote-back, [class*="cm-"]) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: var(--input-height); padding: 0 12px; border: 0; border-radius: 6px;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent); color: var(--foreground); font: inherit; font-size: var(--font-ui-medium); font-weight: 500;
+  cursor: pointer; white-space: nowrap;
+}
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover)
+  button:not(.clickable-icon, .md-copy, .footnote-back, [class*="cm-"]):hover { background: color-mix(in srgb, var(--foreground) 10%, transparent); }
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover)
+  button:disabled { opacity: 0.45; cursor: default; }
+button.mod-cta, button.mod-cta:hover { background: var(--primary) !important; color: var(--primary-foreground) !important; }
+button.mod-warning, button.mod-destructive, button.mod-warning:hover, button.mod-destructive:hover { background: var(--red) !important; color: white !important; }
+:is(.modal-container, .vertical-tab-content, .view-content) :is(button, .clickable-icon):focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+:is(.modal-container, .vertical-tab-content, .view-content, .markdown-rendered, .suggestion-container) kbd { padding: 0 4px; border-radius: 4px; border: 0.5px solid var(--border);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent); font-family: var(--font-code); font-size: 0.85em; }
+
+/* --- form fields, in what plugins draw */
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover, .suggestion-container)
+  :is(input[type="text"], input[type="search"], input[type="number"], input[type="email"], input[type="password"], input[type="url"], input[type="date"],
+  input[type="datetime-local"], input[type="time"], input:not([type]), select) {
+  height: var(--input-height); padding: 0 8px; border: 0.5px solid var(--input); border-radius: var(--input-radius); background: var(--background-modifier-form-field);
+  color: var(--foreground); font: inherit; font-size: var(--font-ui-medium); outline: none; min-width: 0;
+}
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover) textarea {
+  min-height: 64px; padding: 6px 8px; border: 0.5px solid var(--input); border-radius: var(--input-radius); background: var(--background-modifier-form-field);
+  color: var(--foreground); font: inherit; font-size: var(--font-ui-medium); line-height: 1.4; outline: none; }
+:is(.modal-container, .vertical-tab-content, .view-content, .workspace-leaf-content, .setting-item, .obsidian-compat-fence, .markdown-rendered, .popover, .suggestion-container)
+  :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"]), textarea, select):focus { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent); }
+:is(.modal-container, .vertical-tab-content, .view-content, .suggestion-container) :is(input, textarea)::placeholder { color: var(--text-faint); }
+select.dropdown { appearance: none; -webkit-appearance: none; padding-right: 24px !important; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important; background-position: right 6px center !important; }
+input[type="range"].slider { accent-color: var(--primary); width: 140px; }
+:is(.modal-container, .vertical-tab-content, .view-content) input[type="color"] { width: 32px; height: 24px; padding: 0; border: 0.5px solid var(--border); border-radius: 6px; background: none; cursor: pointer; }
+.search-input-container { position: relative; display: flex; align-items: center; width: 100%; }
+.search-input-container input { width: 100%; padding-right: 26px !important; }
+.search-input-clear-button { position: absolute; right: 7px; width: 14px; height: 14px; border-radius: 50%; cursor: pointer;
+  background: color-mix(in srgb, var(--muted-foreground) 50%, transparent); }
+.search-input-clear-button::before { content: "×"; display: block; color: var(--card); font-size: 12px; line-height: 14px; text-align: center; }
+.search-input-container:has(input:placeholder-shown) .search-input-clear-button { display: none; }
+
+/* --- toggles: the app's Switch */
+.checkbox-container { position: relative; display: inline-block; width: 36px; height: 22px; flex: none; border-radius: 999px; cursor: pointer;
+  background: color-mix(in srgb, var(--foreground) 18%, transparent); transition: background 0.2s; }
+.checkbox-container input { display: none; }
+.checkbox-container::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2); transition: transform 0.2s; }
+.checkbox-container.is-enabled { background: var(--primary); }
+.checkbox-container.is-enabled::after { transform: translateX(14px); }
+.checkbox-container.is-disabled, .is-disabled .checkbox-container { opacity: 0.5; cursor: default; }
+
+/* --- modals: the app's sheet; prompts (suggesters) its palette */
+.modal-container { position: fixed; inset: 0; z-index: var(--layer-modal); display: flex; align-items: center; justify-content: center; }
+.modal-bg { position: absolute; inset: 0; background: rgb(0 0 0 / 0.3); animation: oc-fade 150ms ease-out; }
+.modal, .prompt { position: relative; display: flex; flex-direction: column; width: var(--modal-width); max-width: var(--modal-max-width); max-height: var(--modal-height);
+  overflow: auto; padding: 20px; border: 0.5px solid var(--border); border-radius: var(--modal-radius); background: var(--card); color: var(--foreground);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); font-size: var(--font-ui-medium); line-height: 1.45; animation: oc-in 150ms ease-out; overscroll-behavior: contain; }
+.modal-close-button { position: absolute; top: 12px; right: 12px; display: flex; padding: 3px; border-radius: 6px; cursor: pointer; color: var(--muted-foreground); }
+.modal-close-button:hover { background: var(--background-modifier-hover); color: var(--foreground); }
+.modal-close-button svg { width: 16px; height: 16px; }
+.modal-header:empty, .modal-title:empty { display: none; }
+.modal-title { font-size: 15px; font-weight: 600; line-height: 20px; margin-bottom: 12px; padding-right: 28px; }
+.modal-content { min-height: 0; }
+.modal-content p { margin: 0 0 10px; }
+.modal-content :is(h1, h2, h3, h4) { font-weight: 600; margin: 14px 0 8px; }
+.modal-content :is(h1, h2) { font-size: 15px; } .modal-content :is(h3, h4) { font-size: 13px; }
+.modal-button-container { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 16px; }
+.modal.mod-settings { width: min(760px, calc(100vw - 32px)); height: 80vh; padding: 20px 24px; }
+.modal.mod-settings .modal-title { font-size: 17px; }
+.modal.prompt, .prompt { width: var(--prompt-width); max-width: var(--prompt-max-width); align-self: flex-start; margin-top: 12vh; padding: 0; max-height: 70vh;
+  border-radius: 12px; overflow: hidden; }
+.prompt-input-container { position: relative; }
+input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !important; padding: 0 16px !important; border: 0 !important; border-bottom: 0.5px solid var(--border) !important;
+  border-radius: 0 !important; background: transparent !important; box-shadow: none !important; font-size: 15px !important; color: var(--foreground); outline: none; }
+.prompt-results { flex: 1 1 auto; overflow: auto; padding: 4px; overscroll-behavior: contain; }
+.prompt-instructions { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 12px; font-size: 11px; color: var(--muted-foreground); border-top: 0.5px solid var(--border); }
+.prompt-instructions:empty { display: none; }
+.prompt-instruction-command { font-weight: 600; margin-right: 4px; color: var(--foreground); }
+.prompt-instruction { white-space: nowrap; }
+@media (max-width: 767px) {
+  .modal { width: 100%; max-width: calc(100vw - 16px); max-height: calc(100dvh - 32px); padding: 18px 16px; font-size: 15px; }
+  .modal.mod-settings { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; padding-top: max(18px, env(safe-area-inset-top)); }
+  .modal.prompt, .prompt { margin-top: max(12px, env(safe-area-inset-top)); width: calc(100vw - 16px); }
+  .prompt-instructions { display: none; }
+  input.prompt-input { height: 48px !important; font-size: 17px !important; }
+}
+@keyframes oc-fade { from { opacity: 0 } }
+@keyframes oc-in { from { opacity: 0; transform: scale(0.97) } }
+
+/* --- suggestions: in a prompt, under a field, in the editor */
+.suggestion { display: flex; flex-direction: column; }
+.suggestion-item { display: flex; align-items: center; gap: 8px; min-height: 28px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: var(--font-ui-medium);
+  line-height: 18px; color: var(--foreground); overflow-wrap: anywhere; }
+.suggestion-item.is-selected { background: color-mix(in srgb, var(--foreground) 7%, transparent); }
+.suggestion-item.mod-complex { align-items: flex-start; }
+.suggestion-content { flex: 1 1 auto; min-width: 0; }
+.suggestion-note { font-size: var(--font-ui-small); color: var(--muted-foreground); }
+.suggestion-aux { display: flex; flex: none; gap: 6px; align-items: center; color: var(--muted-foreground); font-size: var(--font-ui-small); }
+.suggestion-flair, .suggestion-hotkey, .suggestion-prefix { color: var(--muted-foreground); font-size: var(--font-ui-small); }
+.suggestion-empty { padding: 10px 12px; color: var(--muted-foreground); font-size: var(--font-ui-medium); }
+.suggestion-highlight { font-weight: 600; color: var(--foreground); }
+.suggestion-container { position: fixed; z-index: var(--layer-popover); max-height: 300px; max-width: min(420px, calc(100vw - 16px)); overflow: auto; padding: 4px;
+  border-radius: 10px; background: color-mix(in srgb, var(--popover) 92%, transparent); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%);
+  box-shadow: inset 0 0 0 0.5px var(--border), 0 10px 30px rgb(0 0 0 / 0.18); overscroll-behavior: contain; }
+@media (max-width: 767px) { .suggestion-item { min-height: 44px; font-size: 17px; } }
+
+/* --- settings: a tab of rows like the app's settings */
+.vertical-tab-content { padding: 0; color: var(--foreground); }
+.vertical-tab-content > :is(h1, h2, h3, h4) { font-size: 13px; font-weight: 600; color: var(--muted-foreground); margin: 20px 0 4px; }
+.vertical-tab-content > :is(h1, h2, h3, h4):first-child { margin-top: 0; }
+.vertical-tab-content p { margin: 6px 0; font-size: var(--font-ui-medium); }
+.vertical-tab-content a { color: var(--primary); }
+.setting-item { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 0; border-top: 0.5px solid var(--border); }
+.setting-item:first-child, .setting-item-heading + .setting-item, .setting-items > .setting-item:first-child { border-top: 0; }
+.setting-item-info { flex: 1 1 auto; min-width: 0; }
+.setting-item-name { font-size: 15px; line-height: 20px; color: var(--foreground); }
+.setting-item-name:empty, .setting-item-description:empty { display: none; }
+.setting-item-description { font-size: 13px; line-height: 18px; color: var(--muted-foreground); }
+.setting-item-description a { color: var(--primary); }
+.setting-item:is(.mod-navigable, .mod-clickable) { cursor: pointer; }
+.setting-item:is(.mod-navigable, .mod-clickable):hover { background: var(--accent); }
+.setting-item-icon { display: flex; flex: none; color: var(--muted-foreground); }
+.setting-item-icon svg { width: 18px; height: 18px; }
+.setting-item-chevron { display: flex; color: var(--muted-foreground); }
+.setting-item-chevron svg { width: 16px; height: 16px; }
+.setting-item-error { font-size: 13px; line-height: 18px; color: var(--destructive); }
+.setting-display-value { font-size: 13px; color: var(--muted-foreground); }
+.setting-display-value[data-status="warning"] { color: var(--orange); }
+.setting-group-search { padding: 4px 0 8px; }
+.setting-group-search input { width: 100%; }
+.setting-item-control { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; }
+.setting-item-control :is(input[type="text"], input:not([type]), input[type="search"]) { width: 180px; }
+.setting-item-control textarea { width: 260px; }
+.setting-item-heading { min-height: 0; padding: 20px 0 4px; border-top: 0; }
+.setting-item-heading .setting-item-name { font-size: 13px; font-weight: 600; color: var(--muted-foreground); }
+.setting-item.is-disabled { opacity: 0.5; }
+.setting-item.mod-clickable { cursor: pointer; }
+.setting-item.mod-clickable:hover { background: var(--background-modifier-hover); border-radius: 8px; }
+.setting-group { margin: 4px 0 16px; }
+.setting-group > .setting-item-heading { padding: 16px 0 6px; }
+.setting-items { padding: 0 14px; border-radius: var(--setting-items-radius); background: var(--setting-items-background); }
+.setting-progress-bar { width: 140px; height: 6px; border-radius: 3px; background: linear-gradient(to right, var(--primary) var(--progress, 0%), color-mix(in srgb, var(--foreground) 12%, transparent) var(--progress, 0%)); }
+.setting-page-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 15px; font-weight: 600; }
+.extra-setting-button { color: var(--muted-foreground); }
+@media (max-width: 767px) {
+  .setting-item { flex-wrap: wrap; min-height: 52px; }
+  .setting-item-name { font-size: 17px; line-height: 22px; }
+  .setting-item-description { font-size: 15px; line-height: 20px; }
+  .setting-item-control :is(input[type="text"], input:not([type]), textarea) { width: 100%; }
+  .setting-item-control:has(textarea, input[type="text"]) { flex-basis: 100%; }
+}
+
+/* --- menus (a plugin's own; Menu shows the app's when it can) */
+.menu { position: fixed; z-index: var(--layer-menu); min-width: 192px; max-height: calc(100dvh - 16px); overflow: auto; padding: 4px; border-radius: 10px;
+  background: color-mix(in srgb, var(--popover) 85%, transparent); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%);
+  box-shadow: inset 0 0 0 0.5px var(--border), 0 10px 30px rgb(0 0 0 / 0.18); font-size: 13px; color: var(--foreground); }
+.menu-item { display: flex; align-items: center; gap: 10px; height: 28px; padding: 0 10px; border-radius: 4px; cursor: pointer; white-space: nowrap; }
+.menu-item:hover, .menu-item.selected { background: color-mix(in srgb, var(--foreground) 7%, transparent); }
+.menu-item.is-disabled { opacity: 0.4; cursor: default; }
+.menu-item.is-label { color: var(--muted-foreground); cursor: default; }
+.menu-item.mod-warning, .menu-item.mod-warning .menu-item-icon { color: var(--red); }
+.menu-item-icon { display: flex; width: 16px; color: var(--muted-foreground); }
+.menu-item-title { flex: 1 1 auto; }
+.menu-separator { height: 0.5px; margin: 4px 10px; background: var(--border); }
+
+/* --- popovers */
+.popover.hover-popover { position: fixed; z-index: var(--layer-popover); width: 460px; max-width: calc(100vw - 16px); max-height: 400px; overflow: auto; padding: 8px 16px;
+  border-radius: 12px; background: var(--card); box-shadow: inset 0 0 0 0.5px var(--border), 0 16px 40px rgb(0 0 0 / 0.2); font-size: 14px; color: var(--foreground); }
+.popover.hover-popover:empty { display: none; }
+
+/* --- views: a leaf's header and content, trees, nav files and folders */
+.workspace-leaf, .workspace-leaf-content { display: flex; flex-direction: column; height: 100%; min-height: 0; color: var(--foreground); }
+.obsidian-compat-side :is(.workspace-leaf, .workspace-leaf-content) { height: auto; }
+.obsidian-compat-side .workspace-leaf.mod-fill { height: min(520px, 70vh); }
+.obsidian-compat-side .workspace-leaf.mod-fill > .workspace-leaf-content { height: 100%; }
+.view-header { display: none; }
+.view-content { flex: 1 1 auto; overflow: auto; padding: 4px 8px; font-size: var(--font-ui-medium); }
+.nav-header { padding: 4px; }
+.nav-buttons-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
+.nav-action-button { display: flex; padding: 4px; border-radius: 4px; color: var(--icon-color); cursor: pointer; }
+.nav-action-button:hover { background: var(--background-modifier-hover); color: var(--icon-color-hover); }
+.nav-action-button.is-active { color: var(--primary); }
+.nav-files-container { padding: 2px 4px; }
+/* (the app's own tree rows carry these names for plugins, fileRows: only plugins' styles apply to them) */
+:is(.nav-file-title, .nav-folder-title, .tree-item-self):not([data-tree-path]) { display: flex; align-items: center; gap: 6px; min-height: 26px; padding: var(--nav-item-padding);
+  border-radius: var(--nav-item-radius); color: var(--nav-item-color); cursor: pointer; font-size: var(--nav-item-size); line-height: 18px; }
+:is(.nav-file-title, .nav-folder-title, .tree-item-self):not([data-tree-path]):hover { background: var(--nav-item-background-hover); color: var(--nav-item-color-hover); }
+:is(.nav-file-title, .nav-folder-title, .tree-item-self):not([data-tree-path]).is-active { background: var(--nav-item-background-active); color: var(--nav-item-color-active); }
+:is(.nav-file-title, .nav-folder-title, .tree-item-self):not([data-tree-path]).is-selected { background: var(--nav-item-background-selected); color: var(--nav-item-color-selected); }
+:is(.nav-file-title-content, .nav-folder-title-content, .tree-item-inner):not([data-tree-path] *) { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(.nav-folder-children, .tree-item-children) { padding-left: 12px; margin-left: 8px; border-left: 0.5px solid var(--nav-indentation-guide-color); }
+:is(.nav-folder.is-collapsed, .tree-item.is-collapsed) > :is(.nav-folder-children, .tree-item-children) { display: none; }
+:is(.nav-folder-collapse-indicator, .collapse-icon, .tree-item-icon) { display: flex; width: 14px; flex: none; color: var(--muted-foreground); }
+:is(.nav-folder-collapse-indicator, .collapse-icon) svg { width: 12px; height: 12px; transition: transform 0.12s; }
+:is(.is-collapsed > .nav-folder-title, .is-collapsed > .tree-item-self) :is(.nav-folder-collapse-indicator, .collapse-icon) svg { transform: rotate(-90deg); }
+:is(.nav-file-tag, .tree-item-flair) { padding: 0 5px; border-radius: 4px; font-size: 11px; color: var(--muted-foreground); background: var(--background-modifier-hover); }
+.tree-item-flair-outer { flex: none; }
+.pane-empty { padding: 12px; color: var(--muted-foreground); font-size: var(--font-ui-medium); }
+.search-result-file-title { font-weight: 500; }
+.search-result-file-match { padding: 2px 8px; font-size: var(--font-ui-small); color: var(--muted-foreground); }
+.search-result-file-matched-text { background: var(--text-highlight-bg); color: var(--foreground); }
+.status-bar-item { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted-foreground); }
+.status-bar-item.mod-clickable { cursor: pointer; }
+:is(.modal-container, .view-content, .markdown-rendered, .vertical-tab-content) :is(.u-muted, .mod-muted, .text-muted) { color: var(--muted-foreground); }
+:is(.modal-container, .view-content, .markdown-rendered, .vertical-tab-content) .u-pop { color: var(--primary); }
+:is(.modal-container, .view-content, .markdown-rendered, .vertical-tab-content) .mod-error { color: var(--red); }
+
+/* --- Markdown plugins draw (MarkdownRenderer's roots are the app's prose too: note-prose inline) */
+.markdown-rendered, .markdown-preview-view { color: var(--foreground); overflow-wrap: anywhere; }
+:is(.markdown-rendered, .view-content, .obsidian-compat-fence, .popover) a.internal-link { color: var(--notes, var(--primary)); font-weight: 500; text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; }
+:is(.markdown-rendered, .view-content, .obsidian-compat-fence, .popover) a.internal-link.is-unresolved { color: var(--muted-foreground); font-weight: 400; text-decoration-style: dotted; }
+:is(.markdown-rendered, .view-content, .obsidian-compat-fence, .popover) a.external-link { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+:is(.view-content, .obsidian-compat-fence, .popover) a.tag { display: inline-block; padding: 0 6px; border-radius: 999px; font-size: 0.9em; text-decoration: none;
+  color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); }
+.markdown-rendered .task-list-item:is([data-task="x"], [data-task="X"]) { color: var(--checklist-done-color); text-decoration: var(--checklist-done-decoration);
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent); }
+:is(.view-content, .obsidian-compat-fence, .popover) input[type="checkbox"].task-list-item-checkbox { width: 16px; height: 16px; margin: 0 6px 0 0; accent-color: var(--primary);
+  vertical-align: -3px; cursor: pointer; }
+:is(.view-content, .obsidian-compat-fence, .popover, .markdown-rendered) .contains-task-list { list-style: none; }
+:is(.markdown-rendered, .obsidian-compat-fence) table { border-collapse: collapse; font-size: 0.94em; }
+:is(.markdown-rendered, .obsidian-compat-fence) :is(th, td) { text-align: left; padding: 6px 14px 6px 0; border-bottom: 0.5px solid var(--border); vertical-align: top; }
+:is(.markdown-rendered, .obsidian-compat-fence) th { font-weight: 600; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(ul, ol) { padding-left: 1.35em; margin: 4px 0; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(ul) { list-style: disc; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(ol) { list-style: decimal; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(li)::marker { color: var(--muted-foreground); }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(ul.contains-task-list) { padding-left: 0.25em; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(h1, h2, h3, h4, h5, h6) { font-weight: 600; margin: 12px 0 6px; line-height: 1.3; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(h1) { font-size: 1.3em; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(h2) { font-size: 1.15em; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(p) { margin: 0 0 8px; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(code) { font-family: var(--font-code); font-size: 0.85em; padding: 1px 4px; border-radius: 4px; background: var(--code-background); }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(pre) { padding: 10px 12px; border-radius: 8px; background: var(--code-background); overflow-x: auto; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(pre code) { padding: 0; background: none; }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(blockquote:not(.callout)) { margin: 0 0 8px; padding-left: 12px; border-left: 3px solid var(--border); color: var(--muted-foreground); }
+:is(.obsidian-compat-fence, .obsidian-compat-leaf, .popover) :where(hr) { border: 0; border-top: 0.5px solid var(--border); margin: 12px 0; }
+.internal-embed.image-embed img { max-width: 100%; border-radius: 8px; }
+.internal-embed.markdown-embed { display: block; margin: 6px 0; padding: 2px 0 2px 14px; border-left: 2px solid color-mix(in srgb, var(--notes, var(--primary)) 50%, transparent); }
+.internal-embed.is-unresolved { color: var(--muted-foreground); }
+.obsidian-compat-fence { margin: 4px 0; }
+.obsidian-compat-error { color: var(--red); font-size: 13px; }
+:is(.block-language-dataview, .block-language-dataviewjs, .block-language-tasks) { overflow-x: auto; }
+
+/* Obsidian's places under a note's properties (index.tsx NoteAnchors): only what plugins put there shows. */
+.obsidian-compat-anchors > .metadata-container { display: none; }
+.obsidian-compat-anchors:not(:has(> :not(.metadata-container))) { display: none; }

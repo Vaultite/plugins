@@ -1,0 +1,26 @@
+{
+  "id": "remote-save",
+  "name": "Remote save",
+  "description": "Syncs or backs up the vault with storage you own: an S3-compatible bucket (AWS S3, Cloudflare R2, Backblaze B2, MinIO) or a WebDAV folder (Nextcloud and friends). Two-way, push only or pull only, on a schedule or by hand, optionally encrypted. It talks only to the addresses you add; their keys stay on the machine you enter them on.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "system",
+  "tint": "teal",
+  "replaces": { "obsidian": ["remotely-save"] },
+  "disclosures": {
+    "network": ["*"],
+    "outsideVault": true
+  },
+  "forAgents": "To back up or sync the vault with the user's own storage now: `remote-save.sync`; how the last sync went: `remote-save.status`.",
+  "blocks": {
+    "remote-save": {
+      "description": "each remote's last sync and how it went, with sync now",
+      "live": "the syncs' results, kept on the machine that runs them",
+      "options": {
+        "remote": { "type": "string", "description": "only this remote, by its name or id" }
+      }
+    }
+  }
+}

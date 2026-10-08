@@ -1,0 +1,9 @@
+/* @settings
+name: Wide tables
+id: wide-tables
+settings:
+  - id: wt-full
+    title: Tables use the whole pane
+    type: class-toggle
+*/
+body.wt-full .note-prose table { width: 100%; }

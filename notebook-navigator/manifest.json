@@ -1,0 +1,18 @@
+{
+  "id": "notebook-navigator",
+  "name": "Notebook navigator",
+  "description": "Folders, tags, shortcuts and recent notes beside a list of the notes in the one you pick, each with its date, first lines and first image, like Apple Notes or Bear. In the sidebar, in a tab, and as a phone screen.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "navigation",
+  "disclosures": {},
+  "replaces": { "obsidian": ["notebook-navigator"] },
+  "settings": {
+    "sort": { "type": "enum", "values": ["modified", "created", "title"], "default": "modified", "label": "Sort notes by", "labels": { "modified": "Date modified", "created": "Date created", "title": "Title" }, "description": "the order of a folder's or tag's notes, unless it has its own" },
+    "subfolders": { "type": "boolean", "default": true, "label": "Show notes from subfolders", "description": "a folder lists the notes in its subfolders too, and counts them" },
+    "shortcuts": { "type": "list", "default": [], "label": "Shortcuts", "description": "folders and tags at the top, as folder:<path> or tag:<name>" },
+    "sorts": { "type": "map", "default": {}, "label": "Sort per folder", "description": "a folder's or tag's own order: folder:<path> or tag:<name> to modified, created or title" }
+  }
+}

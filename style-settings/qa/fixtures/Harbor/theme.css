@@ -1,0 +1,18 @@
+/* Harbor: a made-up Obsidian theme with Style Settings. */
+body { --accent-h: 200; --accent-s: 70%; --accent-l: 45%; }
+.theme-light { --background-primary: #fbfaf7; --background-secondary: #f1eee8; --text-normal: #2a2a33; }
+.theme-dark { --background-primary: #1d2228; --background-secondary: #161a1f; --text-normal: #dfe3e8; }
+/* @settings
+name: Harbor
+id: harbor
+settings:
+  - id: accent
+    title: Accent
+    type: variable-themed-color
+    format: hsl-split
+    default-light: '#2f8fbf'
+    default-dark: '#5ab4e0'
+  - id: harbor-cards
+    title: Cards for callouts
+    type: class-toggle
+*/

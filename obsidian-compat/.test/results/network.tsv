@@ -1,0 +1,19 @@
+id	web	phone	notes
+remotely-save	works	works	first-run agreement, settings and its services (no account tried)
+obsidian-git	works	partly	computer: status, commit and push through the bridge; phone: lists and commits with isomorphic-git as on Obsidian mobile, push needs an HTTPS remote
+obsidian-local-rest-api	works	n/a	its HTTPS server answers on 27124 through the bridge (desktop only)
+smart-connections	works	partly	computer: local model embeds the vault, connections listed; phone: view opens as a tab, list not seen in the phone check
+realclaudian	partly	n/a	view, settings, finds the CLI and spawns its session through the bridge; a chat needs the real Claude Code (lab uses a fake CLI)
+agent-client	partly	n/a	chat view spawns its ACP agent through the bridge; a chat needs the real agent (lab uses a fake CLI)
+copilot	works	works	chat view; without a model it says so clearly and saves the conversation (flaky to drive in a long run)
+obsidian-textgenerator-plugin	works	works	generate reaches the provider and says the key is missing
+obsidian-livesync	works	works	setup notice and settings (no server tried)
+obsidian-importer	works	works	computer: HTML file picked (dialog stand-in), previewed and imported; phone: its formats
+obsidian42-brat	works	works	installs a plugin into .vaultite/obsidian/plugins (listed, off); GitHub's API rate limit can refuse a run
+terminal	works	n/a	integrated shell opens through the bridge (pty via its Python helper, fd 3 pipe); phones have no Node, as Obsidian mobile
+obsidian-zotero-desktop-connector	partly	n/a	reaches Zotero's local API and says Zotero isn't running (none here)
+obsidian-citation-plugin	works	n/a	CSL library read from the vault, insert-citation lists it
+obsidian-pandoc	n/a	n/a	pandoc isn't installed here; it would run through the bridge
+obsidian-enhancing-export	partly	n/a	export dialog opens; exporting needs pandoc (not installed here)
+better-export-pdf	partly	n/a	dialog opens; its preview and PDF need Electron's <webview> tag, which the app's pages don't have (the app's Export to PDF stands in)
+obsidian-auto-link-title	works	works	pasted URL becomes [title](url): hidden BrowserWindow stand-in on computers, fetch path on phones

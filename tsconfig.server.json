@@ -1,0 +1,15 @@
+{
+  "extends": "../vaultite/tsconfig.server.json",
+  "compilerOptions": {
+    "incremental": false,
+    "tsBuildInfoFile": null
+  },
+  "include": [
+    "*/plugin.ts",
+    "*/import.ts",
+    "*/cli.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

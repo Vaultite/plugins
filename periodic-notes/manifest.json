@@ -1,0 +1,158 @@
+{
+  "id": "periodic-notes",
+  "name": "Periodic notes",
+  "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
+  "version": "1.0.1",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "category": "writing",
+  "tint": "blue",
+  "apiVersion": 3,
+  "enhances": [
+    "templates",
+    "today"
+  ],
+  "disclosures": {},
+  "replaces": {
+    "obsidian": [
+      "calendar",
+      "periodic-notes"
+    ]
+  },
+  "forAgents": "A daily, weekly or monthly note (today's, last week's): `periodic_notes_note` (`vau calendar note today`, `week --offset -1`) gives its path, made from its template.",
+  "settings": {
+    "confirmCreate": {
+      "type": "boolean",
+      "default": true,
+      "label": "Confirm before creating",
+      "description": "ask before a click on the calendar makes a note that isn't there yet"
+    },
+    "weekStart": {
+      "type": "enum",
+      "values": [
+        "locale",
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+      ],
+      "default": "monday",
+      "label": "Start week on",
+      "labels": {
+        "locale": "This machine's locale"
+      },
+      "description": "the calendar's first day of the week, and how gggg and ww number weeks (from Monday: as ISO's)"
+    },
+    "weekNumbers": {
+      "type": "boolean",
+      "default": false,
+      "label": "Show week numbers",
+      "description": "a column of week numbers, a click opening the weekly note"
+    },
+    "wordsPerDot": {
+      "type": "number",
+      "default": 250,
+      "min": 1,
+      "label": "Words per dot",
+      "description": "how many words of a daily note each of its dots stands for, up to five"
+    },
+    "dailyFolder": {
+      "type": "string",
+      "label": "Daily notes folder",
+      "description": "where daily notes go; unset, as Obsidian says, else where daily notes are (Daily)"
+    },
+    "dailyFormat": {
+      "type": "string",
+      "label": "Daily note name",
+      "description": "its file name, a moment.js format (YYYY-MM-DD); a / makes folders"
+    },
+    "dailyTemplate": {
+      "type": "string",
+      "label": "Daily note template",
+      "description": "the template a new daily note starts from, by path or by name in the templates folder; {{date}}, {{title}} filled in"
+    },
+    "weekly": {
+      "type": "boolean",
+      "label": "Weekly notes",
+      "description": "a note for each week; unset, as Obsidian's Periodic Notes says (else off)"
+    },
+    "weeklyFolder": {
+      "type": "string",
+      "label": "Weekly notes folder",
+      "description": "where weekly notes go; unset, as Obsidian says, else Weekly"
+    },
+    "weeklyFormat": {
+      "type": "string",
+      "label": "Weekly note name",
+      "description": "its file name, a moment.js format (gggg-[W]ww; GGGG-[W]WW for ISO weeks); a / makes folders"
+    },
+    "weeklyTemplate": {
+      "type": "string",
+      "label": "Weekly note template",
+      "description": "the template a new weekly note starts from, by path or by name in the templates folder; {{date}}, {{title}} filled in"
+    },
+    "monthly": {
+      "type": "boolean",
+      "label": "Monthly notes",
+      "description": "a note for each month; unset, as Obsidian's Periodic Notes says (else off)"
+    },
+    "monthlyFolder": {
+      "type": "string",
+      "label": "Monthly notes folder",
+      "description": "where monthly notes go; unset, as Obsidian says, else Monthly"
+    },
+    "monthlyFormat": {
+      "type": "string",
+      "label": "Monthly note name",
+      "description": "its file name, a moment.js format (YYYY-MM); a / makes folders"
+    },
+    "monthlyTemplate": {
+      "type": "string",
+      "label": "Monthly note template",
+      "description": "the template a new monthly note starts from, by path or by name in the templates folder; {{date}}, {{title}} filled in"
+    },
+    "quarterly": {
+      "type": "boolean",
+      "label": "Quarterly notes",
+      "description": "a note for each quarter; unset, as Obsidian's Periodic Notes says (else off)"
+    },
+    "quarterlyFolder": {
+      "type": "string",
+      "label": "Quarterly notes folder",
+      "description": "where quarterly notes go; unset, as Obsidian says, else Quarterly"
+    },
+    "quarterlyFormat": {
+      "type": "string",
+      "label": "Quarterly note name",
+      "description": "its file name, a moment.js format (YYYY-[Q]Q); a / makes folders"
+    },
+    "quarterlyTemplate": {
+      "type": "string",
+      "label": "Quarterly note template",
+      "description": "the template a new quarterly note starts from, by path or by name in the templates folder; {{date}}, {{title}} filled in"
+    },
+    "yearly": {
+      "type": "boolean",
+      "label": "Yearly notes",
+      "description": "a note for each year; unset, as Obsidian's Periodic Notes says (else off)"
+    },
+    "yearlyFolder": {
+      "type": "string",
+      "label": "Yearly notes folder",
+      "description": "where yearly notes go; unset, as Obsidian says, else Yearly"
+    },
+    "yearlyFormat": {
+      "type": "string",
+      "label": "Yearly note name",
+      "description": "its file name, a moment.js format (YYYY); a / makes folders"
+    },
+    "yearlyTemplate": {
+      "type": "string",
+      "label": "Yearly note template",
+      "description": "the template a new yearly note starts from, by path or by name in the templates folder; {{date}}, {{title}} filled in"
+    }
+  }
+}

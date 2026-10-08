@@ -1,0 +1,15 @@
+{
+  "id": "kanban",
+  "name": "Kanban",
+  "description": "Obsidian Kanban's boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back so Obsidian still reads it.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "writing",
+  "tint": "teal",
+  "disclosures": {},
+  "marks": { "kanban-plugin": "kanban" },
+  "replaces": { "obsidian": ["obsidian-kanban"] },
+  "forAgents": "Kanban boards are Markdown files with `kanban-plugin: board` (`vau docs kanban`): read one with `kanban_read`, add a card with `kanban_add`, move one with `kanban_move`; `kanban_list` lists them."
+}

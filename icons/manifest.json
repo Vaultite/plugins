@@ -1,0 +1,21 @@
+{
+  "id": "icons",
+  "name": "Icons",
+  "description": "An icon (any of Lucide's, or an emoji) and a colour for any folder or file, in the file tree, tabs and lists: set from a right-click in the file tree. A note keeps its own in its icon: and tint: properties; folders and other files in the settings. Obsidian's Iconize settings are read too.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "category": "navigation",
+  "tint": "orange",
+  "apiVersion": 3,
+  "disclosures": {},
+  "replaces": { "obsidian": ["obsidian-icon-folder"] },
+  "forAgents": "To give a folder or file an icon or colour: `icons_set` (`vau icons set <path> --icon rocket --tint blue`).",
+  "settings": {
+    "icons": {
+      "type": "map",
+      "label": "Icons",
+      "description": "folders' and other files' icons by path: {\"icon\": a Lucide name or an emoji, \"tint\": a colour}; notes keep theirs in icon: and tint:"
+    }
+  }
+}

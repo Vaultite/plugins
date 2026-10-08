@@ -1,0 +1,12 @@
+{
+  "extends": "../vaultite/tsconfig.app.json",
+  "compilerOptions": {
+    "incremental": false,
+    "tsBuildInfoFile": null
+  },
+  "include": [
+    "*/index.tsx",
+    "*/*.d.ts",
+    "../vaultite/web/src/**/*.d.ts"
+  ]
+}

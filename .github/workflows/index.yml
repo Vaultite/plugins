@@ -1,0 +1,26 @@
+# The plugin directory's index: every GitHub repository with the topic vaultite-plugin, plus listed.json's, read daily
+# into directory/index.json, with blocked.json's blocklist. Waits until the repositories are public.
+name: Index
+on:
+  schedule: [{ cron: "17 6 * * *" }]
+  workflow_dispatch:
+  push: { branches: [main], paths: [directory/listed.json, directory/blocked.json] }
+permissions: { contents: write }
+concurrency: { group: index, cancel-in-progress: false }
+jobs:
+  index:
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { repository: Vaultite/vaultite, path: .app, sparse-checkout: "core\ntools", sparse-checkout-cone-mode: true }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: node .app/tools/plugin-index.ts --listed directory/listed.json --blocked directory/blocked.json --out directory/index.json
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add directory/index.json
+          git diff --cached --quiet || { git commit -m "Index $(date -u +%F)" && git push; }

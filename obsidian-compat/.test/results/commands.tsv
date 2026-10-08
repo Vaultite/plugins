@@ -1,0 +1,14 @@
+id	web	phone	notes
+templater-obsidian	works	works	insert template fills tp.date; a note the app makes in Daily/ gets its folder template; <% %> highlighted over the app's Markdown
+quickadd	works	works	capture choice built in its settings (1.13 settings pages) appends; New note from template creates the note
+omnisearch	works	works	finds by content, opens the result
+darlal-switcher-plus	works	works	headings mode opens the note at the heading; commands mode lists and runs the app's own commands too
+obsidian-another-quick-switcher	works	works	file name search lists and opens notes
+periodic-notes	works	works	Migrate takes the core daily notes' options; open daily note makes today's from its template
+obsidian-advanced-uri	works	works	obsidian://advanced-uri links clicked in notes open and write; obsidian://open, new, search are the app's own
+find-unlinked-files	works	works	writes the orphaned files note
+text-extractor	works	n/a	OCR of an image into a new note (computer); phone not run (Tesseract model download)
+obsidian-book-search-plugin	partly	partly	search goes to Google Books through requestUrl; its keyless daily quota answers 429 here (curl too)
+obsidian-dictionary-plugin	partly	partly	view opens, searches; api.dictionaryapi.dev answered 522 upstream (curl too)
+readwise-official	works	works	Connect reaches Readwise's login (no account to go further)
+obsidian-languagetool-plugin	works	works	Check text underlines the mistakes (api.languagetool.org)

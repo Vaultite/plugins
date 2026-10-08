@@ -1,0 +1,20 @@
+id	web	phone	notes
+dataview	works	works	TABLE, LIST, dataviewjs (once enabled in its settings, off by default as in Obsidian), inline `= expr` in live preview
+datacore	works	works	datacorejsx block renders a live query
+obsidian-tasks-plugin	works	works	query lists tasks; clicking a result's checkbox completes it in its file with the done date; edit-task modal opens
+tasknotes	works	works	create-task modal (its own Markdown editors) writes a task note; tasks view lists it
+obsidian-checklist-plugin	works	works	sidebar lists #todo tasks; ticking one writes the file
+obsidian-tracker	works	works	frontmatter values charted (SVG)
+obsidian-charts	works	works	chart block painted (canvas)
+obsidian-meta-bind-plugin	works	works	INPUT[toggle] drawn in live preview; toggling writes the frontmatter
+metadata-menu	works	works	with a preset field defined (as it needs in Obsidian), the fields modal lists the note's field
+buttons	works	works	button drawn with its label; clicking runs its action (append text)
+obsidian-day-planner	works	works	timeline shows today's timed tasks under the "Day planner" heading (its default scope)
+obsidian-reminder-plugin	works	works	reminder list shows a task's (@date time)
+obsidian-spaced-repetition	works	works	review modal lists the #flashcards deck and shows its cards
+obsidian-full-calendar	works	works	local-folder calendar shows an event note
+breadcrumbs	works	works	tree block shows a child from up: frontmatter
+multi-column-markdown	works	works	region drawn as two columns in live preview
+obsidian-dice-roller	works	works	`dice: 1d20` drawn as a roll in live preview
+obsidian-5e-statblocks	works	works	statblock block renders
+obsidian-leaflet-plugin	works	works	map block renders tiles

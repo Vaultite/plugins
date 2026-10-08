@@ -1,0 +1,16 @@
+id	web	phone	notes
+obsidian-excalidraw-plugin	works	works	New drawing opens as its view in the note's tab, drawing saves the .excalidraw.md, embeds draw its picture. Notes embedded inside a drawing use a canvas stand-in (reading only)
+excalibrain	works	partly	its graph follows the note in front (needs Dataview on, as in Obsidian); phone: no split to show it beside the note
+obsidian-kanban	works	works	board opens in the note's tab; moving a card writes the Markdown
+obsidian-mind-map	works	partly	Preview opens beside the note and draws it; on a phone there's no split, so it covers the note and shows nothing
+obsidian-markmind	works	works	mindmap-plugin notes open as its mind map. Shares the frontmatter key with Enhancing Mindmap: only one should be on
+obsidian-enhancing-mindmap	works	works	mindmap-plugin notes open as an editable mind map
+advanced-canvas	n/a	n/a	Extends Obsidian's own canvas view (internals); Vaultite's canvas isn't Obsidian's. Loads, its commands are there
+make-md	works	works	Its navigator lists the vault, opens notes and folder spaces. Its inline context in the editor needs Obsidian's .cm-sizer (absent)
+obsidian-annotator	partly	partly	Its view takes notes with annotation-target and opens; its hypothes.is viewer inside the iframe stays blank (not investigated further)
+pdf-plus	n/a	n/a	Extends Obsidian's PDF viewer (internals); Vaultite draws PDFs itself. Loads without breaking anything
+media-extended	partly	n/a	Desktop only. Loads; its main daemon is an Electron helper installed into Obsidian's app folder, so its setup modal shows each start and playback features that need it don't run. Not checked further
+image-converter	works	partly	Pasted image converted to webp and linked (editor-paste). On a phone the app's own paste handled it (not traced)
+obsidian-advanced-slides	partly	n/a	Desktop only. Its preview server runs through the Node bridge, but its reveal.js files (a zip it downloads into its folder on first run) didn't arrive, so the preview is empty
+obsidian-custom-frames	works	works	A frame opens as its pane: Electron's <webview> is an iframe here (sites refusing frames show nothing)
+obsidian-memos	partly	partly	Thino's view opens with its onboarding; capturing a memo wasn't exercised (closed source)
