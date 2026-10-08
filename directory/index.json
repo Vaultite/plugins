@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-08T23:10:27.041Z",
+  "generated": "2026-10-08T23:20:47.601Z",
   "plugins": [
     {
       "id": "work",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -40,7 +40,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -71,7 +71,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -101,7 +101,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -131,7 +131,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -162,7 +162,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -192,7 +192,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -226,7 +226,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -261,7 +261,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -286,7 +286,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -316,7 +316,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -347,7 +347,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -377,7 +377,7 @@
       "stars": 0,
       "released": "2026-10-08T16:53:51Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -414,7 +414,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -444,7 +444,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -474,7 +474,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -504,7 +504,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -531,7 +531,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -559,7 +559,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -590,7 +590,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -626,7 +626,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -652,7 +652,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -683,7 +683,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -713,7 +713,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -743,7 +743,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -771,7 +771,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -798,6 +798,34 @@
       "tint": "orange"
     },
     {
+      "id": "browseros",
+      "name": "BrowserOS",
+      "description": "A web page handed to BrowserOS, in a tab next to the Web viewer's: a button on every page opens it in BrowserOS's own window, kept behind the tab, where passkeys and its logins work.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "browseros",
+      "version": "1.0.0",
+      "tag": "browseros/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-08T23:20:33Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-08T23:20:38Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "compass",
+      "tint": "teal"
+    },
+    {
       "id": "apple-health",
       "name": "Apple Health",
       "description": "Imports sleep and workouts from an Apple Health export into logs. Claude runs it; each night and workout becomes a file.",
@@ -809,7 +837,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -837,7 +865,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -867,7 +895,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:10:10Z",
+      "pushed": "2026-10-08T23:20:38Z",
       "issues": {
         "open": 0,
         "closed": 0
