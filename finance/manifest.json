@@ -3,7 +3,7 @@
   "icon": "wallet",
   "name": "Finance",
   "description": "The Spending page: spending, income and bills from a CSV of your transactions (a bank's export, or one an AI writes from your statements).",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,

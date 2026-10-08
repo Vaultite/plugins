@@ -3,7 +3,7 @@
   "icon": "icon.svg",
   "name": "Hevy",
   "description": "Imports your workouts from a Hevy CSV export into workout logs. Claude runs it; each workout becomes a file.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,

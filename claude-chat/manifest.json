@@ -3,7 +3,7 @@
   "icon": "claude",
   "name": "Claude chat",
   "description": "Claude Code as a chat in the sidebar or a tab, working in your vault: it reads, edits and searches your notes while you watch, asking before it changes anything. Runs your own claude CLI on the server's machine (signed in to your Claude account); conversations stay on that machine.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
