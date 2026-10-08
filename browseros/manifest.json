@@ -1,0 +1,21 @@
+{
+  "id": "browseros",
+  "name": "BrowserOS",
+  "description": "A web page handed to BrowserOS, in a tab next to the Web viewer's: a button on every page opens it in BrowserOS's own window, kept behind the tab, where passkeys and its logins work.",
+  "icon": "compass",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "shell": true
+  },
+  "category": "navigation",
+  "requires": [
+    "app-windows"
+  ],
+  "enhances": [
+    "web-viewer"
+  ],
+  "tint": "teal"
+}

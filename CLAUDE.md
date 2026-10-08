@@ -34,3 +34,5 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - **Claude chat**: the user's `claude` with stream JSON both ways; permission asks reach it only with
   `--permission-prompt-tool stdio` (else they're denied). Tests and QA use `claude-chat/.test/fake-claude.mjs` (recorded
   lines replayed, `CLAUDE_CHAT_CLI` and `FAKE_CLAUDE_STATE` on the server), never the real CLI.
+- **BrowserOS**: hands a Web viewer page to BrowserOS (`webPageActions`, `appWindows.open`), found by its bundle id
+  (`com.browseros.`, neo first); a desktop app without `appWindows.open` says it needs a newer one.
