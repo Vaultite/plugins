@@ -3,7 +3,7 @@
   "icon": "icon.svg",
   "name": "Git",
   "description": "Your vault as a git repository: a Source control panel to stage, commit, pull and push, each file's diff and its history of commits, and commit-and-sync on a timer or after you stop editing. Runs your git on the server's machine, talking to the remotes you set up.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
