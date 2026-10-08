@@ -1,5 +1,6 @@
 {
   "id": "advanced-tables",
+  "icon": "table-2",
   "name": "Advanced tables",
   "description": "Markdown tables that edit like a spreadsheet in the editor: Tab and Shift-Tab move between cells and Enter down a row, adding rows at the end, and the table lines up its pipes as you go (wide characters and emoji too). Commands insert, delete and move rows and columns, sort by a column, align a column and format every table in the note.",
   "version": "1.0.0",

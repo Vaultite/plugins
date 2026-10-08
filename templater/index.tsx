@@ -1,6 +1,6 @@
 // Templater in the app: the cursor goes where a template's tp.file.cursor() was (as Templater's jump), and the active
 // note's commands can run in place. The Templates plugin's own commands make and insert notes; the server runs them.
-import { FileCode2, TextCursorInput } from "lucide-react"
+import { TextCursorInput } from "lucide-react"
 import { ViewPlugin, type EditorView } from "@codemirror/view"
 import { activeFile, currentEditor, definePlugin, get, notify, notifyError, post } from "@vaultite"
 
@@ -32,7 +32,6 @@ async function replaceInActive() {
 }
 
 export default definePlugin({
-  icon: FileCode2,
   commands: [
     { id: "templater:jump", name: "Jump to next cursor location", keys: ["Alt+E"], when: () => !!currentEditor(), run: () => { const e = currentEditor(); if (e) jump(e.view) }, icon: TextCursorInput },
     { id: "templater:replace", name: "Replace templates in the active file", when: () => !!activeFile(), run: () => void replaceInActive() },

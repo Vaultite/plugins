@@ -117,7 +117,6 @@ function ChoicesPanel({ store }: { store: Store }) {
 }
 
 export default definePlugin({
-  icon: SquarePlus,
   commands: [{ id: "quickadd:run", name: "Quick add", run: pick, icon: SquarePlus }],
   background: ({ store }) => <Commands store={store} />,
   settingsPanel: ({ store }) => <ChoicesPanel store={store} />,

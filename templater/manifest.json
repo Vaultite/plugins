@@ -1,5 +1,6 @@
 {
   "id": "templater",
+  "icon": "file-code-corner",
   "name": "Templater",
   "description": "Obsidian's Templater templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
   "version": "1.0.1",

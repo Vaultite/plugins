@@ -1,5 +1,6 @@
 {
   "id": "obsidian-compat",
+  "icon": "blocks",
   "name": "Obsidian plugins",
   "description": "Runs Obsidian community plugins as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, like in Obsidian.",
   "version": "1.1.1",

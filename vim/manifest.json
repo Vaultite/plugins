@@ -1,5 +1,6 @@
 {
   "id": "vim",
+  "icon": "icon.svg",
   "name": "Vim",
   "description": "Vim's keys in the whole app: the editor (modes, motions, : commands, Markdown motions, folds, a vimrc, the system clipboard), and outside it (j and k scroll, f link hints, / find, lists and panes), with Space as a leader key. Phones type as usual.",
   "version": "1.0.0",

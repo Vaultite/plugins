@@ -1,5 +1,6 @@
 {
   "id": "editing-toolbar",
+  "icon": "panel-top",
   "category": "writing",
   "name": "Editing toolbar",
   "description": "A formatting toolbar for notes: headings, bold, italic, strikethrough, highlight, code, links, lists, tasks, quotes, code blocks, tables, undo and redo, running the app's own editing commands. At the top of the note or near the selection, and above the keyboard on phones. Choose and order its buttons in its settings.",

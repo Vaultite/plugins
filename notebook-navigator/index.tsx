@@ -11,7 +11,6 @@ function View({ store, arg }: { store: Store; arg: string }) {
 }
 
 export default definePlugin({
-  icon: NotebookTabs,
   sidebar: {
     navigator: { title: "Notebook navigator", names: ["notebook", "notes list", "navigator"], sort: 36, tall: true, view: ID, flyout: { icon: NotebookTabs, width: 560 },
       render: ({ store, open, file }) => (open ? <Navigator store={store} active={file} mode="panel" /> : null) },

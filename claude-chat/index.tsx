@@ -30,7 +30,6 @@ function Preview() {
 }
 
 export default definePlugin({
-  icon: ChatIcon,
   icons: { "claude-chat": ChatIcon },
   sidebar: {
     chat: { title: "Claude chat", names: ["claude", "chat", "claudian", "assistant"], heading: false, tall: true, sort: 60, view: "claude-chat",

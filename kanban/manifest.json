@@ -1,5 +1,6 @@
 {
   "id": "kanban",
+  "icon": "square-kanban",
   "name": "Kanban",
   "description": "Obsidian Kanban's boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back so Obsidian still reads it.",
   "version": "1.0.0",

@@ -2,7 +2,7 @@
 // of the app's (hostPlugins): its commands, options, views, panels, ribbon, status items and code blocks drawn as any.
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { Blocks, type LucideIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { commandList, currentEditor, currentFile, definePlugin, keysOf as keysOfApp, dockAtEnd, get, hostPlugins, isDesktop, standingIn, onTabLayoutChange, openPluginSettings, panelSide, post, revealPanel, useFocusedFile, useVaultChange,
   type BlockCtx, type BrowseSource, type FileFormat, type FileMenuItem, type HostedPlugin, type OpenEditor, type PluginCommand, type PluginHost, type SidebarCtx } from "@vaultite"
 import { Prec } from "@codemirror/state"
@@ -485,7 +485,6 @@ function fileFormat(path: string): FileFormat | null {
 }
 
 export default definePlugin({
-  icon: Blocks,
   fileFormat,
   background: ({ store }) => <Runtime seen={(store as { obsidianCompat?: string }).obsidianCompat} />,
   noteTop: { anchors: { render: (f) => <NoteAnchors path={f.path} /> } },

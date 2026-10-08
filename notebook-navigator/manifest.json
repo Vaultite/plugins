@@ -1,5 +1,6 @@
 {
   "id": "notebook-navigator",
+  "icon": "notebook-tabs",
   "name": "Notebook navigator",
   "description": "Folders, tags, shortcuts and recent notes beside a list of the notes in the one you pick, each with its date, first lines and first image, like Apple Notes or Bear. In the sidebar, in a tab, and as a phone screen.",
   "version": "1.0.0",

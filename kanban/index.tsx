@@ -38,7 +38,6 @@ kanban-plugin: board
 `).body
 
 export default definePlugin({
-  icon: SquareKanban,
   files: {
     types: ["kanban"], icon: SquareKanban, tint: "var(--kanban)",
     page: {

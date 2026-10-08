@@ -1,5 +1,6 @@
 {
   "id": "excalidraw",
+  "icon": "icon.svg",
   "name": "Excalidraw",
   "description": "Hand-drawn diagrams and sketches: .excalidraw files open as a whiteboard, and ![[Drawing.excalidraw]] shows one in a note.",
   "version": "1.0.0",

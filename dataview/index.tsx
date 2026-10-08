@@ -1,6 +1,5 @@
 // Dataview's frontend: ```dataview fences (View.tsx), a calm note for ```dataviewjs, and inline queries in notes
 // (inline.ts), kept live by one listener for the vault's changes.
-import { Database } from "lucide-react"
 import { definePlugin, useVaultChange, type BlockCtx } from "@vaultite"
 import { DataviewFence, DataviewJsFence } from "./View"
 import { changed, inlineQueries } from "./inline"
@@ -11,7 +10,6 @@ function Watch() {
 }
 
 export default definePlugin({
-  icon: Database,
   fences: {
     dataview: (ctx) => <DataviewFence {...ctx} />,
     dataviewjs: () => <DataviewJsFence />,

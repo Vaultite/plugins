@@ -356,7 +356,6 @@ const MOCK: RemoteView[] = [{ id: "r2", name: "Cloudflare R2", type: "s3", direc
     conflicts: [], held: [], skipped: [], errors: [], waiting: 0, stopped: null, dryRun: false } } }]
 
 export default definePlugin({
-  icon: Cloud,
   blocks: { "remote-save": ({ options }) => <RemotesBlock only={typeof options.remote === "string" ? options.remote : undefined} /> },
   details: {
     "remote-save": {
