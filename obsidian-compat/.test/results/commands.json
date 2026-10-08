@@ -1,0 +1,56 @@
+{
+  "templater-obsidian": {
+    "state": "works",
+    "errors": []
+  },
+  "quickadd": {
+    "state": "works",
+    "errors": []
+  },
+  "omnisearch": {
+    "state": "works",
+    "errors": []
+  },
+  "darlal-switcher-plus": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-another-quick-switcher": {
+    "state": "works",
+    "errors": []
+  },
+  "periodic-notes": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-advanced-uri": {
+    "state": "works",
+    "errors": []
+  },
+  "find-unlinked-files": {
+    "state": "works",
+    "errors": []
+  },
+  "text-extractor": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-book-search-plugin": {
+    "state": "partly",
+    "why": "searches Google Books through requestUrl; its keyless daily quota answers 429 (curl too)",
+    "errors": []
+  },
+  "obsidian-dictionary-plugin": {
+    "state": "partly",
+    "why": "view opens and searches; api.dictionaryapi.dev answered 522 when tested (curl too)",
+    "errors": []
+  },
+  "readwise-official": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-languagetool-plugin": {
+    "state": "works",
+    "errors": []
+  }
+}

@@ -1,0 +1,95 @@
+/* Heading accents: a made-up snippet in Obsidian's Style Settings format (its selectors are Obsidian's and Vaultite's). */
+
+/* @settings
+name: Heading accents
+id: heading-accents
+settings:
+  - id: ha-about
+    title: About
+    description: Colours and sizes for **first headings**, in Style Settings' format.
+    type: info-text
+    markdown: true
+  - id: ha-colours
+    title: Colours
+    type: heading
+    level: 1
+  - id: ha-h1-color
+    title: First heading colour
+    description: In light and dark
+    type: variable-themed-color
+    format: hsl-split
+    default-light: '#b8336a'
+    default-dark: '#f5a3c7'
+  - id: ha-rule
+    title: Underline colour
+    type: variable-color
+    format: rgb
+    opacity: true
+    default: '#3d7ea6'
+  - id: ha-shape
+    title: Shape
+    type: heading
+    level: 1
+    collapsed: true
+  - id: ha-h1-scale
+    title: First heading size
+    description: Relative to the text
+    type: variable-number-slider
+    default: 1.625
+    min: 1
+    max: 3
+    step: 0.125
+    format: em
+  - id: ha-gap
+    title: Space above
+    type: variable-number
+    default: 8
+    format: px
+  - id: ha-underline
+    title: Underline first headings
+    type: class-toggle
+    default: true
+  - id: ha-weight
+    title: Weight
+    type: class-select
+    allowEmpty: true
+    default: none
+    options:
+      - label: Light
+        value: ha-weight-light
+      - label: Heavy
+        value: ha-weight-heavy
+  - id: ha-font
+    title: Heading font
+    type: variable-select
+    default: inherit
+    options:
+      - label: The text's
+        value: inherit
+      - label: Serif
+        value: Georgia, serif
+      - label: Monospace
+        value: ui-monospace, monospace
+      - label: Rounded
+        value: ui-rounded, sans-serif
+  - id: ha-marker
+    title: Marker
+    description: Drawn before a first heading in reading view
+    type: variable-text
+    default: ''
+    quotes: true
+*/
+
+:root { --ha-h1-scale: 1.625em; --ha-gap: 8px; }
+:is(.vau-editor .cm-h1, .note-prose .h1, .markdown-rendered h1) {
+  color: hsl(var(--ha-h1-color-h), var(--ha-h1-color-s), var(--ha-h1-color-l));
+  font-size: var(--ha-h1-scale);
+  font-family: var(--ha-font, inherit);
+  padding-top: var(--ha-gap);
+}
+body.ha-underline :is(.vau-editor .cm-h1, .note-prose .h1, .markdown-rendered h1) {
+  text-decoration: underline; text-decoration-color: var(--ha-rule); text-decoration-thickness: 3px; text-underline-offset: 6px;
+}
+body.ha-weight-light :is(.vau-editor .cm-h1, .note-prose .h1) { font-weight: 300; }
+body.ha-weight-heavy :is(.vau-editor .cm-h1, .note-prose .h1) { font-weight: 850; }
+.note-prose .h1::before { content: var(--ha-marker, none); margin-right: 0.3em; color: var(--muted-foreground); }

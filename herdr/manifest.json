@@ -1,0 +1,33 @@
+{
+  "id": "herdr",
+  "name": "herdr",
+  "description": "Your herdr sessions in Vaultite: the workspaces and agents of the herdr already running on this machine, each marked working, waiting or idle, in a sidebar panel; open any pane in a tab. Optionally, new terminals start in herdr too, so you can pick them up from herdr in any terminal. Needs herdr (herdr.dev) running; nothing is bundled.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "shell": true,
+    "outsideVault": true
+  },
+  "category": "agents",
+  "runsOnServer": true,
+  "requires": [
+    "terminal"
+  ],
+  "settings": {
+    "newTerminals": {
+      "local": true,
+      "type": "boolean",
+      "default": false,
+      "label": "Start new terminals in herdr",
+      "description": "new terminals and agents open as tabs in herdr's Vaultite workspace (while herdr runs), so herdr in any terminal reaches them too; off, they run in Vaultite's own"
+    },
+    "session": {
+      "local": true,
+      "type": "string",
+      "label": "herdr session",
+      "description": "a named herdr session (herdr --session <name>) instead of the default one"
+    }
+  }
+}

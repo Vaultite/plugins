@@ -1,0 +1,27 @@
+id	web	phone	notes
+calendar	works	works	month view with daily-note dots, a day's note opened/made; on a phone it's in the right drawer (revealing it opens the drawer, as Obsidian mobile)
+recent-files-obsidian	works	works	
+notebook-navigator	works	works	
+file-tree-alternative	works	works	
+obsidian-tagfolder	works	works	tags as folders with their notes; on a phone in its drawer
+obsidian-quiet-outline	works	partly	phone: lists headings; notes open for reading there, so a heading click has no cursor to move
+obsidian-icon-folder	works	works	icons on the app's own file tree (Obsidian's explorer stand-in mirrored by fileRows)
+iconic	works	works	
+obsidian-file-color	works	works	phone: in the drawer's tree
+file-explorer-note-count	works	works	phone: counts in the drawer's tree
+colored-tags	works	works	tags carry Obsidian's cm-hashtag cm-tag-<name> classes
+folder-notes	works	works	a folder with its same-named note opens that note; phone: from the drawer's tree
+tag-wrangler	works	works	rename from a tag's menu (right-click; a held finger on a phone) renames body and frontmatter
+supercharged-links-obsidian	partly	not checked	file tree and rendered links; links in the editor need Obsidian's parser tokens (P-data's token tree may cover them now)
+pretty-properties	unneeded	unneeded	restyles Obsidian's properties view; the app draws its own
+obsidian-banners	partly	partly	the banner draws in the note (with P-data's token tree) but over its first lines, and not reliably after the app redraws
+obsidian-hider	unneeded	unneeded	hides Obsidian's own chrome; its settings show and set its classes
+obsidian-minimal-settings	unneeded	unneeded	for the Minimal theme; its settings show and set its classes
+obsidian-style-settings	works	works	a snippet's @settings listed; changing a slider sets the variable
+homepage	works	works	opens the configured note on start
+cmdr	works	partly	page header buttons run; phones have no status bar (as Obsidian mobile)
+note-toolbar	works	works	toolbar under the note's properties (noteTop); its buttons run commands
+obsidian-hover-editor	partly	n/a	loads; links show the app's own page preview, not its floating editor (it replaces Obsidian's popover internals)
+callout-manager	partly	partly	settings and custom callouts work; the built-in list comes from Obsidian's own app.css, which isn't here
+obsidian-admonition	works	works	
+mermaid-tools	works	works	its toolbar view inserts elements into the note

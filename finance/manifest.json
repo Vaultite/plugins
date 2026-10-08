@@ -1,0 +1,140 @@
+{
+  "id": "finance",
+  "name": "Finance",
+  "description": "The Spending page: spending, income and bills from a CSV of your transactions (a bank's export, or one an AI writes from your statements).",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {},
+  "category": "life",
+  "tint": "green",
+  "pageSort": 70,
+  "settings": {
+    "csv": {
+      "type": "string",
+      "label": "Transactions file",
+      "description": "the transactions CSV, a vault path; left out, the vault's Transactions.csv (the one in a Finance folder first), wherever it is"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD",
+      "label": "Currency",
+      "description": "the amounts' currency, a code like USD, EUR or BRL"
+    },
+    "bills": {
+      "type": "list",
+      "label": "Bill categories",
+      "description": "the categories whose regular charges are bills; left out, any charge of about the same amount every month or so"
+    }
+  },
+  "blocks": {
+    "spending": {
+      "description": "the range and account filter, then spending, income and net over it",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        }
+      }
+    },
+    "spending-months": {
+      "description": "spending per month, stacked by category",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        }
+      }
+    },
+    "spending-income": {
+      "description": "income by source next to spending, per month, with each month's net",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        }
+      }
+    },
+    "spending-categories": {
+      "description": "where the money goes: spending by category, in total or per month",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        },
+        "limit": {
+          "type": "number",
+          "default": 10,
+          "min": 3,
+          "max": 30,
+          "description": "how many categories to list before the rest"
+        }
+      }
+    },
+    "spending-merchants": {
+      "description": "the merchants most spent at",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        },
+        "limit": {
+          "type": "number",
+          "default": 12,
+          "min": 1,
+          "max": 100,
+          "description": "how many merchants to list"
+        }
+      }
+    },
+    "spending-recurring": {
+      "description": "bills: merchants charged monthly to quarterly, and about how much a month",
+      "options": {}
+    },
+    "spending-coverage": {
+      "description": "the months each account has transactions for",
+      "options": {}
+    },
+    "spending-transactions": {
+      "description": "the transactions, newest first, with a search",
+      "options": {
+        "range": {
+          "type": "string",
+          "description": "a fixed range instead of the page's filter: all, 24m, 12m, 6m, 3m, ytd or YYYY-MM:YYYY-MM"
+        },
+        "account": {
+          "type": "string",
+          "description": "one account instead of the page's filter (its name, as in the CSV)"
+        },
+        "limit": {
+          "type": "number",
+          "default": 50,
+          "min": 10,
+          "max": 500,
+          "description": "how many to show before show more"
+        }
+      }
+    }
+  }
+}

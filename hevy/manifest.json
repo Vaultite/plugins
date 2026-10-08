@@ -1,0 +1,19 @@
+{
+  "id": "hevy",
+  "name": "Hevy",
+  "description": "Imports your workouts from a Hevy CSV export into workout logs. Claude runs it; each workout becomes a file.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "outsideVault": true
+  },
+  "category": "health",
+  "enhances": [
+    "health"
+  ],
+  "requires": [
+    "logs"
+  ]
+}

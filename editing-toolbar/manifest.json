@@ -1,0 +1,25 @@
+{
+  "id": "editing-toolbar",
+  "category": "writing",
+  "name": "Editing toolbar",
+  "description": "A formatting toolbar for notes: headings, bold, italic, strikethrough, highlight, code, links, lists, tasks, quotes, code blocks, tables, undo and redo, running the app's own editing commands. At the top of the note or near the selection, and above the keyboard on phones. Choose and order its buttons in its settings.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "disclosures": {},
+  "apiVersion": 3,
+  "replaces": { "obsidian": ["editing-toolbar"] },
+  "enhances": ["editing"],
+  "settings": {
+    "position": {
+      "type": "enum", "values": ["top", "floating"], "default": "top",
+      "labels": { "top": "Top of the note", "floating": "Near the selection" },
+      "label": "Position", "description": "where the toolbar shows on a computer: along the top of the note, or above text you select"
+    },
+    "phone": {
+      "type": "enum", "values": ["keyboard", "same", "off"], "default": "keyboard",
+      "labels": { "keyboard": "Above the keyboard", "same": "As on a computer", "off": "Hidden" },
+      "label": "On phones", "description": "where the toolbar shows on a phone"
+    }
+  }
+}

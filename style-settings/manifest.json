@@ -1,0 +1,14 @@
+{
+  "id": "style-settings",
+  "name": "Style settings",
+  "description": "Settings that CSS snippets declare in a @settings comment (Obsidian's Style Settings), the accent colour and the line width, as a form applied live.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "system",
+  "tint": "pink",
+  "disclosures": {},
+  "replaces": { "obsidian": ["obsidian-style-settings"] },
+  "forAgents": "The look's own knobs (accent, line width, CSS snippets' @settings): `style_settings_list`, then `style_settings_set` by key."
+}

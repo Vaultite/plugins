@@ -1,0 +1,111 @@
+id	group	check
+table-editor-obsidian	editor	Tab in a table formats it and moves to the next cell; "format all tables" command rewrites the Markdown
+obsidian-outliner	editor	Move list item down/up and indent/outdent commands change the list; Enter/Tab behave as outliner in lists
+obsidian-latex-suite	editor	Typing a snippet trigger inside $...$ expands (e.g. "//" -> \frac{}{}); conceal/preview of math works
+various-complements	editor	Typing a prefix of a vault word shows its suggestion popup; Enter inserts it
+easy-typing-obsidian	editor	Auto-pair/format on typing (e.g. space between CJK and latin, full-width symbol conversion) edits the line
+highlightr-plugin	editor	Its highlighter menu command wraps the selection in a <mark> with the chosen colour
+colored-text	editor	Its command colours the selection (writes a span with color)
+editing-toolbar	editor	Its floating/fixed toolbar appears in the editor and a button (bold) changes the selection
+cmenu-plugin	editor	Its toolbar appears and a button formats the selection
+obsidian-text-format	editor	Lowercase/uppercase/titlecase commands change the selection
+url-into-selection	editor	Pasting a URL over selected text makes [text](url)
+obsidian-emoji-toolbar	editor	Its command opens the emoji picker; picking inserts an emoji
+nldates-obsidian	editor	"@today" suggester inserts [[YYYY-MM-DD]]; parse command turns "next friday" into a date link
+obsidian-linter	editor	Lint file with a rule on (e.g. trailing spaces, yaml-title) fixes a note with frontmatter correctly
+better-word-count	editor	Status bar shows word count of note/selection, changing as you type
+code-styler	editor	Code blocks get its header/line numbers styling in live preview and reading
+oz-image-plugin	editor	Image/transclusion lines render images in the editor (may duplicate app behaviour: then n/a)
+obsidian-auto-link-title	editor	Pasting a URL becomes [Page title](url) (fetches title through requestUrl)
+note-refactor-obsidian	editor	Extract selection to a new note: new file created, selection replaced with a link
+obsidian-plugin-toc	editor	Its command inserts a table of contents of the note's headings
+dataview	data	TABLE/LIST/TASK queries and dataviewjs render results; inline `= expr` renders in live preview and reading; inline fields in reading
+datacore	data	A ```datacorejsx block renders a query result
+obsidian-tasks-plugin	data	```tasks query lists tasks; clicking a checkbox in results completes the task in its file (with done date); Create/edit task modal works
+tasknotes	data	Its task list/calendar views open; creating a task writes a task note
+obsidian-checklist-plugin	data	Its sidebar lists the vault's open tasks; checking one updates the file
+obsidian-tracker	data	```tracker block draws a chart of frontmatter values
+obsidian-charts	data	```chart block draws a chart
+obsidian-meta-bind-plugin	data	INPUT[toggle:done] renders a toggle; toggling writes the frontmatter
+metadata-menu	data	Its field modal/commands edit a note's frontmatter fields
+buttons	data	```button block renders a button; clicking it runs its action
+obsidian-day-planner	data	Its timeline view shows today's tasks with times
+obsidian-reminder-plugin	data	Reminders view lists tasks with reminder dates
+obsidian-spaced-repetition	data	Review flashcards: deck modal shows the cards from #flashcards notes; answering schedules (writes SR comment)
+obsidian-full-calendar	data	Its calendar view opens and shows events from a configured folder
+breadcrumbs	data	Its matrix/tree view shows hierarchy from up:: / down:: fields
+multi-column-markdown	data	--- start-multi-column blocks render as columns in reading/live preview
+obsidian-dice-roller	data	`dice: 1d20` renders a clickable roll result
+obsidian-5e-statblocks	data	```statblock renders a statblock
+obsidian-leaflet-plugin	data	```leaflet renders a map
+calendar	views	Its month view (sidebar panel) shows daily-note dots; clicking a day opens/creates that daily note
+recent-files-obsidian	views	Its panel lists notes as they're opened; clicking opens one
+notebook-navigator	views	Its two-pane navigator view lists folders and notes; clicking opens a note
+file-tree-alternative	views	Its file tree view lists folders/files and opens them
+obsidian-tagfolder	views	Its view lists tags as folders with their notes
+obsidian-quiet-outline	views	Its outline view lists the active note's headings; clicking scrolls there
+obsidian-icon-folder	views	Setting an icon on a folder shows it in the app's file tree (through the file-explorer mirror) and in the note title
+iconic	views	Icons it sets show on files/folders/tabs
+obsidian-file-color	views	A colour set on a folder shows in the file tree
+file-explorer-note-count	views	Folder rows show note counts in the file tree
+colored-tags	views	Tags are coloured in notes
+folder-notes	views	Clicking a folder with a same-named note opens that note
+tag-wrangler	views	Its tag context menu rename renames a tag across the vault
+supercharged-links-obsidian	views	Links to notes with configured properties get its data attributes/styles
+pretty-properties	views	Properties get its colours/formatting (if the app's properties are exposed as Obsidian's)
+obsidian-banners	views	A note with banner: frontmatter shows a banner image
+obsidian-hider	views	n/a candidate: hides Obsidian UI elements; check its toggles at least don't break the app
+obsidian-minimal-settings	views	n/a candidate: settings for the Minimal theme; check its settings render and body classes toggle
+obsidian-style-settings	views	Its settings list CSS variables declared by snippets/plugins' @settings; changing one changes the variable
+homepage	views	On startup it opens the configured note
+cmdr	views	Commands it adds to places (page header, status bar, ribbon) show and run
+note-toolbar	views	A toolbar shows on notes per its settings; buttons run
+obsidian-hover-editor	views	Hovering a link opens an editable floating editor
+callout-manager	views	Its settings list callouts; a custom callout renders with its colour/icon
+obsidian-admonition	views	```ad-note blocks render as callouts with title/icon; its insert command works
+mermaid-tools	views	Its view lists mermaid elements; clicking inserts into the note
+obsidian-excalidraw-plugin	apps	Create a new drawing: its view opens, drawing a shape saves the .excalidraw.md; the drawing embeds in a note
+excalibrain	apps	Its graph view opens for the active note
+obsidian-kanban	apps	A kanban-plugin: board note opens as a board; moving a card writes the Markdown
+obsidian-mind-map	apps	Preview as mind map opens a markmap view of the note
+obsidian-markmind	apps	Its mindmap view opens for a note
+obsidian-enhancing-mindmap	apps	A mindmap note opens as an editable mindmap
+advanced-canvas	apps	Its features apply on a .canvas (app's canvas is not Obsidian's: may be n/a)
+make-md	apps	Its spaces/navigator view opens and lists folders
+obsidian-annotator	apps	Opening a PDF with annotation-target shows the annotator
+pdf-plus	apps	Its features on PDF views (likely n/a: needs Obsidian's PDF view)
+media-extended	apps	Media links/embeds play in its player view
+image-converter	apps	Pasting/dropping an image converts it (e.g. to webp) and inserts the link
+obsidian-advanced-slides	apps	Its preview command shows slides of a note (local server through the Node bridge)
+obsidian-custom-frames	apps	A configured frame (any URL) opens as a pane with an iframe
+obsidian-memos	apps	Thino's view opens and a captured memo lands in today's daily note
+templater-obsidian	commands	Insert template from Templates/ fills <% tp.date.now() %>; a new daily note from template is filled
+quickadd	commands	A capture choice appends text to a note; a template choice creates a note
+omnisearch	commands	Its search modal finds notes by content; selecting opens one
+darlal-switcher-plus	commands	Its symbol/heading/command modes list items and open them
+obsidian-another-quick-switcher	commands	Its search modal lists notes and opens one
+periodic-notes	commands	Open today's daily/weekly note creates it from its template in the configured folder
+obsidian-advanced-uri	commands	obsidian://advanced-uri?... links (vault, filepath, commandid) do their action when clicked in a note
+find-unlinked-files	commands	Its command writes a note listing orphaned files
+text-extractor	commands	Extract text from an image/PDF (desktop bridge; may need a model download)
+obsidian-book-search-plugin	commands	Search a book by title creates a book note (network through requestUrl)
+obsidian-dictionary-plugin	commands	Its view looks up a word (network)
+readwise-official	commands	Its settings connect/sync flow starts (no real account: check it reaches the login step)
+obsidian-languagetool-plugin	commands	Check text marks a typo (network to LanguageTool's public API)
+copilot	network	Its chat view opens; settings render; a chat with a fake/unset key shows a clear error
+realclaudian	network	Its view opens on a computer; spawning its agent works through the bridge (use a harmless command)
+smart-connections	network	Its connections view opens and lists related notes after embedding (local model)
+obsidian-textgenerator-plugin	network	Its settings and generate command run up to the provider call
+agent-client	network	Its chat view opens on a computer
+remotely-save	network	Its settings render; a sync to a local/WebDAV target can be configured (no real account needed to load)
+obsidian-livesync	network	Its setup dialog/settings render
+obsidian-git	network	Source control view shows changes; commit works in a git-initialized vault through the bridge
+obsidian-local-rest-api	network	Its HTTPS server answers on its port through the bridge
+obsidian-importer	network	Its importer modal opens and imports a sample (e.g. a Markdown/HTML zip) into the vault
+obsidian42-brat	network	Its add-beta-plugin modal installs a plugin into .obsidian/plugins (lands in the overlay)
+terminal	network	Its terminal view opens a shell through the bridge (computer only)
+obsidian-zotero-desktop-connector	network	Loads on a computer; its commands reach for Zotero's local API (none running: clear error)
+obsidian-citation-plugin	network	Loads on a computer; its settings render
+obsidian-pandoc	network	Export to docx works through the bridge when pandoc is installed
+obsidian-enhancing-export	network	Export runs pandoc through the bridge when installed
+better-export-pdf	network	Export preview renders (needs Electron's printToPDF: may be partial)

@@ -1,0 +1,38 @@
+{
+  "id": "reddit",
+  "name": "Reddit",
+  "description": "Your posts about a project, with upvotes and comments, on that project's card and in its file (a reddit block). Claude refreshes them through the browser.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {},
+  "category": "developer",
+  "requires": [
+    "projects"
+  ],
+  "settings": {
+    "project": {
+      "type": "string",
+      "label": "Project",
+      "description": "the project whose posts are shown, by its file's name"
+    },
+    "user": {
+      "type": "string",
+      "label": "Reddit user",
+      "description": "the Reddit username whose posts are read"
+    }
+  },
+  "blocks": {
+    "reddit": {
+      "description": "the user's Reddit posts about a project, with upvotes and comments (the project Reddit's settings name)",
+      "live": "Reddit, refreshed from the browser",
+      "options": {
+        "project": {
+          "type": "string",
+          "description": "another project than the file's (its name)"
+        }
+      }
+    }
+  }
+}

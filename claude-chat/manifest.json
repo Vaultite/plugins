@@ -1,0 +1,47 @@
+{
+  "id": "claude-chat",
+  "name": "Claude chat",
+  "description": "Claude Code as a chat in the sidebar or a tab, working in your vault: it reads, edits and searches your notes while you watch, asking before it changes anything. Runs your own claude CLI on the server's machine (signed in to your Claude account); conversations stay on that machine.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "agents",
+  "tint": "orange",
+  "runsOnServer": true,
+  "disclosures": {
+    "shell": true,
+    "network": ["api.anthropic.com", "claude.ai"],
+    "outsideVault": true
+  },
+  "replaces": { "obsidian": ["realclaudian"] },
+  "enhances": ["claude-code", "terminal", "activity"],
+  "forAgents": "To hand a question or a task to Claude Code in the vault and get its answer: `claude_chat_ask` (the user sees the conversation in Claude chat).",
+  "settings": {
+    "mode": {
+      "type": "enum",
+      "values": ["default", "acceptEdits", "plan"],
+      "labels": { "default": "Ask before edits", "acceptEdits": "Accept edits", "plan": "Plan only" },
+      "default": "default",
+      "label": "Permissions",
+      "description": "ask before edits: Claude asks before it changes a file or runs a command; accept edits: it edits notes without asking, but still asks before commands; plan only: it reads and plans, changing nothing"
+    },
+    "model": {
+      "type": "string",
+      "label": "Model",
+      "description": "the model new messages use, as claude --model takes it (opus, sonnet, haiku or a full name); Claude Code's default when left out"
+    },
+    "currentNote": {
+      "type": "boolean",
+      "default": true,
+      "label": "Send the open note",
+      "description": "tells Claude which note is open in the focused tab with each message (a chip in the chat you can remove)"
+    },
+    "allowUsers": {
+      "local": true,
+      "type": "list",
+      "label": "Other tailnet logins",
+      "description": "tailnet logins besides this machine's owner that may chat (it runs Claude Code on this machine), like someone@example.com"
+    }
+  }
+}

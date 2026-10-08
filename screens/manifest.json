@@ -1,0 +1,54 @@
+{
+  "id": "screens",
+  "name": "Screen sharing",
+  "description": "Another computer's screen in a tab, over VNC: this Mac's, your other machines', or any VNC server you reach. Show the whole screen, or just one app's window. Only you, on your own devices.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "network": [
+      "127.0.0.1",
+      "*.ts.net"
+    ],
+    "shell": true,
+    "outsideVault": true,
+    "clipboard": true
+  },
+  "category": "system",
+  "enhances": [
+    "machines"
+  ],
+  "tint": "blue",
+  "settings": {
+    "localPort": {
+      "local": true,
+      "type": "number",
+      "default": 5900,
+      "min": 1,
+      "max": 65535,
+      "label": "This Mac's VNC port",
+      "description": "where this Mac's Screen Sharing answers"
+    },
+    "allowUsers": {
+      "local": true,
+      "type": "list",
+      "label": "Other tailnet logins",
+      "description": "tailnet logins besides this Mac's owner that may open a screen through Tailscale Serve, like someone@example.com"
+    },
+    "allowRemote": {
+      "local": true,
+      "type": "boolean",
+      "default": false,
+      "label": "Anyone who reaches the app",
+      "description": "lets anyone who reaches the app open a screen, not only this Mac's owner and the logins above: only on a network you trust"
+    }
+  },
+  "blocks": {
+    "screens": {
+      "description": "every screen that can be opened in a tab, each Mac's own and the VNC servers in the settings, and whether each answers",
+      "live": "the screens' VNC servers, asked live",
+      "options": {}
+    }
+  }
+}

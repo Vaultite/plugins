@@ -1,0 +1,858 @@
+{
+  "format": 1,
+  "generated": "2026-10-07T07:09:34.874Z",
+  "plugins": [
+    {
+      "id": "work",
+      "name": "Work",
+      "description": "The Work page: your focus, a work log and ideas.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "work",
+      "version": "1.0.1",
+      "tag": "work/v1.0.1",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "vim",
+      "name": "Vim",
+      "description": "Vim's keys in the whole app: the editor (modes, motions, : commands, Markdown motions, folds, a vimrc, the system clipboard), and outside it (j and k scroll, f link hints, / find, lists and panes), with Space as a leader key. Off until you turn it on; phones type as usual.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "vim",
+      "version": "1.0.0",
+      "tag": "vim/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "clipboard": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-vimrc-support"
+        ]
+      }
+    },
+    {
+      "id": "templater",
+      "name": "Templater",
+      "description": "Obsidian's Templater templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "templater",
+      "version": "1.0.1",
+      "tag": "templater/v1.0.1",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "templater-obsidian"
+        ]
+      }
+    },
+    {
+      "id": "tasks",
+      "name": "Tasks",
+      "description": "Obsidian Tasks' tasks: due, scheduled and start dates, priorities and recurrence on checklist lines, tasks queries that gather them from the whole vault, a done date when you tick one, and a form to create or edit one.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "tasks",
+      "version": "1.0.0",
+      "tag": "tasks/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-tasks-plugin"
+        ]
+      }
+    },
+    {
+      "id": "tailscale",
+      "name": "Tailscale",
+      "description": "Your tailnet: every device and whether it's online, and what each machine serves on it (tailscale serve), with whether each one is up. Asked live, nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "tailscale",
+      "version": "1.0.0",
+      "tag": "tailscale/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "127.0.0.1",
+          "*.ts.net"
+        ],
+        "shell": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "style-settings",
+      "name": "Style settings",
+      "description": "Settings that CSS snippets declare in a @settings comment (Obsidian's Style Settings), the accent colour and the line width, as a form applied live.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "style-settings",
+      "version": "1.0.0",
+      "tag": "style-settings/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-style-settings"
+        ]
+      }
+    },
+    {
+      "id": "screens",
+      "name": "Screen sharing",
+      "description": "Another computer's screen in a tab, over VNC: this Mac's, your other machines', or any VNC server you reach. Show the whole screen, or just one app's window. Only you, on your own devices.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "screens",
+      "version": "1.0.0",
+      "tag": "screens/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "127.0.0.1",
+          "*.ts.net"
+        ],
+        "shell": true,
+        "outsideVault": true,
+        "clipboard": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "remote-save",
+      "name": "Remote save",
+      "description": "Syncs or backs up the vault with storage you own: an S3-compatible bucket (AWS S3, Cloudflare R2, Backblaze B2, MinIO) or a WebDAV folder (Nextcloud and friends). Two-way, push only or pull only, on a schedule or by hand, optionally encrypted. It talks only to the addresses you add; their keys stay on the machine you enter them on.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "remote-save",
+      "version": "1.0.0",
+      "tag": "remote-save/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "*"
+        ],
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "remotely-save"
+        ]
+      }
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "description": "Your posts about a project, with upvotes and comments, on that project's card and in its file (a reddit block). Claude refreshes them through the browser.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "reddit",
+      "version": "1.0.0",
+      "tag": "reddit/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "quickadd",
+      "name": "Quick add",
+      "description": "Choices you run from the palette or a new tab's buttons: a capture adds text to a note (at its top or end, or under a heading) and a template makes a new note from one of your templates, with {{DATE}}, {{VALUE}} asked for and {{LINKCURRENT}} filled in; a group offers several. Obsidian's QuickAdd choices are read too.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "quickadd",
+      "version": "1.0.0",
+      "tag": "quickadd/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "quickadd"
+        ]
+      }
+    },
+    {
+      "id": "periodic-notes",
+      "name": "Periodic notes",
+      "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "periodic-notes",
+      "version": "1.0.1",
+      "tag": "periodic-notes/v1.0.1",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "calendar",
+          "periodic-notes"
+        ]
+      }
+    },
+    {
+      "id": "outliner",
+      "name": "Outliner",
+      "description": "Lists that work like an outliner in the editor: move an item up or down with its children (⌘⇧↑, ⌘⇧↓), Tab and Shift-Tab indent and outdent it with them, Enter on an empty item steps out a level, ⌘A selects the item's text and then the whole list, and ⌘↑ and ⌘↓ fold and unfold it.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "outliner",
+      "version": "1.0.0",
+      "tag": "outliner/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-outliner"
+        ]
+      }
+    },
+    {
+      "id": "obsidian-compat",
+      "name": "Obsidian plugins",
+      "description": "Runs Obsidian community plugins as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, like in Obsidian.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "obsidian-compat",
+      "version": "1.1.0",
+      "tag": "obsidian-compat/v1.1.0",
+      "stars": 0,
+      "released": "2026-10-07T07:09:28Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "*"
+        ],
+        "shell": true,
+        "outsideVault": true,
+        "clipboard": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "*"
+        ]
+      }
+    },
+    {
+      "id": "notebook-navigator",
+      "name": "Notebook navigator",
+      "description": "Folders, tags, shortcuts and recent notes beside a list of the notes in the one you pick, each with its date, first lines and first image, like Apple Notes or Bear. In the sidebar, in a tab, and as a phone screen.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "notebook-navigator",
+      "version": "1.0.0",
+      "tag": "notebook-navigator/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "notebook-navigator"
+        ]
+      }
+    },
+    {
+      "id": "kanban",
+      "name": "Kanban",
+      "description": "Obsidian Kanban's boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back so Obsidian still reads it.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "kanban",
+      "version": "1.0.0",
+      "tag": "kanban/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-kanban"
+        ]
+      }
+    },
+    {
+      "id": "icons",
+      "name": "Icons",
+      "description": "An icon (any of Lucide's, or an emoji) and a colour for any folder or file, in the file tree, tabs and lists: set from a right-click in the file tree. A note keeps its own in its icon: and tint: properties; folders and other files in the settings. Obsidian's Iconize settings are read too.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "icons",
+      "version": "1.0.0",
+      "tag": "icons/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-icon-folder"
+        ]
+      }
+    },
+    {
+      "id": "hevy",
+      "name": "Hevy",
+      "description": "Imports your workouts from a Hevy CSV export into workout logs. Claude runs it; each workout becomes a file.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "hevy",
+      "version": "1.0.0",
+      "tag": "hevy/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "herdr",
+      "name": "herdr",
+      "description": "Your herdr sessions in Vaultite: the workspaces and agents of the herdr already running on this machine, each marked working, waiting or idle, in a sidebar panel; open any pane in a tab. Optionally, new terminals start in herdr too, so you can pick them up from herdr in any terminal. Needs herdr (herdr.dev) running; nothing is bundled.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "herdr",
+      "version": "1.0.0",
+      "tag": "herdr/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "description": "Adds stars, downloads, open issues and recent commits to each project that has a repo. Fetched live and cached; a project file shows them where it has a github block.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "github",
+      "version": "1.0.0",
+      "tag": "github/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "api.github.com"
+        ],
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "description": "Your vault as a git repository: a Source control panel to stage, commit, pull and push, each file's diff and its history of commits, and commit-and-sync on a timer or after you stop editing. Runs your git on the server's machine, talking to the remotes you set up.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "git",
+      "version": "1.0.0",
+      "tag": "git/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "*"
+        ],
+        "shell": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-git"
+        ]
+      }
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "description": "The Spending page: spending, income and bills from a CSV of your transactions (a bank's export, or one an AI writes from your statements).",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "finance",
+      "version": "1.0.0",
+      "tag": "finance/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "excalidraw",
+      "name": "Excalidraw",
+      "description": "Hand-drawn diagrams and sketches: .excalidraw files open as a whiteboard, and ![[Drawing.excalidraw]] shows one in a note.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "excalidraw",
+      "version": "1.0.0",
+      "tag": "excalidraw/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-excalidraw-plugin"
+        ]
+      }
+    },
+    {
+      "id": "editing-toolbar",
+      "name": "Editing toolbar",
+      "description": "A formatting toolbar for notes: headings, bold, italic, strikethrough, highlight, code, links, lists, tasks, quotes, code blocks, tables, undo and redo, running the app's own editing commands. At the top of the note or near the selection, and above the keyboard on phones. Choose and order its buttons in its settings.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "editing-toolbar",
+      "version": "1.0.0",
+      "tag": "editing-toolbar/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "editing-toolbar"
+        ]
+      }
+    },
+    {
+      "id": "dataview",
+      "name": "Dataview",
+      "description": "Obsidian's Dataview queries, kept working: ```dataview fences (LIST, TABLE, TASK, CALENDAR with FROM, WHERE, SORT, GROUP BY, FLATTEN, LIMIT) over frontmatter, inline fields (key:: value) and the notes' implicit fields, drawn as the app's tables and lists and live as notes change; tasks tick from the list; inline queries (`= this.file.name`). DataviewJS isn't run.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "dataview",
+      "version": "1.0.0",
+      "tag": "dataview/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "dataview"
+        ]
+      }
+    },
+    {
+      "id": "code-stats",
+      "name": "Code stats",
+      "description": "Lines of code in each project's local checkout, split into code, tests, comments and docs, with its languages. Counted from the files git tracks and cached; a project file shows them where it has a code-stats block.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "code-stats",
+      "version": "1.0.0",
+      "tag": "code-stats/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "claude-chat",
+      "name": "Claude chat",
+      "description": "Claude Code as a chat in the sidebar or a tab, working in your vault: it reads, edits and searches your notes while you watch, asking before it changes anything. Runs your own claude CLI on the server's machine (signed in to your Claude account); conversations stay on that machine.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "claude-chat",
+      "version": "1.0.0",
+      "tag": "claude-chat/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "api.anthropic.com",
+          "claude.ai"
+        ],
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "realclaudian"
+        ]
+      }
+    },
+    {
+      "id": "apple-health",
+      "name": "Apple Health",
+      "description": "Imports sleep and workouts from an Apple Health export into logs. Claude runs it; each night and workout becomes a file.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "apple-health",
+      "version": "1.0.0",
+      "tag": "apple-health/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T19:12:15Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40
+    },
+    {
+      "id": "advanced-tables",
+      "name": "Advanced tables",
+      "description": "Markdown tables that edit like a spreadsheet in the editor: Tab and Shift-Tab move between cells and Enter down a row, adding rows at the end, and the table lines up its pipes as you go (wide characters and emoji too). Commands insert, delete and move rows and columns, sort by a column, align a column and format every table in the note.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "advanced-tables",
+      "version": "1.0.0",
+      "tag": "advanced-tables/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "table-editor-obsidian"
+        ]
+      }
+    },
+    {
+      "id": "admonition",
+      "name": "Admonitions",
+      "description": "Obsidian's Admonition code fences (```ad-note, with title:, collapse: and icon: lines) drawn as the app's own callouts, and read as callouts by agents.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "admonition",
+      "version": "1.0.0",
+      "tag": "admonition/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-06T22:04:22Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-07T07:09:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-admonition"
+        ]
+      }
+    }
+  ],
+  "blocked": {}
+}

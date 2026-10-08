@@ -1,0 +1,78 @@
+{
+  "dataview": {
+    "state": "works",
+    "errors": []
+  },
+  "datacore": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-tasks-plugin": {
+    "state": "works",
+    "errors": []
+  },
+  "tasknotes": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-checklist-plugin": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-tracker": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-charts": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-meta-bind-plugin": {
+    "state": "works",
+    "errors": []
+  },
+  "metadata-menu": {
+    "state": "works",
+    "errors": []
+  },
+  "buttons": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-day-planner": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-reminder-plugin": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-spaced-repetition": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-full-calendar": {
+    "state": "works",
+    "errors": []
+  },
+  "breadcrumbs": {
+    "state": "works",
+    "errors": []
+  },
+  "multi-column-markdown": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-dice-roller": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-5e-statblocks": {
+    "state": "works",
+    "errors": []
+  },
+  "obsidian-leaflet-plugin": {
+    "state": "works",
+    "errors": []
+  }
+}

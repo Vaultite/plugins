@@ -1,0 +1,43 @@
+{
+  "id": "work",
+  "name": "Work",
+  "description": "The Work page: your focus, a work log and ideas.",
+  "version": "1.0.1",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {},
+  "category": "life",
+  "tint": "yellow",
+  "requires": [
+    "logs"
+  ],
+  "enhances": [
+    "people"
+  ],
+  "pageSort": 60,
+  "blocks": {
+    "work-focus": {
+      "description": "what you're focusing on and your open questions",
+      "options": {}
+    },
+    "work-log": {
+      "description": "the work log: conversations, investigations, builds and videos, by day",
+      "options": {
+        "limit": {
+          "type": "number",
+          "default": 20,
+          "description": "how many entries to show"
+        }
+      }
+    },
+    "work-ideas": {
+      "description": "work ideas and plans, by status (in progress first)",
+      "options": {}
+    },
+    "work-colleagues": {
+      "description": "your colleagues and anyone a log entry was with, and when you last worked together",
+      "options": {}
+    }
+  }
+}

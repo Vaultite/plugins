@@ -1,0 +1,27 @@
+{
+  "id": "git",
+  "name": "Git",
+  "description": "Your vault as a git repository: a Source control panel to stage, commit, pull and push, each file's diff and its history of commits, and commit-and-sync on a timer or after you stop editing. Runs your git on the server's machine, talking to the remotes you set up.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "developer",
+  "tint": "orange",
+  "runsOnServer": true,
+  "disclosures": { "shell": true, "network": ["*"] },
+  "replaces": { "obsidian": ["obsidian-git"] },
+  "enhances": ["history", "inbox", "machines"],
+  "forAgents": "When the vault is a git repository (`git_status`), commit your own work with `git_commit` (files: the ones you changed, message: what you did); `git_sync` pulls and pushes it.",
+  "settings": {
+    "autoInterval": { "type": "number", "default": 0, "min": 0, "max": 10080, "label": "Commit and sync every", "description": "minutes between automatic commit-and-syncs (0: off)" },
+    "autoIdle": { "type": "number", "default": 0, "min": 0, "max": 1440, "label": "Commit and sync after editing stops", "description": "minutes without a change in the vault before an automatic commit-and-sync (0: off)" },
+    "message": { "type": "string", "default": "vault backup: {{date}}", "label": "Commit message", "description": "for commits without one: {{date}}, {{numFiles}}, {{hostname}} and {{files}} are filled in" },
+    "dateFormat": { "type": "string", "default": "YYYY-MM-DD HH:mm:ss", "label": "Date format", "description": "how {{date}} is written: YYYY, MM, DD, HH, mm, ss" },
+    "push": { "type": "boolean", "default": true, "label": "Push when syncing", "description": "commit and sync pushes after pulling; off: it only commits and pulls" },
+    "stageAll": { "type": "boolean", "default": true, "label": "Commit everything when nothing is staged", "description": "Commit stages every change first when none is staged" },
+    "machine": { "type": "string", "label": "Machine for automatic syncs", "description": "which machine runs them, by its id in Machines (empty: the first listed)" },
+    "authorName": { "type": "string", "label": "Author name", "description": "the name on commits, when git on the server's machine has none" },
+    "authorEmail": { "type": "string", "label": "Author email", "description": "the email on commits, when git on the server's machine has none" }
+  }
+}

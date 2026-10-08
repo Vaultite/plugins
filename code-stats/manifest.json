@@ -1,0 +1,34 @@
+{
+  "id": "code-stats",
+  "name": "Code stats",
+  "description": "Lines of code in each project's local checkout, split into code, tests, comments and docs, with its languages. Counted from the files git tracks and cached; a project file shows them where it has a code-stats block.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "shell": true,
+    "outsideVault": true
+  },
+  "category": "developer",
+  "requires": [
+    "projects"
+  ],
+  "blocks": {
+    "code-stats": {
+      "description": "a project's lines of code in its local checkout, split into code, tests, comments and docs, and its languages",
+      "live": "the project's checkout on this machine (git)",
+      "options": {
+        "languages": {
+          "type": "number",
+          "default": 4,
+          "description": "how many of its languages to show (0 hides them)"
+        },
+        "project": {
+          "type": "string",
+          "description": "another project than the file's (its name)"
+        }
+      }
+    }
+  }
+}

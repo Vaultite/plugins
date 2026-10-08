@@ -1,0 +1,6803 @@
+{
+ "classes": {
+  "AbstractInputSuggest": {
+   "kind": "class",
+   "extends": "PopoverSuggest",
+   "members": [
+    {
+     "name": "limit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "selectSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onSelect",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "AbstractTextComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "inputEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setPlaceholder",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChanged",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "App": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "keymap",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "scope",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "workspace",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "vault",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "metadataCache",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "fileManager",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "lastEvent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "renderContext",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "secretStorage",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isDarkMode",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "loadLocalStorage",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "saveLocalStorage",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BaseComponent": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "disabled",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "then",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesEntry": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "file",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesEntryGroup": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "entries",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hasKey",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesQueryResult": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "data",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "groupedData",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "properties",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSummaryValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesView": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "config",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "allProperties",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "data",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "createFileForView",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesViewConfig": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getAsPropertyId",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getEvaluatedFormula",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "set",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getOrder",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSort",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getDisplayName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BooleanValue": {
+   "kind": "class",
+   "extends": "PrimitiveValue",
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ButtonComponent": {
+   "kind": "class",
+   "extends": "BaseComponent",
+   "members": [
+    {
+     "name": "buttonEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setCta",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "removeCta",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setWarning",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "setDestructive",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "removeDestructive",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setTooltip",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setButtonText",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setClass",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onClick",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "CapacitorAdapter": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "getName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "mkdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashSystem",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashLocal",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rmdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "read",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "readBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "write",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "writeBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "append",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "appendBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "process",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getResourcePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "remove",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rename",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "copy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "exists",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "stat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "list",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFullPath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ColorComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValueRgb",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValueHsl",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValueRgb",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValueHsl",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Component": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "load",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onload",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "unload",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onunload",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addChild",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "removeChild",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "register",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerEvent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerDomEvent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerInterval",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ConfirmationButton": {
+   "kind": "class",
+   "extends": "ButtonComponent",
+   "members": [
+    {
+     "name": "onClick",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setInitialFocus",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setSecondary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setCancel",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ConfirmationModal": {
+   "kind": "class",
+   "extends": "Modal",
+   "members": [
+    {
+     "name": "buttonContainerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addClass",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addCheckbox",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addButton",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addCancelButton",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "DateValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "dateOnly",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "relative",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static parseFromString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "DisplayValueComponent": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "valueEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setStatus",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "DropdownComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "selectEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addOption",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addOptions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "DurationValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addToDate",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getMilliseconds",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static parseFromString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static fromMilliseconds",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditableFileView": {
+   "kind": "class",
+   "extends": "FileView",
+   "members": []
+  },
+  "Editor": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "getDoc",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setLine",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "somethingSelected",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setCursor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "processLines",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorSuggest": {
+   "kind": "class",
+   "extends": "PopoverSuggest",
+   "members": [
+    {
+     "name": "context",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "limit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setInstructions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Events": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "on",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "off",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "offref",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trigger",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "tryTrigger",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ExtraButtonComponent": {
+   "kind": "class",
+   "extends": "BaseComponent",
+   "members": [
+    {
+     "name": "extraSettingsEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setTooltip",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onClick",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FileManager": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "getNewFileParent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "renameFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "promptForDeletion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "generateMarkdownLink",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "processFrontMatter",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getAvailablePathForAttachment",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FileSystemAdapter": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "getName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getBasePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "mkdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashSystem",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashLocal",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rmdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "read",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "readBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "write",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "writeBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "append",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "appendBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "process",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getResourcePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFilePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "remove",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rename",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "copy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "exists",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "stat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "list",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFullPath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static readLocalFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static mkdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FileValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FileView": {
+   "kind": "class",
+   "extends": "ItemView",
+   "members": [
+    {
+     "name": "allowNoFile",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "file",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "navigation",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getDisplayText",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onload",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onLoadFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onUnloadFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onRename",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "canAcceptExtension",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FuzzySuggestModal": {
+   "kind": "class",
+   "extends": "SuggestModal",
+   "members": [
+    {
+     "name": "getSuggestions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "renderSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChooseSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HoverPopover": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "hoverEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "state",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HTMLValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": []
+  },
+  "IconValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": []
+  },
+  "ImageValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": []
+  },
+  "ItemView": {
+   "kind": "class",
+   "extends": "View",
+   "members": [
+    {
+     "name": "contentEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addAction",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Keymap": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "pushScope",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "popScope",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static isModifier",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static isModEvent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "LinkValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": [
+    {
+     "name": "static parseFromString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ListValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "includes",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "length",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "concat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownEditView": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clear",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "set",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "file",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSelection",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "applyScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownPreviewRenderer": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "static registerPostProcessor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static unregisterPostProcessor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static createCodeBlockPostProcessor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownPreviewView": {
+   "kind": "class",
+   "extends": "MarkdownRenderer",
+   "members": [
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "file",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "set",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clear",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rerender",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "applyScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownRenderChild": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownRenderer": {
+   "kind": "class",
+   "extends": "MarkdownRenderChild",
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static renderMarkdown",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "static render",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownView": {
+   "kind": "class",
+   "extends": "TextFileView",
+   "members": [
+    {
+     "name": "editor",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "previewMode",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "currentMode",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getViewType",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getMode",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getViewData",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clear",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setViewData",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "showSearch",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Menu": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "setNoIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setUseNativeMenu",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addItem",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSeparator",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setParentElement",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "showAtMouseEvent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "showAtPosition",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hide",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "close",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onHide",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static forEvent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MenuItem": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "setTitle",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setChecked",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setWarning",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setIsLabel",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onClick",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setSection",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MenuSeparator": {
+   "kind": "class",
+   "extends": null,
+   "members": []
+  },
+  "MetadataCache": {
+   "kind": "class",
+   "extends": "Events",
+   "members": [
+    {
+     "name": "getFirstLinkpathDest",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFileCache",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getCache",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "fileToLinktext",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "resolvedLinks",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "unresolvedLinks",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "on",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Modal": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "scope",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "modalEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "titleEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "contentEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "shouldRestoreSelection",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "open",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "close",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onOpen",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onClose",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setTitle",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setContent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setCloseCallback",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MomentFormatComponent": {
+   "kind": "class",
+   "extends": "TextComponent",
+   "members": [
+    {
+     "name": "sampleEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDefaultFormat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setSampleEl",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChanged",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "updateSample",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Notice": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "noticeEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "messageEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setMessage",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hide",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "NotNullValue": {
+   "kind": "class",
+   "extends": "Value",
+   "members": []
+  },
+  "NullValue": {
+   "kind": "class",
+   "extends": "Value",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static value",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "NumberValue": {
+   "kind": "class",
+   "extends": "PrimitiveValue",
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ObjectValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isEmpty",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Plugin": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "manifest",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "settings",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "onload",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addRibbonIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addStatusBarItem",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addCommand",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "removeCommand",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSettingTab",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerView",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerHoverLinkSource",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerExtensions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerMarkdownPostProcessor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerMarkdownCodeBlockProcessor",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerBasesView",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerEditorExtension",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerObsidianProtocolHandler",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerEditorSuggest",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "registerCliHandler",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "loadData",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "saveData",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onUserEnable",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onExternalSettingsChange",
+     "kind": "method",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "PluginSettingTab": {
+   "kind": "class",
+   "extends": "SettingTab",
+   "members": [
+    {
+     "name": "getSettingDefinitions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getControlValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setControlValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "PopoverSuggest": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "scope",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "open",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "close",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "PrimitiveValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ProgressBarComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "QueryController": {
+   "kind": "class",
+   "extends": "Component",
+   "members": []
+  },
+  "RegExpValue": {
+   "kind": "class",
+   "extends": "NotNullValue",
+   "members": [
+    {
+     "name": "toString",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isTruthy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "RelativeDateValue": {
+   "kind": "class",
+   "extends": "DateValue",
+   "members": []
+  },
+  "RenderContext": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Scope": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "register",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "unregister",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SearchComponent": {
+   "kind": "class",
+   "extends": "AbstractTextComponent",
+   "members": [
+    {
+     "name": "clearButtonEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChanged",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SecretComponent": {
+   "kind": "class",
+   "extends": "BaseComponent",
+   "members": [
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SecretStorage": {
+   "kind": "class",
+   "extends": "Events",
+   "members": [
+    {
+     "name": "setSecret",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSecret",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "listSecrets",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Setting": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "settingEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "infoEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "nameEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "descEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "controlEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "components",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "errorEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setErrorMessage",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addDisplayValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDesc",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setClass",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setTooltip",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setHeading",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addButton",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addExtraButton",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addToggle",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addText",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addComponent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSearch",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addTextArea",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addMomentFormat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addDropdown",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addColorPicker",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addProgressBar",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSlider",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "then",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clear",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingGroup": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "listEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setHeading",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addClass",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSetting",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addSearch",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addExtraButton",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingPage": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "rootEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "titlebarEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "title",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hide",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingTab": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "icon",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "settingItems",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSettingDefinitions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "update",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getControlValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setControlValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "refreshDomState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "display",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "hide",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SliderComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "sliderEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setInstant",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setLimits",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValuePretty",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisplayFormat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDynamicTooltip",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "StringValue": {
+   "kind": "class",
+   "extends": "PrimitiveValue",
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SuggestModal": {
+   "kind": "class",
+   "extends": "Modal",
+   "members": [
+    {
+     "name": "limit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "emptyStateText",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "inputEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "resultContainerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setPlaceholder",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setInstructions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onNoSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "selectSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "selectActiveSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TAbstractFile": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "vault",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "path",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TagValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": []
+  },
+  "Tasks": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "add",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addPromise",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isEmpty",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "promise",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TextAreaComponent": {
+   "kind": "class",
+   "extends": "AbstractTextComponent",
+   "members": []
+  },
+  "TextComponent": {
+   "kind": "class",
+   "extends": "AbstractTextComponent",
+   "members": []
+  },
+  "TextFileView": {
+   "kind": "class",
+   "extends": "EditableFileView",
+   "members": [
+    {
+     "name": "data",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "requestSave",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onUnloadFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onLoadFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "save",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TFile": {
+   "kind": "class",
+   "extends": "TAbstractFile",
+   "members": [
+    {
+     "name": "stat",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "basename",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "extension",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TFolder": {
+   "kind": "class",
+   "extends": "TAbstractFile",
+   "members": [
+    {
+     "name": "children",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isRoot",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ToggleComponent": {
+   "kind": "class",
+   "extends": "ValueComponent",
+   "members": [
+    {
+     "name": "toggleEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setDisabled",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setValue",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setTooltip",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onClick",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onChange",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "UrlValue": {
+   "kind": "class",
+   "extends": "StringValue",
+   "members": []
+  },
+  "Value": {
+   "kind": "class",
+   "extends": null,
+   "members": [
+    {
+     "name": "static type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static equals",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static looseEquals",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "equals",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "looseEquals",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "renderTo",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ValueComponent": {
+   "kind": "class",
+   "extends": "BaseComponent",
+   "members": [
+    {
+     "name": "registerOptionListener",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Vault": {
+   "kind": "class",
+   "extends": "Events",
+   "members": [
+    {
+     "name": "adapter",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "configDir",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFileByPath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFolderByPath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getAbstractFileByPath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getRoot",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "create",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "createBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "createFolder",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "read",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "cachedRead",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "readBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getResourcePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "delete",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trash",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rename",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "modify",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "modifyBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "append",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "appendBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "process",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "copy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getAllLoadedFiles",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getAllFolders",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "static recurseChildren",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getMarkdownFiles",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getFiles",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "on",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "View": {
+   "kind": "class",
+   "extends": "Component",
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "icon",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "navigation",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "leaf",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "scope",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getEphemeralState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setEphemeralState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onResize",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onPaneMenu",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Workspace": {
+   "kind": "class",
+   "extends": "Events",
+   "members": [
+    {
+     "name": "leftSplit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rightSplit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "leftRibbon",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rightRibbon",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "rootSplit",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "activeLeaf",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "containerEl",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "layoutReady",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "requestSaveLayout",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "activeEditor",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onLayoutReady",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "changeLayout",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getLayout",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "createLeafInParent",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "createLeafBySplit",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "splitActiveLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "duplicateLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "getUnpinnedLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": true
+    },
+    {
+     "name": "getLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "moveLeafToPopout",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "openPopoutLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "openLinkText",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setActiveLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getLeafById",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getGroupLeaves",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getMostRecentLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getLeftLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getRightLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "ensureSideLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getActiveViewOfType",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getActiveFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "iterateRootLeaves",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "iterateAllLeaves",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getLeavesOfType",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "detachLeavesOfType",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "revealLeaf",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getLastOpenFiles",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "updateOptions",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "handleLinkContextMenu",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "on",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceContainer": {
+   "kind": "class",
+   "extends": "WorkspaceSplit",
+   "members": []
+  },
+  "WorkspaceFloating": {
+   "kind": "class",
+   "extends": "WorkspaceParent",
+   "members": [
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceItem": {
+   "kind": "class",
+   "extends": "Events",
+   "members": [
+    {
+     "name": "getRoot",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getContainer",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceLeaf": {
+   "kind": "class",
+   "extends": "WorkspaceItem",
+   "members": [
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "view",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "openFile",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "open",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getViewState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setViewState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "isDeferred",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "loadIfDeferred",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getEphemeralState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setEphemeralState",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "togglePinned",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setPinned",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setGroupMember",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "setGroup",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "detach",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getIcon",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getDisplayText",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onResize",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "on",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceMobileDrawer": {
+   "kind": "class",
+   "extends": "WorkspaceParent",
+   "members": [
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "collapsed",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "expand",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "collapse",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "toggle",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceParent": {
+   "kind": "class",
+   "extends": "WorkspaceItem",
+   "members": []
+  },
+  "WorkspaceRibbon": {
+   "kind": "class",
+   "extends": null,
+   "members": []
+  },
+  "WorkspaceRoot": {
+   "kind": "class",
+   "extends": "WorkspaceContainer",
+   "members": [
+    {
+     "name": "win",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "doc",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceSidedock": {
+   "kind": "class",
+   "extends": "WorkspaceSplit",
+   "members": [
+    {
+     "name": "collapsed",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "toggle",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "collapse",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "expand",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceSplit": {
+   "kind": "class",
+   "extends": "WorkspaceParent",
+   "members": [
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceTabs": {
+   "kind": "class",
+   "extends": "WorkspaceParent",
+   "members": [
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceWindow": {
+   "kind": "class",
+   "extends": "WorkspaceContainer",
+   "members": [
+    {
+     "name": "win",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "doc",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  }
+ },
+ "interfaces": {
+  "BasesConfigFile": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "filters",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "properties",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "formulas",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "summaries",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "views",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesConfigFileView": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "filters",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "groupBy",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "order",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "summaries",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesDropdownOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "options",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesFileOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "filter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesFolderOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "filter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesFormulaOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesMultitextOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesOption": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "displayName",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "shouldHide",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesOptionGroup": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "displayName",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "items",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "shouldHide",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesProperty": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesPropertyOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "filter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesSliderOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "min",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "max",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "step",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "instant",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesTextOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesToggleOption": {
+   "kind": "interface",
+   "extends": "BasesOption",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "default",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BasesViewRegistration": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "icon",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "factory",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "options",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "BlockCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "BlockSubpathResult": {
+   "kind": "interface",
+   "extends": "SubpathResult",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "block",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "list",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "CachedMetadata": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "links",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "embeds",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "tags",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "headings",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "footnotes",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "footnoteRefs",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "referenceLinks",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "sections",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "listItems",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "frontmatter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "frontmatterPosition",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "frontmatterLinks",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "blocks",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "CacheItem": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "position",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "CliData": {
+   "kind": "interface",
+   "extends": null,
+   "members": []
+  },
+  "CliFlag": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "value",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "description",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "required",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "Command": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "icon",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "mobileOnly",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "repeatable",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "callback",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "checkCallback",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "editorCallback",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "editorCheckCallback",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "hotkeys",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "DataAdapter": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "getName",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "exists",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "stat",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "list",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "read",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "readBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "write",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "writeBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "append",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "appendBinary",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "process",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getResourcePath",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "mkdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashSystem",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "trashLocal",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rmdir",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "remove",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "rename",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "copy",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "DataWriteOptions": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "ctime",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "mtime",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "Debouncer": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "cancel",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "run",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorChange": {
+   "kind": "interface",
+   "extends": "EditorRangeOrCaret",
+   "members": [
+    {
+     "name": "text",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorPosition": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "line",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "ch",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorRange": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "from",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "to",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorRangeOrCaret": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "from",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "to",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorScrollInfo": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "left",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "top",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "width",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "height",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clientWidth",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "clientHeight",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorSelection": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "anchor",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "head",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorSelectionOrCaret": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "anchor",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "head",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorSuggestContext": {
+   "kind": "interface",
+   "extends": "EditorSuggestTriggerInfo",
+   "members": [
+    {
+     "name": "editor",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "file",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorSuggestTriggerInfo": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "start",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "end",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "query",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "EditorTransaction": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "replaceSelection",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "changes",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "selections",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "selection",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "EmbedCache": {
+   "kind": "interface",
+   "extends": "ReferenceCache",
+   "members": []
+  },
+  "EventRef": {
+   "kind": "interface",
+   "extends": null,
+   "members": []
+  },
+  "FileStats": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "ctime",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "mtime",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "size",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FootnoteCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FootnoteRefCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FootnoteSubpathResult": {
+   "kind": "interface",
+   "extends": "SubpathResult",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "footnote",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FormulaContext": {
+   "kind": "interface",
+   "extends": null,
+   "members": []
+  },
+  "FrontMatterCache": {
+   "kind": "interface",
+   "extends": null,
+   "members": []
+  },
+  "FrontMatterInfo": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "exists",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "frontmatter",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "from",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "to",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "contentStart",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FrontmatterLinkCache": {
+   "kind": "interface",
+   "extends": "Reference",
+   "members": [
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "FuzzyMatch": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "item",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "match",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HeadingCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "heading",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "level",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HeadingSubpathResult": {
+   "kind": "interface",
+   "extends": "SubpathResult",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "current",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "next",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HistoryHandler": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "onHistoryBack",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "onHistoryForward",
+     "kind": "method",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "Hotkey": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "modifiers",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HoverLinkSource": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "display",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "defaultMod",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HoverParent": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "hoverPopover",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "HSL": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "h",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "s",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "l",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Instruction": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "command",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "purpose",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ISuggestOwner": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "renderSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "selectSuggestion",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "KeymapContext": {
+   "kind": "interface",
+   "extends": "KeymapInfo",
+   "members": [
+    {
+     "name": "vkey",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "KeymapEventHandler": {
+   "kind": "interface",
+   "extends": "KeymapInfo",
+   "members": [
+    {
+     "name": "scope",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "KeymapInfo": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "modifiers",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "LinkCache": {
+   "kind": "interface",
+   "extends": "ReferenceCache",
+   "members": []
+  },
+  "ListedFiles": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "files",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "folders",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "ListItemCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "task",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "parent",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "LivePreviewStateType": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "mousedown",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Loc": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "line",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "col",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "offset",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownFileInfo": {
+   "kind": "interface",
+   "extends": "HoverParent",
+   "members": [
+    {
+     "name": "app",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "file",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "editor",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownPostProcessor": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "sortOrder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownPostProcessorContext": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "docId",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "sourcePath",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "frontmatter",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "addChild",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "getSectionInfo",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownPreviewEvents": {
+   "kind": "interface",
+   "extends": "Component",
+   "members": []
+  },
+  "MarkdownSectionInformation": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "text",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "lineStart",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "lineEnd",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MarkdownSubView": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "getScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "applyScroll",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "get",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "set",
+     "kind": "method",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "MenuPositionDef": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "x",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "y",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "width",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "overlap",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "left",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "ObsidianProtocolData": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "OpenViewState": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "state",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "eState",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "active",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "group",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "PluginManifest": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "dir",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "author",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "version",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "minAppVersion",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "description",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "authorUrl",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "isDesktopOnly",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "Point": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "x",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "y",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Pos": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "start",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "end",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Reference": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "link",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "original",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "displayText",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "ReferenceCache": {
+   "kind": "interface",
+   "extends": "Reference",
+   "members": []
+  },
+  "ReferenceLinkCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "link",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "RequestUrlParam": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "url",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "method",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "contentType",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "body",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "headers",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "throw",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "RequestUrlResponse": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "status",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "headers",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "arrayBuffer",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "json",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "text",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "RequestUrlResponsePromise": {
+   "kind": "interface",
+   "extends": "Promise",
+   "members": [
+    {
+     "name": "arrayBuffer",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "json",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "text",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "RGB": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "r",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "g",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "b",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SearchResult": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "score",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "matches",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SearchResultContainer": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "match",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SectionCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "id",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingColorControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingControlBase": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "key",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "defaultValue",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "validate",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "disabled",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionAction": {
+   "kind": "interface",
+   "extends": "SettingDefinitionBase",
+   "members": [
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "disabled",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "control",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "render",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionAddItem": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionBase": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "desc",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "aliases",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "searchable",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "visible",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionControl": {
+   "kind": "interface",
+   "extends": "SettingDefinitionBase",
+   "members": [
+    {
+     "name": "control",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "render",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionEmpty": {
+   "kind": "interface",
+   "extends": "SettingDefinitionBase",
+   "members": [
+    {
+     "name": "control",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "render",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionGroup": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "heading",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "cls",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "search",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "extraButtons",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "items",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "visible",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionList": {
+   "kind": "interface",
+   "extends": "SettingDefinitionGroup",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "emptyState",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "onReorder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "onDelete",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "addItem",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionPage": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "name",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "desc",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "displayValue",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "status",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "items",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "page",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "visible",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDefinitionRender": {
+   "kind": "interface",
+   "extends": "SettingDefinitionBase",
+   "members": [
+    {
+     "name": "control",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "action",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "render",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingDropdownControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "options",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingFileControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "filter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingFolderControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "filter",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "includeRoot",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingNumberControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "min",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "max",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "step",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingSliderControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "min",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "max",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "step",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "displayFormat",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingTextAreaControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "rows",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingTextControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "placeholder",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "SettingToggleControl": {
+   "kind": "interface",
+   "extends": "SettingControlBase",
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "Stat": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "ctime",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "mtime",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "size",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "SubpathResult": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "start",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "end",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TagCache": {
+   "kind": "interface",
+   "extends": "CacheItem",
+   "members": [
+    {
+     "name": "tag",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "TooltipOptions": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "placement",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "classes",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "gap",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "delay",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "ViewState": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "type",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    },
+    {
+     "name": "state",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "active",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "pinned",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "group",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  },
+  "ViewStateResult": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "history",
+     "kind": "prop",
+     "optional": false,
+     "deprecated": false
+    }
+   ]
+  },
+  "WorkspaceWindowInitData": {
+   "kind": "interface",
+   "extends": null,
+   "members": [
+    {
+     "name": "x",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "y",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    },
+    {
+     "name": "size",
+     "kind": "prop",
+     "optional": true,
+     "deprecated": false
+    }
+   ]
+  }
+ },
+ "values": [
+  "addIcon",
+  "apiVersion",
+  "arrayBufferToBase64",
+  "arrayBufferToHex",
+  "base64ToArrayBuffer",
+  "debounce",
+  "displayTooltip",
+  "editorEditorField",
+  "editorInfoField",
+  "editorLivePreviewField",
+  "editorViewField",
+  "finishRenderMath",
+  "getAllTags",
+  "getBlobArrayBuffer",
+  "getFrontMatterInfo",
+  "getIcon",
+  "getIconIds",
+  "getLanguage",
+  "getLinkpath",
+  "hexToArrayBuffer",
+  "htmlToMarkdown",
+  "iterateCacheRefs",
+  "iterateRefs",
+  "livePreviewState",
+  "loadMathJax",
+  "loadMermaid",
+  "loadPdfJs",
+  "loadPrism",
+  "moment",
+  "normalizePath",
+  "parseFrontMatterAliases",
+  "parseFrontMatterEntry",
+  "parseFrontMatterStringArray",
+  "parseFrontMatterTags",
+  "parseLinktext",
+  "parsePropertyId",
+  "parseYaml",
+  "Platform",
+  "PopoverState",
+  "prepareFuzzySearch",
+  "prepareSimpleSearch",
+  "removeIcon",
+  "renderMatches",
+  "renderMath",
+  "renderResults",
+  "request",
+  "requestUrl",
+  "requireApiVersion",
+  "resolveSubpath",
+  "sanitizeHTMLToDom",
+  "setIcon",
+  "setTooltip",
+  "sortSearchResults",
+  "stringifyYaml",
+  "stripHeading",
+  "stripHeadingForLink"
+ ]
+}

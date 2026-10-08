@@ -1,0 +1,39 @@
+{
+  "id": "tailscale",
+  "name": "Tailscale",
+  "description": "Your tailnet: every device and whether it's online, and what each machine serves on it (tailscale serve), with whether each one is up. Asked live, nothing saved.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "network": [
+      "127.0.0.1",
+      "*.ts.net"
+    ],
+    "shell": true
+  },
+  "category": "developer",
+  "runsOnServer": true,
+  "enhances": [
+    "projects",
+    "machines"
+  ],
+  "blocks": {
+    "tailscale": {
+      "description": "what this machine serves on the tailnet, and whether each one answers",
+      "live": "Tailscale on this machine (tailscale status)",
+      "options": {
+        "machine": {
+          "type": "string",
+          "description": "another machine's (its id in the Machines plugin's list)"
+        }
+      }
+    },
+    "tailnet": {
+      "description": "every device on the tailnet, online or when last seen, and under each machine what it serves",
+      "live": "Tailscale on this machine (tailscale status)",
+      "options": {}
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "quickadd",
+  "name": "Quick add",
+  "description": "Choices you run from the palette or a new tab's buttons: a capture adds text to a note (at its top or end, or under a heading) and a template makes a new note from one of your templates, with {{DATE}}, {{VALUE}} asked for and {{LINKCURRENT}} filled in; a group offers several. Obsidian's QuickAdd choices are read too.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "category": "writing",
+  "tint": "yellow",
+  "apiVersion": 3,
+  "requires": ["templates"],
+  "disclosures": {},
+  "replaces": { "obsidian": ["quickadd"] },
+  "forAgents": "The user's Quick add choices (a capture into a note, a note from a template): `quickadd_run` (`vau quickadd <choice> <value>`); `vau quickadd list` names them."
+}

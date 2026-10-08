@@ -1,0 +1,42 @@
+{
+  "id": "github",
+  "name": "GitHub",
+  "description": "Adds stars, downloads, open issues and recent commits to each project that has a repo. Fetched live and cached; a project file shows them where it has a github block.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "network": [
+      "api.github.com"
+    ],
+    "shell": true,
+    "outsideVault": true
+  },
+  "category": "developer",
+  "requires": [
+    "projects"
+  ],
+  "blocks": {
+    "github": {
+      "description": "a project's stars, downloads, open issues and recent commits",
+      "live": "GitHub's API",
+      "options": {
+        "stats": {
+          "type": "boolean",
+          "default": true,
+          "description": "false leaves the numbers out, showing only the open issues"
+        },
+        "issues": {
+          "type": "number",
+          "default": 5,
+          "description": "how many open issues to list (0 hides them)"
+        },
+        "project": {
+          "type": "string",
+          "description": "another project than the file's (its name)"
+        }
+      }
+    }
+  }
+}

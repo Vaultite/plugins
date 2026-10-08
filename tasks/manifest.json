@@ -1,0 +1,24 @@
+{
+  "id": "tasks",
+  "name": "Tasks",
+  "description": "Obsidian Tasks' tasks: due, scheduled and start dates, priorities and recurrence on checklist lines, tasks queries that gather them from the whole vault, a done date when you tick one, and a form to create or edit one.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "writing",
+  "tint": "green",
+  "disclosures": {},
+  "replaces": { "obsidian": ["obsidian-tasks-plugin"] },
+  "forAgents": "Tasks are `- [ ]` lines with Obsidian Tasks' fields (📅 due, ⏳ scheduled, 🔁 recurrence; `vau docs tasks`): find them with `tasks_list` (a Tasks query), add with `tasks_add`, tick with `tasks_complete`.",
+  "settings": {
+    "format": { "type": "enum", "values": ["emoji", "dataview"], "default": "emoji", "label": "Task format", "labels": { "emoji": "Emoji", "dataview": "Dataview" }, "description": "how dates, priority and recurrence are written on new fields: Tasks' emoji, or Dataview's [due:: 2026-10-08] (both are read)" },
+    "globalFilter": { "type": "string", "label": "Global filter", "description": "only checkbox lines with this text are tasks (#task); empty: every one" },
+    "removeGlobalFilter": { "type": "boolean", "default": false, "label": "Hide the global filter", "description": "leave the global filter out of task descriptions in query results" },
+    "globalQuery": { "type": "string", "label": "Global query", "description": "instructions every query starts with (path does not include Archive); a query with ignore global query leaves them out" },
+    "doneDate": { "type": "boolean", "default": true, "label": "Done date", "description": "write the date a task is ticked done on its line" },
+    "cancelledDate": { "type": "boolean", "default": true, "label": "Cancelled date", "description": "write the date a task is cancelled on its line" },
+    "createdDate": { "type": "boolean", "default": false, "label": "Created date", "description": "write the day it was made on tasks from the form and from agents, and on a recurrence's next one" },
+    "recurrenceBelow": { "type": "boolean", "default": false, "label": "Next recurrence below", "description": "put a recurring task's next occurrence below the done one, not above" }
+  }
+}

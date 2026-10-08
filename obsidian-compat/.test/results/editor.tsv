@@ -1,0 +1,21 @@
+id	web	phone	notes
+table-editor-obsidian	works	works	
+obsidian-outliner	works	works	
+obsidian-latex-suite	works	works	
+various-complements	works	works	
+easy-typing-obsidian	works	works	
+highlightr-plugin	works	works	
+colored-text	works	works	
+editing-toolbar	works	works	
+cmenu-plugin	works	n/a	phone: desktop only (isDesktopOnly), as in Obsidian
+obsidian-text-format	works	works	
+url-into-selection	works	works	
+obsidian-emoji-toolbar	works	works	
+nldates-obsidian	works	works	
+obsidian-linter	works	works	
+better-word-count	works	n/a	phone: no status bar on phones (as Obsidian mobile)
+code-styler	works	works	
+oz-image-plugin	unneeded	unneeded	web: the app already draws images, transclusions and PDFs in the editor; it loads and its toggles run ; phone: the app already draws images, transclusions and PDFs in the editor; it loads and its toggles run
+obsidian-auto-link-title	works	works	pasting a URL makes [title](url) (computers: the bridge's BrowserWindow stand-in; phones: its fetch path)
+note-refactor-obsidian	works	works	
+obsidian-plugin-toc	works	works	

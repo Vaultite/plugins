@@ -1,0 +1,20 @@
+{
+  "id": "apple-health",
+  "name": "Apple Health",
+  "description": "Imports sleep and workouts from an Apple Health export into logs. Claude runs it; each night and workout becomes a file.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "disclosures": {
+    "shell": true,
+    "outsideVault": true
+  },
+  "category": "health",
+  "enhances": [
+    "health"
+  ],
+  "requires": [
+    "logs"
+  ]
+}

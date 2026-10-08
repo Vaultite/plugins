@@ -1,0 +1,13 @@
+{
+  "id": "admonition",
+  "name": "Admonitions",
+  "description": "Obsidian's Admonition code fences (```ad-note, with title:, collapse: and icon: lines) drawn as the app's own callouts, and read as callouts by agents.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "category": "formats",
+  "tint": "blue",
+  "apiVersion": 3,
+  "disclosures": {},
+  "replaces": { "obsidian": ["obsidian-admonition"] }
+}

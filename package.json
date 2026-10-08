@@ -1,0 +1,8 @@
+{
+  "name": "vaultite-plugins",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.server.json --noEmit"
+  }
+}
