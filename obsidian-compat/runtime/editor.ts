@@ -34,8 +34,15 @@ export class Editor {
   private get doc() { return this.cm.state.doc }
   refresh() {}
   getValue() { return this.doc.toString() }
+  // Only what differs, so the cursor, scroll and undo history stay as they were.
   setValue(v: string) {
-    this.cm.dispatch({ changes: { from: 0, to: this.doc.length, insert: v } })
+    const was = this.doc.toString()
+    if (v === was) return
+    let from = 0
+    while (from < was.length && from < v.length && was[from] === v[from]) from++
+    let end = 0
+    while (end < was.length - from && end < v.length - from && was[was.length - 1 - end] === v[v.length - 1 - end]) end++
+    this.cm.dispatch({ changes: { from, to: was.length - end, insert: v.slice(from, v.length - end) } })
   }
   getLine(n: number) {
     const i = n + 1
