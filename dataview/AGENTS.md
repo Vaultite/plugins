@@ -1,7 +1,7 @@
 ## Dataview
-Obsidian's Dataview queries, run by this app: a ```` ```dataview ```` fence in a note shows its results (a table, a
+Dataview's queries, run by this app: a ```` ```dataview ```` fence in a note shows its results (a table, a
 list, tasks or a calendar), and inline code starting with `=` shows one value. `vau render <note>` gives them as text;
-`vau dataview '<query>' [--path <note>]` runs one. Write them as in Obsidian, so both apps read the note:
+`vau dataview '<query>' [--path <note>]` runs one. Write them as Dataview does, so other apps read the note too:
 ````
 ```dataview
 TABLE author AS "Author", rating, finished - started AS "Took"

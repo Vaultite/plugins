@@ -142,7 +142,7 @@ plugin.route("POST", "dataview/task", (req) => {
 
 // ---------- text for agents
 
-const JS_NOTE = "_(dataviewjs: this block runs JavaScript in Obsidian, which this app doesn't run. Its code is left as it is in the note.)_"
+const JS_NOTE = "_(dataviewjs: this block runs JavaScript, which this app doesn't run. Its code is left as it is in the note.)_"
 
 plugin.provide("fence:dataview", (ctx: { path: string; text: string }) => {
   const r = runQuery(ctx.text, ctx.path)
@@ -168,7 +168,7 @@ plugin.provide("inline-code", (ctx: { path: string; code: string }) => {
 plugin.op({
   id: "dataview.query",
   cli: "dataview",
-  summary: "Run a Dataview (DQL) query over the vault: LIST, TABLE, TASK or CALENDAR, as Obsidian's Dataview does.",
+  summary: "Run a Dataview (DQL) query over the vault: LIST, TABLE, TASK or CALENDAR, as Dataview does.",
   help: `The query as you'd write it in a \`\`\`dataview fence (vau docs dataview). \`this\` is the note given with --path.
 
   vau dataview 'TABLE rating, author FROM #book SORT rating DESC'

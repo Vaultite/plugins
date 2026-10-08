@@ -2,8 +2,8 @@
   "id": "templater",
   "icon": "file-code-corner",
   "name": "Templater",
-  "description": "Obsidian's Templater templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
-  "version": "1.0.1",
+  "description": "Templater's templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
+  "version": "1.0.2",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "category": "writing",
@@ -17,12 +17,12 @@
     "folderTemplates": {
       "type": "map",
       "label": "Folder templates",
-      "description": "a template for new empty notes in a folder, folder: template (\"Meetings\": \"Meeting\"; \"/\" for every folder); unset, Obsidian's Templater's are used"
+      "description": "a template for new empty notes in a folder, folder: template (\"Meetings\": \"Meeting\"; \"/\" for every folder); unset, the vault's Templater settings' are used"
     },
     "onCreate": {
       "type": "boolean",
       "label": "Trigger on new file creation",
-      "description": "run the <% %> commands in new notes made by the app or other plugins (not by agents); unset, as Obsidian's Templater says"
+      "description": "run the <% %> commands in new notes made by the app or other plugins (not by agents); unset, as the vault's Templater settings say"
     }
   }
 }

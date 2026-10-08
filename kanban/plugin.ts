@@ -64,7 +64,7 @@ const shown = (r: { board: Summary }) => summaryText(r.board)
 
 plugin.op({
   id: "kanban.list",
-  summary: "The vault's Kanban boards (Obsidian Kanban's Markdown files), with how many lanes and cards each has.",
+  summary: "The vault's Kanban boards (the Kanban plugin's Markdown files), with how many lanes and cards each has.",
   kind: "read",
   cli: "kanban list",
   mcp: true,
@@ -129,7 +129,7 @@ plugin.op({
   id: "kanban.move",
   summary: "Move a card to another lane (or another place in its lane) of a Kanban board.",
   help: `Find the card by words of its text, or by its number with \`from\`. Into a lane marked complete it's ticked, out of one
-unticked (Obsidian Kanban's way).
+unticked (the Kanban plugin's way).
 
   vau kanban move Boards/Launch.md "pricing page" Done
   vau kanban move Boards/Launch.md 2 Doing --from Backlog --position 1`,
@@ -168,7 +168,7 @@ plugin.op({
 
 plugin.op({
   id: "kanban.archive",
-  summary: "Move a card of a Kanban board into its archive (the ## Archive after the lanes, as Obsidian Kanban keeps it).",
+  summary: "Move a card of a Kanban board into its archive (the ## Archive after the lanes, as the Kanban plugin keeps it).",
   help: `  vau kanban archive Boards/Launch.md "old card"`,
   kind: "write",
   params: { path: PATH, card: CARD, from: FROM },
@@ -181,7 +181,7 @@ plugin.op({
 
 plugin.op({
   id: "kanban.new",
-  summary: "Make a Kanban board (Obsidian Kanban's format): To do, Doing and Done, or the lanes you name.",
+  summary: "Make a Kanban board (the Kanban plugin's format): To do, Doing and Done, or the lanes you name.",
   help: `It goes where the vault's other boards are (else the vault's top), or in \`folder\`; a last lane named Done is marked
 complete (cards moved there are ticked).
 

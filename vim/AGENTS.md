@@ -19,5 +19,5 @@ phones type as usual, and each device can turn it on or off for itself (Vim's se
 - The vimrc, `.vaultite/plugins/vim/init.vim`: Vim commands run in every editor before you type, one per line, `"`
   for a comment: `map`, `nmap`, `vmap`, `imap`, `noremap`, `nnoremap`... (`<leader>` is `let mapleader = ","`, `\` by
   default), `unmap`, `mapclear`, `set <option>`, `exmap <name> <command line>`. The app's `:` commands work in
-  mappings: `nmap <leader>s :cmd switcher:open<CR>`. Obsidian's `.obsidian.vimrc` can be copied in as it is (lines it
-  can't run, like `surround`, are reported). It runs again when the file changes.
+  mappings: `nmap <leader>s :cmd switcher:open<CR>`. A `.obsidian.vimrc` (Vimrc Support's) can be copied in as it is
+  (lines it can't run, like `surround`, are reported). It runs again when the file changes.

@@ -85,7 +85,7 @@ function ChoicesPanel({ store }: { store: Store }) {
   const remove = (c: Choice) => { save(list.filter((x) => x.id !== c.id)); notify(`Deleted ${c.name}`, { action: { label: "Undo", run: () => save(list) } }) }
   return (
     <div className="space-y-5" data-quickadd-settings>
-      <Section title={from === "quickadd" ? "Choices, from Obsidian's QuickAdd" : "Choices"}>
+      <Section title={from === "quickadd" ? "Choices, from QuickAdd" : "Choices"}>
         <Group>
           {list.map((c) => {
             const Icon = KINDS[c.type].icon

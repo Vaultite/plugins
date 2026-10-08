@@ -1,4 +1,4 @@
-## Tasks (Obsidian Tasks' format)
+## Tasks (the Tasks plugin's format)
 A task is a checkbox line in any note, its fields after the description (read from the end of the line; written in
 this order):
 ```

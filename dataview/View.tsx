@@ -117,7 +117,7 @@ export function DataviewJsFence() {
   return (
     <Panel title="DataviewJS" icon={Code} tint={TINT} className="min-w-0">
       <p className="text-[15px] leading-[20px] text-muted-foreground" data-dv-js>
-        This block runs JavaScript in Obsidian, which this app doesn't run. Its code is still in the note; switch to
+        This block runs JavaScript, which this app doesn't run. Its code is still in the note; switch to
         source to see it, or write it as a Dataview query.
       </p>
     </Panel>

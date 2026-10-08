@@ -13,8 +13,8 @@ Backblaze B2, MinIO) or a WebDAV folder (Nextcloud and friends). It writes no fi
   files), or a whole top folder gone from here (iCloud), wait for `--deletions`.
 - **Left out**: `.vaultite/cache/` and `.trash/` unless the remote's "Leave out" patterns say otherwise (gitignore-like:
   `*.mp4`, `Archive/`), and always `.DS_Store`, `.git/`, iCloud's placeholders.
-- **On the remote**: unencrypted, each file at its own path under the folder (the layout Obsidian's Remotely Save uses
-  without a password, so both can share a folder). Encrypted: AES-256-GCM with a key from the passphrase (scrypt),
+- **On the remote**: unencrypted, each file at its own path under the folder (the layout Remotely Save uses without a
+  password, so both can share a folder). Encrypted: AES-256-GCM with a key from the passphrase (scrypt),
   names hashed, and `.vaultite-remote-save.json` there holds the salt; only this plugin reads it.
 - The remotes are `remotes` in `.vaultite/plugins/remote-save/data.json` (name, type, direction, every, skip,
   encrypt); add or change one in its settings sheet, which keeps the connection on that machine. Don't write
