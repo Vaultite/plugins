@@ -1,5 +1,6 @@
 {
   "id": "github",
+  "icon": "github",
   "name": "GitHub",
   "description": "Adds stars, downloads, open issues and recent commits to each project that has a repo. Fetched live and cached; a project file shows them where it has a github block.",
   "version": "1.0.0",

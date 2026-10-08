@@ -1,7 +1,6 @@
 // Style settings: the settings CSS snippets declare in `/* @settings */` (Obsidian's Style Settings convention) as a
 // form in this plugin's sheet, applied live as CSS variables and classes on <body>, kept in its data.json.
 import { useEffect, useLayoutEffect } from "react"
-import { Paintbrush } from "lucide-react"
 import { definePlugin, useVaultChange } from "@vaultite"
 import { StylePanel } from "./Panel"
 import { applyCached, DATA, loadSources, loadValues, takeDown } from "./state.ts"
@@ -17,7 +16,6 @@ function Background() {
 }
 
 export default definePlugin({
-  icon: Paintbrush,
   background: () => <Background />,
   settingsPanel: () => <StylePanel />,
   settingsSearch: [

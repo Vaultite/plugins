@@ -1,5 +1,6 @@
 {
   "id": "reddit",
+  "icon": "icon.svg",
   "name": "Reddit",
   "description": "Your posts about a project, with upvotes and comments, on that project's card and in its file (a reddit block). Claude refreshes them through the browser.",
   "version": "1.0.0",

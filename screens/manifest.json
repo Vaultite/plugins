@@ -1,5 +1,6 @@
 {
   "id": "screens",
+  "icon": "monitor-smartphone",
   "name": "Screen sharing",
   "description": "Another computer's screen in a tab, over VNC: this Mac's, your other machines', or any VNC server you reach. Show the whole screen, or just one app's window. Only you, on your own devices.",
   "version": "1.0.0",

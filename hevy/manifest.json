@@ -1,5 +1,6 @@
 {
   "id": "hevy",
+  "icon": "icon.svg",
   "name": "Hevy",
   "description": "Imports your workouts from a Hevy CSV export into workout logs. Claude runs it; each workout becomes a file.",
   "version": "1.0.0",

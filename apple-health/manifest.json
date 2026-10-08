@@ -1,5 +1,6 @@
 {
   "id": "apple-health",
+  "icon": "heart-pulse",
   "name": "Apple Health",
   "description": "Imports sleep and workouts from an Apple Health export into logs. Claude runs it; each night and workout becomes a file.",
   "version": "1.0.0",

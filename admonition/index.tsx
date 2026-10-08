@@ -2,7 +2,6 @@
 // icon: line, a Lucide name or an emoji, in place of the type's.
 import { useLayoutEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { MessageSquareWarning } from "lucide-react"
 import { definePlugin, Markdown, namedIcon, type BlockCtx } from "@vaultite"
 import { toCallout, TYPES } from "./ad"
 
@@ -26,6 +25,5 @@ function Admonition({ type, ctx }: { type: string; ctx: BlockCtx }) {
 }
 
 export default definePlugin({
-  icon: MessageSquareWarning,
   fences: Object.fromEntries(TYPES.map((t) => [`ad-${t}`, (ctx: BlockCtx) => <Admonition type={t} ctx={ctx} />])),
 })

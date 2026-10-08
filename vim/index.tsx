@@ -1,7 +1,6 @@
 // Vim: Vim's keys in the whole app (the editor, reading views, lists, the canvas), Space as the leader and Ctrl+W for
 // panes, as commands the palette lists and hotkeys.json rebinds. Off until turned on, like any vault plugin.
 import { useEffect } from "react"
-import { Keyboard } from "lucide-react"
 import { addKeys, definePlugin, get, useVaultChange, type PluginCommand, type Store } from "@vaultite"
 import { vimExtension } from "./editor"
 import * as app from "./app"
@@ -117,7 +116,6 @@ function Background({ store }: { store: Store }) {
 }
 
 export default definePlugin({
-  icon: Keyboard,
   editor: (ctx) => vimExtension(ctx),
   commands,
   keyGroups: {

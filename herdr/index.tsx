@@ -68,7 +68,6 @@ function Preview() {
 }
 
 export default definePlugin({
-  icon: PanelsTopLeft,
   sidebar: { agents: { title: "herdr", heading: false, sort: 31, render: (ctx) => <HerdrPanel {...ctx} /> } },
   preview: () => <Preview />,
   mockLive: () => ({

@@ -1,6 +1,5 @@
 // Outliner: a list item moves, indents and outdents with its children (keys and commands), Enter on an empty item
 // steps out a level, ⌘A takes the item's text and then the list, and ⌘↑/⌘↓ fold through the Folding plugin.
-import { ListTree } from "lucide-react"
 import { currentEditor, definePlugin, offeredCommand, runCommandById, type PluginCommand } from "@vaultite"
 import { apply, foldable, itemHere, listKeys } from "./editor"
 import * as L from "./tree"
@@ -18,7 +17,6 @@ const fold = (id: string, name: string, keys: string[], want: "open" | "folded")
 })
 
 export default definePlugin({
-  icon: ListTree,
   editor: (ctx) => (ctx.kind === "markdown" ? listKeys : []),
   commands: [
     edit("move-up", "Move list item up", ["Mod+Shift+ArrowUp"], (l, n) => L.move(l, n, -1)),

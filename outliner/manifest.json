@@ -1,5 +1,6 @@
 {
   "id": "outliner",
+  "icon": "list-tree",
   "name": "Outliner",
   "description": "Lists that work like an outliner in the editor: move an item up or down with its children (⌘⇧↑, ⌘⇧↓), Tab and Shift-Tab indent and outdent it with them, Enter on an empty item steps out a level, ⌘A selects the item's text and then the whole list, and ⌘↑ and ⌘↓ fold and unfold it.",
   "version": "1.0.0",

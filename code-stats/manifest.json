@@ -1,5 +1,6 @@
 {
   "id": "code-stats",
+  "icon": "file-code",
   "name": "Code stats",
   "description": "Lines of code in each project's local checkout, split into code, tests, comments and docs, with its languages. Counted from the files git tracks and cached; a project file shows them where it has a code-stats block.",
   "version": "1.0.0",

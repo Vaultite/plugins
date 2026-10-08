@@ -1,9 +1,7 @@
-import { GitBranch } from "lucide-react"
 import { definePlugin } from "@vaultite"
 import { GitHubBlock } from "./GitHub"
 
 export default definePlugin({
-  icon: GitBranch,
   blocks: { github: (ctx) => <GitHubBlock {...ctx} /> },
   preview: "projects",
   mockLive: () => ({

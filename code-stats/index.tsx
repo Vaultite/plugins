@@ -1,9 +1,7 @@
-import { FileCode } from "lucide-react"
 import { definePlugin } from "@vaultite"
 import { CodeStatsBlock } from "./CodeStats"
 
 export default definePlugin({
-  icon: FileCode,
   blocks: { "code-stats": (ctx) => <CodeStatsBlock {...ctx} /> },
   preview: "projects",
   mockLive: () => ({

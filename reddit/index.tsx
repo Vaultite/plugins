@@ -1,9 +1,7 @@
-import { MessagesSquare } from "lucide-react"
 import { definePlugin } from "@vaultite"
 import { RedditBlock } from "./Reddit"
 
 export default definePlugin({
-  icon: MessagesSquare,
   blocks: { reddit: (ctx) => <RedditBlock {...ctx} /> },
   preview: "projects",
   mockLive: () => ({

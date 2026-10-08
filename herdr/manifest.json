@@ -1,5 +1,6 @@
 {
   "id": "herdr",
+  "icon": "panels-top-left",
   "name": "herdr",
   "description": "Your herdr sessions in Vaultite: the workspaces and agents of the herdr already running on this machine, each marked working, waiting or idle, in a sidebar panel; open any pane in a tab. Optionally, new terminals start in herdr too, so you can pick them up from herdr in any terminal. Needs herdr (herdr.dev) running; nothing is bundled.",
   "version": "1.0.0",

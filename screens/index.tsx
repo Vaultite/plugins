@@ -155,7 +155,6 @@ function Preview() {
 }
 
 export default definePlugin({
-  icon: MonitorSmartphone,
   views: {
     screen: {
       icon: Monitor,

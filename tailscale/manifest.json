@@ -1,5 +1,6 @@
 {
   "id": "tailscale",
+  "icon": "icon.svg",
   "name": "Tailscale",
   "description": "Your tailnet: every device and whether it's online, and what each machine serves on it (tailscale serve), with whether each one is up. Asked live, nothing saved.",
   "version": "1.0.0",

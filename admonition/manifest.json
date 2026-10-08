@@ -1,5 +1,6 @@
 {
   "id": "admonition",
+  "icon": "message-square-warning",
   "name": "Admonitions",
   "description": "Obsidian's Admonition code fences (```ad-note, with title:, collapse: and icon: lines) drawn as the app's own callouts, and read as callouts by agents.",
   "version": "1.0.0",

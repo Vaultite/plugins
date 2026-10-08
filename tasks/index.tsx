@@ -38,7 +38,6 @@ const MOCK: Answer = {
 }
 
 export default definePlugin({
-  icon: ListChecks,
   fences: { tasks: (ctx) => <QueryFence {...ctx} /> },
   editor: (ctx) => (ctx.kind === "markdown" ? taskEditor(!!ctx.source) : []),
   background: () => <Background />,

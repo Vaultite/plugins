@@ -129,7 +129,6 @@ function Settings() {
 }
 
 export default definePlugin({
-  icon: CalendarDays,
   sidebar: {
     calendar: { title: "Calendar", sort: 38, view: "periodic-notes", flyout: { icon: CalendarDays }, names: ["periodic notes", "daily notes"],
       render: ({ open, file }: SidebarCtx) => open && <Calendar file={file} /> },

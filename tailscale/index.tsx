@@ -1,9 +1,7 @@
-import { Network } from "lucide-react"
 import { addDays, definePlugin, today } from "@vaultite"
 import { Served, Tailnet } from "./Served"
 
 export default definePlugin({
-  icon: Network,
   // ```block-tailscale: what this machine serves on the tailnet (on Projects; `machine:` another one's). ```block-tailnet:
   // every device, the machines with what they serve.
   blocks: { tailscale: (ctx) => <Served {...ctx} />, tailnet: () => <Tailnet /> },

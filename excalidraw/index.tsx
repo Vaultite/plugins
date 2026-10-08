@@ -45,7 +45,6 @@ const SAMPLE = JSON.stringify({
 })
 
 export default definePlugin({
-  icon: PenTool,
   formats: { drawing: format(["excalidraw"], plain, true), obsidian: format(["excalidraw.md"], obsidian, false) },
   newFiles: [{ label: "New drawing", icon: PenTool, make: newDrawing }],
   commands: [

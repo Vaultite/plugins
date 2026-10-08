@@ -1,5 +1,6 @@
 {
   "id": "tasks",
+  "icon": "list-checks",
   "name": "Tasks",
   "description": "Obsidian Tasks' tasks: due, scheduled and start dates, priorities and recurrence on checklist lines, tasks queries that gather them from the whole vault, a done date when you tick one, and a form to create or edit one.",
   "version": "1.0.0",

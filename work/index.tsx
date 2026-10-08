@@ -1,10 +1,8 @@
-import { Briefcase } from "lucide-react"
 import { definePlugin, detailPath, today } from "@vaultite"
 import { ColleagueDetail, WorkColleagues, WorkFocus, WorkIdeas, WorkLog } from "./Work"
 import "./types"
 
 export default definePlugin({
-  icon: Briefcase,
   mock: () => ({
     work: { id: "Work", modified: `${today()} 12:00:00`, focus: "Shipping the new onboarding", questions: ["What should the first week look like?"],
       colleagues: [{ name: "Bob", role: "Engineering lead" }], notes: "" },

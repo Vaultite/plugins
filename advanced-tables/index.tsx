@@ -1,6 +1,5 @@
 // Advanced tables: Tab, Shift-Tab and Enter move between a Markdown table's cells in the editor (new rows at its end),
 // writing the table back aligned; commands change its rows and columns. Outside tables (and in code) keys are the editor's.
-import { Table2 } from "lucide-react"
 import { currentEditor, definePlugin, notify, type PluginCommand } from "@vaultite"
 import { change, formatAll, tableAt, tableExtension } from "./editor"
 import * as T from "./table"
@@ -13,7 +12,6 @@ const cmd = (id: string, name: string, fn: Fn): PluginCommand => ({ id: `advance
 const aligned = (a: T.Align, name: string) => cmd(`align-${a || "none"}`, name, (t, r, c) => [T.align(t, c, a), r, c])
 
 export default definePlugin({
-  icon: Table2,
   editor: (ctx) => (ctx.kind === "markdown" ? tableExtension : []),
   commands: [
     cmd("format", "Format table", (t, r, c) => [t, r, c]),

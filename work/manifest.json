@@ -1,5 +1,6 @@
 {
   "id": "work",
+  "icon": "briefcase",
   "name": "Work",
   "description": "The Work page: your focus, a work log and ideas.",
   "version": "1.0.1",

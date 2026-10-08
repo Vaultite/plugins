@@ -1,6 +1,6 @@
 // Icons: a folder's or file's icon and colour from its menu (the tree's right-click, a tab's, the phone's …), drawn by the
 // app wherever it draws a file's icon (`fileIcons`). A note's "Change icon" is the app's own; this adds its colour.
-import { Eraser, Palette, Shapes, Smile } from "lucide-react"
+import { Eraser, Palette, Smile } from "lucide-react"
 import { CHIP_TINTS, choose, definePlugin, getStore, notifyError, op, pickIcon, type FileMenuItem } from "@vaultite"
 import "./types"
 
@@ -37,7 +37,6 @@ function items(path: string): FileMenuItem[] {
 }
 
 export default definePlugin({
-  icon: Shapes,
   // A colour alone keeps a folder's or file's own icon.
   fileIcons: (s) => Object.fromEntries(Object.entries(s.icons ?? {}).map(([p, i]) =>
     [p, { icon: i.icon || (/\.[^/]+$/.test(p) ? "file" : "folder"), tint: i.tint }])),

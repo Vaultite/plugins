@@ -64,7 +64,6 @@ function Background() {
 }
 
 export default definePlugin({
-  icon: GitBranch,
   sidebar: {
     "source-control": {
       title: "Source control", names: ["git", "source control", "version control"], heading: false, sort: 37, view: "git",

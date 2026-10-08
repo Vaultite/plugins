@@ -1,4 +1,3 @@
-import { Wallet } from "lucide-react"
 import { definePlugin } from "@vaultite"
 import {
   CategoriesBlock, CoverageBlock, IncomeBlock, MerchantsBlock, MonthsBlock, RecurringBlock, SpendingBlock, TransactionsBlock,
@@ -36,7 +35,6 @@ function sample(): Answer {
 }
 
 export default definePlugin({
-  icon: Wallet,
   blocks: {
     spending: (ctx) => <SpendingBlock {...ctx} />,
     "spending-months": (ctx) => <MonthsBlock {...ctx} />,
