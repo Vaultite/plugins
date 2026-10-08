@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-08T23:20:47.601Z",
+  "generated": "2026-10-08T23:28:33.326Z",
   "plugins": [
     {
       "id": "work",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -31,16 +31,16 @@
     {
       "id": "vim",
       "name": "Vim",
-      "description": "Vim's keys in the whole app: the editor (modes, motions, : commands, Markdown motions, folds, a vimrc, the system clipboard), and outside it (j and k scroll, f link hints, / find, lists and panes), with Space as a leader key. Off until you turn it on; phones type as usual.",
+      "description": "Vim's keys in the whole app: the editor (modes, motions, : commands, Markdown motions, folds, a vimrc, the system clipboard), and outside it (j and k scroll, f link hints, / find, lists and panes), with Space as a leader key. Phones type as usual.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "vim",
-      "version": "1.0.0",
-      "tag": "vim/v1.0.0",
+      "version": "1.0.1",
+      "tag": "vim/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -57,21 +57,22 @@
         "obsidian": [
           "obsidian-vimrc-support"
         ]
-      }
+      },
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EVim%3C%2Ftitle%3E%3Cpath%20d%3D%22M24%2011.986h-.027l-4.318-4.318%204.303-4.414V1.461l-.649-.648h-8.198l-.66.605v1.045L12.015.027V0L12%20.014%2011.986%200v.027l-1.29%201.291-.538-.539H2.035l-.638.692v1.885l.616.616h.72v5.31L.027%2011.987H0L.014%2012%200%2012.014h.027l2.706%202.706v6.467l.907.523h2.322l1.857-1.904%204.166%204.166V24l.015-.014.014.014v-.028l2.51-2.509h.485c.111%200%20.211-.07.25-.179l.146-.426c.028-.084.012-.172-.037-.239l1.462-1.462-.612%201.962c-.043.141.036.289.177.332.025.008.052.012.078.012h1.824c.106-.001.201-.064.243-.163l.165-.394c.025-.065.024-.138-.004-.203-.027-.065-.08-.116-.146-.142-.029-.012-.062-.019-.097-.02h-.075l.84-2.644h1.232l-1.016%203.221c-.043.141.036.289.176.332.025.008.052.012.079.012h2.002c.11%200%20.207-.066.248-.17l.164-.428c.051-.138-.021-.29-.158-.341-.029-.011-.06-.017-.091-.017h-.145l1.131-3.673c.027-.082.012-.173-.039-.24l-.375-.504-.003-.005c-.051-.064-.127-.102-.209-.102h-1.436c-.071%200-.141.03-.19.081l-.4.439h-.624l-.042-.046%204.445-4.445H24L23.986%2012l.014-.014zM9.838%2021.139l1.579-4.509h-.501l.297-.304h1.659l-1.563%204.555h.623l-.079.258H9.838zm3.695-7.516l.15.151-.269.922-.225.226h-.969l-.181-.181.311-.871.288-.247h.895zM5.59%2020.829H3.877l-.262-.15V3.091H2.379l-.1-.1V1.815l.143-.154h7.371l.213.214v1.108l-.142.173H8.785v8.688l8.807-8.688h-2.086l-.175-.188V1.805l.121-.111h7.49l.132.133v1.07L12.979%2013.25h-.373c-.015-.001-.028%200-.042.001l-.02.003c-.045.01-.086.03-.119.06l-.343.295-.004.003c-.033.031-.059.069-.073.111l-.296.83-6.119%206.276zm14.768-3.952l.474-.519h1.334l.309.415-1.265%204.107h.493l-.08.209H19.84l1.124-3.564h-2.015l-1.077%203.391h.424l-.073.174h-1.605l1.107-3.548h-2.096l-1.062%203.339h.436l-.072.209H13.27l1.514-4.46H14.198l.091-.271h1.65l.519.537h.906l.491-.554h1.061l.489.535h.953z%22%2F%3E%3C%2Fsvg%3E"
     },
     {
       "id": "templater",
       "name": "Templater",
-      "description": "Obsidian's Templater templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
+      "description": "Templater's templates, kept working: <% %> commands in the Templates plugin's templates (tp.date, tp.file, tp.frontmatter, prompts and suggesters in the app's own chooser, includes, rename and move, the cursor), <%* %> blocks of plain assignments, if/else and tR, whitespace control, and folder templates for new notes. Other JavaScript isn't run: it stays as written.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "templater",
-      "version": "1.0.1",
-      "tag": "templater/v1.0.1",
+      "version": "1.0.2",
+      "tag": "templater/v1.0.2",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -87,21 +88,22 @@
           "templater-obsidian"
         ]
       },
+      "icon": "file-code-corner",
       "tint": "purple"
     },
     {
       "id": "tasks",
       "name": "Tasks",
-      "description": "Obsidian Tasks' tasks: due, scheduled and start dates, priorities and recurrence on checklist lines, tasks queries that gather them from the whole vault, a done date when you tick one, and a form to create or edit one.",
+      "description": "Tasks in the Tasks plugin's format: due, scheduled and start dates, priorities and recurrence on checklist lines, tasks queries that gather them from the whole vault, a done date when you tick one, and a form to create or edit one.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "tasks",
-      "version": "1.0.0",
-      "tag": "tasks/v1.0.0",
+      "version": "1.0.1",
+      "tag": "tasks/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -117,6 +119,7 @@
           "obsidian-tasks-plugin"
         ]
       },
+      "icon": "list-checks",
       "tint": "green"
     },
     {
@@ -131,7 +134,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -153,16 +156,16 @@
     {
       "id": "style-settings",
       "name": "Style settings",
-      "description": "Settings that CSS snippets declare in a @settings comment (Obsidian's Style Settings), the accent colour and the line width, as a form applied live.",
+      "description": "Settings that CSS snippets declare in a @settings comment (the Style Settings format), the accent colour and the line width, as a form applied live.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "style-settings",
-      "version": "1.0.0",
-      "tag": "style-settings/v1.0.0",
+      "version": "1.0.1",
+      "tag": "style-settings/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -178,6 +181,7 @@
           "obsidian-style-settings"
         ]
       },
+      "icon": "paintbrush",
       "tint": "pink"
     },
     {
@@ -192,7 +196,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -221,12 +225,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "remote-save",
-      "version": "1.0.0",
-      "tag": "remote-save/v1.0.0",
+      "version": "1.0.1",
+      "tag": "remote-save/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -247,6 +251,7 @@
           "remotely-save"
         ]
       },
+      "icon": "cloud",
       "tint": "teal"
     },
     {
@@ -261,7 +266,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -277,16 +282,16 @@
     {
       "id": "quickadd",
       "name": "Quick add",
-      "description": "Choices you run from the palette or a new tab's buttons: a capture adds text to a note (at its top or end, or under a heading) and a template makes a new note from one of your templates, with {{DATE}}, {{VALUE}} asked for and {{LINKCURRENT}} filled in; a group offers several. Obsidian's QuickAdd choices are read too.",
+      "description": "Choices you run from the palette or a new tab's buttons: a capture adds text to a note (at its top or end, or under a heading) and a template makes a new note from one of your templates, with {{DATE}}, {{VALUE}} asked for and {{LINKCURRENT}} filled in; a group offers several. QuickAdd's choices are read too.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "quickadd",
-      "version": "1.0.0",
-      "tag": "quickadd/v1.0.0",
+      "version": "1.0.1",
+      "tag": "quickadd/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -302,82 +307,22 @@
           "quickadd"
         ]
       },
+      "icon": "square-plus",
       "tint": "yellow"
     },
     {
-      "id": "periodic-notes",
-      "name": "Periodic notes",
-      "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
+      "id": "plugin-compat",
+      "name": "Plugins from other apps",
+      "description": "Runs plugins written for another Markdown app as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, as they do there.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
-      "dir": "periodic-notes",
-      "version": "1.0.1",
-      "tag": "periodic-notes/v1.0.1",
+      "dir": "plugin-compat",
+      "version": "1.2.0",
+      "tag": "plugin-compat/v1.2.0",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
-      "issues": {
-        "open": 0,
-        "closed": 0
-      },
-      "topics": [
-        "vaultite-plugin"
-      ],
-      "disclosures": {},
-      "readme": "",
-      "score": 40,
-      "replaces": {
-        "obsidian": [
-          "calendar",
-          "periodic-notes"
-        ]
-      },
-      "tint": "blue"
-    },
-    {
-      "id": "outliner",
-      "name": "Outliner",
-      "description": "Lists that work like an outliner in the editor: move an item up or down with its children (⌘⇧↑, ⌘⇧↓), Tab and Shift-Tab indent and outdent it with them, Enter on an empty item steps out a level, ⌘A selects the item's text and then the whole list, and ⌘↑ and ⌘↓ fold and unfold it.",
-      "author": "Vaultite",
-      "repo": "Vaultite/plugins",
-      "dir": "outliner",
-      "version": "1.0.1",
-      "tag": "outliner/v1.0.1",
-      "stars": 0,
-      "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
-      "issues": {
-        "open": 0,
-        "closed": 0
-      },
-      "topics": [
-        "vaultite-plugin"
-      ],
-      "disclosures": {},
-      "readme": "",
-      "score": 40,
-      "replaces": {
-        "obsidian": [
-          "obsidian-outliner"
-        ]
-      },
-      "icon": "list-tree"
-    },
-    {
-      "id": "obsidian-compat",
-      "name": "Obsidian plugins",
-      "description": "Runs Obsidian community plugins as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, like in Obsidian.",
-      "author": "Vaultite",
-      "repo": "Vaultite/plugins",
-      "dir": "obsidian-compat",
-      "version": "1.1.1",
-      "tag": "obsidian-compat/v1.1.1",
-      "stars": 0,
-      "released": "2026-10-08T16:53:51Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -400,7 +345,70 @@
           "*"
         ]
       },
+      "icon": "blocks",
       "tint": "purple"
+    },
+    {
+      "id": "periodic-notes",
+      "name": "Periodic notes",
+      "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "periodic-notes",
+      "version": "1.0.2",
+      "tag": "periodic-notes/v1.0.2",
+      "stars": 0,
+      "released": "2026-10-08T23:24:27Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-08T23:24:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "calendar",
+          "periodic-notes"
+        ]
+      },
+      "icon": "calendar-days",
+      "tint": "blue"
+    },
+    {
+      "id": "outliner",
+      "name": "Outliner",
+      "description": "Lists that work like an outliner in the editor: move an item up or down with its children (⌘⇧↑, ⌘⇧↓), Tab and Shift-Tab indent and outdent it with them, Enter on an empty item steps out a level, ⌘A selects the item's text and then the whole list, and ⌘↑ and ⌘↓ fold and unfold it.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "outliner",
+      "version": "1.0.1",
+      "tag": "outliner/v1.0.1",
+      "stars": 0,
+      "released": "2026-10-08T23:10:01Z",
+      "created": "2026-10-06T17:23:43Z",
+      "pushed": "2026-10-08T23:24:31Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-outliner"
+        ]
+      },
+      "icon": "list-tree"
     },
     {
       "id": "notebook-navigator",
@@ -414,7 +422,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -435,16 +443,16 @@
     {
       "id": "kanban",
       "name": "Kanban",
-      "description": "Obsidian Kanban's boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back so Obsidian still reads it.",
+      "description": "Kanban boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back in the Kanban plugin's format so other apps still read it.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "kanban",
-      "version": "1.0.0",
-      "tag": "kanban/v1.0.0",
+      "version": "1.0.1",
+      "tag": "kanban/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -460,21 +468,22 @@
           "obsidian-kanban"
         ]
       },
+      "icon": "square-kanban",
       "tint": "teal"
     },
     {
       "id": "icons",
       "name": "Icons",
-      "description": "An icon (any of Lucide's, or an emoji) and a colour for any folder or file, in the file tree, tabs and lists: set from a right-click in the file tree. A note keeps its own in its icon: and tint: properties; folders and other files in the settings. Obsidian's Iconize settings are read too.",
+      "description": "An icon (any of Lucide's, or an emoji) and a colour for any folder or file, in the file tree, tabs and lists: set from a right-click in the file tree. A note keeps its own in its icon: and tint: properties; folders and other files in the settings. Iconize's settings are read too.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "icons",
-      "version": "1.0.0",
-      "tag": "icons/v1.0.0",
+      "version": "1.0.1",
+      "tag": "icons/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -490,6 +499,7 @@
           "obsidian-icon-folder"
         ]
       },
+      "icon": "shapes",
       "tint": "orange"
     },
     {
@@ -504,7 +514,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -531,7 +541,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -559,7 +569,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -590,7 +600,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -626,7 +636,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -647,12 +657,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "excalidraw",
-      "version": "1.0.0",
-      "tag": "excalidraw/v1.0.0",
+      "version": "1.0.1",
+      "tag": "excalidraw/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -669,7 +679,8 @@
         "obsidian": [
           "obsidian-excalidraw-plugin"
         ]
-      }
+      },
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EExcalidraw%3C%2Ftitle%3E%3Cpath%20d%3D%22M23.9428%2019.8058a.1962.1962%200%200%200-.1679-.0337c-1.26-1.8552-2.8727-3.6104-4.4186-5.3152l-.2521-.284c-.0016-.0732-.0667-.1207-.1342-.1504-.0284-.0277-.0562-.0558-.0843-.0837-.0505-.1005-.1685-.1673-.2858-.1005-.4706.2347-.9068.5855-1.3274.9195-.5536.4345-1.1085.8695-1.6296%201.354a5.0577%205.0577%200%200%200-.5879.6185c-.0842.1168-.0168.2172.0843.2672-.3701.3677-.7402.736-1.109%201.1198a.1896.1896%200%200%200-.0506.1342c0%20.05.0337.1.0668.1168l.6559.5012v.0169c.9237.9194%202.5538%202.1729%204.2844%203.5268.2515.201.5205.4014.7727.6017.1173.1342.2346.2847.3357.4182.0506.0662.1685.0837.2353.0331.0337.0337.0843.0668.118.1005a.2395.2395%200%200%200%20.1004.0337.1534.1534%200%200%200%20.1348-.0668.2371.2371%200%200%200%20.0331-.1004c.0175%200%20.0169.0168.0337.0168a.1915.1915%200%200%200%20.1348-.0505l3.058-3.3265c.1198-.1159.0135-.2668-.0005-.2672zm-7.6277-.1336-1.5459-1.1704-.151-.0998c-.0337-.0169-.0674-.0506-.1011-.0668l-.1174-.1005c.6597-.659%201.3297-1.3074%201.9996-1.9557-.4874.4844-1.4622%201.9057-1.2606%202.3733.0023%200%20.0186.0419.0674.0842.3704.311.7398.6232%201.109.9357zm4.0997%203.1261-1.277-.97a26.9056%2026.9056%200%200%200-1.5795-1.5044c.689.5181%201.2769.9694%201.3611%201.053.6722.585.6379.485%201.0922.8696l.5542.4008c-.0735.103-.151.1477-.151.151zm.3357.2503-.0337-.0168c.0506-.0331.1011-.0668.1517-.1168zM.5885%203.4751c.0331.2172.0843.4344.1174.6354.2015%201.103.4031%202.1061.7726%202.8583l.1516.568c.0506.2173.1342.485.2185.5519.8568.7521%202.1674%201.8714%203.5785%202.9419a.1775.1775%200%200%200%20.2185%200s0%20.0162.0168.0162a.1528.1528%200%200%200%20.118.0506.1912.1912%200%200%200%20.1341-.0506c1.798-1.9887%203.1418-3.6267%204.0997-4.9974.0674-.0668.0843-.1673.0843-.251.0668-.0668.1173-.1504.1847-.2004.0668-.0668.0668-.184%200-.2346l-.0168-.0163c0-.033-.0169-.0836-.0506-.1005-.42-.4007-.722-.6848-1.0416-.9856A93.5546%2093.5546%200%200%201%206.822%201.9876c-.0169-.0169-.0337-.0337-.0674-.0337-.3358-.1168-1.0248-.2341-1.8817-.3845C3.596%201.3527%201.865%201.0519.3027.583c0%200-.1011%200-.118.0169L.1348.6505C.0498.7139.0222.7058%200%20.7167.017.8172.017.884.0506%201.0013c0%20.0331.0673.3009.0673.334zm7.1909%204.7802-.0337.0337a.0362.0362%200%200%201%20.0337-.0337zM6.553%202.238c.101.1005.5211.5019.6216.5855-.4369-.201-1.5284-.7022-2.0333-.8695.5043.1005%201.1933.201%201.4117.284ZM.7901%201.4027c.2521.4344.4537%201.9388.6553%203.4095-.118-.4682-.2016-.9357-.3027-1.3708C.9917%202.673.84%201.9876.6385%201.3858c.1232%200%20.1516.0212.1516.0169zm-.2858-.3683c0-.0162%200-.033-.0169-.033.0843%200%20.1342.0168.2016.0499.0006.0057-.1448-.0169-.1847-.0169zM23.6738.8172c.0169-.0662-.3358-.367-.2184-.3845.2527-.0163.2527-.4008%200-.4008-.3358.0169-.6884.0999-1.008.1504-.5878.1168-1.1926.2341-1.781.3671-1.327.2846-2.6375.5855-3.9481.937-.4032.1167-.857.2003-1.2432.4007-.1348.0668-.118.2004-.0506.284-.0337.0169-.0505.0169-.0842.0337-.1174.0169-.2185.0337-.3358.05-.1011.0168-.1516.1004-.1348.201%200%20.0162.0169.0499.0169.0661-.7059.9363-1.4954%201.9226-2.3523%202.9757-.84.9694-1.7306%201.9893-2.6212%203.0424-2.8396%203.3096-6.0487%207.0705-9.5936%2010.38a.1613.1613%200%200%200%200%20.2341c.0169.0163.0337.0331.0506.0331-.0506.0506-.1011.0843-.1517.1336-.0337.0337-.0505.0668-.0505.1005a.364.364%200%200%200-.0668.0837c-.0674.0667-.0674.1835.0169.234.0667.0662.1847.0662.2346-.0168.0175-.0169.0175-.0337.0337-.0337a.2648.2648%200%200%201%20.3701%200c.2016.2178.4032.435.588.6186l-.4201-.3508c-.0674-.0668-.1847-.05-.2347.0168-.068.0662-.0511.1835.0163.234l4.4691%203.7273c.0337.0337.0674.0337.118.0337.0505%200%20.0842-.0169.1173-.0506l.101-.0999c.017.0163.05.0163.0669.0163.0505%200%20.0842-.0163.118-.05%206.0486-6.0505%2010.9216-10.6141%2016.4997-14.6927.05-.0331.0668-.1.0668-.1505.0674%200%20.118-.05.151-.1167%201.0254-3.1255%201.227-5.9007%201.2938-7.2709%200-.0579.0169-.0371.0169-.0668.0168-.0337.0168-.0505.0168-.0505a.9784.9784%200%200%200-.0668-.6186zm-10.82%204.9144c.2684-.3008.5374-.6186.8064-.9026-1.7306%202.2734-4.6033%205.7665-8.67%209.9288C7.7626%2011.699%2010.5517%208.54%2012.854%205.7316ZM5.1414%2023.4662c-.0162-.0168-.0162-.0168%200-.0168zm2.5033-2.156c.1348-.1505.2695-.284.4206-.4345%200%200%200%20.0163.0168.0163-.2236.1978-.4334.4182-.4374.4182zm.6896-.6686c.0994-.0993.14-.1724.2852-.3177.9917-1.0193%202.0164-2.0393%203.058-3.0755l.0169-.0168c.2521-.2004.5542-.4177.8232-.6186a228.0627%20228.0627%200%200%200-4.1833%204.0286zm6.5187-16.732c-.5543.719-1.1759%201.6716-1.697%202.4238-1.6463%202.3733-6.9393%208.1735-7.0566%208.274A1189.6473%201189.6473%200%200%201%201.26%2019.204l-.1005.1005c-.0843-.1005-.0843-.251.0168-.3346%207.476-7.0037%2012.0132-12.837%2013.845-15.3944-.0506.1167-.0843.2166-.1685.334zm2.9064%203.4269c-.6716-.3851-.9905-.9869-.8064-1.5712l.0506-.201a.7753.7753%200%200%201%20.0842-.1666c.1848-.301.4538-.5518.7564-.7023.0163%200%20.0331%200%20.05-.0168-.0169-.0337-.0169-.0837-.0169-.1336.0169-.1005.0843-.1673.2016-.1673.2016%200%20.8238.1841%201.059.3845.0669.05.1343.1168.2017.1836.0842.1004.2184.2677.2852.4013.0337.0169.0674.1841.118.2678.0336.1336.0667.284.0505.4176-.0169.0169%200%20.1167-.0169.1167a1.6055%201.6055%200%200%201-.2184.6186c-.0307.0307.0064.0119-.0505.0668-.0843.1342-.2016.251-.319.3346-.3869.2672-.8238.3508-1.2606.234-.1105-.0473-.1672-.0667-.1685-.0667zm4.3692%201.4039c0%20.0168-.0168.0499%200%20.0667-.0337%200-.0505.0169-.0842.0337-1.3274.9689-2.6212%201.9888-3.915%203.0256%201.109-.9868%202.218-1.9894%203.3776-2.9756.3358-.3009.5711-.6854.6379-1.1199l.1685-1.003v-.0332c.0842-.201.4032-.1173.3526.1-.0042-.0012-.1731.795-.5374%201.9057z%22%2F%3E%3C%2Fsvg%3E"
     },
     {
       "id": "editing-toolbar",
@@ -683,7 +694,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -704,16 +715,16 @@
     {
       "id": "dataview",
       "name": "Dataview",
-      "description": "Obsidian's Dataview queries, kept working: ```dataview fences (LIST, TABLE, TASK, CALENDAR with FROM, WHERE, SORT, GROUP BY, FLATTEN, LIMIT) over frontmatter, inline fields (key:: value) and the notes' implicit fields, drawn as the app's tables and lists and live as notes change; tasks tick from the list; inline queries (`= this.file.name`). DataviewJS isn't run.",
+      "description": "Dataview's queries, kept working: ```dataview fences (LIST, TABLE, TASK, CALENDAR with FROM, WHERE, SORT, GROUP BY, FLATTEN, LIMIT) over frontmatter, inline fields (key:: value) and the notes' implicit fields, drawn as the app's tables and lists and live as notes change; tasks tick from the list; inline queries (`= this.file.name`). DataviewJS isn't run.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "dataview",
-      "version": "1.0.0",
-      "tag": "dataview/v1.0.0",
+      "version": "1.0.1",
+      "tag": "dataview/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -729,6 +740,7 @@
           "dataview"
         ]
       },
+      "icon": "database",
       "tint": "indigo"
     },
     {
@@ -743,7 +755,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -771,7 +783,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -809,7 +821,7 @@
       "stars": 0,
       "released": "2026-10-08T23:20:33Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -837,7 +849,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -865,7 +877,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -886,16 +898,16 @@
     {
       "id": "admonition",
       "name": "Admonitions",
-      "description": "Obsidian's Admonition code fences (```ad-note, with title:, collapse: and icon: lines) drawn as the app's own callouts, and read as callouts by agents.",
+      "description": "The Admonition plugin's code fences (```ad-note, with title:, collapse: and icon: lines) drawn as the app's own callouts, and read as callouts by agents.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "admonition",
-      "version": "1.0.0",
-      "tag": "admonition/v1.0.0",
+      "version": "1.0.1",
+      "tag": "admonition/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T23:20:38Z",
+      "pushed": "2026-10-08T23:24:31Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -911,6 +923,7 @@
           "obsidian-admonition"
         ]
       },
+      "icon": "message-square-warning",
       "tint": "blue"
     }
   ],
