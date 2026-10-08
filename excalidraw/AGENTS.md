@@ -1,6 +1,6 @@
 ## Drawings (`*.excalidraw`, `*.excalidraw.md`, Excalidraw)
-Hand-drawn diagrams and sketches. `.excalidraw.md` files are Obsidian's Excalidraw plugin's (the drawing compressed in
-a ```compressed-json block): the app opens and saves them so Obsidian still reads them; to write one, prefer a plain
+Hand-drawn diagrams and sketches. `.excalidraw.md` files are the Excalidraw plugin's (the drawing compressed in
+a ```compressed-json block): the app opens and saves them so other apps still read them; to write one, prefer a plain
 `.excalidraw`. A drawing is a `.excalidraw` file anywhere in the vault (new ones go next to the note
 being written, else `Drawings/`, or in the folder right-clicked in the file tree: New drawing): the JSON excalidraw.com saves, so files from there open as they are. The app draws it
 as a whiteboard; `![[Drawings/Plan.excalidraw]]` on a line of its own in a note or a dashboard shows a picture of it

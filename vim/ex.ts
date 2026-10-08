@@ -55,7 +55,7 @@ export const EX: Ex[] = [
   { name: "tabnext", short: "tabn", usage: ":tabn", help: "Go to the next tab", run: () => runCommandById("tab:next") },
   { name: "tabprevious", short: "tabp", usage: ":tabp", help: "Go to the previous tab", run: () => runCommandById("tab:previous") },
   { name: "cmd", short: "cmd", usage: ":cmd <command id>", help: "Run a command of the palette", run: (a) => command(a) },
-  { name: "obcommand", short: "obcommand", usage: ":obcommand <command id>", help: "Run a command (Obsidian's name)", run: (a) => command(a) },
+  { name: "obcommand", short: "obcommand", usage: ":obcommand <command id>", help: "Run a command by its id", run: (a) => command(a) },
   { name: "vimrc", short: "vimrc", usage: ":vimrc", help: "Open the vimrc", run: () => void openVimrc() },
   { name: "help", short: "h", usage: ":help", help: "Show Vim's keys", run: () => showHelp() },
 ]

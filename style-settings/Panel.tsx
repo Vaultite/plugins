@@ -203,7 +203,7 @@ export function StylePanel() {
       {st.sections.map((sec, i) => <SectionGroup key={`${sec.source}:${sec.id}:${i}`} sec={sec} values={st.values} />)}
       {!snippets.length && (
         <p className="text-[13px] leading-[18px] text-muted-foreground">
-          No CSS snippet that's on has style settings. A snippet or an Obsidian one declares them in a <code className="text-[12px]">/* @settings */</code> comment;
+          No CSS snippet that's on has style settings. A snippet declares them in a <code className="text-[12px]">/* @settings */</code> comment;
           add one in Settings, Appearance, CSS snippets.
         </p>
       )}

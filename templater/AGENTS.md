@@ -1,5 +1,5 @@
 ## Templater
-Templates (in the Templates plugin's folder) may hold Obsidian's Templater commands, run when a note is made from one
+Templates (in the Templates plugin's folder) may hold Templater's commands, run when a note is made from one
 or one is inserted: `<% tp.date.now("YYYY-MM-DD") %>` writes a value; `<%* %>` runs code; `-%>` / `<%-` drop the
 newline after / before, `_%>` / `<%_` all whitespace. Make a note from one with `templater_new`; don't write the
 commands' output by hand. What runs (the rest stays as written, and the user is told):

@@ -3,7 +3,7 @@
   "icon": "calendar-days",
   "name": "Periodic notes",
   "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "category": "writing",
@@ -63,7 +63,7 @@
     "dailyFolder": {
       "type": "string",
       "label": "Daily notes folder",
-      "description": "where daily notes go; unset, as Obsidian says, else where daily notes are (Daily)"
+      "description": "where daily notes go; unset, as the vault's existing settings say, else where daily notes are (Daily)"
     },
     "dailyFormat": {
       "type": "string",
@@ -78,12 +78,12 @@
     "weekly": {
       "type": "boolean",
       "label": "Weekly notes",
-      "description": "a note for each week; unset, as Obsidian's Periodic Notes says (else off)"
+      "description": "a note for each week; unset, as the vault's Periodic Notes settings say (else off)"
     },
     "weeklyFolder": {
       "type": "string",
       "label": "Weekly notes folder",
-      "description": "where weekly notes go; unset, as Obsidian says, else Weekly"
+      "description": "where weekly notes go; unset, as the vault's existing settings say, else Weekly"
     },
     "weeklyFormat": {
       "type": "string",
@@ -98,12 +98,12 @@
     "monthly": {
       "type": "boolean",
       "label": "Monthly notes",
-      "description": "a note for each month; unset, as Obsidian's Periodic Notes says (else off)"
+      "description": "a note for each month; unset, as the vault's Periodic Notes settings say (else off)"
     },
     "monthlyFolder": {
       "type": "string",
       "label": "Monthly notes folder",
-      "description": "where monthly notes go; unset, as Obsidian says, else Monthly"
+      "description": "where monthly notes go; unset, as the vault's existing settings say, else Monthly"
     },
     "monthlyFormat": {
       "type": "string",
@@ -118,12 +118,12 @@
     "quarterly": {
       "type": "boolean",
       "label": "Quarterly notes",
-      "description": "a note for each quarter; unset, as Obsidian's Periodic Notes says (else off)"
+      "description": "a note for each quarter; unset, as the vault's Periodic Notes settings say (else off)"
     },
     "quarterlyFolder": {
       "type": "string",
       "label": "Quarterly notes folder",
-      "description": "where quarterly notes go; unset, as Obsidian says, else Quarterly"
+      "description": "where quarterly notes go; unset, as the vault's existing settings say, else Quarterly"
     },
     "quarterlyFormat": {
       "type": "string",
@@ -138,12 +138,12 @@
     "yearly": {
       "type": "boolean",
       "label": "Yearly notes",
-      "description": "a note for each year; unset, as Obsidian's Periodic Notes says (else off)"
+      "description": "a note for each year; unset, as the vault's Periodic Notes settings say (else off)"
     },
     "yearlyFolder": {
       "type": "string",
       "label": "Yearly notes folder",
-      "description": "where yearly notes go; unset, as Obsidian says, else Yearly"
+      "description": "where yearly notes go; unset, as the vault's existing settings say, else Yearly"
     },
     "yearlyFormat": {
       "type": "string",

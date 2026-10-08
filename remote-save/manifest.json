@@ -3,7 +3,7 @@
   "icon": "cloud",
   "name": "Remote save",
   "description": "Syncs or backs up the vault with storage you own: an S3-compatible bucket (AWS S3, Cloudflare R2, Backblaze B2, MinIO) or a WebDAV folder (Nextcloud and friends). Two-way, push only or pull only, on a schedule or by hand, optionally encrypted. It talks only to the addresses you add; their keys stay on the machine you enter them on.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
