@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-08T16:53:53.631Z",
+  "generated": "2026-10-08T23:10:27.041Z",
   "plugins": [
     {
       "id": "vim",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -45,7 +45,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -60,7 +60,8 @@
         "obsidian": [
           "templater-obsidian"
         ]
-      }
+      },
+      "tint": "purple"
     },
     {
       "id": "tasks",
@@ -74,7 +75,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -89,7 +90,8 @@
         "obsidian": [
           "obsidian-tasks-plugin"
         ]
-      }
+      },
+      "tint": "green"
     },
     {
       "id": "style-settings",
@@ -103,7 +105,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -118,7 +120,8 @@
         "obsidian": [
           "obsidian-style-settings"
         ]
-      }
+      },
+      "tint": "pink"
     },
     {
       "id": "remote-save",
@@ -132,7 +135,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -152,7 +155,8 @@
         "obsidian": [
           "remotely-save"
         ]
-      }
+      },
+      "tint": "teal"
     },
     {
       "id": "quickadd",
@@ -166,7 +170,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -181,7 +185,8 @@
         "obsidian": [
           "quickadd"
         ]
-      }
+      },
+      "tint": "yellow"
     },
     {
       "id": "periodic-notes",
@@ -195,7 +200,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -211,7 +216,8 @@
           "calendar",
           "periodic-notes"
         ]
-      }
+      },
+      "tint": "blue"
     },
     {
       "id": "outliner",
@@ -220,12 +226,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "outliner",
-      "version": "1.0.0",
-      "tag": "outliner/v1.0.0",
+      "version": "1.0.1",
+      "tag": "outliner/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -240,7 +246,8 @@
         "obsidian": [
           "obsidian-outliner"
         ]
-      }
+      },
+      "icon": "list-tree"
     },
     {
       "id": "obsidian-compat",
@@ -254,7 +261,7 @@
       "stars": 0,
       "released": "2026-10-08T16:53:51Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -276,7 +283,8 @@
         "obsidian": [
           "*"
         ]
-      }
+      },
+      "tint": "purple"
     },
     {
       "id": "notebook-navigator",
@@ -285,12 +293,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "notebook-navigator",
-      "version": "1.0.0",
-      "tag": "notebook-navigator/v1.0.0",
+      "version": "1.0.1",
+      "tag": "notebook-navigator/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -305,7 +313,8 @@
         "obsidian": [
           "notebook-navigator"
         ]
-      }
+      },
+      "icon": "notebook-tabs"
     },
     {
       "id": "kanban",
@@ -319,7 +328,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -334,7 +343,8 @@
         "obsidian": [
           "obsidian-kanban"
         ]
-      }
+      },
+      "tint": "teal"
     },
     {
       "id": "icons",
@@ -348,7 +358,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -363,7 +373,8 @@
         "obsidian": [
           "obsidian-icon-folder"
         ]
-      }
+      },
+      "tint": "orange"
     },
     {
       "id": "git",
@@ -372,12 +383,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "git",
-      "version": "1.0.0",
-      "tag": "git/v1.0.0",
+      "version": "1.0.1",
+      "tag": "git/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -397,7 +408,9 @@
         "obsidian": [
           "obsidian-git"
         ]
-      }
+      },
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EGit%3C%2Ftitle%3E%3Cpath%20d%3D%22M13.09%2023.549a1.54%201.54%200%200%201-2.18%200L.451%2013.089a1.54%201.54%200%200%201%200-2.179l7.191-7.19%202.733%202.733a1.85%201.85%200%200%200%20.964%202.326v6.66a1.849%201.849%200%201%200%201.54%200V8.957l2.508%202.508a1.85%201.85%200%201%200%201.09-1.09l-2.634-2.634a1.85%201.85%200%200%200-2.378-2.377L8.73%202.63%2010.91.451a1.54%201.54%200%200%201%202.179%200l10.459%2010.46a1.54%201.54%200%200%201%200%202.179z%22%2F%3E%3C%2Fsvg%3E",
+      "tint": "orange"
     },
     {
       "id": "excalidraw",
@@ -411,7 +424,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -437,12 +450,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "editing-toolbar",
-      "version": "1.0.0",
-      "tag": "editing-toolbar/v1.0.0",
+      "version": "1.0.1",
+      "tag": "editing-toolbar/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T19:12:15Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -457,7 +470,8 @@
         "obsidian": [
           "editing-toolbar"
         ]
-      }
+      },
+      "icon": "panel-top"
     },
     {
       "id": "dataview",
@@ -471,7 +485,7 @@
       "stars": 0,
       "released": "2026-10-06T19:12:15Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -486,7 +500,8 @@
         "obsidian": [
           "dataview"
         ]
-      }
+      },
+      "tint": "indigo"
     },
     {
       "id": "claude-chat",
@@ -495,12 +510,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "claude-chat",
-      "version": "1.0.0",
-      "tag": "claude-chat/v1.0.0",
+      "version": "1.0.1",
+      "tag": "claude-chat/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -522,7 +537,9 @@
         "obsidian": [
           "realclaudian"
         ]
-      }
+      },
+      "icon": "claude",
+      "tint": "orange"
     },
     {
       "id": "advanced-tables",
@@ -531,12 +548,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "advanced-tables",
-      "version": "1.0.0",
-      "tag": "advanced-tables/v1.0.0",
+      "version": "1.0.1",
+      "tag": "advanced-tables/v1.0.1",
       "stars": 0,
-      "released": "2026-10-06T22:04:22Z",
+      "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -551,7 +568,8 @@
         "obsidian": [
           "table-editor-obsidian"
         ]
-      }
+      },
+      "icon": "table-2"
     },
     {
       "id": "admonition",
@@ -565,7 +583,7 @@
       "stars": 0,
       "released": "2026-10-06T22:04:22Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-08T16:53:53Z",
+      "pushed": "2026-10-08T23:10:10Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -580,7 +598,8 @@
         "obsidian": [
           "obsidian-admonition"
         ]
-      }
+      },
+      "tint": "blue"
     }
   ],
   "blocked": {}
