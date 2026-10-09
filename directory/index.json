@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-09T14:49:00.463Z",
+  "generated": "2026-10-09T19:02:02.640Z",
   "plugins": [
     {
       "id": "templater",
@@ -13,8 +13,8 @@
       "tag": "templater/v1.0.2",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -44,8 +44,8 @@
       "tag": "tasks/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -75,8 +75,8 @@
       "tag": "style-settings/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -106,8 +106,8 @@
       "tag": "remote-save/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -142,8 +142,8 @@
       "tag": "quickadd/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -173,8 +173,8 @@
       "tag": "plugin-compat/v1.2.2",
       "stars": 0,
       "released": "2026-10-09T14:48:41Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -211,8 +211,8 @@
       "tag": "periodic-notes/v1.0.2",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -243,8 +243,8 @@
       "tag": "outliner/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -263,6 +263,35 @@
       "icon": "list-tree"
     },
     {
+      "id": "now-playing",
+      "name": "Now playing",
+      "description": "What your Mac is playing, in the sidebar and on a page: the cover, the song and artist, how far in, play, pause, skip and shuffle, and the volume. Works with any app that tells macOS what it plays (Spotify, Music, a browser tab). Only on the Mac the app's server runs on.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "now-playing",
+      "version": "1.0.0",
+      "tag": "now-playing/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-09T19:01:59Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "music",
+      "tint": "pink"
+    },
+    {
       "id": "notebook-navigator",
       "name": "Notebook navigator",
       "description": "Folders, tags, shortcuts and recent notes beside a list of the notes in the one you pick, each with its date, first lines and first image, like Apple Notes or Bear. In the sidebar, in a tab, and as a phone screen.",
@@ -273,8 +302,8 @@
       "tag": "notebook-navigator/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,8 +332,8 @@
       "tag": "kanban/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -334,8 +363,8 @@
       "tag": "icons/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -365,8 +394,8 @@
       "tag": "git/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -401,8 +430,8 @@
       "tag": "excalidraw/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -433,8 +462,8 @@
       "tag": "editing-toolbar/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -463,8 +492,8 @@
       "tag": "dataview/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -494,8 +523,8 @@
       "tag": "claude-chat/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -532,8 +561,8 @@
       "tag": "advanced-tables/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -562,8 +591,8 @@
       "tag": "admonition/v1.0.1",
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
-      "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T14:48:44Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-09T19:02:02Z",
       "issues": {
         "open": 0,
         "closed": 0
