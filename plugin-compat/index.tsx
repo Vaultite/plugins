@@ -301,9 +301,9 @@ type Found = { available: boolean; total: number; entries: { id: string; name: s
   installed: boolean; desktopOnly: boolean | null; status: "works" | "partly" | "no" | "unneeded" | "untested"; natives: { id: string; name: string; on: boolean }[] }[] }
 const count = (n: number) => (n >= 1e6 ? `${(n / 1e6).toFixed(1).replace(/\.0$/, "")}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n))
 const STATUS = { works: { text: "Works here", tone: "green" }, partly: { text: "Partly works here", tone: "orange" }, no: { text: "Doesn't run here", tone: "red" },
-  unneeded: { text: "Not needed here", tip: "Vaultite does what it does itself (the other app's own look and views, images in the editor)" } } as const
+  unneeded: { text: "Not needed here", tip: "Vaultite does what it does itself (Obsidian's own look and views, images in the editor)" } } as const
 const browse: BrowseSource = {
-  title: "Other apps",
+  title: "Obsidian",
   sorts: [{ value: "downloads", label: "Downloads" }, { value: "updated", label: "Updated" }, { value: "name", label: "Name" }],
   search: async (q, sort) => {
     const f = await get<Found>(`plugin-compat/directory?q=${encodeURIComponent(q)}&sort=${sort}`)
@@ -315,11 +315,11 @@ const browse: BrowseSource = {
     })) }
   },
   install: async (id) => { await post("ops/plugin-compat.install", { repo: id, on: true }); await refresh(); await sync() },
-  note: "Plugins from other apps run with the app's full access, as in the app they were written for. Works here: tested in Vaultite.",
+  note: "Obsidian plugins run with the app's full access, as in Obsidian. Works here: tested in Vaultite.",
 }
 const host: PluginHost = {
-  title: "Plugins from other apps", kind: "plugin from another app", intro: "Your vault's plugins from another app, run as they are.", browse,
-  trust: "Plugins from other apps run with the app's full access, as in the app they were written for: it can read and change every file in this vault and reach the network.",
+  title: "Obsidian plugins", kind: "Obsidian plugin", intro: "Your vault's Obsidian plugins, run as they are.", browse,
+  trust: "Obsidian plugins run with the app's full access, as in Obsidian: it can read and change every file in this vault and reach the network.",
   setOn: async (hid, on) => { await post("plugin-compat/enable", { id: unhosted(hid), on }); await refresh(); await sync() },
   allow: async (hid) => { await run("allow", unhosted(hid)); await refresh(); await sync() },
   uninstall: async (hid) => { unloadPlugin(unhosted(hid)); await run("uninstall", unhosted(hid)); await refresh(); await sync() },
@@ -489,7 +489,7 @@ export default definePlugin({
   background: ({ store }) => <Runtime seen={(store as { obsidianCompat?: string }).obsidianCompat} />,
   noteTop: { anchors: { render: (f) => <NoteAnchors path={f.path} /> } },
   fileBar: { actions: { render: (f) => <NoteActions path={f.path} /> } },
-  ambient: { status: { title: "Status bar of plugins from other apps", render: () => <LooseStatus /> } },
+  ambient: { status: { title: "Obsidian plugins' status bar", render: () => <LooseStatus /> } },
   fileRows: () => (appOf().workspace.internal.find((l) => l.view.getViewType() === "file-explorer")?.view as FileExplorerView | undefined)?.fileRows() ?? {},
   editor: (ctx) => [ctx.kind === "markdown" ? obsidianTokens() : [], editorExtension(ctx.path, ctx.kind === "markdown"), hotkeysFirst, suggestExtension(registered.suggests, () => activeEditor(), () => appOf().workspace.getActiveFile())],
   // (one menu for all: a plugin turned off has unloaded its handler)

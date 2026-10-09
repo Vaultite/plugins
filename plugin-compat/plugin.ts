@@ -23,7 +23,7 @@ const idOf = (v: unknown) => { const id = String(v ?? ""); if (!ID.test(id)) thr
 // Plugins' code, the vault's files (hidden ones too), their settings and the network as the server: this machine's owner only
 // (or its allowUsers), like Node's bridge: an allowed plugin's settings may name a program it runs.
 const owned = <T>(fn: (req: Request) => T) => async (req: Request) => {
-  const why = req.http ? await plugin.refusal(req.http, "Plugins from other apps") : ""
+  const why = req.http ? await plugin.refusal(req.http, "Obsidian plugins") : ""
   if (why) throw new HTTPError(403, why)
   return fn(req)
 }
@@ -33,7 +33,7 @@ plugin.route("GET", "plugin-compat/plugins", () => store().list())
 
 ownRoute("GET", "plugin-compat/plugin/*", (req) => {
   const id = idOf(req.wild[0]), p = store().get(id)
-  if (!p) throw new HTTPError(404, `no plugin '${id}' from another app`)
+  if (!p) throw new HTTPError(404, `no Obsidian plugin '${id}'`)
   if (!p.allowed) throw new HTTPError(403, `${p.manifest.name} waits for this machine's owner to allow it`)
   const read = (f: string) => config().read(`.obsidian/plugins/${id}/${f}`)?.toString("utf8") ?? null
   let data: unknown = null
@@ -45,7 +45,7 @@ ownRoute("GET", "plugin-compat/plugin/*", (req) => {
 // (cached for good under its code's hash), wrapped as Obsidian runs it (CommonJS, names the runtime gives it).
 ownRoute("GET", "plugin-compat/main/*", (req) => {
   const id = idOf(req.wild[0]), p = store().get(id)
-  if (!p) throw new HTTPError(404, `no plugin '${id}' from another app`)
+  if (!p) throw new HTTPError(404, `no Obsidian plugin '${id}'`)
   if (!p.allowed) throw new HTTPError(403, `${p.manifest.name} waits for this machine's owner to allow it`)
   const names = String(req.query.s ?? "").split(",").filter(Boolean)
   if (!names.every((n) => /^[A-Za-z_$][\w$]*$/.test(n))) throw new HTTPError(400, "bad names")
@@ -68,8 +68,8 @@ ownRoute("POST", "plugin-compat/enable", async (req) => {
   const id = idOf(req.body.id), on = !!req.body.on
   if (on) {
     const p = store().get(id)
-    if (!p) throw new HTTPError(404, `no plugin '${id}' from another app`)
-    if (!p.allowed && !(req.http && await plugin.refusal(req.http, "Plugins from other apps"))) store().allow(id)
+    if (!p) throw new HTTPError(404, `no Obsidian plugin '${id}'`)
+    if (!p.allowed && !(req.http && await plugin.refusal(req.http, "Obsidian plugins"))) store().allow(id)
   }
   store().setEnabled(id, on)
   return store().get(id)
@@ -78,23 +78,23 @@ ownRoute("POST", "plugin-compat/enable", async (req) => {
 /** On, allowed here when this machine's owner asks, and what stands in for it turned off (the core's other-apps.use). */
 async function turnOn(id: string, ctx: OpCtx) {
   try { await ctx.op("other-apps.use", { id, with: "original" }); return } catch { /* Vaults from other apps is off: just this */ }
-  if (!store().get(id)?.allowed && !(await ctx.refusal?.("Plugins from other apps"))) store().allow(id)
+  if (!store().get(id)?.allowed && !(await ctx.refusal?.("Obsidian plugins"))) store().allow(id)
   store().setEnabled(id, true)
 }
 wireRunner(plugin, store)
 
 plugin.op({
   id: "plugin-compat.allow",
-  owner: "Plugins from other apps",
-  summary: "Let another app's plugin's code run on this machine as it is now (its owner only)",
+  owner: "Obsidian plugins",
+  summary: "Let an Obsidian plugin's code run on this machine as it is now (its owner only)",
   kind: "write",
   params: { id: { type: "string", required: true, description: "the plugin's id" } },
   args: ["id"],
   cli: "plugin-compat allow",
   run: async ({ id }, ctx) => {
     const p = store().get(idOf(id))
-    if (!p) throw new OpError(`no plugin '${id}' from another app: vau plugin-compat list`)
-    const why = (await ctx.refusal?.("Plugins from other apps")) ?? ""
+    if (!p) throw new OpError(`no Obsidian plugin '${id}': vau plugin-compat list`)
+    const why = (await ctx.refusal?.("Obsidian plugins")) ?? ""
     if (why) throw new OpError(why)
     store().allow(p.id)
     return { id: p.id, hash: p.hash }
@@ -103,7 +103,7 @@ plugin.op({
 
 plugin.op({
   id: "plugin-compat.list",
-  summary: "The plugins from other apps this vault has, which are on and which this machine allows",
+  summary: "The Obsidian plugins this vault has, which are on and which this machine allows",
   kind: "read",
   params: {},
   cli: "plugin-compat list",
@@ -112,15 +112,15 @@ plugin.op({
 
 plugin.op({
   id: "plugin-compat.enable",
-  owner: "Plugins from other apps",
-  summary: "Turn a plugin from another app on or off in this vault (on: allowed on this machine too, when its owner asks)",
+  owner: "Obsidian plugins",
+  summary: "Turn an Obsidian plugin on or off in this vault (on: allowed on this machine too, when its owner asks)",
   kind: "write",
   params: { id: { type: "string", required: true, description: "the plugin's id" }, on: { type: "boolean", description: "false turns it off" } },
   args: ["id"],
   cli: "plugin-compat enable",
   run: async ({ id, on }, ctx) => {
     const p = store().get(idOf(id))
-    if (!p) throw new OpError(`no plugin '${id}' from another app`)
+    if (!p) throw new OpError(`no Obsidian plugin '${id}'`)
     if (on !== false) await turnOn(p.id, ctx); else store().setEnabled(p.id, false)
     return store().get(p.id)
   },
@@ -298,17 +298,17 @@ async function download(repo: string, version: string, file: string) {
 
 plugin.op({
   id: "plugin-compat.install",
-  owner: "Plugins from other apps",
-  summary: "Install a plugin from another app from its GitHub release (main.js, manifest.json, styles.css); off until turned on (--on)",
+  owner: "Obsidian plugins",
+  summary: "Install an Obsidian plugin from its GitHub release, as Obsidian does (main.js, manifest.json, styles.css); off until turned on (--on)",
   kind: "write",
   lock: false,
-  params: { repo: { type: "string", required: true, description: "its GitHub repository (owner/name), or its id in the other app's plugin list" },
+  params: { repo: { type: "string", required: true, description: "its GitHub repository (owner/name), or its id in Obsidian's community list" },
     on: { type: "boolean", description: "turn it on once installed (allowed on this machine when its owner asks)" } },
   args: ["repo"],
   cli: "plugin-compat install",
   run: async ({ repo: given, on }, ctx) => {
     const repo = String(given).includes("/") ? String(given) : (await community(plugin))?.plugins.find((p) => p.id === given)?.repo
-    if (!repo) throw new OpError(`no '${given}' in the other app's plugin list`)
+    if (!repo) throw new OpError(`no '${given}' in Obsidian's community plugins`)
     if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new OpError("repo is owner/name")
     const head = await fetch(`https://raw.githubusercontent.com/${repo}/HEAD/manifest.json`).then((r) => (r.ok ? r.json() : null), () => null)
     if (!head?.version) throw new OpError(`${repo} has no manifest.json naming a version`)
@@ -334,15 +334,15 @@ plugin.op({
 
 plugin.op({
   id: "plugin-compat.uninstall",
-  owner: "Plugins from other apps",
-  summary: "Remove a plugin from another app installed here, and turn it off (the other app's own, in .obsidian/plugins/, are only turned off)",
+  owner: "Obsidian plugins",
+  summary: "Remove an Obsidian plugin installed here, and turn it off (Obsidian's own, in .obsidian/plugins/, are only turned off)",
   kind: "destructive",
   params: { id: { type: "string", required: true, description: "the plugin's id" } },
   args: ["id"],
   cli: "plugin-compat uninstall",
   run: ({ id }) => {
     const p = store().get(idOf(id))
-    if (!p) throw new OpError(`no plugin '${id}' from another app`)
+    if (!p) throw new OpError(`no Obsidian plugin '${id}'`)
     store().setEnabled(p.id, false)
     if (p.here) for (const f of ["main.js", "manifest.json", "styles.css"]) config().remove(`.obsidian/plugins/${p.id}/${f}`)
     return { id: p.id, removed: p.here }

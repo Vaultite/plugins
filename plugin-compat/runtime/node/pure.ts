@@ -288,7 +288,7 @@ export function pureModules(proc: Any, req: Any): Record<string, Any> {
     path, "path/posix": path, string_decoder: { StringDecoder }, buffer: { Buffer, SlowBuffer: Buffer, kMaxLength: 2 ** 31 - 1, constants: { MAX_LENGTH: 2 ** 31 - 1, MAX_STRING_LENGTH: 2 ** 29 }, Blob, atob, btoa, File: globalThis.File },
     timers, "timers/promises": timersPromises, readline, "readline/promises": readline.promises, tty: { isatty: () => false, ReadStream: Stream.Readable, WriteStream: Stream.Writable },
     module: { createRequire: () => req, builtinModules: BUILTIN, isBuiltin: builtin, Module: class Module {} },
-    worker_threads: { isMainThread: true, parentPort: null, workerData: null, threadId: 0, Worker: class { constructor() { throw new Error("worker_threads aren't available to plugins from other apps here") } }, MessageChannel, MessagePort, BroadcastChannel },
+    worker_threads: { isMainThread: true, parentPort: null, workerData: null, threadId: 0, Worker: class { constructor() { throw new Error("worker_threads aren't available to Obsidian plugins here") } }, MessageChannel, MessagePort, BroadcastChannel },
     async_hooks: { AsyncLocalStorage, AsyncResource, createHook: () => ({ enable() { return this }, disable() { return this } }), executionAsyncId: () => 0, triggerAsyncId: () => 0, executionAsyncResource: () => ({}) },
     punycode: { toASCII: url.domainToASCII, toUnicode: (d: string) => d, encode: (s: string) => s, decode: (s: string) => s, ucs2: { decode: (s: string) => [...s].map((c) => c.codePointAt(0)), encode: (a: number[]) => String.fromCodePoint(...a) } },
     vm, perf_hooks: { performance, PerformanceObserver: globalThis.PerformanceObserver, monitorEventLoopDelay: () => ({ enable() {}, disable() {}, percentile: () => 0 }) },

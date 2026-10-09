@@ -52,10 +52,10 @@ await shot("plugins")
 // Its switch turned on there: Vaultite's Dataview goes off, said in a notice
 await sw.click()
 ok("turning the original on turns Vaultite's off", await until(async () => { const r = (await api("POST", "ops/other-apps.plugins", {})).find((x) => x.id === "dataview"); return r.original === "on" && !r.here[0]?.on }, 30000))
-ok("said in a notice", await page.getByText(/Turned off Dataview: Dataview \(plugin from another app\) does the same/).isVisible().catch(() => false))
+ok("said in a notice", await page.getByText(/Turned off Dataview: Dataview \(Obsidian plugin\) does the same/).isVisible().catch(() => false))
 // 5. Browse, Obsidian's source: search and install one
 await page.getByRole("radio", { name: "Browse" }).click(); await wait(500)
-await page.getByRole("radio", { name: "Other apps" }).click()
+await page.getByRole("radio", { name: "Obsidian" }).click()
 ok("Obsidian's community plugins listed", await until(async () => (await page.locator("[data-browse-row]").count()) > 20, 30000))
 await shot("browse")
 await page.locator('input[type="search"], input[placeholder*="earch"]').first().fill("natural language dates")
