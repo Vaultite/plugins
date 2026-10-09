@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-09T01:06:03.011Z",
+  "generated": "2026-10-09T14:49:00.463Z",
   "plugins": [
     {
       "id": "work",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -40,7 +40,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -71,7 +71,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -102,7 +102,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -133,7 +133,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -164,7 +164,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -198,7 +198,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -234,7 +234,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -259,7 +259,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -285,12 +285,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "plugin-compat",
-      "version": "1.2.1",
-      "tag": "plugin-compat/v1.2.1",
+      "version": "1.2.2",
+      "tag": "plugin-compat/v1.2.2",
       "stars": 0,
-      "released": "2026-10-09T00:10:54Z",
+      "released": "2026-10-09T14:48:41Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -328,7 +328,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -360,7 +360,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -390,7 +390,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -420,7 +420,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -451,7 +451,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -482,7 +482,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -509,7 +509,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -537,7 +537,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -568,7 +568,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -604,7 +604,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -630,7 +630,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -662,7 +662,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -692,7 +692,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -723,7 +723,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -751,7 +751,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -789,7 +789,7 @@
       "stars": 0,
       "released": "2026-10-09T01:05:50Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -821,7 +821,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -849,7 +849,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -879,7 +879,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-06T17:23:43Z",
-      "pushed": "2026-10-09T01:06:02Z",
+      "pushed": "2026-10-09T14:48:44Z",
       "issues": {
         "open": 0,
         "closed": 0
