@@ -1,21 +1,24 @@
 {
   "id": "browseros",
   "name": "BrowserOS",
-  "description": "A web page handed to BrowserOS, in a tab next to the Web viewer's: a button on every page opens it in BrowserOS's own window, kept behind the tab, where passkeys and its logins work.",
+  "description": "BrowserOS in Vaultite: a button on every Web viewer page opens it in BrowserOS's own window, kept behind a tab, where passkeys and its logins work; and a Browser agents panel lists BrowserOS neo's agent sessions on this machine, a click showing the tab one works in.",
   "icon": "compass",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
   "disclosures": {
-    "shell": true
+    "shell": true,
+    "network": [
+      "127.0.0.1"
+    ],
+    "outsideVault": true
   },
+  "runsOnServer": true,
   "category": "navigation",
-  "requires": [
-    "app-windows"
-  ],
   "enhances": [
-    "web-viewer"
+    "web-viewer",
+    "app-windows"
   ],
   "tint": "teal"
 }
