@@ -1,4 +1,4 @@
-/*! path-browserify 1.0.1 (Node's posix path) | MIT license | Joyent, Inc. and other Node contributors: made a function of process, for process.cwd() */
+/*! path-browserify 1.0.1 (Node's posix path) | MIT license, in LICENSES.md | Joyent, Inc. and other Node contributors: made a function of process, for process.cwd() */
 export default function pathFor(process) {
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel

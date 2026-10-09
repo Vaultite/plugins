@@ -3,7 +3,7 @@
   "icon": "blocks",
   "name": "Obsidian plugins",
   "description": "Runs plugins written for Obsidian as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, as they do in Obsidian.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "category": "developer",
