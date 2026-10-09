@@ -36,3 +36,5 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
   lines replayed, `CLAUDE_CHAT_CLI` and `FAKE_CLAUDE_STATE` on the server), never the real CLI.
 - **BrowserOS**: hands a Web viewer page to BrowserOS (`webPageActions`, `appWindows.open`), found by its bundle id
   (`com.browseros.`, neo first); a desktop app without `appWindows.open` says it needs a newer one.
+  Its Browser agents panel reads neo's undocumented local API (what its cockpit uses: `/api/v1/sessions?status=live`,
+  port in neo's config.json) and shows a tab by AppleScript (neo ignores CDP's bringToFront); tests use a fake neo.
