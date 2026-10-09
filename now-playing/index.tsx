@@ -114,23 +114,33 @@ function VolumeRow({ n, send }: { n: NowPlaying; send: (c: Command, v?: number) 
   )
 }
 
+/** `wide`: the cover beside the rest (a page); else the sidebar's: a small cover beside the title, the rest under. */
 function Player({ n, send, volume = true, wide }: { n: NowPlaying; send: (c: Command, v?: number) => void; volume?: boolean; wide?: boolean }) {
   const t = n.track
   if (!n.available) return <p className="text-[13px] text-tertiary">Now playing isn't available here: {n.reason}.</p>
-  return (
-    <div className={cn("flex gap-3", wide ? "items-center max-sm:flex-col max-sm:items-stretch" : "flex-col")}>
-      <Cover n={n} className={wide ? "w-40 shrink-0 max-sm:w-full" : "w-full"} />
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <div className="min-w-0">
-          <div className="truncate text-[15px] font-semibold leading-5" title={t?.title}>{t?.title ?? "Nothing playing"}</div>
-          <div className="truncate text-[13px] leading-5 text-muted-foreground" title={t?.artist ?? undefined}>
-            {t ? [t.artist, wide && t.album !== t.title ? t.album : null].filter(Boolean).join(" · ") || n.app?.name : "Play something on this Mac"}
-          </div>
-        </div>
-        {t && <Progress n={n} send={send} />}
-        {t && <Controls n={n} send={send} />}
-        {volume && <VolumeRow n={n} send={send} />}
+  const title = (
+    <div className="min-w-0">
+      <div className="truncate text-[15px] font-semibold leading-5" title={t?.title}>{t?.title ?? "Nothing playing"}</div>
+      <div className="truncate text-[13px] leading-5 text-muted-foreground" title={t?.artist ?? undefined}>
+        {t ? [t.artist, wide && t.album !== t.title ? t.album : null].filter(Boolean).join(" · ") || n.app?.name : "Play something on this Mac"}
       </div>
+    </div>
+  )
+  const rest = <>
+    {t && <Progress n={n} send={send} />}
+    {t && <Controls n={n} send={send} />}
+    {volume && <VolumeRow n={n} send={send} />}
+  </>
+  if (!wide) return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2.5">{t && <Cover n={n} className="w-14 shrink-0 rounded-[6px]" />}{title}</div>
+      {rest}
+    </div>
+  )
+  return (
+    <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-stretch">
+      <Cover n={n} className="w-40 shrink-0 max-sm:w-full" />
+      <div className="flex min-w-0 flex-1 flex-col gap-2">{title}{rest}</div>
     </div>
   )
 }
@@ -151,7 +161,7 @@ function Ambient() {
   const t = n?.track
   if (!n || !t) return null
   const label = [t.title, t.artist].filter(Boolean).join(" · ")
-  return <AmbientButton icon={n.playing ? Music : Pause} tint="var(--now-playing)" text={<span className="max-w-56 truncate">{label}</span>}
+  return <AmbientButton icon={Music} tint={n.playing ? "var(--now-playing)" : undefined} text={<span className="max-w-56 truncate">{label}</span>}
     tip={`${n.playing ? "Pause" : "Play"}: ${label}`} onClick={() => send(n.playing ? "pause" : "play")} />
 }
 
