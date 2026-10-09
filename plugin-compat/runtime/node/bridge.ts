@@ -168,7 +168,7 @@ function childProcess(plugin: string): Any {
   const promised = (f: Any) => (...a: Any[]) => new Promise((ok, no) => { f(...a, (e: Any, stdout: Any, stderr: Any) => (e ? no(Object.assign(e, { stdout, stderr })) : ok({ stdout, stderr }))) })
   ;(exec as Any)[util.promisify.custom] = promised(exec)
   ;(execFile as Any)[util.promisify.custom] = promised(execFile)
-  const fork = () => { throw new Error("child_process.fork isn't available to plugins from other apps here: use spawn") }
+  const fork = () => { throw new Error("child_process.fork isn't available to Obsidian plugins here: use spawn") }
   return { ...remote, spawn, exec, execFile, fork, ChildProcess }
 }
 
@@ -350,7 +350,7 @@ function zlibModule(plugin: string) {
 
 function noSockets(plugin: string, mod: string) {
   const m = remoteModule(plugin, mod)
-  const no = (what: string) => () => { throw new Error(`${mod}.${what}: network sockets aren't available to plugins from other apps here`) }
+  const no = (what: string) => () => { throw new Error(`${mod}.${what}: network sockets aren't available to Obsidian plugins here`) }
   for (const k of ["connect", "createConnection", "createServer", "Socket", "Server", "createSocket", "TLSSocket"]) if (k in m) m[k] = no(k)
   return m
 }
@@ -392,7 +392,7 @@ function electronModule(plugin: string, proc: Any, cp: () => Any) {
   const image = { isEmpty: () => true, toPNG: () => Buffer.alloc(0), toJPEG: () => Buffer.alloc(0), toDataURL: () => "", getSize: () => ({ width: 0, height: 0 }) }
   const clipboard = { writeText: (t: string) => { clip = t; void navigator.clipboard?.writeText(t).catch(() => {}) }, readText: () => clip, writeHTML: (h: string) => { clip = h }, readHTML: () => "",
     readImage: () => image, writeImage: () => {}, availableFormats: () => (clip ? ["text/plain"] : []), has: () => false, clear: () => { clip = "" }, write: (o: Any) => { if (o?.text) clipboard.writeText(o.text) }, readRTF: () => "", readBookmark: () => ({ title: "", url: "" }) }
-  const contents: Any = { id: 1, printToPDF: async () => { throw new Error("printing to PDF isn't available to plugins from other apps here") }, openDevTools() {}, closeDevTools() {}, isDevToolsOpened: () => false,
+  const contents: Any = { id: 1, printToPDF: async () => { throw new Error("printing to PDF isn't available to Obsidian plugins here") }, openDevTools() {}, closeDevTools() {}, isDevToolsOpened: () => false,
     on() { return contents }, once() { return contents }, removeListener() { return contents }, getZoomFactor: () => 1, setZoomFactor() {}, executeJavaScript: async (c: string) => (0, eval)(c), session: { clearCache: async () => {} }, getURL: () => location.href, send() {} }
   const win: Any = { id: 1, webContents: contents, isMaximized: () => false, isFullScreen: () => false, isMinimized: () => false, isFocused: () => document.hasFocus(), isAlwaysOnTop: () => false, isDestroyed: () => false,
     on() { return win }, once() { return win }, off() { return win }, removeListener() { return win }, setAlwaysOnTop() {}, focus() {}, show() {}, hide() {}, minimize() {}, maximize() {}, unmaximize() {}, close() {}, setTitle() {}, setFullScreen() {},

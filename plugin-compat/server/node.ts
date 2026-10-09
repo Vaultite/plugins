@@ -147,14 +147,14 @@ export function nodeBridge(plugin: Plugin, store: () => Store, config: () => Con
 
   /** Only this machine's owner, for an Obsidian plugin that's on and allowed here. */
   async function check(http: Request["http"] | undefined, id: unknown) {
-    const why = http ? await plugin.refusal(http, "Node for plugins from other apps") : ""
+    const why = http ? await plugin.refusal(http, "Node for Obsidian plugins") : ""
     if (why) throw new HTTPError(403, why)
     if (!id) return "runtime" // (the runtime's own: the vault's adapter)
     // (a plugin's sync calls come by the dozen: whether it's on and allowed is looked up once a second)
     const hit = checked.get(String(id))
     if (hit && Date.now() - hit < 1000) return String(id)
     const p = store().get(String(id))
-    if (!p?.enabled || !p.allowed) throw new HTTPError(403, `plugin '${id}' from another app isn't on and allowed here`)
+    if (!p?.enabled || !p.allowed) throw new HTTPError(403, `Obsidian plugin '${id}' isn't on and allowed here`)
     checked.set(p.id, Date.now())
     return p.id
   }
