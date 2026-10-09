@@ -3,7 +3,7 @@
   "icon": "music",
   "name": "Now playing",
   "description": "What your Mac is playing, in the sidebar and on a page: the cover, the song and artist, how far in, play, pause, skip and shuffle, and the volume. Works with any app that tells macOS what it plays (Spotify, Music, a browser tab). Only on the Mac the app's server runs on.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
