@@ -2,8 +2,8 @@
   "id": "now-playing",
   "icon": "music",
   "name": "Now playing",
-  "description": "What your Mac is playing, in the sidebar and on a page: the cover, the song and artist, how far in, play, pause, skip and shuffle, and the volume. Works with any app that tells macOS what it plays (Spotify, Music, a browser tab). Only on the Mac the app's server runs on.",
-  "version": "1.0.1",
+  "description": "What your Mac is playing, in the sidebar, in a tab and on a page: every app playing at once (Spotify, Music, a browser tab), each with its cover, the song and artist and how far in, with play, pause, skip and shuffle, and the volume. Only on the Mac the app's server runs on.",
+  "version": "1.1.0",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
@@ -14,10 +14,10 @@
   "category": "system",
   "runsOnServer": true,
   "tint": "pink",
-  "forAgents": "What the user's Mac is playing, and play, pause, skip or volume: `now-playing.get`, `now-playing.control`.",
+  "forAgents": "What the user's Mac is playing (every app at once), and play, pause, skip or volume: `now-playing.get`, `now-playing.control`.",
   "blocks": {
     "now-playing": {
-      "description": "what this mac is playing, with its cover, position, controls and volume",
+      "description": "what this mac is playing, every app at once, with covers, position, controls and volume",
       "live": "macOS's now playing (MediaRemote) on the server's machine",
       "options": {
         "volume": {

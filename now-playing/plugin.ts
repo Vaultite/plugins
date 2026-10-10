@@ -1,4 +1,4 @@
-// Now playing: what this Mac plays (any app that tells macOS: Spotify, Music, a browser tab), and its output volume.
+// Now playing: what this Mac plays (every app that tells macOS: Spotify, Music, a browser tab), and its output volume.
 // macOS 15.4+ answers MediaRemote only for Apple's own binaries, so native/adapter.m is built here with clang and loaded
 // into Apple's perl (native/adapter.pl): JSON lines out, commands in. It runs while someone looks, and stops after.
 import { execFile, spawn, type ChildProcess } from "node:child_process"
@@ -8,7 +8,7 @@ import path from "node:path"
 import readline from "node:readline"
 import { fileURLToPath } from "node:url"
 import { HTTPError, Plugin, Text } from "@vaultite/core/plugins.ts"
-import { clock, position, type NowPlaying } from "./shared.ts"
+import { clock, position, type NowPlaying, type Player } from "./shared.ts"
 
 export const plugin = new Plugin(import.meta.url)
 
@@ -17,18 +17,21 @@ const IDLE_MS = 2 * 60_000
 
 type Track = { title: string; artist: string | null; album: string | null; duration: number | null; elapsed: number | null
   rate: number | null; at: number | null; artwork: string | null; shuffle: number | null; repeat: number | null }
-type Line = { type: "state"; playing?: boolean; app: { bundle: string; name: string } | null; track: Track | null; volume: number | null; muted: boolean }
+type Raw = { app: { bundle: string; name: string }; current: boolean; playing: boolean; track: Track }
+type Line = { type: "state"; players: Raw[]; volume: number | null; muted: boolean }
   | { type: "artwork"; id: string; mime: string; data: string } | { type: "error"; error: string }
 
 let child: ChildProcess | null = null
 let starting: Promise<void> | null = null
 let last: Extract<Line, { type: "state" }> | null = null
-let artwork: { id: string; mime: string; data: Buffer } | null = null
+/** Covers by id, the latest few (more than the adapter remembers sending, so it sends a dropped one again). */
+const artworks = new Map<string, { mime: string; data: Buffer }>()
 let failed = ""
 let asked = 0
 const waiting = new Set<() => void>()
 /** Shuffle as the app's own scripting says, by app: MediaRemote doesn't hear Spotify's. */
 const shuffleOf = new Map<string, boolean>()
+const titleOf = new Map<string, string>()
 
 /** The adapter library for this source, built once into this machine's folder for the plugin. */
 async function library() {
@@ -50,12 +53,17 @@ const run = (file: string, args: string[], timeout = 10_000) => new Promise<stri
 function take(raw: string) {
   let m: Line
   try { m = JSON.parse(raw) } catch { return }
-  if (m.type === "artwork") artwork = { id: m.id, mime: m.mime, data: Buffer.from(m.data, "base64") }
-  else if (m.type === "error") failed = m.error
+  if (m.type === "artwork") {
+    artworks.delete(m.id)
+    artworks.set(m.id, { mime: m.mime, data: Buffer.from(m.data, "base64") })
+    for (const id of artworks.keys()) if (artworks.size > 24) artworks.delete(id)
+  } else if (m.type === "error") failed = m.error
   else if (m.type === "state") {
-    const was = last?.track?.title
     last = m
-    if (m.track && m.track.title !== was && m.app) void readShuffle(m.app.bundle)
+    for (const p of m.players) {
+      if (titleOf.get(p.app.bundle) !== p.track.title) void readShuffle(p.app.bundle)
+      titleOf.set(p.app.bundle, p.track.title)
+    }
     for (const fn of waiting) fn()
     waiting.clear()
   }
@@ -100,46 +108,70 @@ function send(line: string) {
 /** The next state the adapter reports, or the one there is after `ms`. */
 const next = (ms = 600) => new Promise<void>((ok) => { waiting.add(ok); setTimeout(ok, ms) })
 
-// Spotify and Music say their shuffle through AppleScript (macOS asks once to let Vaultite control them).
+// Spotify and Music are scripted (macOS asks once to let Vaultite control them): shuffle and seek, which MediaRemote
+// misses for Spotify, and commands while another app is macOS's current player (the only one MediaRemote reaches).
 const SCRIPTED: Record<string, { app: string; key: string }> = {
   "com.spotify.client": { app: "Spotify", key: "shuffling" },
   "com.apple.Music": { app: "Music", key: "shuffle enabled" },
 }
+const SCRIPT: Partial<Record<Command, string>> = { play: "play", pause: "pause", toggle: "playpause", next: "next track", previous: "previous track" }
+
+const script = (app: string, lines: string[]) =>
+  run("/usr/bin/osascript", ["-e", `tell application "${app}"`, ...lines.flatMap((l) => ["-e", l]), "-e", "end tell"])
+    .catch((e) => { throw new HTTPError(502, `${app} didn't take it: ${(e as Error).message}`) })
+
 async function readShuffle(bundle: string) {
   const s = SCRIPTED[bundle]
   if (!s) return
   try { shuffleOf.set(bundle, (await run("/usr/bin/osascript", ["-e", `tell application "${s.app}" to get ${s.key}`])).trim() === "true") } catch {}
 }
 
+/** Playing ones first, then macOS's current one, else as macOS lists them. */
+function ordered(players: Raw[]) {
+  return players.map((p, i) => ({ p, i })).sort((a, b) => +b.p.playing - +a.p.playing || +b.p.current - +a.p.current || a.i - b.i).map((x) => x.p)
+}
+
 function snapshot(): NowPlaying {
-  const off = { playing: false, app: null, track: null, shuffle: null, volume: null, muted: false }
-  if (!last) return { available: false, reason: failed || "Starting", ...off }
-  const t = last.track
-  const mode = t?.shuffle
-  const shuffle = typeof mode === "number" && mode > 0 ? mode > 1 : last.app ? shuffleOf.get(last.app.bundle) ?? null : null
-  return {
-    available: true, playing: !!last.playing && !!t, app: t ? last.app : null, shuffle, volume: last.volume, muted: last.muted,
-    track: t ? { title: t.title, artist: t.artist, album: t.album, duration: t.duration, elapsed: t.elapsed, rate: t.rate, at: t.at, artwork: t.artwork } : null,
-  }
+  if (!last) return { available: false, reason: failed || "Starting", players: [], volume: null, muted: false }
+  const players = ordered(last.players).map((p): Player => {
+    const t = p.track
+    const mode = t.shuffle
+    const shuffle = typeof mode === "number" && mode > 0 ? mode > 1 : shuffleOf.get(p.app.bundle) ?? null
+    return {
+      app: p.app, playing: p.playing, control: p.current || !!SCRIPTED[p.app.bundle], shuffle,
+      track: { title: t.title, artist: t.artist, album: t.album, duration: t.duration, elapsed: t.elapsed, rate: t.rate, at: t.at, artwork: t.artwork },
+    }
+  })
+  return { available: true, players, volume: last.volume, muted: last.muted }
 }
 
 const COMMANDS = ["play", "pause", "toggle", "next", "previous", "shuffle", "seek", "volume"] as const
 type Command = (typeof COMMANDS)[number]
 
-async function command(cmd: Command, value?: number) {
+/** A command for one app's player (by bundle id; the main one without), or the output volume. */
+async function command(cmd: Command, value?: number, player?: string) {
   await ensure()
-  const bundle = last?.app?.bundle ?? ""
-  if (cmd === "shuffle" && SCRIPTED[bundle]) {
-    const s = SCRIPTED[bundle]
-    const now = (await run("/usr/bin/osascript", ["-e", `tell application "${s.app}"`, "-e", `set ${s.key} to not ${s.key}`, "-e", `get ${s.key}`, "-e", "end tell"])
-      .catch((e) => { throw new HTTPError(502, `${s.app} didn't take it: ${(e as Error).message}`) })).trim() === "true"
-    shuffleOf.set(bundle, now)
+  if ((cmd === "seek" || cmd === "volume") && (typeof value !== "number" || !Number.isFinite(value))) throw new HTTPError(400, `${cmd} needs a number`)
+  if (cmd === "volume") {
+    send(`volume ${Math.min(1, Math.max(0, value!))}`)
+    await next()
     return snapshot()
   }
-  if (cmd === "seek" || cmd === "volume") {
-    if (typeof value !== "number" || !Number.isFinite(value)) throw new HTTPError(400, `${cmd} needs a number`)
-    send(`${cmd} ${cmd === "volume" ? Math.min(1, Math.max(0, value)) : Math.max(0, value)}`)
-  } else send(cmd)
+  const players = last ? ordered(last.players) : []
+  const p = player ? players.find((x) => x.app.bundle === player) : players[0]
+  if (player && !p) throw new HTTPError(404, `${player} isn't playing anything`)
+  const bundle = p?.app.bundle ?? ""
+  const s = SCRIPTED[bundle]
+  if (cmd === "shuffle" && s) {
+    shuffleOf.set(bundle, (await script(s.app, [`set ${s.key} to not ${s.key}`, `get ${s.key}`])).trim() === "true")
+    return snapshot()
+  }
+  if (p && (!p.current || (cmd === "seek" && s))) {
+    if (!s || cmd === "shuffle") {
+      throw new HTTPError(409, `macOS lets Vaultite control only the app it shows as now playing${players.find((x) => x.current) ? ` (${players.find((x) => x.current)!.app.name})` : ""}, not ${p.app.name}`)
+    }
+    await script(s.app, [cmd === "seek" ? `set player position to ${Math.max(0, value!)}` : SCRIPT[cmd]!])
+  } else send(cmd === "seek" ? `seek ${Math.max(0, value!)}` : cmd)
   await next()
   return snapshot()
 }
@@ -157,26 +189,32 @@ plugin.route("GET", "now-playing", async (req) => {
 
 plugin.route("GET", "now-playing/artwork", async (req) => {
   await allowed(req)
-  if (!artwork) throw new HTTPError(404, "no artwork")
-  return new Text(artwork.data, artwork.mime, { "Cache-Control": "private, max-age=86400" })
+  const art = artworks.get(String(req.query?.id ?? ""))
+  if (!art) throw new HTTPError(404, "no artwork")
+  return new Text(art.data, art.mime, { "Cache-Control": "private, max-age=86400" })
 }, { lock: false })
 
 plugin.route("POST", "now-playing/command", async (req) => {
   await allowed(req)
-  const b = (req.body ?? {}) as { command?: string; value?: number }
+  const b = (req.body ?? {}) as { command?: string; value?: number; player?: string }
   if (!COMMANDS.includes(b.command as Command)) throw new HTTPError(400, `command: one of ${COMMANDS.join(", ")}`)
-  return command(b.command as Command, b.value)
+  return command(b.command as Command, b.value, b.player || undefined)
 }, { lock: false })
+
+function line(p: Player, also: boolean) {
+  const t = p.track
+  const by = t.artist ? ` by ${t.artist}` : ""
+  const album = t.album && t.album !== t.title ? ` (${t.album})` : ""
+  const at = t.duration ? `, ${clock(position(p))} of ${clock(t.duration)}` : ""
+  const state = p.playing ? "Playing" : "Paused"
+  return `${also ? `Also ${state.toLowerCase()}` : state}: ${t.title}${by}${album}${at}, in ${p.app.name} (${p.app.bundle})${p.control ? "" : ", can't be controlled from here"}.`
+}
 
 function describe(n: NowPlaying) {
   if (!n.available) return `Now playing isn't available: ${n.reason}.`
-  const vol = n.volume == null ? "" : ` Volume ${n.muted ? "muted" : `${Math.round(n.volume * 100)}%`}.`
-  const t = n.track
-  if (!t) return `Nothing is playing on this Mac.${vol}`
-  const by = t.artist ? ` by ${t.artist}` : ""
-  const album = t.album && t.album !== t.title ? ` (${t.album})` : ""
-  const at = t.duration ? `, ${clock(position(n))} of ${clock(t.duration)}` : ""
-  return `${n.playing ? "Playing" : "Paused"}: ${t.title}${by}${album}${at}${n.app ? `, in ${n.app.name}` : ""}.${vol}`
+  const vol = n.volume == null ? "" : `Volume ${n.muted ? "muted" : `${Math.round(n.volume * 100)}%`}.`
+  if (!n.players.length) return ["Nothing is playing on this Mac.", vol].filter(Boolean).join(" ")
+  return [...n.players.map((p, i) => line(p, i > 0)), vol].filter(Boolean).join("\n")
 }
 
 plugin.block("now-playing", async () => {
@@ -186,7 +224,7 @@ plugin.block("now-playing", async () => {
 
 plugin.op({
   id: "now-playing.get",
-  summary: "What this Mac is playing (any app: Spotify, Music, a browser), how far in, and its volume.",
+  summary: "What this Mac is playing, every app at once (Spotify, Music, a browser), the main one first: how far in, and the volume.",
   help: "vau now-playing.get",
   kind: "read",
   params: {},
@@ -196,18 +234,20 @@ plugin.op({
 
 plugin.op({
   id: "now-playing.control",
-  summary: "Control what this Mac plays: play, pause, toggle, next, previous, shuffle, seek (seconds) or volume (0-1).",
+  summary: "Control what this Mac plays: play, pause, toggle, next, previous, shuffle, seek (seconds) or volume (0-1); --player picks the app (bundle id), else the main one.",
   help: `vau now-playing.control pause
+  vau now-playing.control next --player com.spotify.client
   vau now-playing.control volume --value 0.3`,
   kind: "write",
   params: {
     command: { type: "string", enum: [...COMMANDS], description: "what to do" },
     value: { type: "number", description: "seek: the position in seconds; volume: 0 to 1" },
+    player: { type: "string", description: "the app, by its bundle id as now-playing.get lists it (com.spotify.client); the main one when left out" },
   },
   args: ["command"],
-  run: async ({ command: c, value }) => {
+  run: async ({ command: c, value, player }) => {
     if (!COMMANDS.includes(c as Command)) throw new HTTPError(400, `command: one of ${COMMANDS.join(", ")}`)
-    return command(c as Command, value as number | undefined)
+    return command(c as Command, value as number | undefined, (player as string | undefined) || undefined)
   },
   text: (n: NowPlaying) => describe(n),
 })
