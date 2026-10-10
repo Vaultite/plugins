@@ -1,5 +1,5 @@
 // herdr in the sidebar: this machine's herdr workspaces (GET /api/herdr), each pane with what runs in it and whether its
-// agent works or waits; a click opens it in a tab (view:terminal/<id>). Nothing while herdr isn't running.
+// agent works or waits; a click opens it in a tab (view:terminal/<id>). Nothing while herdr isn't running. Its own tab: view:herdr.
 import { PanelsTopLeft, SquareTerminal } from "lucide-react"
 import { definePlugin, isViewOpen, openView, Panel, SidebarHeading, SidebarRow, useAgents, useLive, useTick, type Agent, type SidebarCtx } from "@vaultite"
 
@@ -33,24 +33,44 @@ function Row({ p, ws, open, tab }: { p: HerdrPane; ws: string; open: boolean; ta
   )
 }
 
-function HerdrPanel({ open, tab }: SidebarCtx) {
-  const tick = useTick(POLL_MS)
-  const { data } = useLive<Herdr>("herdr", tick)
-  if (!data?.running) return null
+/** The workspaces and their panes, at the sidebar's sizes (the tab draws them a size up). */
+function Workspaces({ data, tab }: { data: Herdr; tab: string }) {
   const workspaces = data.workspaces.filter((w) => w.panes.length)
-  if (!open) return <div className="flex flex-col gap-px">{workspaces.flatMap((w) => w.panes.map((p) => <Row key={p.id} p={p} ws={w.label} open={false} tab={tab} />))}</div>
+  return (
+    <div className="flex flex-col gap-px">
+      {workspaces.map((w, i) => (
+        <div key={w.id} className="flex flex-col gap-px">
+          <div className={`flex h-6 items-end px-1.5 pb-0.5 text-[11px] font-medium text-tertiary max-md:h-8 max-md:text-[13px] ${i ? "mt-1" : ""}`}>{w.label}</div>
+          {w.panes.map((p) => <Row key={p.id} p={p} ws={w.label} open tab={tab} />)}
+        </div>
+      ))}
+      {!workspaces.length && <div className="flex h-7 items-center pl-1.5 text-[13px] text-tertiary">No panes in herdr</div>}
+    </div>
+  )
+}
+
+const useHerdr = () => useLive<Herdr>("herdr", useTick(POLL_MS)).data
+
+function HerdrPanel({ open, tab }: SidebarCtx) {
+  const data = useHerdr()
+  if (!data?.running) return null
+  if (!open) return <div className="flex flex-col gap-px">{data.workspaces.flatMap((w) => w.panes.map((p) => <Row key={p.id} p={p} ws={w.label} open={false} tab={tab} />))}</div>
   return (
     <div className="flex shrink-0 flex-col" data-herdr>
       <SidebarHeading title="herdr" open={open} />
-      <div className="flex flex-col gap-px">
-        {workspaces.map((w, i) => (
-          <div key={w.id} className="flex flex-col gap-px">
-            <div className={`flex h-6 items-end px-1.5 pb-0.5 text-[11px] font-medium text-tertiary max-md:h-8 max-md:text-[13px] ${i ? "mt-1" : ""}`}>{w.label}</div>
-            {w.panes.map((p) => <Row key={p.id} p={p} ws={w.label} open tab={tab} />)}
-          </div>
-        ))}
-        {!workspaces.length && <div className="flex h-7 items-center pl-1.5 text-[13px] text-tertiary">No panes in herdr</div>}
-      </div>
+      <Workspaces data={data} tab={tab} />
+    </div>
+  )
+}
+
+function HerdrView() {
+  const data = useHerdr()
+  return (
+    <div className="pb-10" data-herdr-view>
+      <p className="mb-3 text-[13px] text-muted-foreground max-md:text-[15px]">
+        {!data ? "Asking herdr" : data.running ? "The herdr running on this machine: click a pane to open it in a tab." : "herdr isn't running on this machine."}
+      </p>
+      {data?.running && <div className="size-up-bleed"><div data-size-up><Workspaces data={data} tab="" /></div></div>}
     </div>
   )
 }
@@ -68,7 +88,8 @@ function Preview() {
 }
 
 export default definePlugin({
-  sidebar: { agents: { title: "herdr", heading: false, sort: 31, render: (ctx) => <HerdrPanel {...ctx} /> } },
+  sidebar: { agents: { title: "herdr", heading: false, sort: 31, view: "herdr", render: (ctx) => <HerdrPanel {...ctx} /> } },
+  views: { herdr: { icon: PanelsTopLeft, title: () => "herdr", render: () => <HerdrView /> } },
   preview: () => <Preview />,
   mockLive: () => ({
     herdr: { running: true, workspaces: [
