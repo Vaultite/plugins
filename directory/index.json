@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-09T19:05:10.504Z",
+  "generated": "2026-10-10T04:23:58.861Z",
   "plugins": [
     {
       "id": "work",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -40,7 +40,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -71,7 +71,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -102,7 +102,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -133,7 +133,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -164,7 +164,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -198,7 +198,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -234,7 +234,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -259,7 +259,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -290,7 +290,7 @@
       "stars": 0,
       "released": "2026-10-09T14:48:41Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -328,7 +328,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -360,7 +360,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -381,16 +381,16 @@
     {
       "id": "now-playing",
       "name": "Now playing",
-      "description": "What your Mac is playing, in the sidebar and on a page: the cover, the song and artist, how far in, play, pause, skip and shuffle, and the volume. Works with any app that tells macOS what it plays (Spotify, Music, a browser tab). Only on the Mac the app's server runs on.",
+      "description": "What your Mac is playing, in the sidebar, in a tab and on a page: every app playing at once (Spotify, Music, a browser tab), each with its cover, the song and artist and how far in, with play, pause, skip and shuffle, and the volume. Only on the Mac the app's server runs on.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "now-playing",
-      "version": "1.0.1",
-      "tag": "now-playing/v1.0.1",
+      "version": "1.1.0",
+      "tag": "now-playing/v1.1.0",
       "stars": 0,
-      "released": "2026-10-09T19:05:08Z",
+      "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -419,7 +419,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -449,7 +449,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -480,7 +480,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -511,7 +511,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -533,12 +533,12 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "herdr",
-      "version": "1.0.1",
-      "tag": "herdr/v1.0.1",
+      "version": "1.0.2",
+      "tag": "herdr/v1.0.2",
       "stars": 0,
-      "released": "2026-10-08T23:10:01Z",
+      "released": "2026-10-10T04:07:14Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -566,7 +566,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -597,7 +597,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -633,7 +633,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -659,7 +659,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -691,7 +691,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -721,7 +721,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -752,7 +752,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -780,7 +780,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -818,7 +818,7 @@
       "stars": 0,
       "released": "2026-10-09T01:05:50Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -850,7 +850,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -878,7 +878,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -908,7 +908,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-09T19:05:09Z",
+      "pushed": "2026-10-10T04:23:54Z",
       "issues": {
         "open": 0,
         "closed": 0
