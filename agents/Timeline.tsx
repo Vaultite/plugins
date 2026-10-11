@@ -175,7 +175,7 @@ function UserMessage({ u, i, id, canRewind, onEdit }: { u: User; i: number; id: 
           <button type="button" onClick={() => void editFrom(id, i, onEdit)} aria-label="Edit from here" data-tip="Edit from here" data-edit-from={i}
             className="grid size-5 cursor-pointer place-items-center rounded-[4px] hover:bg-foreground/[0.08] hover:text-foreground"><Undo2 className="size-3" /></button>
         )}
-        <button type="button" onClick={() => { void copyText(u.text); notify("Copied") }} aria-label="Copy" data-tip="Copy"
+        <button type="button" onClick={() => { void copyText(u.text); notify("Copied") }} aria-label="Copy message" data-tip="Copy message"
           className="grid size-5 cursor-pointer place-items-center rounded-[4px] hover:bg-foreground/[0.08] hover:text-foreground"><Copy className="size-3" /></button>
       </div>
     </div>
@@ -195,7 +195,7 @@ function Answer({ e, i, id, canFork }: { e: Extract<Entry, { kind: "assistant" }
       <Markdown text={e.text || "(empty response)"} className="min-w-0 px-1 break-words" />
       {!e.open && (
         <div className="flex h-6 items-center gap-0.5 px-1 text-[11px] text-tertiary opacity-0 transition-opacity group-hover/answer:opacity-100 max-md:opacity-100">
-          <button type="button" onClick={() => { void copyText(e.text); notify("Copied") }} aria-label="Copy" data-tip="Copy"
+          <button type="button" onClick={() => { void copyText(e.text); notify("Copied") }} aria-label="Copy message" data-tip="Copy message"
             className="grid size-5 cursor-pointer place-items-center rounded-[4px] hover:bg-foreground/[0.08] hover:text-foreground"><Copy className="size-3" /></button>
           {canFork && (
             <button type="button" onClick={() => void fork(id, i)} aria-label="Fork from this response" data-tip="Fork from this response" data-fork={i}
