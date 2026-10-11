@@ -7,7 +7,7 @@
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
-  "category": "agents",
+  "category": "ai-apps",
   "runsOnServer": true,
   "disclosures": {
     "shell": true,
