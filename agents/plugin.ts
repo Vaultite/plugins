@@ -1,16 +1,18 @@
 // Agents: Claude Code and Codex threads, by project, each a chat; the CLIs run on this machine (claude.ts, codex.ts),
 // threads are kept in plugin.localDir() (core.ts), never the vault.
+import crypto from "node:crypto"
 import fs from "node:fs"
 import type { IncomingMessage } from "node:http"
 import path from "node:path"
 import type { WebSocket } from "ws"
 import { HTTPError, OpError, type Request, Text } from "@vaultite/core/plugins.ts"
-import { ClaudeRun, claudeCli, claudeStatus } from "./claude.ts"
-import { branches, checkout, checkpoint, commit, createPr, diffOf, dropCheckpoints, dropWorktree, newWorktree, prOf, push as gitPush, restore, stateOf, topOf } from "./git.ts"
-import { codexCli, CodexRun, codexStatus } from "./codex.ts"
+import { ClaudeRun, claudeCli, claudeRewindFiles, claudeStatus } from "./claude.ts"
+import { branchChanges, branches, checkout, checkpoint, commit, prCheckout, prView, createPr, diffOf, dropCheckpoints, dropWorktree, keepCheckpoint, newWorktree, prOf, push as gitPush, restore, stateOf, topOf } from "./git.ts"
+import { codexCli, codexFork, CodexRun, codexRevert, codexStatus } from "./codex.ts"
+import { branchFor, commitFor, prFor, titleFor } from "./gentext.ts"
 import {
-  type Any, changed, create, dir, filesOfDiff, forget, home, ID, type Image, listChanged, liveOf, load, MODES, NEW_TITLE, now, patchFiles, plugin, projects, push, realOf, runs, save, send,
-  setLive, sockets, str, summaries, thread, tilde, vaultReal,
+  type Any, changed, create, threads, dir, filesOfDiff, forget, home, ID, type Image, listChanged, liveOf, load, MODES, NEW_TITLE, now, patchFiles, plugin, projects, push, realOf, runs, save, send,
+  setLive, snoozed, sockets, str, summaries, thread, tilde, vaultReal,
 } from "./core.ts"
 import type { Entry, Harness, Mode, Summary, Thread } from "./types.ts"
 
@@ -25,7 +27,7 @@ const settings = () => {
   const s = plugin.settings()
   return {
     harness: (HARNESSES.includes(s.harness as Harness) ? s.harness : "claude") as Harness,
-    mode: (MODES.includes(s.mode as Mode) ? s.mode : "ask") as Mode,
+    mode: (MODES.includes(s.mode as Mode) ? s.mode : "full") as Mode,
     model: { claude: str(s.claudeModel).trim(), codex: str(s.codexModel).trim() } as Record<Harness, string>,
   }
 }
@@ -61,32 +63,84 @@ plugin.socket("agents/live", async (ws, req) => {
     try { m = JSON.parse(String(data)) } catch { return }
     if (m?.t === "watch" && typeof m.id === "string") {
       ids.add(m.id)
-      try { const t = thread(m.id); send(ws, { t: "thread", thread: t, live: liveOf(t.id) }) } catch { send(ws, { t: "gone", id: m.id }) }
+      try {
+        const t = thread(m.id)
+        // (opened: what it finished is read, and a woken snooze is seen)
+        if (t.unread || (t.snoozedUntil && !snoozed(t))) { delete t.unread; if (!snoozed(t)) delete t.snoozedUntil; save(t); listChanged() }
+        send(ws, { t: "thread", thread: t, live: liveOf(t.id) })
+      } catch { send(ws, { t: "gone", id: m.id }) }
     } else if (m?.t === "unwatch" && typeof m.id === "string") ids.delete(m.id)
   })
   ws.on("close", () => sockets.delete(ws))
 })
+
+/** The whole thread again to those watching it (after a change that isn't one entry). */
+function tellThread(t: Thread) {
+  for (const [ws, ids] of sockets) if (ids.has(t.id)) send(ws, { t: "thread", thread: t, live: liveOf(t.id) })
+}
 
 // ---------- a message: its entry, then the harness's run for the thread takes it
 
 const IMAGE_TYPES: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/gif": "gif", "image/webp": "webp" }
 type Sent = { file?: string; images?: { type: string; data: string }[] }
 
-function ask(t: Thread, text: string, opts: Sent = {}): Promise<{ text: string; error: string | null }> {
+/** A message's pasted images, saved with the thread: their names (what a queued message keeps). */
+function saveImages(t: Thread, list: Sent["images"]) {
+  return (list ?? []).filter((im) => IMAGE_TYPES[im.type] && typeof im.data === "string").slice(0, 6).map((im, n) => {
+    const name = `${Date.now().toString(36)}-${crypto.randomBytes(2).toString("hex")}-${n}.${IMAGE_TYPES[im.type]}`
+    fs.writeFileSync(path.join(dir("images", t.id), name), Buffer.from(im.data, "base64"))
+    return name
+  })
+}
+const imagesOf = (t: Thread, names: string[]): Image[] => names.map((name) => {
+  const file = path.join(dir("images", t.id), name)
+  const ext = name.split(".").pop()!
+  return { path: file, type: Object.keys(IMAGE_TYPES).find((k) => IMAGE_TYPES[k] === ext) ?? "image/png", data: fs.readFileSync(file).toString("base64") }
+})
+const noteOf = (f?: string) => (f && !f.includes("..") ? f : undefined)
+const said = (text: string, file?: string) => (file ? `${text}\n\n(The note open beside this chat: ${file}. Read it if it helps.)` : text)
+
+/** A message while it works: into that turn (Claude Code takes it at its next step, Codex by turn/steer). */
+function steer(t: Thread, text: string, file: string | undefined, names: string[]) {
+  const r = runs.get(t.id)
+  if (!r || r.ended || !r.busy) return false
+  const at = push(t, { kind: "user", text, at: now(), steer: true, ...(file ? { file } : {}), ...(names.length ? { images: names } : {}) })
+  const u = t.entries[at] as Extract<Entry, { kind: "user" }>
+  if (!r.send(said(text, file), imagesOf(t, names), u)) { t.entries.splice(at, 1); return false }
+  changed(t, at)
+  return true
+}
+
+/** The next queued message, once a turn has ended. */
+function nextQueued(t: Thread) {
+  const q = t.queue?.shift()
+  if (!q) return
+  save(t)
+  tellThread(t)
+  try { void ask(t, q.text, { file: q.file }, q.images ?? []) } catch (e) { push(t, { kind: "note", text: (e as Error).message, at: now(), error: true }) }
+}
+
+function ask(t: Thread, text: string, opts: Sent = {}, saved?: string[]): Promise<{ text: string; error: string | null }> {
   if (liveOf(t.id).running) throw new HTTPError(409, `${NAMES[t.harness]} is still answering: stop it first, or wait`)
   const cli = t.harness === "claude" ? claudeCli() : codexCli()
   if (!cli) throw new HTTPError(424, `${NAMES[t.harness]} isn't installed on this machine`)
-  const images: Image[] = (opts.images ?? []).filter((im) => IMAGE_TYPES[im.type] && typeof im.data === "string").slice(0, 6).map((im, n) => {
-    const name = `${Date.now().toString(36)}-${n}.${IMAGE_TYPES[im.type]}`
-    const file = path.join(dir("images", t.id), name)
-    fs.writeFileSync(file, Buffer.from(im.data, "base64"))
-    return { path: file, type: im.type, data: im.data }
-  })
-  const file = opts.file && !opts.file.includes("..") ? opts.file : undefined
-  const at = push(t, { kind: "user", text, at: now(), ...(file ? { file } : {}), ...(images.length ? { images: images.map((im) => path.basename(im.path)) } : {}) })
+  const names = saved ?? saveImages(t, opts.images)
+  const images = imagesOf(t, names)
+  const file = noteOf(opts.file)
+  const at = push(t, { kind: "user", text, at: now(), ...(file ? { file } : {}), ...(names.length ? { images: names } : {}) })
+  // (a new turn brings a settled thread back, ends a manual Un-settle, and wakes a snoozed one)
+  for (const k of ["settledOverride", "settledAt", "snoozedUntil", "unread"] as const) delete t[k]
   if (t.title === NEW_TITLE) {
+    // Its first words for now; the model's title once it's written (unless it was renamed meanwhile).
     const words = text.replace(/[@#*_`[\]]/g, "").trim().split(/\s+/).filter(Boolean)
-    t.title = words.slice(0, 7).join(" ").slice(0, 60) + (words.length > 7 ? "…" : "") || NEW_TITLE
+    const first = t.title = words.slice(0, 7).join(" ").slice(0, 60) + (words.length > 7 ? "…" : "") || NEW_TITLE
+    if (text.trim()) void titleFor(t.harness, text).then((title) => {
+      if (!title || t.title !== first || !threads.has(t.id)) return
+      t.title = title
+      save(t)
+      listChanged()
+      tellThread(t)
+    })
   }
   setLive(t, { running: true, status: t.worktree?.pending ? "preparing" : "thinking" })
   return new Promise((resolve) => {
@@ -94,7 +148,9 @@ function ask(t: Thread, text: string, opts: Sent = {}): Promise<{ text: string; 
       // A thread that asked for its own worktree gets it now, named after what it was asked.
       if (t.worktree?.pending) {
         try {
-          const w = await newWorktree(t.worktree.from, t.title, t.worktree.base)
+          // (its branch named by the model from the message, as T3 Code does; the title when that fails or is slow)
+          const name = await Promise.race([branchFor(t.harness, t.worktree.from, text), new Promise<null>((r) => setTimeout(() => r(null), 20_000).unref())])
+          const w = await newWorktree(t.worktree.from, name ?? t.title, t.worktree.base)
           t.worktree = { top: w.top, branch: w.branch, from: t.worktree.from }
           t.cwd = w.path
           save(t)
@@ -109,12 +165,16 @@ function ask(t: Thread, text: string, opts: Sent = {}): Promise<{ text: string; 
       await mark(t, at, "before")
       let r = runs.get(t.id)
       // Claude takes its model and mode as it starts: a change starts it again (the session goes on). Codex takes them per turn.
-      if (r && (r.ended || r.cwd !== t.cwd || (t.harness === "claude" && (r.model !== t.model || r.mode !== t.mode)))) { r.end(); r = undefined }
+      // (Claude Code takes its effort as it starts: a change starts it again, the session going on)
+      if (r && (r.ended || r.cwd !== t.cwd || (r instanceof ClaudeRun && r.effort !== (t.effort ?? "")))) { r.end(); r = undefined }
+      if (r instanceof ClaudeRun) r.configure(t)
       if (!r) { r = t.harness === "claude" ? new ClaudeRun(t, cli) : new CodexRun(t); runs.set(t.id, r) }
-      const said = file ? `${text}\n\n(The note open beside this chat: ${file}. Read it if it helps.)` : text
       setLive(t, { status: "thinking" })
-      r.turns.push({ done: (x, error) => { void mark(t, at, "after").finally(() => resolve({ text: x, error })) } })
-      if (!r.send(said, images)) { r.failed(`${NAMES[t.harness]} couldn't take the message.`); r.endTurn("", "failed") }
+      r.turns.push({ done: (x, error) => { void mark(t, at, "after").finally(() => { resolve({ text: x, error })
+        // (a turn that failed or was stopped leaves the queue for the user to look at)
+        if (!error && !t.entries.slice(at).some((e) => e.kind === "note" && e.text === "Stopped.")) nextQueued(t)
+      }) } })
+      if (!r.send(said(text, file), images, t.entries[at] as Extract<Entry, { kind: "user" }>)) { r.failed(`${NAMES[t.harness]} couldn't take the message.`); r.endTurn("", "failed") }
     }
     turn().catch((e) => {
       push(t, { kind: "note", text: (e as Error).message, at: now(), error: true })
@@ -162,21 +222,107 @@ plugin.route("POST", "agents/threads", async (req) => {
   const mode: Mode = MODES.includes(b.mode) ? b.mode : s.mode
   const cwd = folder(b.cwd)
   const t = create(harness, cwd, typeof b.model === "string" ? b.model.trim() : s.model[harness], mode)
-  if (b.worktree === true) {
+  if (b.plan === true) t.plan = true
+  if (str(b.effort)) t.effort = str(b.effort)
+  // (New thread on a branch: in the same worktree as the thread it came from, under the same project)
+  const like = str(b.share) ? threads.get(str(b.share)) : undefined
+  if (like?.worktree && !like.worktree.pending) { t.worktree = { ...like.worktree }; t.cwd = like.cwd; save(t, false) }
+  else if (b.worktree === true) {
     if (!(await topOf(cwd))) { forget(t); throw new HTTPError(400, "a worktree needs a git checkout") }
     t.worktree = { top: "", branch: "", from: cwd, base: str(b.base), pending: true }
     save(t, false)
   } else if (str(b.branch)) {
-    try { await checkout(cwd, str(b.branch)) } catch (e) { forget(t); throw new HTTPError(409, `couldn't switch to ${str(b.branch)}: ${(e as Error).message}`) }
+    try { await checkout(cwd, str(b.branch), b.create === true) } catch (e) { forget(t); throw new HTTPError(409, `couldn't switch to ${str(b.branch)}: ${(e as Error).message}`) }
   }
+  save(t, false)
   return { id: t.id }
 })
+
+/** Checkout Pull Request: a pull request (its number, URL or `gh pr checkout` command) into a new thread, on the
+ *  project's checkout (`mode` local) or in a worktree of its own. */
+plugin.route("POST", "agents/pr", async (req) => {
+  await owner(req)
+  const b = (req.body ?? {}) as Any
+  const cwd = folder(b.cwd)
+  const ref = str(b.ref).trim().replace(/^gh\s+pr\s+checkout\s+/, "").replace(/^#/, "")
+  if (!ref) throw new HTTPError(400, "give a pull request: its number, URL or checkout command")
+  const s = settings()
+  let w: Awaited<ReturnType<typeof prCheckout>>, pr: Awaited<ReturnType<typeof prView>>
+  try {
+    pr = await prView(cwd, ref)
+    w = await prCheckout(cwd, pr, b.mode === "worktree")
+  } catch (e) { throw new HTTPError(409, (e as Error).message) }
+  const harness: Harness = HARNESSES.includes(b.harness) ? b.harness : s.harness
+  const t = create(harness, w.path, s.model[harness], s.mode)
+  t.title = `#${pr.number} ${pr.title}`.slice(0, 120)
+  t.pr = { number: pr.number, url: pr.url, state: pr.state }
+  if (b.mode === "worktree") t.worktree = { top: w.top, branch: w.branch, from: (await topOf(cwd)) ?? cwd, pr: pr.number }
+  save(t, false)
+  listChanged()
+  return { id: t.id, number: pr.number, branch: w.branch }
+}, { lock: false })
 
 plugin.route("GET", "agents/threads/*", async (req) => {
   await owner(req)
   const t = thread(req.arg(0))
   return { thread: t, live: liveOf(t.id) }
 })
+
+/** A thread's place in the list, T3 Code's way: pinned on top, snoozed until a time, archived out of the list, read
+ *  or marked unread, settling by itself or not. Each key given is set (null or false clears it). */
+plugin.route("POST", "agents/threads/*/state", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const b = (req.body ?? {}) as Any
+  const at = now()
+  if (b.pinned !== undefined) {
+    if (b.pinned) { t.pinnedAt = t.pinnedAt ?? at; if (t.settledOverride === "settled") { t.settledOverride = "active"; delete t.settledAt } }
+    else delete t.pinnedAt
+  }
+  if (b.snoozedUntil !== undefined) {
+    if (b.snoozedUntil && Number.isFinite(Date.parse(str(b.snoozedUntil)))) t.snoozedUntil = new Date(str(b.snoozedUntil)).toISOString()
+    else delete t.snoozedUntil
+  }
+  if (b.archived !== undefined) {
+    if (b.archived && liveOf(t.id).running) throw new HTTPError(409, "stop it first")
+    if (b.archived) t.archivedAt = at
+    else delete t.archivedAt
+  }
+  if (b.unread !== undefined) { if (b.unread) t.unread = true; else delete t.unread }
+  if (b.autoSettle !== undefined) { if (b.autoSettle === false) t.autoSettleOff = true; else delete t.autoSettleOff }
+  save(t)
+  listChanged()
+  tellThread(t)
+  return { ok: true }
+}, { lock: false })
+
+/** Its title again, written by the model from the whole thread (Regenerate title). */
+plugin.route("POST", "agents/threads/*/title", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const said = t.entries.filter((e) => e.kind === "user" || e.kind === "assistant").map((e) => `${e.kind === "user" ? "USER" : "ASSISTANT"}: ${(e as { text: string }).text}`).join("\n\n")
+  if (!said) throw new HTTPError(409, "nothing to title yet")
+  const title = await titleFor(t.harness, said, t.title)
+  if (!title) throw new HTTPError(502, `${NAMES[t.harness]} couldn't write a title`)
+  t.title = title
+  save(t)
+  listChanged()
+  tellThread(t)
+  return { title }
+}, { lock: false })
+
+/** Settle a thread (done with it: it goes to Settled), or unsettle it (back, and kept out of settling by itself). */
+plugin.route("POST", "agents/threads/*/settle", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  if ((req.body as Any)?.settled === false) { t.settledOverride = "active"; delete t.settledAt }
+  // (settling is "done with it": it unpins too)
+  else { if (t.settledOverride !== "settled") t.settledAt = now(); t.settledOverride = "settled"; delete t.pinnedAt }
+  save(t)
+  listChanged()
+  tellThread(t)
+  return { ok: true, settledOverride: t.settledOverride }
+}, { lock: false })
 
 /** Rename a thread, or change the model or mode its next turns use. */
 plugin.route("PATCH", "agents/threads/*", async (req) => {
@@ -193,10 +339,15 @@ plugin.route("PATCH", "agents/threads/*", async (req) => {
     if (!MODES.includes(b.mode)) throw new HTTPError(400, `mode is one of ${MODES.join(", ")}`)
     t.mode = b.mode
   }
+  if (b.plan !== undefined) t.plan = b.plan === true
+  if (b.effort !== undefined) { if (str(b.effort)) t.effort = str(b.effort); else delete t.effort }
+  // (Claude Code switches its mode and model as it runs; Codex takes them with its next turn)
+  const r = runs.get(t.id)
+  if (r instanceof ClaudeRun && !r.ended) r.configure(t)
   save(t)
   listChanged()
-  for (const [ws, ids] of sockets) if (ids.has(t.id)) send(ws, { t: "thread", thread: t, live: liveOf(t.id) })
-  return { id: t.id, title: t.title, model: t.model, mode: t.mode }
+  tellThread(t)
+  return { id: t.id, title: t.title, model: t.model, mode: t.mode, plan: !!t.plan }
 })
 
 plugin.route("DELETE", "agents/threads/*", async (req) => {
@@ -206,8 +357,9 @@ plugin.route("DELETE", "agents/threads/*", async (req) => {
   runs.delete(t.id)
   forget(t)
   await dropCheckpoints(t.cwd, t.id).catch(() => {})
-  // Its worktree goes too when nothing in it is left uncommitted (its branch stays).
-  const kept = t.worktree?.top ? !(await dropWorktree(t.worktree.top).catch(() => false)) : false
+  // Its worktree goes too when nothing in it is left uncommitted (its branch stays), and no fork of it works there.
+  const shared = !!t.worktree?.top && [...threads.values()].some((x) => x.worktree?.top === t.worktree!.top)
+  const kept = t.worktree?.top && !shared ? !(await dropWorktree(t.worktree.top).catch(() => false)) : false
   return { ok: true, ...(kept ? { kept: t.worktree!.top } : {}) }
 })
 
@@ -219,7 +371,12 @@ plugin.route("GET", "agents/threads/*/git", async (req) => {
   const t = thread(req.arg(0))
   if (t.worktree?.pending) return { git: null, pending: true }
   const st = await stateOf(t.cwd, !!t.worktree)
-  if (st && req.query.pr && st.gh && st.remote && st.branch) st.pr = await prOf(t.cwd)
+  if (st && req.query.pr && st.gh && st.remote && st.branch) {
+    st.pr = await prOf(t.cwd)
+    // (kept: a merged or closed pull request settles the thread)
+    const pr = st.pr ? { number: st.pr.number, url: st.pr.url, state: st.pr.state, ...(st.pr.at ? { at: st.pr.at } : {}) } : undefined
+    if (JSON.stringify(pr) !== JSON.stringify(t.pr)) { if (pr) t.pr = pr; else delete t.pr; save(t); listChanged() }
+  }
   return { git: st }
 })
 
@@ -257,6 +414,122 @@ plugin.route("GET", "agents/threads/*/diff", async (req) => {
   return { source: "edits", files: patchFiles(t, from, to) }
 })
 
+/** "Edit from here": back to before message `turn`, the conversation (the agent forgets it and what came after) and the
+ *  files (git's checkpoint, else Claude Code's own). Answers the message, to be edited and sent again. */
+plugin.route("POST", "agents/threads/*/rewind", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  if (liveOf(t.id).running) throw new HTTPError(409, "stop it first")
+  let n = Number((req.body as Any)?.turn)
+  let u = t.entries[n]
+  if (u?.kind !== "user") throw new HTTPError(404, "no such message")
+  // (Codex forgets whole turns: a message sent into one goes back to that turn's start)
+  if (t.harness === "codex" && u.steer) { n = t.entries.findLastIndex((e, i) => i < n && e.kind === "user" && !e.steer); u = t.entries[n] as typeof u }
+  const first = !t.entries.slice(0, n).some((e) => e.kind === "user")
+  if (t.started && !first && (t.harness === "claude" ? !u.prev : !u.turn)) throw new HTTPError(409, "this message is from before Agents could go back to one: fork the thread instead")
+  runs.get(t.id)?.end()
+  runs.delete(t.id)
+  let files = 0, fileNote = ""
+  try {
+    if ((req.body as Any)?.files === false) { /* (Revert and keep changes) */ }
+    else if (u.before && (await topOf(t.cwd))) files = await restore(t.cwd, u.before)
+    else if (t.harness === "claude" && u.uuid) {
+      const r = await claudeRewindFiles(t, claudeCli() ?? "", u.uuid)
+      files = r.files
+      if (r.error) fileNote = r.error
+    }
+  } catch (e) { fileNote = (e as Error).message }
+  if (t.started) {
+    if (first) {
+      // (back to the start: a new conversation)
+      t.started = false
+      t.session = t.harness === "claude" ? crypto.randomUUID() : ""
+      delete t.resumeAt
+      delete t.chain
+    } else if (t.harness === "claude") { t.resumeAt = u.prev; t.chain = u.prev }
+    else await codexRevert(t, u.turn!).catch((e) => { throw new HTTPError(502, `Codex couldn't go back: ${(e as Error).message}`) })
+  }
+  t.entries = t.entries.slice(0, n)
+  save(t)
+  tellThread(t)
+  listChanged()
+  return { text: u.text, ...(u.file ? { file: u.file } : {}), files, ...(fileNote ? { fileNote } : {}) }
+}, { lock: false })
+
+/** Implement a plan (entry `at`): here, out of plan mode, or in a new thread on the same project (T3 Code's
+ *  "PLEASE IMPLEMENT THIS PLAN"). */
+plugin.route("POST", "agents/threads/*/implement", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const b = (req.body ?? {}) as Any
+  const e = t.entries[Number(b.at)]
+  if (e?.kind !== "plan") throw new HTTPError(404, "no such plan")
+  const prompt = `PLEASE IMPLEMENT THIS PLAN:\n${e.text.trim()}`
+  const title = /^#{1,3}\s+(.+)$/m.exec(e.text)?.[1]?.replace(/[*_`]/g, "").trim()
+  let to = t
+  if (b.where === "thread") {
+    to = create(t.harness, t.worktree?.from ?? t.cwd, t.model, t.mode)
+    to.title = title ? `Implement ${title}` : "Implement plan"
+    save(to, false)
+  } else { t.plan = false; runs.get(t.id) instanceof ClaudeRun && (runs.get(t.id) as ClaudeRun).configure(t) }
+  e.done = b.where === "thread" ? "thread" : "here"
+  changed(t, Number(b.at))
+  save(t)
+  tellThread(t)
+  void ask(to, prompt)
+  return { id: to.id }
+}, { lock: false })
+
+/** A plan saved as a file in the thread's folder (Save to workspace). */
+plugin.route("POST", "agents/threads/*/plan", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const b = (req.body ?? {}) as Any
+  const e = t.entries[Number(b.at)]
+  if (e?.kind !== "plan") throw new HTTPError(404, "no such plan")
+  const rel = str(b.path).trim()
+  const abs = path.resolve(t.cwd, rel)
+  if (!rel || !abs.startsWith(t.cwd + "/")) throw new HTTPError(400, "a path inside the thread's folder")
+  fs.mkdirSync(path.dirname(abs), { recursive: true })
+  fs.writeFileSync(abs, `${e.text.trimEnd()}\n`)
+  return { path: rel }
+}, { lock: false })
+
+/** A new thread with this one's conversation up to the end of the turn entry `at` is in (forked from an answer). */
+plugin.route("POST", "agents/threads/*/fork", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const at = Number((req.body as Any)?.at)
+  if (!(at >= 0 && at < t.entries.length)) throw new HTTPError(404, "no such message")
+  const next = t.entries.findIndex((e, i) => i > at && e.kind === "user" && !e.steer)
+  const end = next < 0 ? t.entries.length : next
+  if (end === t.entries.length && liveOf(t.id).running) throw new HTTPError(409, "wait for this turn to end, or stop it")
+  const kept = structuredClone(t.entries.slice(0, end))
+  const f = create(t.harness, t.cwd, t.model, t.mode)
+  f.title = `${t.title} (fork)`.slice(0, 120)
+  if (t.worktree && !t.worktree.pending) f.worktree = { ...t.worktree }
+  try {
+    if (t.harness === "claude") {
+      const last = kept.findLast((e) => (e as { uuid?: string }).uuid && e.kind !== "user") as { uuid?: string } | undefined
+      if (!t.started || !last?.uuid) throw new HTTPError(409, "this answer is from before Agents could fork from one")
+      f.fork = { from: t.session, at: last.uuid }
+      f.chain = last.uuid
+    } else {
+      const turn = (kept.findLast((e) => e.kind === "user" && e.turn) as { turn?: string } | undefined)?.turn
+      if (!t.started || !turn) throw new HTTPError(409, "this answer is from before Agents could fork from one")
+      f.session = await codexFork(t, turn, f)
+      f.started = true
+    }
+  } catch (e) { forget(f); throw e instanceof HTTPError ? e : new HTTPError(502, (e as Error).message) }
+  for (const e of kept) if (e.kind === "ask" && !e.answer) e.answer = "gone"
+  f.entries = kept
+  // (its turns' checkpoints kept under its own name, so its diffs outlive this thread)
+  for (const [i, e] of kept.entries()) if (e.kind === "user") for (const w of ["before", "after"] as const) if (e[w]) await keepCheckpoint(f.cwd, `${f.id}/${i}-${w === "before" ? "a" : "b"}`, e[w]!).catch(() => {})
+  save(f, false)
+  listChanged()
+  return { id: f.id }
+}, { lock: false })
+
 /** Put the folder's files back as they were before turn `turn`. */
 plugin.route("POST", "agents/threads/*/revert", async (req) => {
   await owner(req)
@@ -277,18 +550,41 @@ plugin.route("POST", "agents/threads/*/git", async (req) => {
   const b = (req.body ?? {}) as Any
   const action = str(b.action)
   if (liveOf(t.id).running && action !== "pr") throw new HTTPError(409, `${NAMES[t.harness]} is still working: wait, or stop it first`)
-  const out: { commit?: string; pushed?: boolean; pr?: string } = {}
+  const out: { commit?: string; pushed?: boolean; pr?: string; branch?: string } = {}
   try {
+    if (action === "switch") {
+      if (t.worktree) throw new Error("a worktree thread keeps its own branch")
+      await checkout(t.cwd, str(b.branch), b.create === true)
+      out.branch = str(b.branch)
+    }
     if (action === "commit" || action === "commit-push" || action === "commit-push-pr") {
       const st = await stateOf(t.cwd)
-      if (st?.files) out.commit = await commit(t.cwd, str(b.message) || t.title)
-      else if (action === "commit") throw new Error("nothing to commit")
+      if (st?.files) {
+        // (no message given: the model writes one from the changes, else the thread's title)
+        let message = str(b.message).trim()
+        if (!message) {
+          const files = filesOfDiff(await diffOf(t.cwd, "HEAD", "").catch(() => ""))
+          const patch = await diffOf(t.cwd, "HEAD", "").catch(() => "")
+          message = (await commitFor(t.harness, t.cwd, st.branch, files.map((f) => `${f.status} ${f.path} (+${f.added} -${f.removed})`).join("\n"), patch)) ?? t.title
+        }
+        out.commit = await commit(t.cwd, message)
+      } else if (action === "commit") throw new Error("nothing to commit")
     }
     if (action === "push" || action === "commit-push" || action === "commit-push-pr") { await gitPush(t.cwd); out.pushed = true }
-    if (action === "pr" || action === "commit-push-pr") out.pr = await createPr(t.cwd, str(b.title) || t.title, str(b.body))
+    if (action === "pr" || action === "commit-push-pr") {
+      let title = str(b.title).trim(), body = str(b.body)
+      if (!title) {
+        const st = await stateOf(t.cwd)
+        const c = await branchChanges(t.cwd, st?.base ?? "")
+        const got = await prFor(t.harness, t.cwd, st?.base ?? "", st?.branch ?? "", c.commits, c.stat, c.patch)
+        title = got?.title ?? t.title
+        body = body || got?.body || ""
+      }
+      out.pr = await createPr(t.cwd, title, body)
+    }
     if (!Object.keys(out).length) throw new Error(`no action '${action}'`)
   } catch (e) { throw new HTTPError(409, (e as Error).message) }
-  const what = [out.commit && `committed ${out.commit}`, out.pushed && "pushed", out.pr && `opened ${out.pr}`].filter(Boolean).join(", ")
+  const what = [out.branch && `switched to ${out.branch}`, out.commit && `committed ${out.commit}`, out.pushed && "pushed", out.pr && `opened ${out.pr}`].filter(Boolean).join(", ")
   push(t, { kind: "note", text: `Git: ${what}.`, at: now() })
   return out
 }, { lock: false })
@@ -299,8 +595,46 @@ plugin.route("POST", "agents/threads/*/send", async (req) => {
   const b = (req.body ?? {}) as Any
   const text = str(b.text).trim()
   if (!text && !b.images?.length) throw new HTTPError(400, "write a message first")
-  void ask(t, text, { file: str(b.file) || undefined, images: Array.isArray(b.images) ? b.images : [] })
+  const images = Array.isArray(b.images) ? b.images : []
+  // While it works: queued for when the turn ends, or straight into it (steer).
+  if (liveOf(t.id).running) {
+    const names = saveImages(t, images), file = noteOf(str(b.file))
+    if (b.steer === true && steer(t, text, file, names)) return { ok: true, steered: true }
+    const q = { id: crypto.randomBytes(4).toString("hex"), text, at: now(), ...(file ? { file } : {}), ...(names.length ? { images: names } : {}) }
+    t.queue = [...t.queue ?? [], q]
+    save(t)
+    tellThread(t)
+    return { ok: true, queued: q.id }
+  }
+  void ask(t, text, { file: str(b.file) || undefined, images })
   return { ok: true }
+}, { lock: false })
+
+/** A queued message: removed, moved (`to`: its new place), or sent into the turn under way (`steer`). */
+plugin.route("POST", "agents/threads/*/queue/*", async (req) => {
+  await owner(req)
+  const t = thread(req.arg(0))
+  const b = (req.body ?? {}) as Any
+  const i = (t.queue ?? []).findIndex((q) => q.id === req.arg(1))
+  if (i < 0) throw new HTTPError(404, "that message isn't queued any more")
+  const [q] = t.queue!.splice(i, 1)
+  if (b.action === "move") t.queue!.splice(Math.max(0, Math.min(Number(b.to) || 0, t.queue!.length)), 0, q)
+  else if (b.action === "steer" && !liveOf(t.id).running) {
+    // (nothing under way, as after a stop: it's sent now, a turn of its own)
+    if (!t.queue!.length) delete t.queue
+    save(t)
+    tellThread(t)
+    void ask(t, q.text, { file: q.file }, q.images ?? [])
+    return { ok: true, sent: true }
+  } else if (b.action === "steer") {
+    if (!steer(t, q.text, q.file, q.images ?? [])) { t.queue!.splice(i, 0, q); throw new HTTPError(409, "There is no active run to steer") }
+  } else if (b.action !== "remove") { t.queue!.splice(i, 0, q); throw new HTTPError(400, "action is remove, move or steer") }
+  if (!t.queue!.length) delete t.queue
+  save(t)
+  tellThread(t)
+  // (removed with nothing running: its images go too, unless a message uses them)
+  if (b.action === "remove") for (const im of q.images ?? []) fs.rmSync(path.join(dir("images", t.id), im), { force: true })
+  return { ok: true, ...(b.action === "remove" ? { text: q.text, file: q.file } : {}) }
 }, { lock: false })
 
 plugin.route("POST", "agents/threads/*/stop", async (req) => {
@@ -315,7 +649,9 @@ plugin.route("POST", "agents/threads/*/answer", async (req) => {
   const t = thread(req.arg(0))
   const b = (req.body ?? {}) as Any
   const r = runs.get(t.id)
-  if (!r || !r.settle(str(b.ask), b.allow === true ? "allow" : "deny")) throw new HTTPError(409, "that question isn't waiting any more")
+  const answers = b.answers && typeof b.answers === "object" ? Object.fromEntries(Object.entries(b.answers as Record<string, unknown>).filter(([, v]) => typeof v === "string" && v.trim()).map(([k, v]) => [k, (v as string).trim()])) : undefined
+  const scope = b.scope === "session" || b.scope === "cancel" ? b.scope : undefined
+  if (!r || !r.settle(str(b.ask), b.allow === true ? "allow" : "deny", answers, scope)) throw new HTTPError(409, "that question isn't waiting any more")
   return { ok: true }
 }, { lock: false })
 
@@ -369,7 +705,8 @@ checkout), with its permission mode: when it asks to edit or run something, the 
     harness: { type: "string", enum: HARNESSES, description: "a new thread's agent; the plugin's setting when left out" },
     cwd: { type: "string", description: "a new thread's folder (a project's checkout); the vault when left out" },
     model: { type: "string", description: "a new thread's model; the plugin's setting when left out" },
-    mode: { type: "string", enum: MODES, description: "a new thread's permissions: ask, edits or read" },
+    mode: { type: "string", enum: MODES, description: "a new thread's access: ask (supervised), edits, auto or full; the plugin's setting (full) when left out" },
+    plan: { type: "boolean", description: "a new thread in plan mode: it reads and proposes a plan, changing nothing" },
     timeout: { type: "integer", minimum: 10, maximum: 3600, default: 600, description: "seconds to wait for the answer" },
   },
   args: ["message"],
@@ -378,7 +715,7 @@ checkout), with its permission mode: when it asks to edit or run something, the 
     const s = settings()
     try {
       if (p.thread) t = thread(p.thread)
-      else { const h: Harness = p.harness ?? s.harness; t = create(h, folder(p.cwd), p.model ?? s.model[h], p.mode ?? s.mode) }
+      else { const h: Harness = p.harness ?? s.harness; t = create(h, folder(p.cwd), p.model ?? s.model[h], p.mode ?? s.mode); if (p.plan) t.plan = true }
     } catch (e) { throw new OpError(p.thread ? `no thread '${p.thread}': agents list lists them` : (e as Error).message, (e as HTTPError).status ?? 400) }
     const from = t.entries.length
     let pending: Promise<{ text: string; error: string | null }>
