@@ -3,7 +3,7 @@
   "icon": "bot",
   "name": "Agents",
   "description": "Claude Code and Codex threads in a sidebar, grouped by project: each marked working or waiting for you, its last answer and changes a hover away, and a chat in a tab where you answer its questions and review its diffs. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
