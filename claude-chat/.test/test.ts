@@ -9,6 +9,7 @@ const cli = path.join(state, "claude")
 fs.symlinkSync(path.join(import.meta.dirname, "fake-claude.mjs"), cli)
 process.env.CLAUDE_CHAT_CLI = cli
 process.env.FAKE_CLAUDE_STATE = state
+process.env.PATH = "/usr/bin:/bin:/usr/sbin:/sbin" // (as under launchd: the fake is a node script)
 
 const { check, done, serve } = await import("../../testkit.ts")
 const s = await serve(["claude-chat"])

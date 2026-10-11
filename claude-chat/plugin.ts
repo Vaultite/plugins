@@ -64,6 +64,7 @@ function cliPath(): string | null {
 const AGENT_SESSION = ["CLAUDECODE", "CLAUDE_CODE_CHILD_SESSION", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_SESSION_ATTENDED", "CLAUDE_CODE_ENTRYPOINT",
   "CLAUDE_CODE_EXECPATH", "CLAUDE_CODE_MESSAGING_SOCKET", "CLAUDE_CODE_MESSAGING_TOKEN", "CLAUDE_CODE_SSE_PORT", "CLAUDE_PID", "CLAUDE_EFFORT"]
 
+// (a launchd server's PATH is bare: an npm-installed claude is a node script, so it needs node's folder)
 function env(): Record<string, string> {
   const out: Record<string, string> = {}
   for (const [k, v] of Object.entries(process.env)) {
@@ -73,7 +74,7 @@ function env(): Record<string, string> {
   }
   const host = !process.env.HOST || ["0.0.0.0", "::"].includes(process.env.HOST) ? "127.0.0.1" : process.env.HOST
   return { ...out, VAULTITE: "1", VAULTITE_URL: `http://${host.includes(":") ? `[${host}]` : host}:${Number(process.env.PORT || 8793)}`,
-    VAULTITE_VAULT: plugin.vault.path, PATH: [path.join(ROOT, "bin"), out.PATH].filter(Boolean).join(":") }
+    VAULTITE_VAULT: plugin.vault.path, PATH: [...new Set([path.join(ROOT, "bin"), ...(out.PATH ?? "").split(":"), path.dirname(process.execPath), "/opt/homebrew/bin", "/usr/local/bin"].filter(Boolean))].join(":") }
 }
 
 /** What Claude is told about where it runs, then every plugin's line for agents (the vault's rules, the user's file). */

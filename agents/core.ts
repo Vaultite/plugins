@@ -62,6 +62,9 @@ const AGENT_SESSION = ["CLAUDECODE", "CLAUDE_CODE_CHILD_SESSION", "CLAUDE_CODE_S
   "CLAUDE_CODE_EXECPATH", "CLAUDE_CODE_MESSAGING_SOCKET", "CLAUDE_CODE_MESSAGING_TOKEN", "CLAUDE_CODE_SSE_PORT", "CLAUDE_PID", "CLAUDE_EFFORT",
   "CODEX_THREAD_ID", "CODEX_SANDBOX", "CODEX_SANDBOX_NETWORK_DISABLED"]
 
+// A launchd server's PATH is bare (/usr/bin:/bin): Homebrew's codex is a node script, so it needs node's folder.
+const BIN_DIRS = () => [path.dirname(process.execPath), "/opt/homebrew/bin", "/usr/local/bin", path.join(os.homedir(), ".local/bin")]
+
 export function env(): Record<string, string> {
   const out: Record<string, string> = {}
   for (const [k, v] of Object.entries(process.env)) {
@@ -71,7 +74,7 @@ export function env(): Record<string, string> {
   }
   const host = !process.env.HOST || ["0.0.0.0", "::"].includes(process.env.HOST) ? "127.0.0.1" : process.env.HOST
   return { ...out, VAULTITE: "1", VAULTITE_URL: `http://${host.includes(":") ? `[${host}]` : host}:${Number(process.env.PORT || 8793)}`,
-    VAULTITE_VAULT: plugin.vault.path, PATH: [path.join(ROOT, "bin"), out.PATH].filter(Boolean).join(":") }
+    VAULTITE_VAULT: plugin.vault.path, PATH: [...new Set([path.join(ROOT, "bin"), ...(out.PATH ?? "").split(":"), ...BIN_DIRS()].filter(Boolean))].join(":") }
 }
 
 /** What an agent is told about where it runs, then every plugin's line for agents (the vault's rules, the user's file). */

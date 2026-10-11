@@ -12,6 +12,8 @@ process.env.AGENTS_CLAUDE_CLI = claude
 process.env.AGENTS_CODEX_CLI = codex
 process.env.FAKE_CLAUDE_STATE = state
 process.env.FAKE_CODEX_STATE = state
+// As under launchd: a bare PATH, where the fakes (node scripts, like Homebrew's codex) find node only if we add it.
+process.env.PATH = "/usr/bin:/bin:/usr/sbin:/sbin"
 
 const { check, done, serve } = await import("../../testkit.ts")
 const s = await serve(["agents"])
