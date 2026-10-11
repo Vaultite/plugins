@@ -13,6 +13,4 @@ can put the files back; the chat's header commits (the model writes the message)
 Deleting a thread removes its worktree when nothing in it is uncommitted and no other thread works there; the branch
 stays.
 
-As in T3 Code: a message sent while it works is queued (or steers the turn), the agent's questions are answered above
-the box, a plan is implemented here or in a new thread, any answer forks a thread, and threads are pinned, snoozed or
-settled (by hand, or once their pull request is merged or closed, or after three quiet days).
+Threads settle by hand, or by themselves once their pull request is merged or closed, or after three quiet days.

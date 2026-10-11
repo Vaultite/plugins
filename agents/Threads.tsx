@@ -1,6 +1,5 @@
-// The sidebar, as T3 Code's: pinned threads on top, then the active ones as cards (newest message first), and the Snoozed
-// and Settled shelves below; a project filter and a search above; a hover settles or snoozes. Grouped by project is the
-// setting for T3 Code's legacy sidebar. ⌃1-9 open the first nine.
+// The sidebar as T3 Code's: pinned and active threads as cards, the Snoozed and Settled shelves below, a project filter
+// and a search; grouped by project is the setting for its legacy sidebar. ⌃1-9 open the first nine.
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from "react"
 import { createPortal } from "react-dom"
 import {

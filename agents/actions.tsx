@@ -1,6 +1,5 @@
-// What a thread can have done to it, T3 Code's thread menu (the sidebar's right click and the chat header share it):
-// pin, settle, snooze, rename, regenerate its title, mark unread, filter by its project, auto-settle, copy, archive,
-// delete; and the small dialogs they need.
+// T3 Code's thread menu, shared by the sidebar's rows and the chat's header: pin, settle, snooze, rename, mark unread,
+// filter, auto-settle, copy, archive, delete; and the small dialogs they need.
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { Archive, ArchiveRestore, CircleCheck, Clock, Copy, Folder, FolderTree, GitBranch, Hash, MailOpen, MessageSquarePlus, Pencil, Pin, PinOff, RefreshCw, SquareTerminal, Timer, Trash2 } from "lucide-react"

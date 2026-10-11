@@ -1,6 +1,5 @@
-// Git per thread, as T3 Code has it: the branch in the header with one button for what's next (commit, push, open a
-// pull request) and its menu; a commit asks for its message first. A new thread picks its workspace (the checkout as it
-// is, or a worktree of its own) and branch below the box to write in.
+// Git per thread, as T3 Code's: the branch and one button for what's next (commit, push, a pull request) in the header,
+// and below a new thread's box its workspace (the checkout or a new worktree) and branch.
 import { useCallback, useEffect, useRef, useState } from "react"
 import { ChevronDown, CloudUpload, ExternalLink, Folder, FolderGit2, GitBranch, GitCommitHorizontal, GitPullRequest, LoaderCircle, TriangleAlert } from "lucide-react"
 import { choose, cn, confirmDialog, copyText, get, menuAbove, menuBelow, notify, notifyError, openWebLink, post, type MenuItem } from "@vaultite"

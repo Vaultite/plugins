@@ -1,7 +1,5 @@
-// Agents against fake CLIs (Claude chat's fake-claude.mjs, fake-codex.mjs, fake-gh.mjs): threads of both harnesses,
-// streamed answers, permission asks answered both ways, access modes and plan mode, the agents' own questions, queue and
-// steer, Edit from here and forks, task lists, git per thread with the model's text, settling and the list's states, a
-// pull request into a thread, stop, resume after a restart, projects, the ops.
+// Agents against the fake CLIs: both harnesses, permissions, modes, questions, queue and steer, Edit from here, forks,
+// task lists, git with the model's text, settling and the list's states, a pull request into a thread, the ops.
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
 import os from "node:os"

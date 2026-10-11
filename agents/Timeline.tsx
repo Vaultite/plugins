@@ -1,6 +1,5 @@
-// The thread as turns, T3 Code's way: your message on the right (Edit from here goes back to it); the agent's work while
-// it runs, then folded behind "Worked for 12s" once it's done; its answer as plain Markdown (fork a thread from it); a
-// plan as a card of its own; and the files the turn changed, a click from the diff.
+// The thread as turns, T3 Code's way: your message (Edit from here), the work folded behind "Worked for 12s", the answer
+// (fork from it), a plan as a card, and the files the turn changed, a click from the diff.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { ArrowDown, ChevronRight, CircleAlert, Copy, CornerDownRight, Ellipsis, FileDiff, FileText, Folder, GitFork, MessageCircleQuestion, ShieldCheck, ShieldX, Undo2 } from "lucide-react"
 import { cn, copyText, Markdown, menuBelow, notify, notifyError, openView, post } from "@vaultite"

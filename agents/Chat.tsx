@@ -1,6 +1,5 @@
-// A thread in its tab (view:agents/<id>), laid out as T3 Code's: the header (project, title and its menu, git), the turns
-// (Timeline.tsx), the diff panel (⌘D), and the box to write in with what waits on you on it (Banners.tsx). A new thread
-// ("" id) picks its agent, project, workspace and branch there first. T3 Code's keys: see `actions` in Chat.
+// A thread in its tab (view:agents/<id>) as T3 Code's: the header (project, title, git), the turns (Timeline.tsx), the
+// diff panel (⌘D) and the box to write in with what waits on you (Banners.tsx); a new thread ("" id) picks where first.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type ClipboardEvent, type KeyboardEvent, type ReactNode } from "react"
 import { AlarmClock, ArrowUp, AtSign, Check, ChevronDown, CircleCheck, FileDiff, FileText, Folder, GitBranch, GitPullRequest, ListTodo, Plus, Square, SquareTerminal, X } from "lucide-react"
 import {
