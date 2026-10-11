@@ -1,9 +1,9 @@
 // A thread in its tab (view:agents/<id>) as T3 Code's: the header (project, title, git), the turns (Timeline.tsx), the
 // diff panel (⌘D) and the box to write in with what waits on you (Banners.tsx); a new thread ("" id) picks where first.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type ClipboardEvent, type KeyboardEvent, type ReactNode } from "react"
-import { AlarmClock, ArrowUp, AtSign, Check, ChevronDown, CircleCheck, FileDiff, FileText, Folder, GitBranch, GitPullRequest, ListTodo, Plus, Square, SquareTerminal, X } from "lucide-react"
+import { AlarmClock, ArrowUp, AtSign, Check, Paperclip, ChevronDown, CircleCheck, FileDiff, FileText, Folder, GitBranch, GitPullRequest, ListTodo, Plus, Square, SquareTerminal, X } from "lucide-react"
 import {
-  choose, cn, getStore, menuAbove, menuBelow, notify, notifyError, openAgent, openMenu, openView, patch, post, useEnabled, useFocusedFile, useLive, usePluginSettings,
+  choose, cn, get, getStore, menuAbove, menuBelow, notify, notifyError, openAgent, openMenu, openView, patch, post, useEnabled, useFocusedFile, useLive, usePluginSettings,
   useScopedState, type MenuItem,
 } from "@vaultite"
 import { ago, choiceDialog, setState, settle, threadActions, wakeLabel } from "./actions"
@@ -116,6 +116,8 @@ export function useDraft(): [Draft, (d: Partial<Draft>) => void] {
 type ComposerProps = {
   id: string; t: Thread | null; draft: Draft; setDraft: (d: Partial<Draft>) => void; workspace: Workspace; running: boolean; status: Status | null; projects: Project[]
   asks: Ask[]; plan: { at: number; text: string } | null; tasks: { list: Task[]; since?: string } | null; queue: Queued[]; onSent: (id: string) => void; keys: (k: Keys) => void
+  /** Its messages, newest first: ↑ in an empty box brings them back (T3 Code's prompt history). */
+  history: string[]
 }
 /** What the chat's keys open, from wherever the focus is in it. */
 export type Keys = { model: () => void; mode: () => void; effort: () => void; send: (steer: boolean) => void; steerFirst: () => void; editLast: () => void }
@@ -133,6 +135,8 @@ function Composer(p: ComposerProps) {
   const focused = useFocusedFile().path
   const [dropped, setDropped] = useState("")
   const area = useRef<HTMLTextAreaElement>(null)
+  const recalled = useRef(-1)
+  const picker = useRef<HTMLInputElement>(null)
   const modelPill = useRef<HTMLButtonElement>(null), modePill = useRef<HTMLButtonElement>(null)
   const h = draft.harness
   const st = status?.[h]
@@ -200,22 +204,27 @@ function Composer(p: ComposerProps) {
     } catch (e) { notifyError(e, "Couldn't implement it") } finally { setSending(false) }
   }
 
-  /** @: a vault note, put in as its path. */
-  const mention = (replaceAt = -1) => {
-    const files = [...getStore()?.files.files ?? []].sort((a, b) => b.mtime - a.mtime)
-    choose({
-      title: "Point the agent at a note", placeholder: "Find a note", items: files.slice(0, 3000).map((f) => ({ id: f.path, label: f.title || noteName(f.path), detail: f.path, icon: FileText })),
-      onPick: (f) => {
-        const el = area.current
-        const at = replaceAt >= 0 ? replaceAt : el?.selectionStart ?? text.length
-        const before = text.slice(0, at), after = text.slice(replaceAt >= 0 ? at + 1 : at)
-        const put = `@${f.id} `
-        setText(before + put + after)
-        requestAnimationFrame(() => { el?.focus(); el?.setSelectionRange(before.length + put.length, before.length + put.length) })
-      },
-      onDismiss: () => requestAnimationFrame(() => area.current?.focus()),
-    })
+  /** What's picked goes in where the trigger was typed (or at the caret): `@path`, `/command`. */
+  const put = (replaceAt: number, what: string) => {
+    const el = area.current
+    const at = replaceAt >= 0 ? replaceAt : el?.selectionStart ?? text.length
+    const before = text.slice(0, at), after = text.slice(replaceAt >= 0 ? at + 1 : at)
+    setText(before + what + after)
+    requestAnimationFrame(() => { el?.focus(); el?.setSelectionRange(before.length + what.length, before.length + what.length) })
   }
+  const back = () => requestAnimationFrame(() => area.current?.focus())
+  /** @: a vault note, or a file of the project's checkout, put in as its path. */
+  const mention = async (replaceAt = -1) => {
+    const files = inVault ? [...getStore()?.files.files ?? []].sort((a, b) => b.mtime - a.mtime).slice(0, 3000).map((f) => ({ id: f.path, label: f.title || noteName(f.path), detail: f.path, icon: FileText }))
+      : (await get<{ list: string[] }>(`agents/files?cwd=${encodeURIComponent(draft.cwd)}`).catch(() => ({ list: [] as string[] }))).list.map((f) => ({ id: f, label: f.split("/").pop()!, detail: f, icon: FileText }))
+    choose({ title: inVault ? "Point the agent at a note" : "Point the agent at a file", placeholder: inVault ? "Find a note" : "Find a file", items: files,
+      onPick: (f) => put(replaceAt, `@${f.id} `), onDismiss: back })
+  }
+  /** /: one of the agent's own commands (Claude Code's, its skills too). */
+  const command = (replaceAt: number) => choose({
+    title: "Run a command", placeholder: "Find a command", items: (st?.commands ?? []).map((c) => ({ id: c.name, label: `/${c.name}`, detail: c.description, icon: SquareTerminal })),
+    onPick: (c) => put(replaceAt, `/${c.id} `), onDismiss: back,
+  })
   const harnessMenu = (): MenuItem[] => HARNESSES.map((x) => ({ label: NAME[x], icon: ICON[x], checked: h === x, run: () => setDraft({ harness: x, model: "" }) }))
   const effortMenu = (): MenuItem[] => [
     { label: "Default effort", checked: !draft.effort, hint: `${SHORT[h]}'s`, run: () => setDraft({ effort: "" }) },
@@ -247,11 +256,23 @@ function Composer(p: ComposerProps) {
       return void send(running && mod ? !steerDefault : steerDefault)
     }
     if (e.key === "ArrowUp" && e.altKey && !text) { e.preventDefault(); return editLast() }
+    // (↑ and ↓ walk back through what was sent, from an empty box or one showing a recalled message)
+    const browsing = !text || (recalled.current >= 0 && text === p.history[recalled.current])
+    if ((e.key === "ArrowUp" || e.key === "ArrowDown") && !e.altKey && !mod && !e.shiftKey && browsing && p.history.length) {
+      const next = recalled.current + (e.key === "ArrowUp" ? 1 : -1)
+      if (next < -1 || next >= p.history.length) return
+      e.preventDefault()
+      recalled.current = next
+      return setText(next < 0 ? "" : p.history[next])
+    }
     if (e.key === "Escape" && running) { e.preventDefault(); stop() }
   }
   const onInput = (v: string, caret: number) => {
     setText(v)
-    if (inVault && v[caret - 1] === "@" && (caret === 1 || /\s/.test(v[caret - 2])) && v.length > text.length) mention(caret - 1)
+    recalled.current = -1
+    if (v.length <= text.length) return
+    if (v[caret - 1] === "@" && (caret === 1 || /\s/.test(v[caret - 2]))) void mention(caret - 1)
+    else if (v[caret - 1] === "/" && caret === 1 && st?.commands?.length) command(0)
   }
   const onPaste = (e: ClipboardEvent<HTMLTextAreaElement>) => addImages([...e.clipboardData.files], () => e.preventDefault())
   /** Images pasted or dropped on the box: up to six, sent with the message. */
@@ -273,7 +294,7 @@ function Composer(p: ComposerProps) {
     : question ? (qs[answering?.index ?? 0]?.options.length && qs[answering?.index ?? 0]?.other === false ? "Choose an option above" : "Type your own answer, or leave this blank to use the selected option")
     : planShown ? "Add feedback to refine the plan, or leave this blank to implement it"
     : running ? (steerDefault ? "Steer the agent: this goes into what it's doing" : "Queue a follow-up for when it's done")
-    : inVault ? "Ask anything, @ to point at a note" : "Ask anything"
+    : inVault ? "Ask anything, @ to point at a note" : st?.commands?.length ? "Ask anything, @ for a file, or / for commands" : "Ask anything, @ for a file"
   const primary = "inline-flex h-8 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-[13px] font-medium text-primary-foreground hover:opacity-90 disabled:cursor-default disabled:opacity-40 max-md:h-11 max-md:px-4 max-md:text-[16px]"
   return (
     <div className="mx-auto w-full max-w-[760px] overflow-hidden rounded-[20px] border-[0.5px] border-border bg-background shadow-[0_4px_18px_rgb(0_0_0/0.06)] focus-within:border-primary/70" data-composer
@@ -317,12 +338,14 @@ function Composer(p: ComposerProps) {
         )}
         <button ref={modelPill} type="button" className={cn(pill, "min-w-0 shrink")} data-tip="The model it uses and how hard it thinks (⌘⇧M, ⌘⇧E)" data-agents-model={draft.model || "default"} data-agents-effort={draft.effort || "default"} onClick={(e) => menuAbove(e, modelMenu())}><span className="truncate">{modelLabel}</span></button>
         <button ref={modePill} type="button" className={cn(pill, "min-w-0 shrink")} data-tip={`${mode.tip} (⌘⇧A)`} data-agents-mode={mode.id} onClick={(e) => menuAbove(e, modeMenu())}>
-          <MIcon className="size-3.5 shrink-0" /><span className="truncate">{mode.label}</span>
+          <MIcon className="size-3.5 shrink-0" /><span className="truncate max-md:hidden">{mode.label}</span>
         </button>
         <button type="button" className={cn(pill, "shrink-0", draft.plan && "bg-[color-mix(in_srgb,var(--blue)_14%,transparent)] text-[var(--blue)] hover:bg-[color-mix(in_srgb,var(--blue)_20%,transparent)] hover:text-[var(--blue)]")}
           aria-pressed={draft.plan} data-agents-plan={draft.plan || undefined} data-tip={draft.plan ? "Plan mode: it reads and proposes a plan, changing nothing. Click to leave it" : "Plan first: it reads and proposes a plan, changing nothing"}
           onClick={() => setDraft({ plan: !draft.plan })}><ListTodo className="size-3.5 shrink-0" /><span className="max-md:hidden">Plan</span></button>
-        {inVault && <button type="button" className={button} aria-label="Point the agent at a note" data-tip="Point the agent at a note (@)" onClick={() => mention()}><AtSign className="size-3.5 max-md:size-5" /></button>}
+        <button type="button" className={button} aria-label="Attach images" data-tip="Attach images (or paste, or drop them)" onClick={() => picker.current?.click()}><Paperclip className="size-3.5 max-md:size-5" /></button>
+        <input ref={picker} type="file" accept="image/png,image/jpeg,image/gif,image/webp" multiple hidden data-attach onChange={(e) => { addImages([...e.target.files ?? []], () => {}); e.target.value = "" }} />
+        <button type="button" className={cn(button, "max-md:hidden")} aria-label={inVault ? "Point the agent at a note" : "Point the agent at a file"} data-tip={inVault ? "Point the agent at a note (@)" : "Point the agent at a file (@)"} onClick={() => void mention()}><AtSign className="size-3.5 max-md:size-5" /></button>
         <span className="flex-1" />
         {p.t?.context && <ContextMeter c={p.t.context} />}
         {question ? (
@@ -363,7 +386,7 @@ function ContextMeter({ c }: { c: { used: number; max: number } }) {
   const f = Math.min(1, c.used / c.max), r = 6.5, len = 2 * Math.PI * r
   const k = (n: number) => (n >= 1000 ? `${Math.round(n / 1000)}k` : String(n))
   return (
-    <span className="grid size-7 shrink-0 place-items-center" data-context={Math.round(f * 100)} data-tip={`Context window: ${k(c.used)} of ${k(c.max)} tokens (${Math.round(f * 100)}%)`}>
+    <span className="grid size-7 shrink-0 place-items-center max-md:hidden" data-context={Math.round(f * 100)} data-tip={`Context window: ${k(c.used)} of ${k(c.max)} tokens (${Math.round(f * 100)}%)`}>
       <svg viewBox="0 0 16 16" className="size-4 -rotate-90" aria-label={`Context ${Math.round(f * 100)}% full`}>
         <circle cx="8" cy="8" r={r} fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground/10" />
         <circle cx="8" cy="8" r={r} fill="none" strokeWidth="2" strokeLinecap="round" strokeDasharray={`${len * f} ${len}`}
@@ -445,6 +468,7 @@ export function Chat({ id, setId }: { id: string; setId: (id: string) => void })
     if (e?.kind !== "plan" || e.done || e.open || entries.slice(at + 1).some((x) => x.kind === "user")) return null
     return { at, text: e.text }
   }, [entries])
+  const history = useMemo(() => entries.filter((e) => e.kind === "user").map((e) => (e as { text: string }).text).reverse(), [entries])
   // Its to-do list (Claude's TodoWrite, Codex's plan): the latest turn's, while it isn't all done or the turn goes on.
   const tasks = useMemo(() => {
     const from = entries.findLastIndex((e) => e.kind === "user" && !e.steer)
@@ -536,7 +560,7 @@ export function Chat({ id, setId }: { id: string; setId: (id: string) => void })
           )} />
         <div className="shrink-0 px-3 pb-3">
           <Composer id={id} t={t} draft={d} setDraft={setD} workspace={workspace} running={live.running} status={status ?? null} projects={projects} asks={asks}
-            plan={plan} tasks={tasks} queue={t?.queue ?? []} keys={(k) => { keys.current = k }}
+            plan={plan} tasks={tasks} queue={t?.queue ?? []} keys={(k) => { keys.current = k }} history={history}
             onSent={(to) => { if (to !== id) setId(to) }} />
           {!id && <BranchToolbar cwd={cwd} value={workspace} onChange={setWorkspace} projects={projects} />}
           {id && git && (

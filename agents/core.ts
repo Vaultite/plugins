@@ -258,18 +258,19 @@ export const liveOf = (id: string): Live => live.get(id) ?? { running: false, st
 export const waitingIn = (t: Thread) => t.entries.some((e) => e.kind === "ask" && !e.answer)
 const excerpt = (s: string, n = 280) => { const one = s.replace(/\s+/g, " ").trim(); return one.length > n ? `${one.slice(0, n)}…` : one }
 
-const SETTLE_AFTER_DAYS = 3
 /** When a thread settled, if it has, by T3 Code's rules: by hand, else by itself once nothing waits on it and its pull
- *  request was merged or closed after the last message, or nothing happened for three days. */
+ *  request was merged (the setting) or closed after the last message, or nothing happened for days (the setting). */
 export function settledAt(t: Thread, now = Date.now()): string | null {
+  const s = plugin.settings()
+  const days = typeof s.settleAfterDays === "number" ? s.settleAfterDays : 3
   if (t.settledOverride === "settled") return t.settledAt ?? t.updated
   if (t.settledOverride === "active" || t.pinnedAt || t.autoSettleOff || t.archivedAt || snoozed(t, now)) return null
   const l = liveOf(t.id)
   if (l.running || waitingIn(t) || t.queue?.length) return null
   const u = t.entries.findLast((e) => e.kind === "user") as Extract<Entry, { kind: "user" }> | undefined
   const active = u ? u.end ?? u.at : t.created
-  if (t.pr && (t.pr.state === "MERGED" || t.pr.state === "CLOSED") && (t.pr.at ?? "") >= (u?.at ?? t.created)) return active
-  return Date.parse(active) < now - SETTLE_AFTER_DAYS * 86_400_000 ? active : null
+  if (t.pr && ((t.pr.state === "MERGED" && s.settleOnMerge !== false) || t.pr.state === "CLOSED") && (t.pr.at ?? "") >= (u?.at ?? t.created)) return active
+  return days > 0 && Date.parse(active) < now - days * 86_400_000 ? active : null
 }
 
 export const snoozed = (t: Thread, now = Date.now()) => !!t.snoozedUntil && Date.parse(t.snoozedUntil) > now && !waitingIn(t)

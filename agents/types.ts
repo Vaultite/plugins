@@ -66,5 +66,6 @@ export type Summary = {
 }
 export type Project = { label: string; path: string; vault?: boolean }
 export type Model = { value: string; label: string; description: string }
-export type HarnessStatus = { installed: boolean; loggedIn: boolean; version: string; models: Model[]; account?: string }
+/** `commands`: the slash commands it offers (Claude Code's, its skills too), for the box's / menu. */
+export type HarnessStatus = { installed: boolean; loggedIn: boolean; version: string; models: Model[]; account?: string; commands?: { name: string; description: string }[] }
 export type Status = Record<Harness, HarnessStatus>

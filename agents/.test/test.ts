@@ -188,6 +188,8 @@ try {
   check("git: clean, pushed, and its pull request", g.git.files === 0 && g.git.ahead === 0 && g.git.pr?.number === 7, g)
   const [nothing, why] = await s.api("POST", `agents/threads/${wt.id}/git`, { action: "commit", message: "x" })
   check("git: nothing to commit says so", nothing === 409 && /nothing to commit/.test(why.error ?? JSON.stringify(why)), why)
+  const [, rf] = await s.api("GET", `agents/files?cwd=${encodeURIComponent(repo)}`)
+  check("@ in a checkout: its files", rf.list.includes("app.ts"), rf)
   const [, br] = await s.api("GET", `agents/branches?cwd=${encodeURIComponent(repo)}`)
   check("branches: the checkout's, the worktree's marked", br.git && br.list.some((b: { name: string; current: boolean }) => b.name === "main" && b.current) && br.list.some((b: { name: string; worktree: string }) => b.name === w?.branch && b.worktree), br)
   // The pull request merged after the last message: the thread settles by itself.
@@ -444,6 +446,12 @@ try {
   await s.api("POST", `agents/threads/${cal}/answer`, { ask: t.entries.find((e) => e.kind === "ask" && !e.answer)!.id, allow: true, scope: "session" })
   await until(cal, (_t, running) => !running)
   check("codex: Always allow this session is acceptForSession", codexLog().some((l) => l.response?.result?.decision === "acceptForSession"))
+
+  // ---------- @ a project's files, and Claude Code's slash commands
+  const [, fl] = await s.api("GET", `agents/files?cwd=${encodeURIComponent(project)}`)
+  check("@: a project's files (git's, else none)", Array.isArray(fl.list), fl)
+  const [, st4] = await s.api("GET", "agents/status?fresh=1")
+  check("/: Claude Code's commands from its handshake", st4.claude.commands?.some((c: { name: string }) => c.name === "compact"), st4.claude.commands)
 
   // ---------- settle, pin, snooze, archive, unread, auto-settle, titles
   await s.api("POST", `agents/threads/${td}/settle`, { settled: true })
