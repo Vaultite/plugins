@@ -41,6 +41,7 @@ const claudeRuns = () => claudeLog().filter((x) => x.argv?.includes("--include-p
 const stdinOf = () => claudeLog().filter((x) => x.stdin)
 const flag = (argv: string[], f: string) => argv[argv.indexOf(f) + 1]
 const project = fs.mkdtempSync(path.join(os.tmpdir(), "agents-project-"))
+let repo = ""
 fs.writeFileSync(path.join(project, "app.ts"), "export const answer = 41\n")
 
 try {
@@ -152,7 +153,7 @@ try {
     && told.some((r) => r.subtype === "set_permission_mode" && r.mode === "acceptEdits"), told)
 
   // ---------- git: a thread in its own worktree, its turns' diffs, revert, commit, push and a pull request
-  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "agents-repo-")), remote = `${repo}-remote.git`
+  repo = fs.mkdtempSync(path.join(os.tmpdir(), "agents-repo-")); const remote = `${repo}-remote.git`
   const sh = (cwd: string, ...a: string[]) => execFileSync("git", a, { cwd, encoding: "utf8" })
   sh(repo, "init", "-q"); fs.writeFileSync(path.join(repo, "app.ts"), "export const answer = 41\n"); sh(repo, "add", "-A"); sh(repo, "commit", "-qm", "first")
   execFileSync("git", ["init", "-q", "--bare", remote]); sh(repo, "remote", "add", "origin", remote); sh(repo, "push", "-q", "-u", "origin", "main")
@@ -500,5 +501,6 @@ try {
   s.stop()
   fs.rmSync(state, { recursive: true, force: true })
   fs.rmSync(project, { recursive: true, force: true })
+  if (repo) for (const d of [repo, `${repo}-remote.git`]) fs.rmSync(d, { recursive: true, force: true })
 }
 done()
