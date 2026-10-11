@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Excalidraw, exportToSvg, restoreElements, serializeAsJSON } from "@excalidraw/excalidraw"
 import type { AppState, BinaryFiles, ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types"
 import "@excalidraw/excalidraw/index.css"
+import "./scheme.css"
 import { runShortcut, type FormatCtx, type Store } from "@vaultite"
 import type { Codec } from "./codec"
 
