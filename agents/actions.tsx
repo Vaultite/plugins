@@ -56,7 +56,11 @@ export function parseWhen(typed: string, now = Date.now()) {
 // ---------- doing it
 
 export const setState = (id: string, body: Record<string, unknown>) => post(`agents/threads/${id}/state`, body).catch((e) => notifyError(e, "Couldn't change it"))
-export const settle = (id: string, settled: boolean) => post(`agents/threads/${id}/settle`, { settled }).catch((e) => notifyError(e, settled ? "Couldn't settle it" : "Couldn't un-settle it"))
+export const settle = (id: string, settled: boolean) => post(`agents/threads/${id}/settle`, { settled }).then(() => { if (settled) onSettled(id) })
+  .catch((e) => notifyError(e, settled ? "Failed to settle thread" : "Failed to un-settle thread"))
+/** Set by the sidebar: settling the thread that's open moves on to the next one (T3 Code's). */
+export let onSettled = (_id: string) => {}
+export const whenSettled = (f: (id: string) => void) => { onSettled = f }
 export function snoozeCustom(id: string) {
   choose({
     title: "Snooze until", placeholder: "When it comes back: 2h, 3d, or a date and time", items: snoozePresets().map((p) => ({ id: p.when.toISOString(), label: p.label, detail: p.hint, icon: Clock })),

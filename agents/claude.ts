@@ -197,7 +197,7 @@ export class ClaudeRun extends Run {
     if (e.scope === "cancel") this.stopping = true
     this.write({ type: "control_response", response: { subtype: "success", request_id: e.id, response: allow
       ? { behavior: "allow", updatedInput: input, ...(e.scope === "session" && e.suggestions ? { updatedPermissions: e.suggestions } : {}) }
-      : { behavior: "deny", message: e.tool === "AskUserQuestion" ? "The user didn't answer: go on without it, or ask in the chat." : "The user said no. Ask them what they'd like instead.", ...(e.scope === "cancel" ? { interrupt: true } : {}) } } })
+      : { behavior: "deny", message: e.tool === "AskUserQuestion" ? "The user didn't answer: go on without it, or ask in the chat." : "User declined tool execution.", ...(e.scope === "cancel" ? { interrupt: true } : {}) } } })
   }
 
   result(j: Any) {

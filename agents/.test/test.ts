@@ -376,7 +376,7 @@ try {
   const firstAnswer = t.entries.findIndex((e) => e.kind === "assistant")
   const [, fk] = await s.api("POST", `agents/threads/${rw}/fork`, { at: firstAnswer })
   let f = (await get(fk.id)).thread
-  check("fork: a new thread with the conversation up to that answer", f.title.endsWith("(fork)") && f.entries.length === firstAnswer + 1 && !f.started, f.entries.map((e) => e.kind))
+  check("fork: a new thread with the conversation up to that answer", f.title.endsWith(" fork") && f.entries.length === firstAnswer + 1 && !f.started, f.entries.map((e) => e.kind))
   await s.api("POST", `agents/threads/${fk.id}/send`, { text: "what did i say" })
   f = await until(fk.id, (t, running) => !running && t.entries.at(-1)?.kind === "assistant")
   const forked = claudeRuns().at(-1)
@@ -453,6 +453,15 @@ try {
   check("@: a project's files (git's, else none)", Array.isArray(fl.list), fl)
   const [, st4] = await s.api("GET", "agents/status?fresh=1")
   check("/: Claude Code's commands from its handshake", st4.claude.commands?.some((c: { name: string }) => c.name === "compact"), st4.claude.commands)
+
+  const wt2 = await mk({ harness: "codex", cwd: project, mode: "ask" })
+  await s.api("POST", `agents/threads/${wt2}/send`, { text: "run the thing" })
+  await until(wt2, (t) => t.entries.some((e) => e.kind === "ask" && !e.answer))
+  const [noSettle, why2] = await s.api("POST", `agents/threads/${wt2}/settle`, { settled: true })
+  check("settle refused while it waits on you (T3 Code's rule)", noSettle === 409 && /waiting on an approval or question/.test(JSON.stringify(why2)), why2)
+  await s.api("POST", `agents/threads/${wt2}/stop`, {})
+  const [, fk2] = await s.api("POST", `agents/threads/${cfull}/fork`, { at: (await get(cfull)).thread.entries.findIndex((e) => e.kind === "assistant") })
+  check("a fork is titled '<title> fork'", (await get(fk2.id)).thread.title.endsWith(" fork"))
 
   // ---------- settle, pin, snooze, archive, unread, auto-settle, titles
   await s.api("POST", `agents/threads/${td}/settle`, { settled: true })

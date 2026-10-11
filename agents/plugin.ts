@@ -12,7 +12,7 @@ import { codexCli, codexFork, CodexRun, codexRevert, codexStatus } from "./codex
 import { branchFor, commitFor, prFor, titleFor } from "./gentext.ts"
 import {
   type Any, changed, create, threads, dir, filesOfDiff, forget, home, ID, type Image, listChanged, liveOf, load, MODES, NEW_TITLE, now, patchFiles, plugin, projects, push, realOf, runs, save, send,
-  setLive, snoozed, sockets, str, summaries, thread, tilde, vaultReal,
+  setLive, snoozed, sockets, waitingIn, str, summaries, thread, tilde, vaultReal,
 } from "./core.ts"
 import type { Entry, Harness, Mode, Summary, Thread } from "./types.ts"
 
@@ -315,6 +315,12 @@ plugin.route("POST", "agents/threads/*/title", async (req) => {
 plugin.route("POST", "agents/threads/*/settle", async (req) => {
   await owner(req)
   const t = thread(req.arg(0))
+  // (T3 Code's: nothing may be waiting on it when it's settled)
+  if ((req.body as Any)?.settled !== false) {
+    if (waitingIn(t)) throw new HTTPError(409, `Thread ${t.id} is waiting on an approval or question. Answer it before settling.`)
+    if (liveOf(t.id).running) throw new HTTPError(409, `Thread ${t.id} is still running. Stop it before settling.`)
+    if (t.queue?.length) throw new HTTPError(409, `Thread ${t.id} has a queued message. Send it or remove it from the queue before settling.`)
+  }
   if ((req.body as Any)?.settled === false) { t.settledOverride = "active"; delete t.settledAt }
   // (settling is "done with it": it unpins too)
   else { if (t.settledOverride !== "settled") t.settledAt = now(); t.settledOverride = "settled"; delete t.pinnedAt }
@@ -512,7 +518,7 @@ plugin.route("POST", "agents/threads/*/fork", async (req) => {
   if (end === t.entries.length && liveOf(t.id).running) throw new HTTPError(409, "wait for this turn to end, or stop it")
   const kept = structuredClone(t.entries.slice(0, end))
   const f = create(t.harness, t.cwd, t.model, t.mode)
-  f.title = `${t.title} (fork)`.slice(0, 120)
+  f.title = `${t.title} fork`.slice(0, 120)
   if (t.worktree && !t.worktree.pending) f.worktree = { ...t.worktree }
   try {
     if (t.harness === "claude") {

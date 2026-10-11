@@ -7,7 +7,8 @@ import {
   MessageCircleQuestion, Pin, PinOff, Plus, Search, ShieldQuestion, SquarePen, Undo2, X,
 } from "lucide-react"
 import { choose, cn, isMac, isViewOpen, menuBelow, menuFor, openView, patch, SidebarRow, useEnabled, useLive, usePluginSettings, useScopedState, useTick, type SidebarCtx } from "@vaultite"
-import { ago, setState, settle, snoozePresets, threadActions, wakeLabel } from "./actions"
+import { ago, setState, settle, snoozePresets, threadActions, wakeLabel, whenSettled } from "./actions"
+import { lastThread } from "./panel"
 import { chooseProject, checkoutPr, useHasDraft } from "./Chat"
 import { AgentsIcon, HARNESSES, ICON, MODES, NAME, STATUS, TINT } from "./harness"
 import { useList, useSocket } from "./live"
@@ -47,6 +48,15 @@ export function step(from: string, by: 1 | -1) {
   const id = order[i < 0 ? 0 : (i + by + order.length) % order.length]
   if (id) openView(`agents/${id}`, { newTab: !isViewOpen(`agents/${id}`) })
 }
+
+/** Settling the thread in use moves its tab to the next one still active (T3 Code's), or to a new thread. */
+let live: string[] = []
+whenSettled((id) => {
+  if (lastThread !== id) return
+  const i = live.indexOf(id)
+  const next = [...live.slice(i + 1), ...live.slice(0, Math.max(0, i))].find((x) => x !== id)
+  openView(next ? `agents/${next}` : "agents/")
+})
 
 // ---------- a thread's status, by T3 Code's rules
 
@@ -341,6 +351,7 @@ export function ThreadsPanel({ open, tab, inView }: SidebarCtx & { inView?: bool
   const shownSnoozed = snoozedOpen || q ? snoozedList : snoozedList.filter(isOpen)
   const shownSettled = settledOpen || q ? settledList : settledList.filter(isOpen)
   order = grouped ? found.map((s) => s.id) : [...pinned, ...active, ...shownSnoozed, ...shownSettled].map((s) => s.id)
+  live = [...pinned, ...active].map((s) => s.id)
   const jump = (s: Summary) => { const n = order.indexOf(s.id) + 1; return n > 0 && n <= 9 ? n : undefined }
 
   const filterItem = (s: Summary) => ({ label: s.project, active: filter === s.home, toggle: () => setFilter(filter === s.home ? undefined : s.home) })
