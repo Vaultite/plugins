@@ -1,0 +1,52 @@
+{
+  "id": "agents",
+  "icon": "bot",
+  "name": "Agents",
+  "description": "Claude Code and Codex threads in a sidebar, grouped by project: each marked working or waiting for you, its last answer and changes a hover away, and a chat in a tab where you answer its questions and review its diffs. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "agents",
+  "runsOnServer": true,
+  "disclosures": {
+    "shell": true,
+    "network": ["api.anthropic.com", "claude.ai", "chatgpt.com", "api.openai.com"],
+    "outsideVault": true
+  },
+  "enhances": ["claude-code", "codex", "terminal", "projects", "activity"],
+  "settings": {
+    "harness": {
+      "type": "enum",
+      "values": ["claude", "codex"],
+      "labels": { "claude": "Claude Code", "codex": "Codex" },
+      "default": "claude",
+      "label": "New threads use",
+      "description": "the agent a new thread starts with (each thread can pick its own)"
+    },
+    "mode": {
+      "type": "enum",
+      "values": ["ask", "edits", "read"],
+      "labels": { "ask": "Ask before edits", "edits": "Accept edits", "read": "Read only" },
+      "default": "ask",
+      "label": "Permissions",
+      "description": "what a new thread may do without asking: ask before edits and commands, accept edits (still asks before commands), or only read and plan"
+    },
+    "claudeModel": {
+      "type": "string",
+      "label": "Claude model",
+      "description": "the model new Claude Code threads use (opus, sonnet, haiku or a full name); Claude Code's default when left out"
+    },
+    "codexModel": {
+      "type": "string",
+      "label": "Codex model",
+      "description": "the model new Codex threads use, as Codex names it; Codex's default when left out"
+    },
+    "allowUsers": {
+      "local": true,
+      "type": "list",
+      "label": "Other tailnet logins",
+      "description": "tailnet logins besides this machine's owner that may use agents (they run on this machine), like someone@example.com"
+    }
+  }
+}
