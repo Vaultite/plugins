@@ -412,7 +412,7 @@ export function ThreadsPanel({ open, tab, inView }: SidebarCtx & { inView?: bool
       {all.length > 0 && (
         <label className="mx-1 mb-1 flex h-7 items-center gap-1.5 rounded-[6px] bg-foreground/[0.04] px-2 text-[12px] text-muted-foreground focus-within:bg-foreground/[0.06] max-md:h-10 max-md:text-[16px]">
           <Search className="size-3.5 shrink-0" />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" aria-label="Search threads" data-agents-search data-keeps-keys
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search threads" aria-label="Search threads" data-agents-search data-keeps-keys
             onKeyDown={(e) => { if (e.key === "Escape") setQuery("") }} className="min-w-0 flex-1 bg-transparent text-foreground outline-none placeholder:text-tertiary" />
           {query && <button type="button" aria-label="Clear thread search" onClick={() => setQuery("")} className="grid cursor-pointer place-items-center hover:text-foreground"><X className="size-3.5" /></button>}
         </label>

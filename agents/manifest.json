@@ -3,7 +3,7 @@
   "icon": "bot",
   "name": "Agents",
   "description": "Claude Code and Codex threads in a sidebar laid out like T3 Code's: pinned and active threads on top, snoozed and settled ones below, a project filter. Each thread is a chat: its work folded behind how long it took, questions and plans answered above the box to write in, messages queued or steered while it works, back to any message or forked from any answer, a diff panel beside it, and git per thread with the model writing commit messages, pull requests and branch names. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
