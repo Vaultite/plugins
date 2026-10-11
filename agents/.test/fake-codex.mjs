@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-// A stand-in for `codex app-server` in tests and QA: the JSON-RPC lines Codex 0.160 writes (recorded from real runs),
-// replayed by what the prompt asks for. FAKE_CODEX_STATE (a folder): `codex.jsonl` gets each request; files there:
-// `codex-logged-out`, `codex-exec-fails`, `threads.json` (the threads and their turns: resumed, reverted, forked).
-// `codex exec` answers once, as its `--output-schema` asks.
+// A stand-in for `codex app-server` (lines recorded from Codex 0.160), replayed by what the prompt asks for; `exec`
+// answers once by its schema. FAKE_CODEX_STATE: codex.jsonl, threads.json, codex-logged-out, codex-exec-fails.
 import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"

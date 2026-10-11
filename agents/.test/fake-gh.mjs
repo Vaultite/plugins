@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// A stand-in for GitHub's gh in tests and QA: `pr create` answers a made-up pull request's link, `pr view` it once
-// made (FAKE_GH_STATE/gh-pr.json; a test edits its state to merge it); `pr view 12` and `pr checkout 12` are another,
-// someone else's #12 on branch glow-header (its head at the remote's refs/pull/12/head). Each call goes to gh.jsonl.
+// A stand-in for gh: `pr create` makes #7 (FAKE_GH_STATE/gh-pr.json, a test merges it there), `pr view`/`pr checkout 12`
+// are someone's #12 on glow-header (the remote's refs/pull/12/head). Each call goes to gh.jsonl.
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
 import path from "node:path"

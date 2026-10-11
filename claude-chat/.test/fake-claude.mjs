@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-// A stand-in for the claude CLI in tests and QA: the stream-json lines Claude Code 2.1 writes (recorded from real runs),
-// replayed by what the prompt asks for. FAKE_CLAUDE_STATE (a folder): `log.jsonl` gets each run's argv and stdin; files
-// there: `logged-out` (signed out), `oneshot-fails`, `sessions/` (for --resume-session-at, --fork-session), `rewind.json`
-// (rewind_files). `-p` without stream input answers once, as its `--json-schema` asks.
+// A stand-in for claude (stream-json lines recorded from Claude Code 2.1), replayed by what the prompt asks for; `-p`
+// alone answers once by its --json-schema. FAKE_CLAUDE_STATE: log.jsonl, sessions/, rewind.json, logged-out, oneshot-fails.
 import crypto from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"

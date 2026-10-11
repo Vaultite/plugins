@@ -1,11 +1,5 @@
-// Agents with the fake CLIs, laid out as T3 Code: the sidebar's sections (pinned, active cards, Snoozed and Settled
-// shelves, the project filter, ⌃ hints), the thread menu, a Codex thread in its own worktree (turns folded, changed
-// files, the diff panel, commit with a generated message, push and a PR), the access modes, a question to answer, a
-// plan with Implement, the task list, queued and steered messages, Edit from here, fork, a pull request into a thread;
-// desktop light and dark, and a 390px phone. Screenshots in the out dir. The server must run with AGENTS_CLAUDE_CLI,
-// AGENTS_CODEX_CLI, AGENTS_GH_CLI (the fakes), FAKE_CLAUDE_STATE = FAKE_CODEX_STATE = FAKE_GH_STATE = <state dir>,
-// AGENTS_WORKTREES and a made-up GIT_CONFIG_GLOBAL, and it WRITES (threads, a project folder): throwaway server only.
-//   node agents/.test/qa/shots.mjs <base url> <state dir> [out dir]
+// Agents with the fake CLIs (AGENTS_*_CLI, FAKE_*_STATE, AGENTS_WORKTREES, a made-up GIT_CONFIG_GLOBAL), light, dark
+// and phone screenshots of each T3 Code feature; it writes: throwaway server only. node shots.mjs <base> <state> [out]
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
 import os from "node:os"
