@@ -1,0 +1,22 @@
+/* Excalidraw's toolbars, menus and dialogs in the app's colour scheme. The canvas keeps its own colours: they're the
+   drawing's, saved in its file. */
+[data-excalidraw] .excalidraw, [data-excalidraw] .excalidraw.theme--dark {
+  --color-primary: var(--primary);
+  --color-primary-hover: color-mix(in srgb, var(--primary) 85%, var(--foreground));
+  --color-primary-darker: color-mix(in srgb, var(--primary) 85%, var(--foreground));
+  --color-primary-darkest: color-mix(in srgb, var(--primary) 70%, var(--foreground));
+  --color-primary-light: color-mix(in srgb, var(--primary) 20%, var(--card));
+  --color-primary-light-darker: color-mix(in srgb, var(--primary) 30%, var(--card));
+  --color-surface-primary-container: color-mix(in srgb, var(--primary) 20%, var(--card));
+  --island-bg-color: var(--card);
+  --popup-bg-color: var(--card);
+  --default-bg-color: var(--card);
+  --input-bg-color: var(--card);
+  --color-surface-lowest: var(--background);
+  --color-surface-low: var(--card);
+  --color-surface-mid: color-mix(in srgb, var(--card) 90%, var(--foreground));
+  --color-surface-high: color-mix(in srgb, var(--card) 85%, var(--foreground));
+  --color-on-surface: var(--foreground);
+  --text-primary-color: var(--foreground);
+  --button-hover-bg: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
