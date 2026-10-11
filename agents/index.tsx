@@ -1,20 +1,21 @@
 // Agents in the app: the threads in a sidebar panel (Threads.tsx), each in a tab, view:agents/<id> ("" a new one: Chat.tsx).
-import { MessageSquarePlus } from "lucide-react"
+import { FileDiff, MessageSquarePlus } from "lucide-react"
 import { definePlugin, openView, Panel } from "@vaultite"
 import { Chat } from "./Chat"
 import { AgentsIcon, ICON, TINT } from "./harness"
 import { summaryOf, titleOf } from "./live"
+import { lastThread, toggleDiff } from "./panel"
 import { ThreadsPanel } from "./Threads"
 
 function Preview() {
   return (
     <Panel title="Agents" icon={AgentsIcon} tint="var(--gray)">
       <p className="text-[15px] leading-[20px] text-muted-foreground">
-        Claude Code and Codex side by side: every thread in the sidebar, grouped by project, marked working or waiting for
-        you. Hover one for its last answer and what it changed; click it for the chat, where you answer its questions with
-        Allow or Deny and review each edit's diff. Start a thread in your vault or any project's checkout, with the agent,
-        model and permissions you pick. It runs your own CLIs on the server's machine; a thread can go on in a terminal
-        whenever you want the full thing.
+        Claude Code and Codex side by side, laid out like T3 Code: every thread in the sidebar, grouped by project, marked
+        working or waiting for your approval. In a thread, each turn's work folds behind how long it took, the files it
+        changed are a click from the diff panel (⌘D, per turn or the whole thread), and git is per thread: work in the
+        checkout or a worktree of its own, then commit, push and open a pull request from the header. It runs your own
+        CLIs on the server's machine; a thread can go on in a terminal whenever you want the full thing.
       </p>
     </Panel>
   )
@@ -45,6 +46,7 @@ export default definePlugin({
   },
   commands: [
     { id: "agents:new", name: "New agent thread", icon: MessageSquarePlus, run: () => openView("agents/", { newTab: true }) },
+    { id: "agents:diff", name: "Toggle the agent thread's diff panel", icon: FileDiff, when: () => !!lastThread, run: () => toggleDiff(lastThread) },
     { id: "agents:split", desktop: true, name: "Open a new agent thread in right split", icon: AgentsIcon, run: () => openView("agents/", { split: true }) },
   ],
   preview: () => <Preview />,

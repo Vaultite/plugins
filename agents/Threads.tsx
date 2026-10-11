@@ -2,7 +2,7 @@
 // last answer and what it changed. A click opens it in a tab (view:agents/<id>); a project's + starts one there.
 import { useEffect, useRef, useState, type MouseEvent } from "react"
 import { createPortal } from "react-dom"
-import { ChevronDown, Folder, Plus, SquareArrowOutUpRight } from "lucide-react"
+import { ChevronDown, CircleAlert, CircleDashed, Folder, FolderGit2, Plus, ShieldQuestion, SquareArrowOutUpRight } from "lucide-react"
 import { cn, fmtAgo, isViewOpen, menuBelow, menuFor, openView, SidebarRow, useEnabled, useLive, useScopedState, useTick, type SidebarCtx } from "@vaultite"
 import { chooseProject, threadMenu, tildeOf } from "./Chat"
 import { AgentsIcon, HARNESSES, ICON, MODES, NAME, STATUS, TINT } from "./harness"
@@ -20,9 +20,11 @@ export function newThread(set: { harness?: Harness; cwd?: string } = {}, setHarn
   openView("agents/", { newTab: true })
 }
 
+/** Where a thread is, as T3 Code marks it: working, waiting for an approval, failed, else how long ago it changed. */
 function StatusMark({ s }: { s: Summary }) {
-  if (s.waiting) return <span className="shrink-0 rounded-[4px] bg-[color-mix(in_srgb,var(--yellow)_22%,transparent)] px-1 text-[11px] font-medium text-foreground max-md:text-[13px]" data-thread-state="waiting">Needs you</span>
-  if (s.running) return <span className="size-1.5 shrink-0 animate-pulse rounded-full" style={{ background: TINT[s.harness] ?? "var(--foreground)" }} data-thread-state="working" aria-label="Working" />
+  if (s.waiting) return <span className="inline-flex shrink-0 items-center gap-0.5 rounded-[4px] bg-[color-mix(in_srgb,var(--yellow)_22%,transparent)] px-1 text-[11px] font-medium text-foreground max-md:text-[13px]" data-thread-state="waiting"><ShieldQuestion className="size-3" />Approval</span>
+  if (s.running) return <span className="inline-flex shrink-0 items-center gap-0.5 text-[11px] font-medium text-[var(--blue)] max-md:text-[13px]" data-thread-state="working" aria-label="Working"><CircleDashed className="size-3 animate-spin [animation-duration:3s]" />Working</span>
+  if (s.failed) return <span className="inline-flex shrink-0 items-center gap-0.5 text-[11px] font-medium text-[var(--red)] max-md:text-[13px]" data-thread-state="failed"><CircleAlert className="size-3" />Failed</span>
   return <span className="shrink-0 text-[11px] text-tertiary tabular-nums max-md:text-[13px]">{fmtAgo(s.updated).replace(" ago", "")}</span>
 }
 
@@ -44,7 +46,8 @@ function HoverCard({ s, at }: { s: Summary; at: DOMRect }) {
       <div className="mb-2 truncate text-muted-foreground">
         {NAME[s.harness]}{s.model ? ` · ${s.model}` : ""}{mode ? ` · ${mode.label(s.harness)}` : ""}
       </div>
-      <div className="mb-2 flex min-w-0 items-center gap-1 text-muted-foreground"><Folder className="size-3 shrink-0" /><span className="truncate">{tildeOf(s.cwd)}</span></div>
+      <div className="mb-2 flex min-w-0 items-center gap-1 text-muted-foreground"><Folder className="size-3 shrink-0" /><span className="truncate">{tildeOf(s.home)}</span></div>
+      {s.branch && <div className="-mt-1.5 mb-2 flex min-w-0 items-center gap-1 text-muted-foreground"><FolderGit2 className="size-3 shrink-0" /><span className="truncate font-mono">{s.branch}</span></div>}
       <div className="mb-2 flex items-center gap-1.5 text-muted-foreground">
         {(s.waiting || s.running) && <span className={cn("size-1.5 shrink-0 rounded-full", s.waiting ? "bg-[var(--yellow)]" : "animate-pulse")}
           style={s.running && !s.waiting ? { background: TINT[s.harness] ?? "var(--foreground)" } : undefined} />}
@@ -140,9 +143,9 @@ function Group({ name, path, threads, tab, open, hover, onNew }: { name: string;
 function grouped(list: Summary[]) {
   const groups = new Map<string, { name: string; path: string; threads: Summary[] }>()
   for (const s of list) {
-    const g = groups.get(s.cwd) ?? { name: s.project, path: s.cwd, threads: [] }
+    const g = groups.get(s.home) ?? { name: s.project, path: s.home, threads: [] }
     g.threads.push(s)
-    groups.set(s.cwd, g)
+    groups.set(s.home, g)
   }
   return [...groups.values()]
 }

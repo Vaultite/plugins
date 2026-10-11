@@ -6,7 +6,7 @@ import os from "node:os"
 import path from "node:path"
 import type { WebSocket } from "ws"
 import { agentLines, HTTPError, Plugin, ROOT } from "@vaultite/core/plugins.ts"
-import type { Changes, Entry, Harness, Hunk, Live, Mode, Project, Summary, Thread } from "./types.ts"
+import type { Changes, Entry, FileDiff, Harness, Hunk, Live, Mode, Project, Summary, Thread } from "./types.ts"
 
 export const plugin = new Plugin(import.meta.url)
 
@@ -104,6 +104,30 @@ export function hunksOf(diff: string): Hunk[] {
   return out.slice(0, 20)
 }
 
+/** A unified diff of many files (git's) as each file's hunks and counts: the diff panel's, larger than a tool's. */
+export function filesOfDiff(diff: string, cwd = ""): FileDiff[] {
+  const out: FileDiff[] = []
+  for (const part of diff.split(/^diff --git /m).slice(1)) {
+    const head = part.split("\n", 1)[0]
+    const plus = /^\+\+\+ (?:b\/)?(.+)$/m.exec(part)?.[1], minus = /^--- (?:a\/)?(.+)$/m.exec(part)?.[1]
+    const name = (plus && plus !== "/dev/null" ? plus : minus && minus !== "/dev/null" ? minus : / b\/(.+)$/.exec(head)?.[1] ?? head).trim()
+    const hunks: Hunk[] = []
+    let h: Hunk | null = null, added = 0, removed = 0, lines = 0
+    for (const line of part.split("\n")) {
+      const m = /^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(line)
+      if (m) { h = { oldStart: +m[1], newStart: +m[2], lines: [] }; hunks.push(h); continue }
+      if (!h || /^(\+\+\+|---) /.test(line)) continue
+      if (line[0] === "+") added++
+      else if (line[0] === "-") removed++
+      if (/^[+\- \\]/.test(line) && lines++ < 3000) h.lines.push(line)
+    }
+    const abs = cwd ? path.join(cwd, name) : name
+    const file = cwd ? inVault(abs) : undefined
+    out.push({ path: name, ...(file ? { file } : {}), added, removed, hunks, binary: /^Binary files/m.test(part), status: /^new file/m.test(part) ? "added" : /^deleted file/m.test(part) ? "deleted" : "modified" })
+  }
+  return out
+}
+
 const EDITS = /^(Edit|MultiEdit|Write|NotebookEdit)$/
 /** What a thread changed: each file it edited, with lines added and removed. */
 export function changesOf(t: Thread): Changes {
@@ -121,6 +145,25 @@ export function changesOf(t: Thread): Changes {
   return { files: list, added: list.reduce((n, f) => n + f.added, 0), removed: list.reduce((n, f) => n + f.removed, 0) }
 }
 
+/** What a stretch of the thread's edits did, file by file, from their patches (a folder that isn't a git checkout). */
+export function patchFiles(t: Thread, from: number, to: number): FileDiff[] {
+  const files = new Map<string, FileDiff>()
+  for (const e of t.entries.slice(from, to)) {
+    if (e.kind !== "tool" || !EDITS.test(e.name) || e.error || e.result === undefined) continue
+    const key = e.path ?? e.file ?? str(e.input.file_path)
+    if (!key) continue
+    const rel = e.file ?? (key.startsWith(t.cwd + "/") ? key.slice(t.cwd.length + 1) : tilde(key))
+    const f = files.get(key) ?? { path: rel, ...(e.file ? { file: e.file } : {}), added: 0, removed: 0, hunks: [], status: "modified" as const }
+    let hunks = e.patch ?? []
+    if (!hunks.length && e.name === "Write") { hunks = [{ oldStart: 0, newStart: 1, lines: str(e.input.content).split("\n").slice(0, 3000).map((l) => `+${l}`) }]; if (!f.hunks.length) f.status = "added" }
+    else if (!hunks.length && e.name === "Edit") hunks = [{ oldStart: 0, newStart: 0, lines: [...str(e.input.old_string).split("\n").map((l) => `-${l}`), ...str(e.input.new_string).split("\n").map((l) => `+${l}`)] }]
+    for (const h of hunks) for (const l of h.lines) { if (l[0] === "+") f.added++; else if (l[0] === "-") f.removed++ }
+    f.hunks.push(...hunks)
+    files.set(key, f)
+  }
+  return [...files.values()]
+}
+
 // ---------- projects: the vault, project files with a checkout here, then folders threads ran in
 
 export function projects(): Project[] {
@@ -136,7 +179,7 @@ export function projects(): Project[] {
   try {
     for (const p of plugin.vault.items("projects")) if (typeof p.path === "string" && !p.archived) add(str(p.name) || str(p.title) || path.basename(p.path), p.path)
   } catch { /* Projects is off */ }
-  for (const t of [...threads.values()].sort((a, b) => b.updated.localeCompare(a.updated))) add(path.basename(t.cwd), t.cwd)
+  for (const t of [...threads.values()].sort((a, b) => b.updated.localeCompare(a.updated))) add(path.basename(homeOf(t)), homeOf(t))
   return out
 }
 export function projectOf(cwd: string, list = projects()) {
@@ -161,6 +204,11 @@ export function load() {
       // A turn the server went down in: its questions can't be answered any more.
       for (const e of t.entries) if (e.kind === "ask" && !e.answer) e.answer = "gone"
       for (const e of t.entries) if (e.kind === "assistant") delete e.open
+      t.entries.forEach((e, i) => {
+        if (e.kind !== "user" || e.end) return
+        const next = t.entries.findIndex((x, j) => j > i && x.kind === "user")
+        e.end = t.entries.slice(i + 1, next < 0 ? undefined : next).at(-1)?.at ?? e.at
+      })
       for (const e of t.entries) if (e.kind === "tool" && e.result === undefined) { e.result = ""; e.error = true }
       threads.set(t.id, t)
     } catch { /* unreadable: left alone */ }
@@ -202,6 +250,8 @@ export function forget(t: Thread) {
   listChanged()
 }
 
+/** The project a thread belongs to: its folder, or the checkout its worktree came from. */
+export const homeOf = (t: Thread) => t.worktree?.from ?? t.cwd
 export const liveOf = (id: string): Live => live.get(id) ?? { running: false, status: "" }
 export const waitingIn = (t: Thread) => t.entries.some((e) => e.kind === "ask" && !e.answer)
 const excerpt = (s: string, n = 280) => { const one = s.replace(/\s+/g, " ").trim(); return one.length > n ? `${one.slice(0, n)}…` : one }
@@ -213,8 +263,9 @@ export function summaries(): Summary[] {
     const l = liveOf(t.id)
     const last = t.entries.findLast((e) => e.kind === "assistant") as { text: string } | undefined
     const asked = t.entries.findLast((e) => e.kind === "user") as { text: string } | undefined
-    return { id: t.id, title: t.title, harness: t.harness, cwd: t.cwd, project: projectOf(t.cwd, list), model: t.model, mode: t.mode, updated: t.updated,
-      running: l.running, waiting: waitingIn(t), status: l.status, asked: excerpt(asked?.text ?? "", 160), last: excerpt(last?.text ?? ""), changes: changesOf(t) }
+    return { id: t.id, title: t.title, harness: t.harness, cwd: t.cwd, home: homeOf(t), project: projectOf(homeOf(t), list), model: t.model, mode: t.mode, updated: t.updated,
+      running: l.running, waiting: waitingIn(t), status: l.status, asked: excerpt(asked?.text ?? "", 160), last: excerpt(last?.text ?? ""), changes: changesOf(t),
+      ...(t.worktree?.branch ? { branch: t.worktree.branch } : {}), ...(!l.running && (t.entries.at(-1) as { error?: boolean } | undefined)?.error && t.entries.at(-1)?.kind === "note" ? { failed: true } : {}) }
   }).sort((a, b) => b.updated.localeCompare(a.updated))
 }
 
@@ -273,6 +324,7 @@ export abstract class Run {
   t: Thread
   model: string
   mode: Mode
+  cwd: string
   turns: Turn[] = []
   busy = false
   ended = false
@@ -282,7 +334,7 @@ export abstract class Run {
   /** Where the turn under way began in the thread. */
   from = 0
 
-  constructor(t: Thread) { this.t = t; this.model = t.model; this.mode = t.mode }
+  constructor(t: Thread) { this.t = t; this.model = t.model; this.mode = t.mode; this.cwd = t.cwd }
 
   /** Send the user's message (the entry is in already); false when the CLI can't take it. */
   abstract send(text: string, images: Image[]): boolean
@@ -333,6 +385,9 @@ export abstract class Run {
     t.entries.forEach((e, i) => { if (e.kind === "assistant" && e.open) { delete e.open; changed(t, i) } })
     t.entries.forEach((e, i) => { if (e.kind === "ask" && !e.answer) { e.answer = "gone"; changed(t, i) } })
     t.entries.forEach((e, i) => { if (e.kind === "tool" && e.result === undefined && i >= this.from) { e.result = ""; e.error = true; changed(t, i) } })
+    const u = t.entries.findLastIndex((e, i) => i < this.from && e.kind === "user")
+    const began = t.entries[u]
+    if (began?.kind === "user" && !began.end) { began.end = now(); changed(t, u) }
     if (this.stopTimer) { clearTimeout(this.stopTimer); this.stopTimer = null }
     this.stopping = false
     this.busy = false

@@ -1,242 +1,24 @@
-// A thread in its tab (view:agents/<id>): the agent's messages as Markdown, its tool calls a line each (files as links,
-// edits as diffs), its permission questions with Allow and Deny, what it changed, and the box to write in. A new
-// thread ("" id) picks its agent and project in that box first.
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ClipboardEvent, type KeyboardEvent, type ReactNode } from "react"
+// A thread in its tab (view:agents/<id>), laid out as T3 Code's: a header with the project, the title and the branch's
+// git actions; the turns (Timeline.tsx); the diff panel beside them (⌘D, DiffPanel.tsx); questions to approve above the
+// box to write in. A new thread ("" id) picks its agent, project, workspace and branch in that box first.
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ClipboardEvent, type KeyboardEvent } from "react"
+import { ArrowUp, AtSign, FileDiff, FileText, Folder, Pencil, ShieldAlert, Square, SquareTerminal, Trash2, X } from "lucide-react"
 import {
-  ArrowUp, AtSign, ChevronRight, CircleAlert, FileText, Folder, MoreHorizontal, Pencil, Square, SquareTerminal, Trash2, X,
-} from "lucide-react"
-import {
-  choose, cn, confirmDialog, del, getStore, Markdown, menuAbove, menuBelow, notifyError, openAgent, openFile, patch, post, useEnabled, useFocusedFile,
+  choose, cn, confirmDialog, del, getStore, Markdown, menuAbove, menuBelow, notify, notifyError, openAgent, patch, post, useEnabled, useFocusedFile,
   useLive, usePluginSettings, useScopedState, type MenuItem,
 } from "@vaultite"
-import { HARNESSES, ICON, MODES, NAME, SHORT, STATUS, TINT } from "./harness"
+import { DiffPanel, useDiffWidth } from "./DiffPanel"
+import { BranchChip, BranchToolbar, GitActions, useGit, type Workspace } from "./GitBar"
+import { HARNESSES, ICON, MODES, NAME, SHORT, TINT } from "./harness"
 import { useRefused, useSocket, useThread } from "./live"
-import type { Entry, Harness, Hunk, Mode, Project, Status } from "./types"
+import { setPanel, toggleDiff, usedThread, usePanel } from "./panel"
+import { Timeline } from "./Timeline"
+import type { Entry, Harness, Mode, Project, Status } from "./types"
+import { button, describe, Diff, diffLines, EDITS, FileLink, noteName, pill, tildeOf } from "./ui"
 
-type Tool = Extract<Entry, { kind: "tool" }>
+export { tildeOf }
 type Ask = Extract<Entry, { kind: "ask" }>
 type Image = { type: string; data: string; url: string }
-
-const button = "grid size-6 shrink-0 cursor-pointer place-items-center rounded-[5px] text-muted-foreground hover:bg-foreground/[0.08] hover:text-foreground max-md:size-11"
-const pill = "inline-flex h-6 max-w-full min-w-0 cursor-pointer items-center gap-1 rounded-[5px] px-1.5 text-[12px] text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground max-md:h-9 max-md:text-[15px]"
-const noteName = (p: string) => p.replace(/\.md$/i, "")
-const firstLine = (s: unknown) => (typeof s === "string" ? s.split("\n")[0] : "")
-const EDITS = /^(Edit|MultiEdit|Write|NotebookEdit)$/
-export const tildeOf = (p: string) => p.replace(/^\/Users\/[^/]+/, "~")
-/** A path as the thread shows it: inside its folder, relative to it. */
-const shortPath = (p: string, cwd: string) => (cwd && p.startsWith(cwd + "/") ? p.slice(cwd.length + 1) : tildeOf(p))
-
-// ---------- what was done: a line per tool call
-
-/** A tool call in words: its verb and what it acted on (a vault file is a link). */
-function describe(name: string, input: Record<string, unknown>, cwd: string, file?: string, at?: string): { verb: string; what: string; file?: string } {
-  const p = at ?? (typeof input.file_path === "string" ? input.file_path : typeof input.path === "string" ? input.path : "")
-  const on = file ? noteName(file) : p ? shortPath(p, cwd) : ""
-  switch (name) {
-    case "Read": return { verb: "Read", what: on, file }
-    case "Write": return { verb: "Wrote", what: on, file }
-    case "Edit": case "MultiEdit": case "NotebookEdit": return { verb: "Edited", what: on, file }
-    case "Delete": return { verb: "Deleted", what: on }
-    case "Glob": case "Grep": return { verb: "Searched for", what: String(input.pattern ?? "") }
-    case "Bash": return { verb: "Ran", what: firstLine(input.command) }
-    case "WebFetch": return { verb: "Read", what: String(input.url ?? "") }
-    case "WebSearch": return { verb: "Searched the web for", what: String(input.query ?? "") }
-    case "Task": case "Agent": return { verb: "Asked an agent to", what: String(input.description ?? "").toLowerCase() }
-    case "TodoWrite": return { verb: "Updated its to-do list", what: "" }
-    case "Skill": return { verb: "Used the skill", what: String(input.skill ?? input.command ?? "") }
-  }
-  const mcp = /^mcp__(.+?)__(.+)$/.exec(name)
-  return mcp ? { verb: "Used", what: `${mcp[1]} ${mcp[2].replaceAll("_", " ")}` } : { verb: "Used", what: name }
-}
-
-function FileLink({ file, children }: { file: string; children: ReactNode }) {
-  return (
-    <a href="#" data-file={file} onClick={(e) => { e.preventDefault(); e.stopPropagation(); openFile(file, { newTab: e.metaKey || e.ctrlKey }) }}
-      className="min-w-0 truncate text-primary hover:underline">{children}</a>
-  )
-}
-
-type Line = { kind: "add" | "del" | "same"; text: string }
-/** A diff's lines: a patch's (what the edit did), else old against new (what it asks to do). */
-function diffLines(name: string, input: Record<string, unknown>, hunks?: Hunk[]): Line[] {
-  if (hunks?.length) return hunks.flatMap((h) => h.lines.filter((l) => !l.startsWith("\\")).map((l) => ({ kind: l[0] === "+" ? "add" as const : l[0] === "-" ? "del" as const : "same" as const, text: l.slice(1) })))
-  const lines = (s: unknown) => (typeof s === "string" ? s.split("\n") : [])
-  if (name === "Write") return lines(input.content).slice(0, 60).map((text) => ({ kind: "add", text }))
-  if (name === "Edit") return [...lines(input.old_string).map((text) => ({ kind: "del" as const, text })), ...lines(input.new_string).map((text) => ({ kind: "add" as const, text }))]
-  if (name === "MultiEdit" && Array.isArray(input.edits)) return (input.edits as Record<string, unknown>[]).flatMap((e) => diffLines("Edit", e))
-  return []
-}
-
-function Diff({ lines, tall }: { lines: Line[]; tall?: boolean }) {
-  if (!lines.length) return null
-  return (
-    <div className={cn("overflow-auto rounded-[8px] border-[0.5px] border-border bg-card py-1 font-mono text-[12px] leading-[18px]", tall ? "max-h-[28rem]" : "max-h-72")} data-diff-view>
-      {lines.map((l, i) => (
-        <div key={i} data-diff={l.kind} className={cn("flex min-w-max pr-3 whitespace-pre",
-          l.kind === "add" && "bg-[color-mix(in_srgb,var(--green)_16%,transparent)]",
-          l.kind === "del" && "bg-[color-mix(in_srgb,var(--red)_14%,transparent)] text-muted-foreground")}>
-          <span aria-hidden className={cn("w-5 shrink-0 text-center select-none", l.kind === "add" ? "text-[var(--green)]" : l.kind === "del" ? "text-[var(--red)]" : "text-tertiary")}>
-            {l.kind === "add" ? "+" : l.kind === "del" ? "−" : ""}
-          </span>
-          <span>{l.text || " "}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function ToolLine({ t, cwd }: { t: Tool; cwd: string }) {
-  const [open, setOpen] = useState(false)
-  const d = describe(t.name, t.input, cwd, t.file, t.path)
-  const diff = EDITS.test(t.name) && !t.error ? diffLines(t.name, t.input, t.patch) : []
-  return (
-    <div data-tool={t.name} data-tool-file={t.file}>
-      <div role="button" tabIndex={0} onClick={() => setOpen(!open)} onKeyDown={(e) => { if (e.key === "Enter") setOpen(!open) }} aria-expanded={open}
-        className="flex h-6.5 min-w-0 cursor-pointer items-center gap-1 rounded-[5px] px-1 text-[13px] hover:bg-foreground/[0.04] max-md:h-9 max-md:text-[15px]">
-        <ChevronRight className={cn("size-3.5 shrink-0 text-tertiary transition-transform", open && "rotate-90")} strokeWidth={2.5} />
-        <span className="shrink-0 text-muted-foreground">{d.verb}</span>
-        {d.file ? <FileLink file={d.file}>{d.what}</FileLink> : <span className="min-w-0 truncate font-mono text-[12px] text-tertiary max-md:text-[13px]">{d.what}</span>}
-        {diff.length > 0 && <Counts lines={diff} />}
-        {t.result === undefined && !t.error && <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-[var(--orange)]" aria-label="Running" />}
-        {t.error && <CircleAlert className="size-3.5 shrink-0 text-[var(--red)]" strokeWidth={2.25} aria-label="Failed" />}
-      </div>
-      {open && (
-        <div className="mt-0.5 mb-2 ml-5 space-y-1.5">
-          {diff.length ? <Diff lines={diff} /> : (
-            <pre className="max-h-60 overflow-auto rounded-[8px] bg-muted px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words">{typeof t.input.command === "string" ? t.input.command : JSON.stringify(t.input, null, 2)}</pre>
-          )}
-          {t.result !== undefined && !diff.length && (
-            <pre className={cn("max-h-60 overflow-auto rounded-[8px] border-[0.5px] border-border px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words",
-              t.error ? "text-[var(--red)]" : "text-muted-foreground")}>{t.result || "(no output)"}</pre>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Counts({ lines, added, removed }: { lines?: Line[]; added?: number; removed?: number }) {
-  const a = added ?? lines?.filter((l) => l.kind === "add").length ?? 0
-  const r = removed ?? lines?.filter((l) => l.kind === "del").length ?? 0
-  return (
-    <span className="shrink-0 font-mono text-[11px] tabular-nums max-md:text-[13px]">
-      {a > 0 && <span className="text-[var(--green)]">+{a}</span>}{a > 0 && r > 0 && " "}{r > 0 && <span className="text-[var(--red)]">−{r}</span>}
-    </span>
-  )
-}
-
-// ---------- a permission question
-
-function AskCard({ a, id, harness, cwd }: { a: Ask; id: string; harness: Harness; cwd: string }) {
-  const [busy, setBusy] = useState(false)
-  const plan = a.tool === "ExitPlanMode"
-  const d = describe(a.tool, a.input, cwd, a.file, a.path)
-  const edit = EDITS.test(a.tool)
-  const who = SHORT[harness]
-  const answer = async (allow: boolean) => {
-    setBusy(true)
-    try { await post(`agents/threads/${id}/answer`, { ask: a.id, allow }) } catch (e) { notifyError(e, "Couldn't answer") } finally { setBusy(false) }
-  }
-  if (a.answer && !plan) {
-    const said = a.answer === "allow" ? "Allowed" : a.answer === "deny" ? "Denied" : "Not answered"
-    return <div className="px-1 text-[12px] text-tertiary max-md:text-[14px]" data-ask={a.answer}>{said}: {d.verb.toLowerCase()} {d.what}</div>
-  }
-  const head = plan ? `${who}'s plan is ready` : edit ? `${who} wants to edit` : a.tool === "Bash" ? `${who} wants to run a command` : a.tool === "WebFetch" ? `${who} wants to read a web page` : `${who} wants to use ${d.what || a.tool}`
-  return (
-    <div className="rounded-[10px] border-[0.5px] border-border bg-card p-2.5 shadow-xs" data-ask={a.answer ?? "waiting"} data-ask-tool={a.tool}>
-      <div className="mb-1.5 flex min-w-0 items-center gap-1.5 text-[13px] font-medium max-md:text-[16px]">
-        <span className="shrink-0">{head}</span>
-        {edit && (a.file ? <FileLink file={a.file}>{noteName(a.file)}</FileLink> : <span className="truncate font-mono text-[12px]">{d.what}</span>)}
-      </div>
-      {plan ? <Markdown text={String(a.input.plan ?? "")} className="mb-2 text-[13px]" />
-        : edit ? <div className="mb-2 space-y-1">{a.text && <p className="text-[12px] text-muted-foreground max-md:text-[14px]">{a.text}</p>}<Diff lines={diffLines(a.tool, a.input, a.patch)} /></div>
-        : a.tool === "Bash" ? (
-          <div className="mb-2 space-y-1">
-            {typeof a.input.description === "string" && <p className="text-[12px] text-muted-foreground max-md:text-[14px]">{a.input.description}</p>}
-            <pre className="max-h-40 overflow-auto rounded-[8px] bg-muted px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words">{String(a.input.command ?? "")}</pre>
-          </div>
-        ) : <pre className="mb-2 max-h-40 overflow-auto rounded-[8px] bg-muted px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words">{a.input.url ? String(a.input.url) : JSON.stringify(a.input, null, 2)}</pre>}
-      {a.answer ? <p className="text-[12px] text-tertiary">{a.answer === "allow" ? "Approved" : a.answer === "deny" ? "Kept planning" : "Not answered"}</p> : (
-        <div className="flex gap-2">
-          <button type="button" disabled={busy} onClick={() => void answer(true)} data-answer="allow"
-            className="inline-flex h-7 cursor-pointer items-center rounded-[6px] bg-primary px-3 text-[13px] font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 max-md:h-11 max-md:px-4 max-md:text-[16px]">
-            {plan ? "Start" : "Allow"}
-          </button>
-          <button type="button" disabled={busy} onClick={() => void answer(false)} data-answer="deny"
-            className="inline-flex h-7 cursor-pointer items-center rounded-[6px] px-3 text-[13px] font-medium text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground disabled:opacity-50 max-md:h-11 max-md:px-4 max-md:text-[16px]">
-            {plan ? "Keep planning" : "Deny"}
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ---------- what the thread changed: every file it edited, each with its diffs
-
-type FileChange = { key: string; label: string; file?: string; lines: Line[] }
-function fileChanges(entries: Entry[], cwd: string): FileChange[] {
-  const out = new Map<string, FileChange>()
-  for (const e of entries) {
-    if (e.kind !== "tool" || !EDITS.test(e.name) || e.error || e.result === undefined) continue
-    const key = e.path ?? e.file ?? String(e.input.file_path ?? "")
-    if (!key) continue
-    const f = out.get(key) ?? { key, label: e.file ? noteName(e.file) : shortPath(key, cwd), file: e.file, lines: [] }
-    f.lines.push(...diffLines(e.name, e.input, e.patch))
-    out.set(key, f)
-  }
-  return [...out.values()]
-}
-
-function Changes({ entries, cwd }: { entries: Entry[]; cwd: string }) {
-  const files = useMemo(() => fileChanges(entries, cwd), [entries, cwd])
-  const [open, setOpen] = useState(false)
-  const [shown, setShown] = useState<string | null>(null)
-  if (!files.length) return null
-  const all = files.flatMap((f) => f.lines)
-  return (
-    <div className="mx-auto mb-1.5 w-[calc(100%-1.5rem)] max-w-[760px] rounded-[10px] border-[0.5px] border-border bg-card" data-changes>
-      <button type="button" onClick={() => setOpen(!open)} aria-expanded={open}
-        className="flex h-7 w-full cursor-pointer items-center gap-1.5 rounded-[10px] px-2 text-left text-[12px] text-muted-foreground hover:text-foreground max-md:h-10 max-md:text-[15px]">
-        <ChevronRight className={cn("size-3.5 shrink-0 transition-transform", open && "rotate-90")} strokeWidth={2.5} />
-        <span>{files.length === 1 ? "1 file changed" : `${files.length} files changed`}</span>
-        <Counts lines={all} />
-      </button>
-      {open && (
-        <div className="max-h-[40vh] overflow-y-auto px-1 pb-1">
-          {files.map((f) => (
-            <div key={f.key} data-changed-file={f.key}>
-              <div role="button" tabIndex={0} onClick={() => setShown(shown === f.key ? null : f.key)} onKeyDown={(e) => { if (e.key === "Enter") setShown(shown === f.key ? null : f.key) }}
-                className="flex h-6.5 min-w-0 cursor-pointer items-center gap-1 rounded-[5px] px-1 text-[13px] hover:bg-foreground/[0.04] max-md:h-9 max-md:text-[15px]">
-                <ChevronRight className={cn("size-3.5 shrink-0 text-tertiary transition-transform", shown === f.key && "rotate-90")} strokeWidth={2.5} />
-                {f.file ? <FileLink file={f.file}>{f.label}</FileLink> : <span className="min-w-0 truncate font-mono text-[12px]">{f.label}</span>}
-                <span className="flex-1" />
-                <Counts lines={f.lines} />
-              </div>
-              {shown === f.key && <div className="mt-0.5 mb-1.5 ml-5"><Diff lines={f.lines} tall /></div>}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ---------- the thread
-
-function UserMessage({ e, id }: { e: Extract<Entry, { kind: "user" }>; id: string }) {
-  return (
-    <div className="ml-6 min-w-0 rounded-[10px] bg-muted px-2.5 py-1.5 max-md:ml-10" data-entry="user">
-      <div className="text-[13px] leading-[19px] whitespace-pre-wrap break-words max-md:text-[17px] max-md:leading-[23px]">{e.text}</div>
-      {(e.file || e.images?.length) && (
-        <div className="mt-1 flex flex-wrap items-center gap-1.5">
-          {e.images?.map((im) => <img key={im} src={`api/agents/image/${id}/${im}`} alt="" className="h-12 rounded-[4px] border-[0.5px] border-border object-cover" />)}
-          {e.file && <span className="inline-flex min-w-0 items-center gap-1 text-[12px] text-muted-foreground"><FileText className="size-3 shrink-0" /><FileLink file={e.file}>{noteName(e.file)}</FileLink></span>}
-        </div>
-      )}
-    </div>
-  )
-}
 
 function SignIn({ harness, problem, refresh }: { harness: Harness; problem: "missing" | "signed-out"; refresh: () => void }) {
   const on = useEnabled()
@@ -263,50 +45,45 @@ function SignIn({ harness, problem, refresh }: { harness: Harness; problem: "mis
   )
 }
 
-function Messages({ id, entries, harness, cwd, running, status, problem, empty }: {
-  id: string; entries: Entry[]; harness: Harness; cwd: string; running: boolean; status: string; problem: ReactNode; empty: ReactNode
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const stick = useRef(true)
-  useLayoutEffect(() => { const el = ref.current; if (el && stick.current) el.scrollTop = el.scrollHeight }, [entries, running, status])
-  useLayoutEffect(() => { stick.current = true }, [id])
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const on = () => { stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40 }
-    el.addEventListener("scroll", on, { passive: true })
-    return () => el.removeEventListener("scroll", on)
-  }, [])
-  // Tool calls in a row are drawn together, tight; messages get room around them.
-  const groups: { at: number; entries: Entry[] }[] = []
-  entries.forEach((e, i) => {
-    const last = groups[groups.length - 1]
-    if (e.kind === "tool" && last?.entries[0].kind === "tool") last.entries.push(e)
-    else groups.push({ at: i, entries: [e] })
-  })
+// ---------- a question to approve: above the box to write in, one at a time
+
+function Approval({ asks, id, harness, cwd }: { asks: Ask[]; id: string; harness: Harness; cwd: string }) {
+  const [busy, setBusy] = useState(false)
+  const a = asks[0]
+  const plan = a.tool === "ExitPlanMode"
+  const edit = EDITS.test(a.tool)
+  const d = describe(a.tool, a.input, cwd, a.file, a.path)
+  const answer = async (allow: boolean) => {
+    setBusy(true)
+    try { await post(`agents/threads/${id}/answer`, { ask: a.id, allow }) } catch (e) { notifyError(e, "Couldn't answer") } finally { setBusy(false) }
+  }
+  const head = plan ? "Plan ready" : edit ? "File change approval" : a.tool === "Bash" ? "Command approval" : a.tool === "WebFetch" ? "Web page approval" : "Tool approval"
   return (
-    <div ref={ref} className="min-h-0 flex-1 overflow-y-auto px-3 py-3" data-agents-messages aria-live="polite">
-      <div className="mx-auto flex w-full max-w-[760px] flex-col gap-2.5">
-        {problem}
-        {!entries.length && !problem && empty}
-        {groups.map(({ at, entries: g }) => {
-          const e = g[0]
-          if (e.kind === "tool") return <div key={at} className="-mx-1 flex flex-col">{(g as Tool[]).map((t) => <ToolLine key={t.id} t={t} cwd={cwd} />)}</div>
-          if (e.kind === "user") return <UserMessage key={at} e={e} id={id} />
-          if (e.kind === "assistant") return <Markdown key={at} text={e.text || " "} className="min-w-0 px-1 break-words" />
-          if (e.kind === "ask") return <AskCard key={at} a={e} id={id} harness={harness} cwd={cwd} />
-          return (
-            <div key={at} data-note={e.error ? "error" : "info"} className={cn("px-1 text-[12px] leading-[17px] max-md:text-[15px] max-md:leading-[21px]", e.error ? "text-[var(--red)]" : "text-tertiary")}>
-              {e.text}
-            </div>
-          )
-        })}
-        {running && (
-          <div className="flex items-center gap-1.5 px-1 text-[12px] text-muted-foreground max-md:text-[15px]" data-agents-status={status}>
-            <span className="size-1.5 animate-pulse rounded-full" style={{ background: status === "waiting" ? "var(--yellow)" : TINT[harness] ?? "var(--foreground)" }} />
-            {STATUS[status] ?? "Working"}…
+    <div className="border-b-[0.5px] border-[color-mix(in_srgb,var(--yellow)_45%,transparent)] bg-[color-mix(in_srgb,var(--yellow)_10%,transparent)] px-3 pt-2.5 pb-2" data-ask="waiting" data-ask-tool={a.tool} data-approval>
+      <div className="mb-1.5 flex min-w-0 items-center gap-1.5 text-[13px] font-medium max-md:text-[16px]">
+        <ShieldAlert className="size-4 shrink-0 text-[var(--orange)]" />
+        <span className="shrink-0">{head}</span>
+        {asks.length > 1 && <span className="shrink-0 text-[12px] font-normal text-muted-foreground tabular-nums">1/{asks.length}</span>}
+        {edit && (a.file ? <FileLink file={a.file} className="text-[12px]">{noteName(a.file)}</FileLink> : <span className="min-w-0 truncate font-mono text-[12px] text-muted-foreground">{d.what}</span>)}
+        {!plan && !edit && a.tool !== "Bash" && <span className="min-w-0 truncate text-[12px] font-normal text-muted-foreground">{SHORT[harness]} wants to {d.verb.toLowerCase()} {d.what}</span>}
+      </div>
+      {plan ? <div className="mb-2 max-h-60 overflow-y-auto"><Markdown text={String(a.input.plan ?? "")} className="text-[13px]" /></div>
+        : edit ? <div className="mb-2 space-y-1">{a.text && <p className="text-[12px] text-muted-foreground max-md:text-[14px]">{a.text}</p>}<Diff lines={diffLines(a.tool, a.input, a.patch)} /></div>
+        : a.tool === "Bash" ? (
+          <div className="mb-2 space-y-1">
+            {typeof a.input.description === "string" && <p className="text-[12px] text-muted-foreground max-md:text-[14px]">{a.input.description}</p>}
+            <pre className="max-h-20 overflow-auto rounded-[8px] bg-background/70 px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words">{String(a.input.command ?? "")}</pre>
           </div>
-        )}
+        ) : <pre className="mb-2 max-h-20 overflow-auto rounded-[8px] bg-background/70 px-2.5 py-1.5 font-mono text-[12px] leading-[17px] whitespace-pre-wrap break-words">{a.input.url ? String(a.input.url) : JSON.stringify(a.input, null, 2)}</pre>}
+      <div className="flex justify-end gap-2">
+        <button type="button" disabled={busy} onClick={() => void answer(false)} data-answer="deny"
+          className="inline-flex h-7 cursor-pointer items-center rounded-[6px] border-[0.5px] border-border bg-background px-3 text-[13px] font-medium hover:bg-foreground/[0.06] disabled:opacity-50 max-md:h-11 max-md:px-4 max-md:text-[16px]">
+          {plan ? "Keep planning" : "Decline"}
+        </button>
+        <button type="button" disabled={busy} onClick={() => void answer(true)} data-answer="allow"
+          className="inline-flex h-7 cursor-pointer items-center rounded-[6px] bg-primary px-3 text-[13px] font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 max-md:h-11 max-md:px-4 max-md:text-[16px]">
+          {plan ? "Implement" : "Approve"}
+        </button>
       </div>
     </div>
   )
@@ -326,9 +103,10 @@ export function chooseProject(list: Project[], current: string, onPick: (p: stri
   })
 }
 
-/** The box to write in: the open note as a chip (in the vault), @ to point at a note, pasted images; Enter sends. */
-function Composer({ id, draft, setDraft, running, status, projects, onSent }: {
-  id: string; draft: Draft; setDraft: (d: Partial<Draft>) => void; running: boolean; status: Status | null; projects: Project[]; onSent: (id: string) => void
+/** The box to write in: questions to approve on top, the open note as a chip (in the vault), @ to point at a note, pasted
+ *  images; Enter sends, Esc interrupts. */
+function Composer({ id, draft, setDraft, workspace, running, status, projects, asks, onSent }: {
+  id: string; draft: Draft; setDraft: (d: Partial<Draft>) => void; workspace: Workspace; running: boolean; status: Status | null; projects: Project[]; asks: Ask[]; onSent: (id: string) => void
 }) {
   const [text, setText] = useState("")
   const [images, setImages] = useState<Image[]>([])
@@ -358,7 +136,8 @@ function Composer({ id, draft, setDraft, running, status, projects, onSent }: {
     if ((!said && !images.length) || sending || running || !ready) return
     setSending(true)
     try {
-      const to = id || (await post<{ id: string }>("agents/threads", { harness: h, cwd: draft.cwd, model: draft.model, mode: draft.mode })).id
+      const to = id || (await post<{ id: string }>("agents/threads", { harness: h, cwd: draft.cwd, model: draft.model, mode: draft.mode,
+        ...(workspace.worktree ? { worktree: true, base: workspace.branch } : workspace.branch ? { branch: workspace.branch } : {}) })).id
       await post(`agents/threads/${to}/send`, { text: said, file: note || undefined, images: images.map(({ type, data }) => ({ type, data })) })
       setText(""); setImages([])
       onSent(to)
@@ -410,63 +189,61 @@ function Composer({ id, draft, setDraft, running, status, projects, onSent }: {
     { label: "Default model", checked: !draft.model, hint: `${SHORT[h]}'s`, run: () => setDraft({ model: "" }) },
     ...models.map((m) => ({ label: m.label, checked: draft.model === m.value, run: () => setDraft({ model: m.value }) })),
   ]
-  const modeMenu = (): MenuItem[] => MODES.map((m) => ({ label: m.label(h), checked: mode.id === m.id, run: () => setDraft({ mode: m.id }) }))
+  const modeMenu = (): MenuItem[] => MODES.map((m) => ({ label: m.label(h), icon: m.icon, hint: m.hint, checked: mode.id === m.id, run: () => setDraft({ mode: m.id }) }))
   const HIcon = ICON[h]
+  const MIcon = mode.icon
+  const placeholder = !ready ? `${NAME[h]} isn't ready` : asks.length ? "Resolve this approval request to continue" : inVault ? "Ask anything, @ to point at a note" : "Ask anything"
   return (
-    <div className="shrink-0 px-3 pb-3" data-composer>
-      <div className="mx-auto w-full max-w-[760px] rounded-[12px] border-[0.5px] border-border bg-background focus-within:border-primary">
-        {(note || images.length > 0) && (
-          <div className="flex flex-wrap items-center gap-1 px-1.5 pt-1.5">
-            {note && (
-              <span className="inline-flex h-6 max-w-full min-w-0 items-center gap-1 rounded-[5px] bg-muted pr-0.5 pl-1.5 text-[12px] text-muted-foreground max-md:h-8 max-md:text-[14px]" data-note-chip={note}
-                data-tip="Sent with your message: the note open beside the thread">
-                <FileText className="size-3 shrink-0" /><span className="truncate">{noteName(note).split("/").pop()}</span>
-                <button type="button" aria-label="Don't send this note" onClick={() => setDropped(note)} className="grid size-4.5 shrink-0 cursor-pointer place-items-center rounded-[4px] hover:bg-foreground/[0.08] hover:text-foreground max-md:size-7">
-                  <X className="size-3" strokeWidth={2.25} />
-                </button>
-              </span>
-            )}
-            {images.map((im, i) => (
-              <span key={i} className="relative" data-image-chip>
-                <img src={im.url} alt="Pasted image" className="h-10 rounded-[4px] border-[0.5px] border-border object-cover" />
-                <button type="button" aria-label="Remove the image" onClick={() => setImages((xs) => xs.filter((_, j) => j !== i))}
-                  className="absolute -top-1 -right-1 grid size-4 cursor-pointer place-items-center rounded-full bg-foreground text-background"><X className="size-2.5" strokeWidth={3} /></button>
-              </span>
-            ))}
-          </div>
-        )}
-        <textarea ref={area} value={text} rows={2} placeholder={ready ? (id ? `Message ${SHORT[h]}` : `Ask ${SHORT[h]} to do something in ${project?.label ?? "this folder"}`) : `${NAME[h]} isn't ready`}
-          aria-label={`Message to ${NAME[h]}`} onChange={(e) => onInput(e.target.value, e.target.selectionStart)} onKeyDown={onKey} onPaste={onPaste} data-agents-input data-keeps-keys
-          className="block max-h-[240px] w-full resize-none bg-transparent px-3 pt-2.5 pb-1 text-[13px] leading-[19px] outline-none placeholder:text-tertiary max-md:text-[17px] max-md:leading-[23px]" />
-        <div className="flex items-center gap-0.5 px-1.5 pb-1.5">
-          {id ? (
-            <span className={cn(pill, "cursor-default hover:bg-transparent hover:text-muted-foreground")} data-agents-harness={h}><HIcon className="size-3.5 shrink-0" style={{ color: TINT[h] }} />{SHORT[h]}</span>
-          ) : (
-            <button type="button" className={pill} data-tip="The agent" data-agents-harness={h} onClick={(e) => menuAbove(e, harnessMenu())}>
-              <HIcon className="size-3.5 shrink-0" style={{ color: TINT[h] }} />{SHORT[h]}
-            </button>
+    <div className="mx-auto w-full max-w-[760px] overflow-hidden rounded-[20px] border-[0.5px] border-border bg-background shadow-[0_4px_18px_rgb(0_0_0/0.06)] focus-within:border-primary/70" data-composer>
+      {asks.length > 0 && <Approval asks={asks} id={id} harness={h} cwd={draft.cwd} />}
+      {(note || images.length > 0) && (
+        <div className="flex flex-wrap items-center gap-1 px-2.5 pt-2">
+          {note && (
+            <span className="inline-flex h-6 max-w-full min-w-0 items-center gap-1 rounded-[6px] bg-muted pr-0.5 pl-1.5 text-[12px] text-muted-foreground max-md:h-8 max-md:text-[14px]" data-note-chip={note}
+              data-tip="Sent with your message: the note open beside the thread">
+              <FileText className="size-3 shrink-0" /><span className="truncate">{noteName(note).split("/").pop()}</span>
+              <button type="button" aria-label="Don't send this note" onClick={() => setDropped(note)} className="grid size-4.5 shrink-0 cursor-pointer place-items-center rounded-[4px] hover:bg-foreground/[0.08] hover:text-foreground max-md:size-7">
+                <X className="size-3" strokeWidth={2.25} />
+              </button>
+            </span>
           )}
-          {!id && (
-            <button type="button" className={cn(pill, "min-w-0 shrink")} data-tip={tildeOf(draft.cwd)} data-agents-project={draft.cwd} onClick={() => chooseProject(projects, draft.cwd, (p) => setDraft({ cwd: p }))}>
-              <Folder className="size-3.5 shrink-0" /><span className="truncate">{project?.label ?? tildeOf(draft.cwd).split("/").pop()}</span>
-            </button>
-          )}
-          <button type="button" className={cn(pill, "min-w-0 shrink")} data-tip={mode.tip(h)} data-agents-mode={mode.id} onClick={(e) => menuAbove(e, modeMenu())}><span className="truncate">{mode.label(h)}</span></button>
-          <button type="button" className={cn(pill, "min-w-0 shrink")} data-tip="The model it uses" data-agents-model={draft.model || "default"} onClick={(e) => menuAbove(e, modelMenu())}><span className="truncate">{modelLabel}</span></button>
-          {inVault && <button type="button" className={button} aria-label="Point the agent at a note" data-tip="Point the agent at a note (@)" onClick={() => mention()}><AtSign className="size-3.5 max-md:size-5" /></button>}
-          <span className="flex-1" />
-          {running ? (
-            <button type="button" onClick={stop} aria-label="Stop" data-tip="Stop (Esc)" data-agents-stop
-              className="grid size-7 shrink-0 cursor-pointer place-items-center rounded-full bg-foreground text-background hover:opacity-85 max-md:size-11">
-              <Square className="size-3 fill-current max-md:size-4" />
-            </button>
-          ) : (
-            <button type="button" onClick={() => void send()} disabled={(!text.trim() && !images.length) || sending || !ready} aria-label="Send" data-tip="Send (↩)" data-agents-send
-              className="grid size-7 shrink-0 cursor-pointer place-items-center rounded-full bg-primary text-primary-foreground hover:opacity-90 disabled:cursor-default disabled:opacity-40 max-md:size-11">
-              <ArrowUp className="size-4 max-md:size-5" strokeWidth={2.5} />
-            </button>
-          )}
+          {images.map((im, i) => (
+            <span key={i} className="relative" data-image-chip>
+              <img src={im.url} alt="Pasted image" className="h-10 rounded-[4px] border-[0.5px] border-border object-cover" />
+              <button type="button" aria-label="Remove the image" onClick={() => setImages((xs) => xs.filter((_, j) => j !== i))}
+                className="absolute -top-1 -right-1 grid size-4 cursor-pointer place-items-center rounded-full bg-foreground text-background"><X className="size-2.5" strokeWidth={3} /></button>
+            </span>
+          ))}
         </div>
+      )}
+      <textarea ref={area} value={text} rows={2} placeholder={placeholder}
+        aria-label={`Message to ${NAME[h]}`} onChange={(e) => onInput(e.target.value, e.target.selectionStart)} onKeyDown={onKey} onPaste={onPaste} data-agents-input data-keeps-keys
+        className="block max-h-[240px] w-full resize-none bg-transparent px-3.5 pt-3 pb-1 text-[14px] leading-[20px] outline-none placeholder:text-tertiary max-md:text-[17px] max-md:leading-[23px]" />
+      <div className="flex items-center gap-0.5 px-2 pb-2">
+        {id ? (
+          <span className={cn(pill, "cursor-default hover:bg-transparent hover:text-muted-foreground")} data-agents-harness={h}><HIcon className="size-3.5 shrink-0" style={{ color: TINT[h] }} />{SHORT[h]}</span>
+        ) : (
+          <button type="button" className={pill} data-tip="The agent" data-agents-harness={h} onClick={(e) => menuAbove(e, harnessMenu())}>
+            <HIcon className="size-3.5 shrink-0" style={{ color: TINT[h] }} />{SHORT[h]}
+          </button>
+        )}
+        <button type="button" className={cn(pill, "min-w-0 shrink")} data-tip="The model it uses" data-agents-model={draft.model || "default"} onClick={(e) => menuAbove(e, modelMenu())}><span className="truncate">{modelLabel}</span></button>
+        <button type="button" className={cn(pill, "min-w-0 shrink")} data-tip={mode.tip(h)} data-agents-mode={mode.id} onClick={(e) => menuAbove(e, modeMenu())}>
+          <MIcon className="size-3.5 shrink-0" /><span className="truncate">{mode.label(h)}</span>
+        </button>
+        {inVault && <button type="button" className={button} aria-label="Point the agent at a note" data-tip="Point the agent at a note (@)" onClick={() => mention()}><AtSign className="size-3.5 max-md:size-5" /></button>}
+        <span className="flex-1" />
+        {running ? (
+          <button type="button" onClick={stop} aria-label="Interrupt" data-tip="Interrupt (Esc)" data-agents-stop
+            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-[var(--red)] text-white hover:opacity-85 max-md:size-11">
+            <Square className="size-3 fill-current max-md:size-4" />
+          </button>
+        ) : (
+          <button type="button" onClick={() => void send()} disabled={(!text.trim() && !images.length) || sending || !ready} aria-label="Send" data-tip="Send (↩)" data-agents-send
+            className="grid size-8 shrink-0 cursor-pointer place-items-center rounded-full bg-primary text-primary-foreground hover:opacity-90 disabled:cursor-default disabled:opacity-40 max-md:size-11">
+            <ArrowUp className="size-4 max-md:size-5" strokeWidth={2.5} />
+          </button>
+        )}
       </div>
     </div>
   )
@@ -475,8 +252,12 @@ function Composer({ id, draft, setDraft, running, status, projects, onSent }: {
 // ---------- a thread's menu, shared with the sidebar's rows
 
 export async function removeThread(id: string, title: string, after?: () => void) {
-  if (!(await confirmDialog({ title: `Delete “${title}”?`, body: "The thread goes from Agents for good. The agent keeps its own record of the session.", confirm: "Delete", danger: true }))) return
-  try { await del(`agents/threads/${id}`); after?.() } catch (e) { notifyError(e, "Couldn't delete it") }
+  if (!(await confirmDialog({ title: `Delete “${title}”?`, body: "The thread goes from Agents for good, and its worktree too when nothing in it is left uncommitted (its branch stays). The agent keeps its own record of the session.", confirm: "Delete", danger: true }))) return
+  try {
+    const r = await del<{ kept?: string }>(`agents/threads/${id}`)
+    if (r?.kept) notify(`Its worktree has changes not committed, so it stays: ${tildeOf(r.kept)}`)
+    after?.()
+  } catch (e) { notifyError(e, "Couldn't delete it") }
 }
 
 export async function openInTerminal(id: string) {
@@ -526,15 +307,21 @@ export function Chat({ id, setId }: { id: string; setId: (id: string) => void })
   const { data: projectList } = useLive<{ list: Project[] }>("agents/projects", shown?.thread?.cwd ?? "")
   const projects = useMemo(() => projectList?.list ?? [], [projectList])
   const [draft, setDraft] = useDraft()
+  const [workspace, setWorkspace] = useState<Workspace>({ worktree: false, branch: "" })
   const [renameOn, setRenameOn] = useState(false)
   const on = useEnabled()
+  const panel = usePanel(id)
+  const width = useDiffWidth()
   useEffect(() => { if (shown?.gone) setId("") }, [shown?.gone]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const t = shown?.thread ?? null
   const entries = useMemo(() => t?.entries ?? [], [t])
   const live = shown?.live ?? { running: false, status: "" }
+  const turnsDone = entries.filter((e) => e.kind === "user" && (e as { end?: string }).end).length
+  const { git, reload } = useGit(t ? id : "", `${turnsDone}|${live.running}|${entries.filter((e) => e.kind === "note").length}|${t?.cwd ?? ""}`)
   // A new thread's draft folder is the vault until one is picked.
   const cwd = t?.cwd ?? (draft.cwd || projects.find((p) => p.vault)?.path || "")
+  useEffect(() => { setWorkspace({ worktree: false, branch: "" }) }, [cwd])
   const d: Draft = t ? { harness: t.harness, cwd: t.cwd, model: t.model, mode: t.mode } : { ...draft, cwd }
   const setD = (x: Partial<Draft>) => {
     if (!t) return setDraft(x)
@@ -549,44 +336,79 @@ export function Chat({ id, setId }: { id: string; setId: (id: string) => void })
     : st && !st.installed ? <SignIn harness={h} problem="missing" refresh={() => setCheck(Date.now())} />
     : st && !st.loggedIn ? <SignIn harness={h} problem="signed-out" refresh={() => setCheck(Date.now())} /> : null
   const lastSignIn = entries.at(-1)?.kind === "note" && (entries.at(-1) as { signIn?: boolean }).signIn
-  const project = projects.find((p) => p.path === cwd)
-  const HIcon = ICON[h]
+  const home = t?.worktree?.from ?? cwd
+  const project = projects.find((p) => p.path === home)
+  const projectName = project?.label ?? tildeOf(home).split("/").pop()
   const title = t?.title ?? (id ? "" : "New thread")
+  const asks = entries.filter((e) => e.kind === "ask" && !e.answer) as Ask[]
+  const diffOpen = !!id && panel.open
+  const menu = (e: React.MouseEvent) => t && menuBelow(e, threadMenu(id, t.title, t.harness, t.started, on, { rename: () => setRenameOn(true), gone: () => setId("") }))
+  // ⌘D: the diff panel, from anywhere in the thread (the box to write in has the focus most of the time).
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (id && (e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "d") { e.preventDefault(); e.stopPropagation(); toggleDiff(id) }
+  }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col" data-agents-thread={id || "new"} data-harness={h} data-running={live.running || undefined}>
-      <div className="flex h-10 shrink-0 items-center gap-1 border-b-[0.5px] border-border pr-2 pl-3 max-md:hidden" data-agents-head>
-        <HIcon className="size-4 shrink-0" style={{ color: TINT[h] }} />
-        {renameOn && t ? (
-          <input autoFocus defaultValue={t.title} aria-label="Thread's name" data-agents-rename
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setRenameOn(false)
-              if (e.key !== "Enter") return
-              const v = e.currentTarget.value.trim()
-              setRenameOn(false)
-              if (v && v !== t.title) void patch(`agents/threads/${id}`, { title: v }).catch((x) => notifyError(x, "Couldn't rename it"))
-            }}
-            onBlur={() => setRenameOn(false)}
-            className="h-6 min-w-0 flex-1 rounded-[5px] border-[0.5px] border-primary bg-background px-1.5 text-[14px] outline-none" />
-        ) : (
-          <span className="min-w-0 truncate text-[14px] font-semibold" onDoubleClick={() => t && setRenameOn(true)}>{title}</span>
-        )}
-        {cwd && (
-          <span className="ml-1 inline-flex min-w-0 shrink items-center gap-1 rounded-[5px] bg-muted px-1.5 py-0.5 text-[12px] text-muted-foreground" data-tip={tildeOf(cwd)}>
-            <Folder className="size-3 shrink-0" /><span className="truncate">{project?.label ?? tildeOf(cwd).split("/").pop()}</span>
+    <div className="flex min-h-0 flex-1" data-agents-thread={id || "new"} data-harness={h} data-running={live.running || undefined}
+      onKeyDownCapture={onKeyDown} onFocusCapture={() => usedThread(id)} onPointerDownCapture={() => usedThread(id)}>
+      <div className={cn("flex min-h-0 min-w-0 flex-1 flex-col", diffOpen && "max-md:hidden")}>
+        <div className="flex h-10 shrink-0 items-center gap-1 border-b-[0.5px] border-border pr-2 pl-3 max-md:h-12 max-md:pl-2" data-agents-head>
+          <span className="inline-flex min-w-0 shrink items-center gap-1 text-[13px] text-muted-foreground max-md:hidden" data-tip={tildeOf(home)} data-agents-project-name>
+            <Folder className="size-3.5 shrink-0" /><span className="truncate">{projectName}</span><span className="text-tertiary">/</span>
           </span>
-        )}
-        <span className="flex-1" />
-        {t && <button type="button" className={button} aria-label="More" data-tip="More" data-agents-more
-          onClick={(e) => menuBelow(e, threadMenu(id, t.title, t.harness, t.started, on, { rename: () => setRenameOn(true), gone: () => setId("") }))}><MoreHorizontal className="size-3.5" /></button>}
+          {renameOn && t ? (
+            <input autoFocus defaultValue={t.title} aria-label="Thread's name" data-agents-rename
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setRenameOn(false)
+                if (e.key !== "Enter") return
+                const v = e.currentTarget.value.trim()
+                setRenameOn(false)
+                if (v && v !== t.title) void patch(`agents/threads/${id}`, { title: v }).catch((x) => notifyError(x, "Couldn't rename it"))
+              }}
+              onBlur={() => setRenameOn(false)}
+              className="h-6 min-w-0 flex-1 rounded-[5px] border-[0.5px] border-primary bg-background px-1.5 text-[14px] outline-none" />
+          ) : (
+            <button type="button" className="min-w-0 cursor-pointer truncate rounded-[5px] px-1 text-left text-[14px] font-semibold hover:bg-foreground/[0.06] max-md:hidden" data-agents-title
+              onClick={menu} onDoubleClick={() => t && setRenameOn(true)} data-tip={t ? "Thread actions (double-click to rename)" : undefined}>{title}</button>
+          )}
+          {git && <BranchChip g={git} />}
+          <span className="flex-1" />
+          {git && t && <GitActions id={id} g={git} title={t.title} running={live.running} reload={reload} />}
+          {id && (
+            <button type="button" className={cn(button, panel.open && "bg-foreground/[0.08] text-foreground")} aria-pressed={panel.open} aria-label="Toggle diff" data-tip="Toggle diff (⌘D)" data-agents-diff-toggle
+              onClick={() => toggleDiff(id)}><FileDiff className="size-4" /></button>
+          )}
+        </div>
+        <Timeline id={id} entries={entries} harness={h} cwd={cwd} running={live.running} status={live.status} canRevert={!!git} hero={!id && !entries.length}
+          problem={problem ?? (lastSignIn ? <SignIn harness={h} problem="signed-out" refresh={() => setCheck(Date.now())} /> : null)}
+          empty={(
+            <div className="pb-4 text-center" data-agents-hero>
+              <h2 className="text-[22px] font-semibold tracking-[-0.01em] max-md:text-[24px]">{project?.vault ? "What should we work on in your vault?" : `What should we build in ${projectName}?`}</h2>
+              <button type="button" className="mt-1 inline-flex cursor-pointer items-center gap-1 text-[13px] text-muted-foreground hover:text-foreground max-md:text-[16px]" data-agents-project={cwd}
+                onClick={() => chooseProject(projects, cwd, (p) => setDraft({ cwd: p }))}>
+                <Folder className="size-3.5" />{tildeOf(home)}
+              </button>
+            </div>
+          )} />
+        <div className="shrink-0 px-3 pb-3">
+          <Composer id={id} draft={d} setDraft={setD} workspace={workspace} running={live.running} status={status ?? null} projects={projects} asks={asks}
+            onSent={(to) => { if (to !== id) setId(to) }} />
+          {!id && <BranchToolbar cwd={cwd} value={workspace} onChange={setWorkspace} />}
+          {id && git && (
+            <div className="mx-auto flex w-full max-w-[760px] items-center gap-1 px-2.5 pt-1.5 text-[11px] text-tertiary max-md:text-[13px]" data-agents-context>
+              <span>{git.worktree ? "Worktree" : "Local checkout"}</span><span>·</span><span className="truncate font-mono">{git.branch}</span>
+              {git.files > 0 && <><span>·</span><span>{git.files === 1 ? "1 uncommitted file" : `${git.files} uncommitted files`}</span></>}
+            </div>
+          )}
+        </div>
       </div>
-      <Messages id={id} entries={entries} harness={h} cwd={cwd} running={live.running} status={live.status}
-        problem={problem ?? (lastSignIn ? <SignIn harness={h} problem="signed-out" refresh={() => setCheck(Date.now())} /> : null)}
-        empty={<p className="px-1 pt-1 text-[13px] leading-[19px] text-muted-foreground max-md:text-[17px] max-md:leading-[23px]">
-          {NAME[h]} works in {project?.vault ? "your vault" : project?.label ?? tildeOf(cwd)} and asks before it changes anything, as its permissions say. Pick the agent and project below.
-        </p>} />
-      <Changes entries={entries} cwd={cwd} />
-      <Composer id={id} draft={d} setDraft={setD} running={live.running} status={status ?? null} projects={projects} onSent={(to) => { if (to !== id) setId(to) }} />
+      {diffOpen && (
+        <div className="relative flex min-h-0 shrink-0 border-l-[0.5px] border-border max-md:fixed max-md:inset-0 max-md:z-[55] max-md:w-full! max-md:border-0" style={{ width: `${width.width * 100}%` }}>
+          <div role="separator" aria-orientation="vertical" aria-label="Resize the diff panel" onPointerDown={width.start} onDoubleClick={width.reset}
+            className="absolute inset-y-0 -left-1 z-[2] w-2 cursor-col-resize max-md:hidden" />
+          <div className="min-w-0 flex-1"><DiffPanel id={id} entries={entries} running={live.running} git={!!git} onClose={() => setPanel(id, { open: false })} /></div>
+        </div>
+      )}
     </div>
   )
 }
