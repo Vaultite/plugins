@@ -206,6 +206,7 @@ export class CodexRun extends Run {
   async go(text: string, images: Image[], u?: Extract<Entry, { kind: "user" }>) {
     const srv = await this.ready()
     if (!this.busy) return // stopped meanwhile
+    this.hold()
     const t = this.t
     // (plan mode is Codex's collaboration mode: it answers with a plan item)
     // (each turn says its mode in full, as T3 Code does: a reviewer left from Auto would stick otherwise)
@@ -414,6 +415,13 @@ export class CodexRun extends Run {
       void srv.request("thread/unsubscribe", { threadId: this.t.session }, 10_000).catch(() => { /* gone */ })
     }
     if (runs.get(this.t.id) === this) runs.delete(this.t.id)
+  }
+
+  pid() { return this.srv?.proc.pid }
+  abandon() {
+    this.ended = true
+    this.srv?.threads.delete(this.t.session)
+    try { this.srv?.proc.kill("SIGTERM") } catch { /* gone */ }
   }
 
   /** Codex's process went away under this thread. */

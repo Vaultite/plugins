@@ -1,6 +1,6 @@
 // Agents against the fake CLIs: both harnesses, permissions, modes, questions, queue and steer, Edit from here, forks,
 // task lists, git with the model's text, settling and the list's states, a pull request into a thread, the ops.
-import { execFileSync } from "node:child_process"
+import { execFileSync, spawn } from "node:child_process"
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
@@ -28,7 +28,7 @@ process.env.PATH = "/usr/bin:/bin:/usr/sbin:/sbin"
 const { check, done, serve } = await import("../../testkit.ts")
 const s = await serve(["agents"])
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
-type Thread = { id: string; title: string; harness: string; cwd: string; session: string; started: boolean; model: string; mode: string; entries: Record<string, any>[] } // eslint-disable-line @typescript-eslint/no-explicit-any
+type Thread = { id: string; title: string; harness: string; cwd: string; session: string; started: boolean; model: string; mode: string; entries: Record<string, any>[]; running?: { pid: number }; terminal?: string } // eslint-disable-line @typescript-eslint/no-explicit-any
 const get = async (id: string) => (await s.api("GET", `agents/threads/${id}`))[1] as { thread: Thread; live: { running: boolean; status: string } }
 async function until(id: string, ok: (t: Thread, running: boolean) => boolean, ms = 8000) {
   for (const t0 = Date.now(); Date.now() - t0 < ms; await sleep(60)) { const r = await get(id); if (ok(r.thread, r.live.running)) return r.thread }
@@ -258,6 +258,35 @@ try {
   check("handoff: the harness and session to resume", hand.harness === "codex" && hand.session.length > 10, hand)
   await s.api("DELETE", `agents/threads/${fresh.thread}`)
   check("delete", (await s.api("GET", `agents/threads/${fresh.thread}`))[0] === 404)
+
+  // ---------- a restart mid-turn: its claude goes and the turn goes on; a handoff mid-turn goes on in a terminal
+  const alive = (pid: number) => { try { process.kill(pid, 0); return true } catch { return false } }
+  const rm = (await s.api("POST", "agents/threads", { harness: "claude" }))[1].id as string
+  await s.api("POST", `agents/threads/${rm}/send`, { text: "slow todo list" })
+  t = await until(rm, (t) => !!t.running && t.entries.some((e) => e.kind === "tool" && e.result !== undefined))
+  const old = t.running?.pid ?? 0
+  s.vau("plugin", "off", "agents")
+  await s.api("GET", "state")
+  s.vau("plugin", "on", "agents")
+  t = await until(rm, (t, running) => !running && t.entries.at(-1)?.kind === "assistant" && t.entries.at(-2)?.text?.startsWith("The app restarted"), 20_000)
+  check("restart mid-turn: its claude ended, a note says so, and the turn goes on in the session", old && !alive(old) && !t.running
+    && t.entries.some((e) => e.kind === "note" && e.text === "The app restarted mid-turn: going on.") && flag(claudeRuns().at(-1).argv, "--resume") === t.session, t.entries.slice(-4))
+  await s.api("POST", `agents/threads/${rm}/send`, { text: "slow todo again" })
+  t = await until(rm, (t) => !!t.running && t.running.pid !== old && t.entries.at(-1)?.kind === "tool")
+  const held = t.running?.pid ?? 0
+  const [, ho] = await s.api("POST", `agents/threads/${rm}/handoff`, {})
+  t = (await get(rm)).thread
+  check("handoff mid-turn: its claude ends here, and the terminal is told to go on", held && !alive(held) && ho.prompt?.includes("carry on") && !!t.terminal
+    && t.entries.some((e) => e.kind === "note" && e.text === "Went on in a terminal."), ho)
+  const term = spawn(process.execPath, ["-e", "setTimeout(() => {}, 30000)", t.session], { stdio: "ignore" })
+  await sleep(300)
+  const [inTerm, said] = await s.api("POST", `agents/threads/${rm}/send`, { text: "hi" })
+  term.kill()
+  await sleep(300)
+  const [back] = await s.api("POST", `agents/threads/${rm}/send`, { text: "hi again" })
+  check("handed off: not run here while a terminal has the session, taken back after", inTerm === 409 && back < 300, [inTerm, back, said, (await get(rm)).live])
+  await until(rm, (t, running) => !running)
+  await s.api("DELETE", `agents/threads/${rm}`)
 
   // ---------- access modes and plan mode, as T3 Code maps them
   const mk = async (b: Record<string, unknown>) => (await s.api("POST", "agents/threads", b))[1].id as string

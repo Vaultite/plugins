@@ -1,5 +1,6 @@
 // Agents: Claude Code and Codex threads, by project, each a chat; the CLIs run on this machine (claude.ts, codex.ts),
 // threads are kept in plugin.localDir() (core.ts), never the vault.
+import { execFile, execFileSync } from "node:child_process"
 import crypto from "node:crypto"
 import fs from "node:fs"
 import type { IncomingMessage } from "node:http"
@@ -11,7 +12,7 @@ import { branchChanges, branches, checkout, checkpoint, commit, filesOf, prCheck
 import { codexCli, codexFork, CodexRun, codexRevert, codexStatus } from "./codex.ts"
 import { branchFor, commitFor, prFor, titleFor } from "./gentext.ts"
 import {
-  type Any, changed, create, threads, dir, filesOfDiff, forget, home, ID, type Image, listChanged, liveOf, load, MODES, NEW_TITLE, now, patchFiles, plugin, projects, push, realOf, runs, save, send,
+  type Any, changed, create, threads, dir, filesOfDiff, forget, home, ID, type Image, listChanged, liveOf, load, MODES, NEW_TITLE, now, onInterrupted, patchFiles, plugin, projects, push, realOf, reset, runs, save, send,
   setLive, snoozed, sockets, waitingIn, str, summaries, thread, tilde, vaultReal,
 } from "./core.ts"
 import type { Entry, Harness, Mode, Summary, Thread } from "./types.ts"
@@ -21,7 +22,8 @@ export { plugin }
 const HARNESSES: Harness[] = ["claude", "codex"]
 const NAMES: Record<Harness, string> = { claude: "Claude Code", codex: "Codex" }
 
-plugin.onUnload(() => { for (const r of runs.values()) r.end(); for (const ws of sockets.keys()) ws.close() })
+// (a turn under way is left for the next start: restarting goes on with it)
+plugin.onUnload(() => { for (const r of runs.values()) if (r.busy) r.abandon(); else r.end(); reset(); for (const ws of sockets.keys()) ws.close() })
 
 const settings = () => {
   const s = plugin.settings()
@@ -120,8 +122,17 @@ function nextQueued(t: Thread) {
   try { void ask(t, q.text, { file: q.file }, q.images ?? []) } catch (e) { push(t, { kind: "note", text: (e as Error).message, at: now(), error: true }) }
 }
 
+/** Whether its session still runs in a terminal it was handed to (`claude --resume <session>`). */
+function inTerminal(t: Thread) {
+  try { return execFileSync("pgrep", ["-f", t.session], { encoding: "utf8" }).split("\n").some((p) => p && +p !== process.pid) } catch { return false }
+}
+
 function ask(t: Thread, text: string, opts: Sent = {}, saved?: string[]): Promise<{ text: string; error: string | null }> {
   if (liveOf(t.id).running) throw new HTTPError(409, `${NAMES[t.harness]} is still answering: stop it first, or wait`)
+  if (t.terminal) {
+    if (inTerminal(t)) throw new HTTPError(409, `It's open in a terminal: go on there, or quit ${NAMES[t.harness]} there (/exit) to come back here`)
+    delete t.terminal
+  }
   const cli = t.harness === "claude" ? claudeCli() : codexCli()
   if (!cli) throw new HTTPError(424, `${NAMES[t.harness]} isn't installed on this machine`)
   const names = saved ?? saveImages(t, opts.images)
@@ -667,15 +678,19 @@ plugin.route("POST", "agents/threads/*/answer", async (req) => {
   return { ok: true }
 }, { lock: false })
 
-/** Hand the session to a terminal: this thread's run ends first, so the two never write one session at once. */
+/** Hand the session to a terminal: this thread's run ends first, so the two never write one session at once; a turn
+ *  under way stops here and goes on there (`prompt`). */
 plugin.route("POST", "agents/threads/*/handoff", async (req) => {
   await owner(req)
   const t = thread(req.arg(0))
   if (!t.started) throw new HTTPError(409, "nothing to resume yet: send a message first")
   const r = runs.get(t.id)
-  if (r) { r.stop(); r.end() }
+  const busy = !!r?.busy
+  if (r) { r.stop(); await r.closed() }
   runs.delete(t.id)
-  return { harness: t.harness, session: t.session }
+  t.terminal = now()
+  push(t, { kind: "note", text: busy ? "Went on in a terminal." : "Opened in a terminal.", at: now() })
+  return { harness: t.harness, session: t.session, prompt: busy ? "You were moved from the app's Agents panel to this terminal in the middle of your last turn: carry on where you left off." : "" }
 }, { lock: false })
 
 plugin.route("GET", "agents/image/*/*", async (req) => {
@@ -751,3 +766,29 @@ plugin.op({
   run: () => ({ threads: summaries() }),
   text: (r) => (r.threads.length ? r.threads.map((t: Summary) => `${t.id}  ${NAMES[t.harness]}  ${t.project}  ${t.title}  ${t.updated.slice(0, 16).replace("T", " ")}${t.waiting ? " (waiting for the user)" : t.running ? " (working)" : ""}`).join("\n") : "No threads yet."),
 })
+
+// ---------- a turn the server went down in (a restart, an update): its process ends if it outlived it, and it goes on
+
+/** Process `pid`, while it's still that CLI, ends (at most 5 s). */
+async function ended(pid: number, harness: Harness) {
+  const cmd = await new Promise<string>((r) => execFile("ps", ["-p", String(pid), "-o", "command="], (e, out) => r(e ? "" : String(out))))
+  if (!cmd.includes(harness)) return
+  try { process.kill(pid, "SIGTERM") } catch { return }
+  for (let i = 0; i < 50; i++) { await new Promise((r) => setTimeout(r, 100)); try { process.kill(pid, 0) } catch { return } }
+  try { process.kill(pid, "SIGKILL") } catch { /* gone */ }
+}
+
+async function takeUp(list: Thread[]) {
+  for (const t of list) {
+    if (!t.running || threads.get(t.id) !== t) continue
+    const { pid } = t.running
+    delete t.running
+    await ended(pid, t.harness)
+    // (one from long ago isn't started again by surprise)
+    const recent = Date.now() - Date.parse(t.updated) < 3_600_000
+    push(t, { kind: "note", text: recent ? "The app restarted mid-turn: going on." : "The app restarted mid-turn.", at: now() })
+    if (recent) try { void ask(t, "The app restarted in the middle of your last turn and stopped it: carry on where you left off.") } catch (e) { push(t, { kind: "note", text: (e as Error).message, at: now(), error: true }) }
+  }
+}
+onInterrupted((list) => void takeUp(list))
+setTimeout(load, 0)

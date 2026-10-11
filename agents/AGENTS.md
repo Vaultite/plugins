@@ -14,3 +14,7 @@ Deleting a thread removes its worktree when nothing in it is uncommitted and no 
 stays.
 
 Threads settle by hand, or by themselves once their pull request is merged or closed, or after three quiet days.
+
+A turn under way keeps its process's pid with the thread: after a restart or an update, the next start ends that
+process if it's still there and the turn goes on (a message saying so). Open in terminal mid-turn stops it here and the
+terminal goes on; the app won't run that session again while a process has it (`pgrep -f <session>`).
