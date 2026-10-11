@@ -83,7 +83,9 @@ export async function removeThread(id: string, title: string, after?: () => void
 
 export async function openInTerminal(id: string) {
   try {
-    const { harness, session } = await post<{ harness: Harness; session: string }>(`agents/threads/${id}/handoff`, {})
+    const { harness, session, prompt } = await post<{ harness: Harness; session: string; prompt: string }>(`agents/threads/${id}/handoff`, {})
+    // (a turn it was in goes on there: the terminal starts with the prompt that says so)
+    if (prompt) await post(`terminals/resume-${harness}-${session}`, { prompt })
     openAgent(harness, { resume: session, newTab: true })
   } catch (e) { notifyError(e, "Couldn't open it in a terminal") }
 }

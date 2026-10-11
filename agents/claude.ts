@@ -227,6 +227,18 @@ export class ClaudeRun extends Run {
     try { this.proc.stdin?.end() } catch { /* gone */ }
     setTimeout(() => this.kill(), 3000).unref()
   }
+  async closed() {
+    if (this.proc.exitCode !== null || this.proc.signalCode !== null) return
+    const gone = new Promise((r) => this.proc.once("exit", r))
+    this.end()
+    await Promise.race([gone, new Promise((r) => setTimeout(r, 5000).unref())])
+  }
+  pid() { return this.proc.pid }
+  abandon() {
+    if (this.ended) return
+    this.ended = true
+    try { this.proc.kill("SIGTERM") } catch { /* gone */ }
+  }
 
   exit(code: number | null, why: string | null) {
     if (this.ended) return

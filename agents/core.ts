@@ -215,9 +215,20 @@ export function load() {
       threads.set(t.id, t)
     } catch { /* unreadable: left alone */ }
   }
+  const cut = [...threads.values()].filter((t) => t.running)
+  if (cut.length) setTimeout(() => interrupted(cut), 0)
 }
 
+/** What takes up the threads a turn was under way in when the server went (load() finds them). */
+let interrupted: (list: Thread[]) => void = () => {}
+export const onInterrupted = (fn: typeof interrupted) => { interrupted = fn }
+/** Forget what's in memory: the same module loaded again (off and on) starts from the files. */
+export function reset() { saveAll(); runs.clear(); live.clear(); threads.clear(); loaded = false }
+
 const saving = new Map<string, ReturnType<typeof setTimeout>>()
+/** Every thread's pending save, now (the server is going). */
+export function saveAll() { for (const id of [...saving.keys()]) { const t = threads.get(id); if (t) save(t, false) } }
+
 export function save(t: Thread, soon = true) {
   clearTimeout(saving.get(t.id))
   const write = () => { saving.delete(t.id); if (threads.get(t.id) === t) fs.writeFileSync(threadFile(t.id), JSON.stringify(t)) }
@@ -372,11 +383,23 @@ export abstract class Run {
   protected abstract answer(e: Extract<Entry, { kind: "ask" }>, allow: boolean): void
   /** End this run's process (or its part of a shared one). */
   abstract end(): void
+  /** The process its turns run in. */
+  abstract pid(): number | undefined
+  /** Ended, and its process gone (Codex's shared one stays). */
+  async closed() { this.end() }
+  /** The server is going: its process ends now, and the turn under way is left for the next start to take up. */
+  abstract abandon(): void
 
   begin() {
     if (this.idle) { clearTimeout(this.idle); this.idle = null }
     this.from = this.t.entries.length
     this.busy = true
+    this.hold()
+  }
+  /** The turn under way and its process, kept with the thread. */
+  hold() {
+    const pid = this.pid()
+    if (this.busy && pid && this.t.running?.pid !== pid) { this.t.running = { pid, at: now() }; save(this.t, false) }
   }
 
   /** The user's answer to a permission request (allow or deny), or "gone" when it can't be answered any more. */
@@ -422,6 +445,7 @@ export abstract class Run {
     if (this.stopTimer) { clearTimeout(this.stopTimer); this.stopTimer = null }
     this.stopping = false
     this.busy = false
+    delete t.running
     // (finished with no one looking: "Done" in the list until it's opened)
     if (![...sockets.values()].some((ids) => ids.has(t.id))) t.unread = true
     setLive(t, { running: false, status: "" })

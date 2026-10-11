@@ -43,6 +43,8 @@ export type Thread = {
   unread?: boolean
   /** Its pull request as last seen: what settles it once merged or closed. */
   pr?: { number: number; url: string; state: string; at?: string }
+  /** The process of the turn under way (a restart finds it, ends it and goes on), and when it went to a terminal. */
+  running?: { pid: number; at: string }; terminal?: string
 }
 /** `images`: the names of its pasted images, saved with the thread. */
 export type Queued = { id: string; text: string; at: string; file?: string; images?: string[] }
