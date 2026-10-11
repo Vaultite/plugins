@@ -35,7 +35,9 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
   `--permission-prompt-tool stdio` (else they're denied). Tests and QA use `claude-chat/.test/fake-claude.mjs` (recorded
   lines replayed, `CLAUDE_CHAT_CLI` and `FAKE_CLAUDE_STATE` on the server), never the real CLI.
 - **Agents**: `claude` with stream JSON (as Claude chat) and `codex app-server` (JSON-RPC; its request ids restart per
-  process). Tests and QA use Claude chat's fake-claude.mjs and `agents/.test/fake-codex.mjs`, never the real CLIs.
+  process). Tests and QA use Claude chat's fake-claude.mjs, `agents/.test/fake-codex.mjs` and `fake-gh.mjs`, never the
+  real CLIs; git in throwaway repositories with a made-up `GIT_CONFIG_GLOBAL`, worktrees under `AGENTS_WORKTREES`.
+  `Git.tsx` can't exist beside `git.ts` (macOS folds case): the header's git is `GitBar.tsx`.
 - **BrowserOS**: hands a Web viewer page to BrowserOS (`webPageActions`, `appWindows.open`), found by its bundle id
   (`com.browseros.`, neo first); a desktop app without `appWindows.open` says it needs a newer one.
   Its Browser agents panel reads neo's undocumented local API (what its cockpit uses: `/api/v1/sessions?status=live`,

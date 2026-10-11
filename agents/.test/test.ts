@@ -1,5 +1,6 @@
 // Agents against fake CLIs (Claude chat's fake-claude.mjs, fake-codex.mjs): threads of both harnesses, streamed answers,
 // permission asks answered both ways, diffs and the changes summary, stop, resume after a restart, projects, the ops.
+import { execFileSync } from "node:child_process"
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
@@ -12,6 +13,15 @@ process.env.AGENTS_CLAUDE_CLI = claude
 process.env.AGENTS_CODEX_CLI = codex
 process.env.FAKE_CLAUDE_STATE = state
 process.env.FAKE_CODEX_STATE = state
+const gh = path.join(state, "gh")
+fs.symlinkSync(path.join(import.meta.dirname, "fake-gh.mjs"), gh)
+process.env.AGENTS_GH_CLI = gh
+process.env.FAKE_GH_STATE = state
+process.env.AGENTS_WORKTREES = path.join(state, "worktrees")
+// Git with a made-up author, never the machine's config.
+process.env.GIT_CONFIG_GLOBAL = path.join(state, "gitconfig")
+process.env.GIT_CONFIG_NOSYSTEM = "1"
+fs.writeFileSync(process.env.GIT_CONFIG_GLOBAL, "[user]\n\tname = Alice Park\n\temail = alice@example.com\n[init]\n\tdefaultBranch = main\n")
 // As under launchd: a bare PATH, where the fakes (node scripts, like Homebrew's codex) find node only if we add it.
 process.env.PATH = "/usr/bin:/bin:/usr/sbin:/sbin"
 
@@ -133,6 +143,49 @@ try {
   t = await until(cl, (t, running) => !running && t.entries.at(-1)?.text === "You said: and now?\n\n- one\n- two")
   const again = claudeRuns().at(-1)
   check("claude: resumed with the new model and mode", flag(again.argv, "--resume") === t.session && flag(again.argv, "--model") === "haiku" && flag(again.argv, "--permission-mode") === "acceptEdits", again?.argv)
+
+  // ---------- git: a thread in its own worktree, its turns' diffs, revert, commit, push and a pull request
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "agents-repo-")), remote = `${repo}-remote.git`
+  const sh = (cwd: string, ...a: string[]) => execFileSync("git", a, { cwd, encoding: "utf8" })
+  sh(repo, "init", "-q"); fs.writeFileSync(path.join(repo, "app.ts"), "export const answer = 41\n"); sh(repo, "add", "-A"); sh(repo, "commit", "-qm", "first")
+  execFileSync("git", ["init", "-q", "--bare", remote]); sh(repo, "remote", "add", "origin", remote); sh(repo, "push", "-q", "-u", "origin", "main")
+  const [, wt] = await s.api("POST", "agents/threads", { harness: "codex", cwd: repo, mode: "edits", worktree: true })
+  await s.api("POST", `agents/threads/${wt.id}/send`, { text: "please edit app.ts" })
+  t = await until(wt.id, (t, running) => !running && t.entries.at(-1)?.kind === "assistant" && !!(t.entries[0] as { after?: string }).after)
+  const w = (t as Thread & { worktree?: { top: string; branch: string } }).worktree
+  check("worktree: made at the first message, on a branch named after it", w?.branch === "agents/please-edit-app-ts" && t.cwd === fs.realpathSync(w.top) || t.cwd === w?.top, { w, cwd: t.cwd })
+  check("worktree: the edit is there, not in the checkout", fs.readFileSync(path.join(w!.top, "app.ts"), "utf8").includes("(edited)") && !fs.readFileSync(path.join(repo, "app.ts"), "utf8").includes("(edited)"))
+  const u0 = t.entries[0] as { before?: string; after?: string; end?: string }
+  check("a turn keeps its end and checkpoints", !!u0.end && !!u0.before && !!u0.after && u0.before !== u0.after, u0)
+  check("the list groups it under its checkout, with its branch", (await summary(wt.id))?.home === fs.realpathSync(repo) && (await summary(wt.id))?.branch === w?.branch, await summary(wt.id))
+  let [, df] = await s.api("GET", `agents/threads/${wt.id}/diff?turn=0`)
+  check("diff: a turn's, from git", df.source === "git" && df.files.length === 1 && df.files[0].path === "app.ts" && df.files[0].added === 1 && df.files[0].removed === 1, df)
+  await s.api("POST", `agents/threads/${wt.id}/send`, { text: "run it now" })
+  t = await until(wt.id, (t, running) => !running && !!(t.entries.at(-1)?.kind === "assistant" && (t.entries.findLast((e) => e.kind === "user") as { after?: string }).after))
+  const second = t.entries.findLastIndex((e) => e.kind === "user")
+  ;[, df] = await s.api("GET", `agents/threads/${wt.id}/diff?turn=${second}`)
+  check("diff: what a command made counts too (untracked files)", df.files.length === 1 && df.files[0].path === "out.txt" && df.files[0].status === "added", df)
+  ;[, df] = await s.api("GET", `agents/threads/${wt.id}/diff`)
+  check("diff: the whole thread's", df.files.map((f: { path: string }) => f.path).sort().join() === "app.ts,out.txt", df)
+  const [rv] = await s.api("POST", `agents/threads/${wt.id}/revert`, { turn: second })
+  check("revert: the files as before that turn", rv === 200 && !fs.existsSync(path.join(w!.top, "out.txt")) && fs.readFileSync(path.join(w!.top, "app.ts"), "utf8").includes("(edited)"))
+  let [, g] = await s.api("GET", `agents/threads/${wt.id}/git`)
+  check("git: the branch and its changed files", g.git.branch === w?.branch && g.git.files === 1 && g.git.worktree && g.git.base === "main" && g.git.gh, g)
+  const [code2, cp] = await s.api("POST", `agents/threads/${wt.id}/git`, { action: "commit-push-pr", message: "fix: the answer is right" })
+  check("git: commit, push and a pull request", code2 === 200 && !!cp.commit && cp.pushed && cp.pr === "https://github.com/alice/lighthouse/pull/7", cp)
+  check("git: the commit is on the remote's branch", sh(remote, "log", "--format=%s", w!.branch).startsWith("fix: the answer is right"))
+  const ghArgs = fs.readFileSync(path.join(state, "gh.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l)).find((x) => x.argv[1] === "create")
+  check("git: the pull request's title, base and head", ghArgs?.argv.includes("--base") && ghArgs.argv[ghArgs.argv.indexOf("--head") + 1] === w?.branch && ghArgs.argv[ghArgs.argv.indexOf("--title") + 1] === t.title, ghArgs)
+  ;[, g] = await s.api("GET", `agents/threads/${wt.id}/git?pr=1`)
+  check("git: clean, pushed, and its pull request", g.git.files === 0 && g.git.ahead === 0 && g.git.pr?.number === 7, g)
+  const [nothing, why] = await s.api("POST", `agents/threads/${wt.id}/git`, { action: "commit", message: "x" })
+  check("git: nothing to commit says so", nothing === 409 && /nothing to commit/.test(why.error ?? JSON.stringify(why)), why)
+  const [, br] = await s.api("GET", `agents/branches?cwd=${encodeURIComponent(repo)}`)
+  check("branches: the checkout's, the worktree's marked", br.git && br.list.some((b: { name: string; current: boolean }) => b.name === "main" && b.current) && br.list.some((b: { name: string; worktree: string }) => b.name === w?.branch && b.worktree), br)
+  const [, gone] = await s.api("DELETE", `agents/threads/${wt.id}`)
+  check("delete: a clean worktree goes, its branch stays", !gone.kept && !fs.existsSync(w!.top) && sh(repo, "branch", "--list", w!.branch).includes(w!.branch) && !sh(repo, "for-each-ref", "refs/vaultite-agents/").trim(), gone)
+  const [, cl2] = await s.api("GET", `agents/threads/${cl}/diff`)
+  check("diff: a folder that isn't a checkout has its edits' patches", cl2.source === "edits" && cl2.files[0]?.file === "Notes/Garden.md" && cl2.files[0].added >= 1, cl2)
 
   // ---------- the list, the ops, handoff, delete
   const [, all] = await s.api("GET", "agents/threads")
