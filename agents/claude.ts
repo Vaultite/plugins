@@ -265,8 +265,8 @@ async function authStatus(cli: string) {
 }
 async function versionOf(cli: string) { return (await run(cli, ["--version"])).out.trim().split(" ")[0] ?? "" }
 
-/** The models this claude offers: its stream-json handshake's list (no prompt is sent, nothing is spent). */
-function modelsOf(cli: string): Promise<Model[]> {
+/** The models and slash commands this claude offers: its stream-json handshake's lists (no prompt, nothing spent). */
+function modelsOf(cli: string): Promise<{ models: Model[]; commands: { name: string; description: string }[] }> {
   return new Promise((resolve, reject) => {
     const p = spawn(cli, ["-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose"], { cwd: os.tmpdir(), env: env(), stdio: ["pipe", "pipe", "ignore"] })
     let buf = ""
@@ -282,7 +282,9 @@ function modelsOf(cli: string): Promise<Model[]> {
         clearTimeout(timer)
         p.stdin.end()
         const list = Array.isArray(j.response?.response?.models) ? j.response.response.models : []
-        resolve(list.filter((m: Any) => typeof m?.value === "string" && m.value !== "default").map((m: Any) => ({ value: m.value, label: str(m.displayName) || m.value, description: str(m.description) })))
+        const commands = Array.isArray(j.response?.response?.commands) ? j.response.response.commands : []
+        resolve({ models: list.filter((m: Any) => typeof m?.value === "string" && m.value !== "default").map((m: Any) => ({ value: m.value, label: str(m.displayName) || m.value, description: str(m.description) })),
+          commands: commands.filter((c: Any) => typeof c?.name === "string").map((c: Any) => ({ name: str(c.name), description: str(c.description) })) })
         return
       }
       buf = buf.slice(buf.lastIndexOf("\n") + 1)
@@ -295,6 +297,6 @@ export async function claudeStatus(): Promise<HarnessStatus> {
   const cli = claudeCli()
   if (!cli) return { installed: false, loggedIn: false, version: "", models: [] }
   const [auth, version] = await Promise.all([plugin.memo(60, authStatus, cli), plugin.memo(3600, versionOf, cli)])
-  const models = auth.loggedIn ? await plugin.memo(3600, modelsOf, cli).catch(() => [] as Model[]) : []
-  return { installed: true, loggedIn: auth.loggedIn, version, models }
+  const got = auth.loggedIn ? await plugin.memo(3600, modelsOf, cli).catch(() => ({ models: [] as Model[], commands: [] })) : { models: [], commands: [] }
+  return { installed: true, loggedIn: auth.loggedIn, version, models: got.models, commands: got.commands }
 }

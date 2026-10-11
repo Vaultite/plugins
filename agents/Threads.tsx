@@ -145,7 +145,11 @@ type Hover = ReturnType<typeof useHover>
 
 // ---------- a row
 
-type RowProps = { s: Summary; active: boolean; hover: Hover; jump?: number; renaming: boolean; setRenaming: (id: string) => void; menu: (s: Summary) => ReturnType<typeof threadActions> }
+type RowProps = { s: Summary; active: boolean; hover: Hover; jump?: number; renaming: boolean; setRenaming: (id: string) => void; menu: (s: Summary) => ReturnType<typeof threadActions>
+  onDrag: (s: Summary | null) => void }
+/** A row dragged to another section (T3 Code's): its id, for the drop. */
+const dragged = (p: RowProps) => ({ draggable: !p.renaming, onDragStart: (e: React.DragEvent) => { p.hover.leave(); e.dataTransfer.setData("text/plain", p.s.title); e.dataTransfer.effectAllowed = "move"; p.onDrag(p.s) },
+  onDragEnd: () => p.onDrag(null) })
 
 function useRow({ s, hover }: RowProps) {
   const to = `agents/${s.id}`
@@ -174,7 +178,7 @@ function CardRow(p: RowProps) {
   const snooze = (e: MouseEvent) => menuBelow(e, snoozePresets().map((x) => ({ label: x.label, hint: x.hint, run: () => void setState(s.id, { snoozedUntil: x.when.toISOString() }) })))
   const draft = useHasDraft(s.id)
   return (
-    <div role="button" tabIndex={0} data-thread-row={s.id} data-section={s.pinnedAt ? "pinned" : "active"} data-harness={s.harness} data-state={statusOf(s)?.kind ?? "idle"}
+    <div role="button" tabIndex={0} data-thread-row={s.id} data-section={s.pinnedAt ? "pinned" : "active"} data-harness={s.harness} data-state={statusOf(s)?.kind ?? "idle"} {...dragged(p)}
       onClick={go} onAuxClick={(e) => { if (e.button === 1) go(e) }} onKeyDown={(e) => { if (e.key === "Enter" && e.target === e.currentTarget) openView(to, { newTab: !isViewOpen(to) }) }}
       onDoubleClick={(e) => { if (!(e.target as HTMLElement).closest("button")) p.setRenaming(s.id) }}
       onMouseEnter={hover.enter(s.id)} onMouseLeave={hover.leave} onContextMenu={(e) => { hover.leave(); menuFor(() => p.menu(s))(e) }}
@@ -225,7 +229,7 @@ function SlimRow(p: RowProps & { shelf: "snoozed" | "settled" | "grouped" }) {
   const I = ICON[s.harness]
   const held = useHeld()
   return (
-    <div role="button" tabIndex={0} data-thread-row={s.id} data-section={shelf} data-harness={s.harness} data-state={statusOf(s)?.kind ?? "idle"}
+    <div role="button" tabIndex={0} data-thread-row={s.id} data-section={shelf} data-harness={s.harness} data-state={statusOf(s)?.kind ?? "idle"} {...dragged(p)}
       onClick={go} onAuxClick={(e) => { if (e.button === 1) go(e) }} onKeyDown={(e) => { if (e.key === "Enter" && e.target === e.currentTarget) openView(to, { newTab: !isViewOpen(to) }) }}
       onDoubleClick={(e) => { if (!(e.target as HTMLElement).closest("button")) p.setRenaming(s.id) }}
       onMouseEnter={hover.enter(s.id)} onMouseLeave={hover.leave} onContextMenu={(e) => { hover.leave(); menuFor(() => p.menu(s))(e) }}
@@ -248,6 +252,19 @@ function SlimRow(p: RowProps & { shelf: "snoozed" | "settled" | "grouped" }) {
         </span>
       )}
       {held && <Jump n={p.jump} />}
+    </div>
+  )
+}
+
+/** Where a dragged row can land: the drop does what the section is (pin, settle, back to active). */
+function Drop({ on, label, onDrop, children }: { on: boolean; label?: string; onDrop: () => void; children?: ReactNode }) {
+  const [over, setOver] = useState(false)
+  // (always the same element: a row dragged from inside stays mounted, or the browser drops the drag)
+  return (
+    <div className={cn(on && "rounded-[7px] outline-dashed outline-1 -outline-offset-1", on && (over ? "bg-primary/10 outline-primary" : "outline-border"))} data-drop={on ? label : undefined}
+      onDragOver={(e) => { if (!on) return; e.preventDefault(); setOver(true) }} onDragLeave={() => setOver(false)} onDrop={(e) => { if (!on) return; e.preventDefault(); setOver(false); onDrop() }}>
+      {children}
+      {on && !children && <div className="grid h-8 place-items-center text-[11px] text-tertiary">{label}</div>}
     </div>
   )
 }
@@ -305,6 +322,7 @@ export function ThreadsPanel({ open, tab, inView }: SidebarCtx & { inView?: bool
   const [archived, setArchived] = useState(false)
   const [query, setQuery] = useState("")
   const [renaming, setRenaming] = useState("")
+  const [drag, setDrag] = useState<Summary | null>(null)
   const { data: projects } = useLive<{ list: Project[] }>("agents/projects")
   const start = (set: { harness?: Harness; cwd?: string }) => newThread(set, setHarness, setCwd)
   const isOpen = (s: Summary) => tab === `view:agents/${s.id}`
@@ -329,7 +347,20 @@ export function ThreadsPanel({ open, tab, inView }: SidebarCtx & { inView?: bool
   const menu = (s: Summary) => threadActions(s, { on, started: true, rename: () => setRenaming(s.id), filter: filterItem(s),
     newOnBranch: s.branch ? () => start({ cwd: s.cwd, harness: s.harness }) : undefined,
     extra: [{ label: "Open in new tab", icon: Plus, run: () => openView(`agents/${s.id}`, { newTab: true }) }] })
-  const rowProps = (s: Summary) => ({ s, active: isOpen(s), hover, jump: jump(s), renaming: renaming === s.id, setRenaming, menu })
+  const rowProps = (s: Summary) => ({ s, active: isOpen(s), hover, jump: jump(s), renaming: renaming === s.id, setRenaming, menu, onDrag: setDrag })
+  // (dropped on a section: pinned, settled, or back with the active ones)
+  const dropTo = (where: "pinned" | "active" | "settled") => {
+    const s = drag
+    setDrag(null)
+    if (!s) return
+    if (where === "pinned" && !s.pinnedAt) void setState(s.id, { pinned: true })
+    if (where === "settled" && !s.settledAt) void settle(s.id, true)
+    if (where === "active") {
+      if (s.pinnedAt) void setState(s.id, { pinned: false })
+      if (s.settledAt) void settle(s.id, false)
+      if (s.snoozedUntil) void setState(s.id, { snoozedUntil: null })
+    }
+  }
   const card = hover.hover ? all.find((s) => s.id === hover.hover!.id) : null
 
   if (!open) return <div className="flex flex-col gap-px">{all.filter((s) => (s.running || s.waiting) && !s.archived).map((s) => (
@@ -384,15 +415,17 @@ export function ThreadsPanel({ open, tab, inView }: SidebarCtx & { inView?: bool
         </div>
       ) : (
         <div className="flex flex-col gap-1">
-          {(pinned.length > 0 || active.length > 0) && (
-            <div className="flex flex-col gap-px" data-section-list="active">
-              {pinned.map((s) => <CardRow key={s.id} {...rowProps(s)} />)}
-              {pinned.length > 0 && active.length > 0 && <div className="mx-2 my-0.5 border-t-[0.5px] border-border" />}
-              {active.map((s) => <CardRow key={s.id} {...rowProps(s)} />)}
-            </div>
-          )}
+          <Drop on={!!drag && !drag.pinnedAt} label="Pinned" onDrop={() => dropTo("pinned")}>
+            {pinned.length > 0 && <div className="flex flex-col gap-px" data-section-list="pinned">{pinned.map((s) => <CardRow key={s.id} {...rowProps(s)} />)}</div>}
+          </Drop>
+          {pinned.length > 0 && active.length > 0 && <div className={cn("mx-2 my-0.5 border-t-[0.5px] border-border", drag && "invisible")} />}
+          <Drop on={!!drag && !!(drag.pinnedAt || drag.settledAt || drag.snoozedUntil)} label="Active" onDrop={() => dropTo("active")}>
+            {active.length > 0 && <div className="flex flex-col gap-px" data-section-list="active">{active.map((s) => <CardRow key={s.id} {...rowProps(s)} />)}</div>}
+          </Drop>
           {snoozedList.length > 0 && <Shelf name="Snoozed" count={snoozedList.length} open={snoozedOpen || !!q} toggle={() => setSnoozedOpen(!snoozedOpen)}>{shownSnoozed.map((s) => <SlimRow key={s.id} {...rowProps(s)} shelf="snoozed" />)}</Shelf>}
-          {settledList.length > 0 && <Shelf name="Settled" count={settledList.length} open={settledOpen || !!q} toggle={() => setSettledOpen(!settledOpen)}>{shownSettled.map((s) => <SlimRow key={s.id} {...rowProps(s)} shelf="settled" />)}</Shelf>}
+          <Drop on={!!drag && !drag.settledAt} label="Settled" onDrop={() => dropTo("settled")}>
+            {settledList.length > 0 && <Shelf name="Settled" count={settledList.length} open={settledOpen || !!q} toggle={() => setSettledOpen(!settledOpen)}>{shownSettled.map((s) => <SlimRow key={s.id} {...rowProps(s)} shelf="settled" />)}</Shelf>}
+          </Drop>
         </div>
       )}
       {list && empty && (

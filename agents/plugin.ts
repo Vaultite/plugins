@@ -7,7 +7,7 @@ import path from "node:path"
 import type { WebSocket } from "ws"
 import { HTTPError, OpError, type Request, Text } from "@vaultite/core/plugins.ts"
 import { ClaudeRun, claudeCli, claudeRewindFiles, claudeStatus } from "./claude.ts"
-import { branchChanges, branches, checkout, checkpoint, commit, prCheckout, prView, createPr, diffOf, dropCheckpoints, dropWorktree, keepCheckpoint, newWorktree, prOf, push as gitPush, restore, stateOf, topOf } from "./git.ts"
+import { branchChanges, branches, checkout, checkpoint, commit, filesOf, prCheckout, prView, createPr, diffOf, dropCheckpoints, dropWorktree, keepCheckpoint, newWorktree, prOf, push as gitPush, restore, stateOf, topOf } from "./git.ts"
 import { codexCli, codexFork, CodexRun, codexRevert, codexStatus } from "./codex.ts"
 import { branchFor, commitFor, prFor, titleFor } from "./gentext.ts"
 import {
@@ -378,6 +378,12 @@ plugin.route("GET", "agents/threads/*/git", async (req) => {
     if (JSON.stringify(pr) !== JSON.stringify(t.pr)) { if (pr) t.pr = pr; else delete t.pr; save(t); listChanged() }
   }
   return { git: st }
+})
+
+/** A project's files (a git checkout's), for @ to point the agent at one. */
+plugin.route("GET", "agents/files", async (req) => {
+  await owner(req)
+  return { list: await filesOf(folder(req.query.cwd)) }
 })
 
 plugin.route("GET", "agents/branches", async (req) => {

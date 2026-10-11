@@ -216,6 +216,12 @@ export async function restore(cwd: string, tree: string) {
   return made.length + back.length
 }
 
+/** The checkout's files, for @ in the box to write in: git's (tracked and new, not ignored), at most 20000. */
+export async function filesOf(cwd: string) {
+  const r = await git(cwd, ["ls-files", "--cached", "--others", "--exclude-standard"], { timeout: 20_000 })
+  return r.code ? [] : r.out.split("\n").filter(Boolean).slice(0, 20_000)
+}
+
 // ---------- commit, push, pull request
 
 /** What a branch has that `base` doesn't: its commits (one line each), the diff's stat and patch (a PR's text). */

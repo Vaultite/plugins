@@ -259,7 +259,8 @@ process.stdin.on("data", (d) => {
     log({ stdin: j })
     const reply = (response) => out({ type: "control_response", response: { subtype: "success", request_id: j.request_id, response } })
     if (j.type === "control_request" && j.request?.subtype === "initialize") {
-      reply({ commands: [], models: MODELS, current_permission_mode: mode, account: {} })
+      reply({ commands: [{ name: "compact", description: "Clear conversation history but keep a summary in context", argumentHint: "" },
+        { name: "review", description: "Review a pull request", argumentHint: "" }], models: MODELS, current_permission_mode: mode, account: {} })
     } else if (j.type === "control_request" && j.request?.subtype === "set_permission_mode") {
       if (j.request.mode === "bypassPermissions" && !argv.includes("--allow-dangerously-skip-permissions") && !argv.includes("--dangerously-skip-permissions")) {
         out({ type: "control_response", response: { subtype: "error", request_id: j.request_id, error: "Cannot set permission mode to bypassPermissions because the session was not launched with --dangerously-skip-permissions" } })

@@ -230,7 +230,7 @@ export function QueuedMessages({ id, queue, running, onEdit }: { id: string; que
               <button type="button" aria-label="Edit queued message" data-tip={i === queue.length - 1 ? "Edit in the composer (⌥↑)" : "Edit in the composer"} disabled={!!busy} data-queued-edit
                 onClick={() => void act(q, "remove").then((r) => { if (r) onEdit(q) })} className={cn(small, "w-6 justify-center px-0")}><Pencil className="size-3" /></button>
               <button type="button" disabled={!!busy} data-queued-steer data-tip={running ? `Send as a steer instead${i === 0 ? " (⌘⇧↩)" : ""}` : "Nothing is running: send it now"}
-                onClick={() => void act(q, "steer")} className={small}><CornerUpRight className="size-3" />{running ? "Steer" : "Send now"}</button>
+                onClick={() => void act(q, "steer")} className={small}><CornerUpRight className="size-3" /><span className="max-md:hidden">{running ? "Steer" : "Send now"}</span></button>
               <button type="button" aria-label="Remove queued message" data-tip="Remove from queue" disabled={!!busy} data-queued-remove
                 onClick={() => void act(q, "remove")} className={cn(small, "w-6 justify-center px-0")}><X className="size-3.5" /></button>
             </li>
