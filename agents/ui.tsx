@@ -69,6 +69,8 @@ export function describe(name: string, input: Record<string, unknown>, cwd: stri
     case "WebSearch": return { verb: "Searched the web for", what: String(input.query ?? "") }
     case "Task": case "Agent": return { verb: "Asked an agent to", what: String(input.description ?? "").toLowerCase() }
     case "TodoWrite": return { verb: "Updated its to-do list", what: "" }
+    case "AskUserQuestion": return { verb: "Asked you", what: ((input.questions ?? []) as { header?: string; question?: string }[]).map((q) => q.header || q.question).join(", ") }
+    case "ExitPlanMode": return { verb: "Proposed a plan", what: "" }
     case "Skill": return { verb: "Used the skill", what: String(input.skill ?? input.command ?? "") }
   }
   const mcp = /^mcp__(.+?)__(.+)$/.exec(name)

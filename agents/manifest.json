@@ -2,8 +2,8 @@
   "id": "agents",
   "icon": "bot",
   "name": "Agents",
-  "description": "Claude Code and Codex threads in a sidebar, grouped by project, in a chat laid out like T3 Code: each turn's work folded behind how long it took, a diff panel beside it (per turn or the whole thread), and git per thread: its own worktree and branch, commit, push and a pull request. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
-  "version": "1.1.0",
+  "description": "Claude Code and Codex threads in a sidebar laid out like T3 Code's: pinned and active threads on top, snoozed and settled ones below, a project filter. Each thread is a chat: its work folded behind how long it took, questions and plans answered above the box to write in, messages queued or steered while it works, back to any message or forked from any answer, a diff panel beside it, and git per thread with the model writing commit messages, pull requests and branch names. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
+  "version": "1.2.0",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 3,
@@ -46,16 +46,38 @@
       "values": [
         "ask",
         "edits",
-        "read"
+        "auto",
+        "full"
       ],
       "labels": {
         "ask": "Supervised",
         "edits": "Auto-accept edits",
-        "read": "Read only"
+        "auto": "Auto",
+        "full": "Full access"
       },
-      "default": "ask",
-      "label": "Permissions",
-      "description": "what a new thread may do without asking: supervised asks before edits and commands, auto-accept edits still asks before commands, read only reads and plans"
+      "default": "full",
+      "label": "Access",
+      "description": "what a new thread may do without asking: supervised asks before commands and file changes; auto-accept edits asks only before commands; auto lets the agent's own reviewer approve routine actions; full access never asks"
+    },
+    "followUp": {
+      "type": "enum",
+      "values": [
+        "queue",
+        "steer"
+      ],
+      "labels": {
+        "queue": "Queue",
+        "steer": "Steer"
+      },
+      "default": "queue",
+      "label": "Follow-up behavior",
+      "description": "a message sent while the agent works waits for the turn to end (queue) or goes into it (steer); ⌘↩ does the other for one message"
+    },
+    "groupByProject": {
+      "type": "boolean",
+      "default": false,
+      "label": "Group threads by project",
+      "description": "the sidebar as T3 Code's legacy one: threads under each project instead of one list"
     },
     "claudeModel": {
       "type": "string",

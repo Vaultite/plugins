@@ -12,7 +12,7 @@ export const plugin = new Plugin(import.meta.url)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Any = any
-export const MODES: Mode[] = ["ask", "edits", "read"]
+export const MODES: Mode[] = ["ask", "edits", "auto", "full"]
 export const NEW_TITLE = "New thread"
 export const IDLE_MS = 10 * 60_000
 const STOP_MS = 4000
@@ -210,6 +210,8 @@ export function load() {
         e.end = t.entries.slice(i + 1, next < 0 ? undefined : next).at(-1)?.at ?? e.at
       })
       for (const e of t.entries) if (e.kind === "tool" && e.result === undefined) { e.result = ""; e.error = true }
+      // (before 1.2 Plan was a mode of its own)
+      if ((t.mode as string) === "read") { t.mode = "ask"; t.plan = true }
       threads.set(t.id, t)
     } catch { /* unreadable: left alone */ }
   }
@@ -256,15 +258,40 @@ export const liveOf = (id: string): Live => live.get(id) ?? { running: false, st
 export const waitingIn = (t: Thread) => t.entries.some((e) => e.kind === "ask" && !e.answer)
 const excerpt = (s: string, n = 280) => { const one = s.replace(/\s+/g, " ").trim(); return one.length > n ? `${one.slice(0, n)}…` : one }
 
+const SETTLE_AFTER_DAYS = 3
+/** When a thread settled, if it has, by T3 Code's rules: by hand, else by itself once nothing waits on it and its pull
+ *  request was merged or closed after the last message, or nothing happened for three days. */
+export function settledAt(t: Thread, now = Date.now()): string | null {
+  if (t.settledOverride === "settled") return t.settledAt ?? t.updated
+  if (t.settledOverride === "active" || t.pinnedAt || t.autoSettleOff || t.archivedAt || snoozed(t, now)) return null
+  const l = liveOf(t.id)
+  if (l.running || waitingIn(t) || t.queue?.length) return null
+  const u = t.entries.findLast((e) => e.kind === "user") as Extract<Entry, { kind: "user" }> | undefined
+  const active = u ? u.end ?? u.at : t.created
+  if (t.pr && (t.pr.state === "MERGED" || t.pr.state === "CLOSED") && (t.pr.at ?? "") >= (u?.at ?? t.created)) return active
+  return Date.parse(active) < now - SETTLE_AFTER_DAYS * 86_400_000 ? active : null
+}
+
+export const snoozed = (t: Thread, now = Date.now()) => !!t.snoozedUntil && Date.parse(t.snoozedUntil) > now && !waitingIn(t)
+
 export function summaries(): Summary[] {
   load()
   const list = projects()
   return [...threads.values()].map((t) => {
     const l = liveOf(t.id)
     const last = t.entries.findLast((e) => e.kind === "assistant") as { text: string } | undefined
-    const asked = t.entries.findLast((e) => e.kind === "user") as { text: string } | undefined
+    const asked = t.entries.findLast((e) => e.kind === "user") as { text: string; at: string } | undefined
+    const settled = settledAt(t)
+    const u = t.entries.findLast((e) => e.kind === "user" && !e.steer) as { at: string } | undefined
+    const waits = t.entries.filter((e) => e.kind === "ask" && !e.answer) as { tool: string }[]
     return { id: t.id, title: t.title, harness: t.harness, cwd: t.cwd, home: homeOf(t), project: projectOf(homeOf(t), list), model: t.model, mode: t.mode, updated: t.updated,
-      running: l.running, waiting: waitingIn(t), status: l.status, asked: excerpt(asked?.text ?? "", 160), last: excerpt(last?.text ?? ""), changes: changesOf(t),
+      created: t.created, running: l.running, waiting: waitingIn(t), status: l.status, asked: excerpt(asked?.text ?? "", 160), askedAt: asked?.at ?? t.created,
+      last: excerpt(last?.text ?? ""), changes: changesOf(t), ...(t.queue?.length ? { queued: t.queue.length } : {}), ...(settled ? { settledAt: settled } : {}),
+      ...(t.settledOverride ? { settledOverride: t.settledOverride } : {}), ...(t.pr ? { pr: t.pr } : {}),
+      ...(t.plan ? { plan: true } : {}), ...(t.pinnedAt ? { pinnedAt: t.pinnedAt } : {}), ...(snoozed(t) ? { snoozedUntil: t.snoozedUntil } : {}),
+      ...(t.snoozedUntil && !snoozed(t) ? { woke: true } : {}), ...(t.archivedAt ? { archived: true } : {}), ...(t.unread && !l.running ? { unread: true } : {}),
+      ...(t.autoSettleOff ? { autoSettleOff: true } : {}), ...(waits.length && waits.every((a) => a.tool === "AskUserQuestion") ? { input: true } : {}),
+      ...(l.running && u ? { since: u.at } : {}), ...(t.worktree ? { worktree: true } : {}),
       ...(t.worktree?.branch ? { branch: t.worktree.branch } : {}), ...(!l.running && (t.entries.at(-1) as { error?: boolean } | undefined)?.error && t.entries.at(-1)?.kind === "note" ? { failed: true } : {}) }
   }).sort((a, b) => b.updated.localeCompare(a.updated))
 }
@@ -336,11 +363,11 @@ export abstract class Run {
 
   constructor(t: Thread) { this.t = t; this.model = t.model; this.mode = t.mode; this.cwd = t.cwd }
 
-  /** Send the user's message (the entry is in already); false when the CLI can't take it. */
-  abstract send(text: string, images: Image[]): boolean
+  /** Send the user's message (its entry `u` is in already; while it works, into that turn); false when the CLI can't take it. */
+  abstract send(text: string, images: Image[], u?: Extract<Entry, { kind: "user" }>): boolean
   /** Interrupt the turn under way. */
   protected abstract interrupt(): void
-  /** Tell the CLI the user's answer to permission request `id`. */
+  /** Tell the CLI the user's answer to permission request `id` (or to its questions: `e.answers`). */
   protected abstract answer(e: Extract<Entry, { kind: "ask" }>, allow: boolean): void
   /** End this run's process (or its part of a shared one). */
   abstract end(): void
@@ -352,12 +379,15 @@ export abstract class Run {
   }
 
   /** The user's answer to a permission request (allow or deny), or "gone" when it can't be answered any more. */
-  settle(id: string, answer: "allow" | "deny" | "gone") {
+  /** `scope`: allowed for the rest of the session ("Always allow this session"), or declined and the turn stopped. */
+  settle(id: string, answer: "allow" | "deny" | "gone", answers?: Record<string, string>, scope?: "session" | "cancel") {
     const t = this.t
     const at = t.entries.findLastIndex((e) => e.kind === "ask" && e.id === id)
     const e = t.entries[at]
     if (e?.kind !== "ask" || e.answer) return false
     e.answer = answer
+    if (answers) e.answers = answers
+    if (scope) e.scope = scope
     changed(t, at)
     if (answer !== "gone") this.answer(e, answer === "allow")
     if (!waitingIn(t)) setLive(t, { status: "working" })
@@ -391,6 +421,8 @@ export abstract class Run {
     if (this.stopTimer) { clearTimeout(this.stopTimer); this.stopTimer = null }
     this.stopping = false
     this.busy = false
+    // (finished with no one looking: "Done" in the list until it's opened)
+    if (![...sockets.values()].some((ids) => ids.has(t.id))) t.unread = true
     setLive(t, { running: false, status: "" })
     flush(t)
     listChanged()

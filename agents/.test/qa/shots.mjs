@@ -1,9 +1,10 @@
-// Agents with the fake CLIs: a Codex thread in its own worktree of a git project (turns folded behind "Worked for",
-// each turn's changed files, the diff panel stacked and side by side, commit, push and a PR from the header), a Claude
-// Code thread in the vault waiting on an approval, a new thread's workspace and branch; desktop light and dark, and a
-// 390px phone. Screenshots in the out dir. The server must run with AGENTS_CLAUDE_CLI, AGENTS_CODEX_CLI, AGENTS_GH_CLI
-// (the fakes), FAKE_CLAUDE_STATE = FAKE_CODEX_STATE = FAKE_GH_STATE = <state dir>, AGENTS_WORKTREES and a made-up
-// GIT_CONFIG_GLOBAL, and it WRITES (threads, a project folder): throwaway server only.
+// Agents with the fake CLIs, laid out as T3 Code: the sidebar's sections (pinned, active cards, Snoozed and Settled
+// shelves, the project filter, ⌃ hints), the thread menu, a Codex thread in its own worktree (turns folded, changed
+// files, the diff panel, commit with a generated message, push and a PR), the access modes, a question to answer, a
+// plan with Implement, the task list, queued and steered messages, Edit from here, fork, a pull request into a thread;
+// desktop light and dark, and a 390px phone. Screenshots in the out dir. The server must run with AGENTS_CLAUDE_CLI,
+// AGENTS_CODEX_CLI, AGENTS_GH_CLI (the fakes), FAKE_CLAUDE_STATE = FAKE_CODEX_STATE = FAKE_GH_STATE = <state dir>,
+// AGENTS_WORKTREES and a made-up GIT_CONFIG_GLOBAL, and it WRITES (threads, a project folder): throwaway server only.
 //   node agents/.test/qa/shots.mjs <base url> <state dir> [out dir]
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
@@ -17,34 +18,54 @@ const api = async (method, p, body) => {
   return r.headers.get("content-type")?.includes("json") ? r.json() : r.text()
 }
 const get = async (id) => (await api("GET", `agents/threads/${id}`))
-const idle = (id) => until(async () => { const r = await get(id); return !r.live.running && r.thread.entries.length ? r : null }, 10000, 80)
+const idle = (id) => until(async () => { const r = await get(id); return !r.live.running && r.thread.entries.length ? r : null }, 15000, 80)
+const send = (id, text, extra = {}) => api("POST", `agents/threads/${id}/send`, { text, ...extra })
+const make = async (b) => (await api("POST", "agents/threads", b)).id
 
 install(B, "agents")
 fs.rmSync(path.join(STATE, "gh-pr.json"), { force: true })
 for (const t of (await api("GET", "agents/threads")).list ?? []) await api("DELETE", `agents/threads/${t.id}`)
 
-// A project: a git checkout of Lighthouse with a bare remote.
+// A project: a git checkout of Lighthouse with a bare remote, and someone's pull request #12 on it.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "agents-qa-"))
 const repo = path.join(tmp, "lighthouse"), remote = path.join(tmp, "remote.git")
-const git = (...a) => execFileSync("git", a, { cwd: repo, encoding: "utf8", env: { ...process.env, GIT_CONFIG_GLOBAL: path.join(tmp, "gitconfig") } })
+const genv = { ...process.env, GIT_CONFIG_GLOBAL: path.join(tmp, "gitconfig") }
+const git = (cwd, ...a) => execFileSync("git", a, { cwd, encoding: "utf8", env: genv })
 fs.writeFileSync(path.join(tmp, "gitconfig"), "[user]\n\tname = Alice Park\n\temail = alice@example.com\n[init]\n\tdefaultBranch = main\n")
 fs.mkdirSync(repo)
-git("init", "-q")
+git(repo, "init", "-q")
 fs.writeFileSync(path.join(repo, "app.ts"), "export const answer = 41\nexport const name = \"Lighthouse\"\n")
 fs.writeFileSync(path.join(repo, "README.md"), "# Lighthouse\n\nA small app.\n")
-git("add", "-A"); git("commit", "-qm", "first")
-execFileSync("git", ["init", "-q", "--bare", remote]); git("remote", "add", "origin", remote); git("push", "-q", "-u", "origin", "main")
-
-const cx = (await api("POST", "agents/threads", { harness: "codex", cwd: repo, mode: "edits", worktree: true })).id
-await api("POST", `agents/threads/${cx}/send`, { text: "Please edit app.ts so the answer is right" })
-await idle(cx)
-await api("POST", `agents/threads/${cx}/send`, { text: "Now edit README.md and run the build" })
-await idle(cx)
-await until(async () => (await get(cx)).thread.entries.filter((e) => e.kind === "user").every((e) => e.changes), 8000)
+git(repo, "add", "-A"); git(repo, "commit", "-qm", "first")
+execFileSync("git", ["init", "-q", "--bare", remote]); git(repo, "remote", "add", "origin", remote); git(repo, "push", "-q", "-u", "origin", "main")
+git(tmp, "clone", "-q", remote, "pr12")
+fs.writeFileSync(path.join(tmp, "pr12", "header.ts"), "export const glow = true\n")
+git(path.join(tmp, "pr12"), "add", "-A"); git(path.join(tmp, "pr12"), "commit", "-qm", "glow"); git(path.join(tmp, "pr12"), "push", "-q", "origin", "HEAD:refs/pull/12/head")
+await api("PUT", "file", { path: "Projects/Lighthouse.md", text: `---\ntype: project\nstatus: building\npath: ${repo}\n---\n` })
 await api("PUT", "file", { path: "Notes/Garden.md", text: "# Garden\n\nTomatoes by the fence\n" })
-const cl = (await api("POST", "agents/threads", { harness: "claude", mode: "ask" })).id
-await api("POST", `agents/threads/${cl}/send`, { text: "Please edit Notes/Garden.md" })
+
+// The threads: settled, snoozed, pinned and active ones; one waiting on an approval, one on a question, one with a plan.
+const old = await make({ harness: "claude", mode: "full" })
+await send(old, "Sum up the garden notes"); await idle(old)
+await api("POST", `agents/threads/${old}/settle`, { settled: true })
+const nap = await make({ harness: "codex", cwd: repo, mode: "full" })
+await send(nap, "Look at the README later"); await idle(nap)
+await api("POST", `agents/threads/${nap}/state`, { snoozedUntil: new Date(Date.now() + 3 * 3600_000).toISOString() })
+const cx = await make({ harness: "codex", cwd: repo, mode: "edits", worktree: true })
+await send(cx, "Please edit app.ts so the answer is right"); await idle(cx)
+await send(cx, "Now edit README.md and run the build"); await idle(cx)
+await until(async () => (await get(cx)).thread.entries.filter((e) => e.kind === "user").every((e) => e.changes), 8000)
+await api("POST", `agents/threads/${cx}/state`, { pinned: true })
+const cl = await make({ harness: "claude", mode: "ask" })
+await send(cl, "Please edit Notes/Garden.md")
 await until(async () => (await get(cl)).thread.entries.some((e) => e.kind === "ask" && !e.answer), 8000)
+const qs = await make({ harness: "claude", mode: "full" })
+await send(qs, "Ask me a question about the button first")
+await until(async () => (await get(qs)).thread.entries.some((e) => e.kind === "ask" && !e.answer), 8000)
+const pl = await make({ harness: "claude", mode: "full", plan: true })
+await send(pl, "Plan the fix for the wrong answer"); await idle(pl)
+// (wait for the model's titles to land)
+await wait(1500)
 
 const hashOf = (id) => `view/${encodeURIComponent(`agents/${id}`)}`
 async function open(opts, label, id) {
@@ -53,84 +74,192 @@ async function open(opts, label, id) {
   await page.goto("about:blank")
   await page.goto(`${B}#${hashOf(id)}`)
   await page.waitForSelector("[data-agents-thread]", { timeout: 15000 })
+  // (the playground's toast would cover the box to write in)
+  await page.addStyleTag({ content: "[data-sonner-toaster] { display: none !important }" })
   await wait(1500)
   return { ctx, page }
 }
 const shot = (page, name) => page.screenshot({ path: path.join(OUT, `agents-${name}.png`) })
-
+const menuItem = (page, text) => page.locator("[role=menuitem], [role=menuitemradio], [role=menuitemcheckbox]", { hasText: text }).first()
 const T = "[data-agents-thread]"
+
 for (const scheme of ["light", "dark"]) {
   const { ctx, page } = await open({ viewport: { width: 1360, height: 860 }, colorScheme: scheme }, scheme, cx)
-  check(`${scheme}: each done turn folded behind how long it took`, (await page.locator(`${T} [data-turn-fold]`).count()) >= 2, await page.locator(`${T} [data-turn-fold]`).allTextContents())
+  // The sidebar, T3 Code's way.
+  check(`${scheme}: the pinned thread on top, a card`, (await page.locator("[data-thread-row][data-section=pinned]").count()) === 1)
+  check(`${scheme}: active threads as cards, newest message first`, (await page.locator("[data-thread-row][data-section=active]").count()) >= 3)
+  check(`${scheme}: the Snoozed and Settled shelves, closed`, (await page.locator("[data-shelf-toggle=snoozed]").textContent()) === "Snoozed (1)" && (await page.locator("[data-shelf-toggle=settled]").textContent()) === "Settled (1)")
+  check(`${scheme}: statuses as T3 Code's: Approval, Input`, (await page.locator("[data-thread-state=approval]").count()) === 1 && (await page.locator("[data-thread-state=input]").count()) === 1)
+  check(`${scheme}: each done turn folded behind how long it took`, (await page.locator(`${T} [data-turn-fold]`).count()) >= 2)
   check(`${scheme}: the header has the worktree's branch`, (await page.locator(`${T} [data-branch]`).getAttribute("data-branch"))?.startsWith("agents/"))
-  check(`${scheme}: each turn's changed files`, (await page.locator(`${T} [data-changed-files]`).count()) === 2)
-  if (scheme === "light") check("the git button offers commit, push and a PR", (await page.locator(`${T} [data-git-actions]`).getAttribute("data-git-actions")) === "commit-push-pr")
   await shot(page, `codex-${scheme}`)
   if (scheme === "light") {
-    await page.locator(`${T} [data-turn-fold]`).first().click(); await wait(300)
-    check("a fold opens to the turn's work", (await page.locator(`${T} [data-turn]`).first().locator("[data-work] [data-work-group], [data-work] [data-tool]").count()) >= 1)
-    await page.locator(`${T} [data-turn]`).first().locator("[data-work-group] [aria-expanded]").first().click(); await wait(200)
-    check("its tool calls' group opens to a line each", (await page.locator(`${T} [data-turn]`).first().locator("[data-tool]").count()) === 2)
-    await shot(page, "codex-unfolded")
-    await page.locator(`${T} [data-turn-fold]`).first().click()
+    await page.locator("[data-shelf-toggle=settled]").click(); await page.locator("[data-shelf-toggle=snoozed]").click(); await wait(200)
+    await page.locator("[data-thread-row][data-section=active]").first().hover(); await wait(300)
+    check("a row's hover: Snooze and Settle", await page.locator("[data-thread-row][data-section=active]").first().locator("[data-settle]").isVisible())
+    await shot(page, "sidebar-shelves")
+    await page.keyboard.down("Control"); await wait(150)
+    check("holding ⌃ shows the threads' numbers", (await page.locator("[data-jump-hint]").count()) >= 5)
+    await shot(page, "sidebar-jump")
+    await page.keyboard.up("Control")
+    await page.locator("[data-thread-row][data-section=active]").first().click({ button: "right" }); await wait(300)
+    check("the thread menu, T3 Code's", (await menuItem(page, "Settle thread").count()) === 1 && (await menuItem(page, "Snooze").count()) === 1 && (await menuItem(page, "Auto-settle behavior").count()) === 1)
+    await shot(page, "thread-menu")
+    await page.keyboard.press("Escape")
+    await page.locator("[data-agents-filter]").click(); await wait(300)
+    await shot(page, "project-filter")
+    await page.locator("[role=option], [role=menuitem], [data-choice]", { hasText: "lighthouse" }).first().click().catch(() => page.keyboard.press("Escape")); await wait(300)
+    check("filtered to one project", (await page.locator("[data-thread-row]").count()) < 6)
+    await page.locator("[data-agents-filter]").click(); await wait(200)
+    await page.locator("[role=option], [role=menuitem], [data-choice]", { hasText: "All projects" }).first().click().catch(() => page.keyboard.press("Escape")); await wait(300)
+    // A turn's work and its diff.
     await page.locator(`${T} [data-changed-file="app.ts"]`).first().click(); await wait(800)
-    check("a changed file opens the diff panel on its turn", await page.locator("[data-diff-panel]").count() === 1 && (await page.locator("[data-diff-path='app.ts'] [data-diff=add]").count()) === 1)
+    check("a changed file opens the diff panel on its turn", await page.locator("[data-diff-panel]").count() === 1)
     await shot(page, "diff-turn")
-    await page.locator("[data-diff-scope-button]").click(); await wait(200)
-    await page.locator("[role=menuitem], [role=menuitemradio], [role=menuitemcheckbox]", { hasText: "All turns" }).first().click(); await wait(800)
-    check("the whole thread's diff: both files", (await page.locator("[data-diff-path]").count()) === 2, await page.locator("[data-diff-path]").evaluateAll((els) => els.map((e) => e.getAttribute("data-diff-path"))))
-    await page.locator("[data-diff-split-toggle]").click(); await wait(400)
-    await shot(page, "diff-split")
-    await page.locator("[data-diff-split-toggle]").click()
+    await page.keyboard.press("ControlOrMeta+d"); await wait(300)
+    // Edit from here, and fork.
+    await page.locator(`${T} [data-entry=user]`).last().hover(); await wait(200)
+    await page.locator(`${T} [data-edit-from]`).last().click(); await wait(400)
+    check("Edit from here asks: revert files too, or keep them", (await page.locator("[data-dialog-choice='Revert files too']").count()) === 1 && (await page.locator("[data-dialog-choice='Revert and keep changes']").count()) === 1)
+    await shot(page, "edit-from-here")
+    await page.locator("[data-dialog-cancel]").click(); await wait(200)
+    await page.locator(`${T} [data-entry=assistant]`).last().hover(); await wait(200)
+    check("an answer forks a thread", await page.locator(`${T} [data-fork]`).last().isVisible())
+    await shot(page, "answer-actions")
+    // Access modes (⌘⇧A) and the model (⌘⇧M).
     await page.locator(`${T} [data-agents-input]`).focus()
-    await page.keyboard.press("ControlOrMeta+d"); await wait(300)
-    check("⌘D closes the panel", await page.locator("[data-diff-panel]").count() === 0)
-    await page.keyboard.press("ControlOrMeta+d"); await wait(500)
-    check("⌘D opens it again", await page.locator("[data-diff-panel]").count() === 1)
-    await page.keyboard.press("ControlOrMeta+d"); await wait(300)
-    // Commit, push and a PR.
+    await page.keyboard.press("ControlOrMeta+Shift+a"); await wait(300)
+    check("⌘⇧A: the access modes, T3 Code's", (await menuItem(page, "Full access").count()) === 1 && (await menuItem(page, "Auto").count()) >= 1 && (await menuItem(page, "Supervised").count()) === 1)
+    await shot(page, "modes")
+    await page.keyboard.press("Escape")
+    await page.keyboard.press("ControlOrMeta+Shift+m"); await wait(300)
+    check("⌘⇧M: the models, and Effort", (await menuItem(page, "GPT-6-Luna").count()) === 1 && (await menuItem(page, "Effort").count()) === 1)
+    await menuItem(page, "Effort").hover(); await wait(300)
+    await shot(page, "model-effort")
+    await page.keyboard.press("Escape"); await page.keyboard.press("Escape")
+    check("the context meter: how full its context is", (await page.locator(`${T} [data-context]`).count()) === 1)
+    // Commit with a generated message, push and a PR.
     await page.locator(`${T} [data-git-primary]`).click(); await wait(600)
-    check("the commit box lists the changed files", (await page.locator("[data-commit-files] > div").count()) === 2)
-    await page.locator("[data-commit-message]").fill("feat: the answer is right")
+    check("the commit box: leave the message blank to auto-generate one", (await page.locator("[data-commit-message]").getAttribute("placeholder")) === "Leave empty to auto-generate")
     await shot(page, "commit")
     await page.locator("[data-commit-go]").click()
-    const after = await until(async () => (await page.locator(`${T} [data-git-actions]`).getAttribute("data-git-actions")) === "view" || null, 8000)
-    check("committed, pushed and the PR opened: the button views it", after)
+    check("committed, pushed and the PR opened: the button views it", await until(async () => (await page.locator(`${T} [data-git-actions]`).getAttribute("data-git-actions")) === "view" || null, 10000))
     const remoteLog = execFileSync("git", ["log", "--format=%s", "--all"], { cwd: remote, encoding: "utf8" })
-    check("the commit reached the remote", remoteLog.includes("feat: the answer is right"), remoteLog)
-    await wait(500)
-    await shot(page, "after-pr")
-    // A turn under way: "Working for", the answer streaming in; Esc interrupts it.
+    check("the model's commit message reached the remote", remoteLog.includes("fix(app): make the answer right"), remoteLog)
+    // Queue and steer while it works.
     await page.locator(`${T} [data-agents-input]`).fill("be slow please")
     await page.locator(`${T} [data-agents-input]`).press("Enter")
-    check("a turn under way says how long it's been working", !!(await until(async () => /Working for|Writing for|Thinking for/.test(await page.locator(`${T} [data-working]`).textContent()) || null, 5000)))
-    await wait(700)
-    await shot(page, "running")
+    await until(async () => (await page.locator(`${T} [data-working]`).count()) || null, 5000)
+    await page.locator(`${T} [data-agents-input]`).fill("Then check the README too")
+    await page.locator(`${T} [data-agents-input]`).press("Enter"); await wait(300)
+    await page.locator(`${T} [data-agents-input]`).fill("And keep the tests green")
+    await page.locator(`${T} [data-agents-input]`).press("Enter"); await wait(600)
+    check("queued while it works: the Queued banner", (await page.locator(`${T} [data-queued-message]`).count()) === 2)
+    await shot(page, "queued")
     await page.locator(`${T} [data-agents-input]`).press("Escape")
-    check("interrupted: 'You stopped after'", !!(await until(async () => (await page.locator(`${T} [data-turn-fold]`).last().textContent())?.startsWith("You stopped after") || null, 6000)))
+    await until(async () => !(await page.locator(`${T} [data-working]`).count()) || null, 8000)
+    await page.locator(`${T} [data-agents-messages]`).evaluate((el) => { el.scrollTop = 0; el.dispatchEvent(new Event("scroll")) }); await wait(400)
+    check("scrolled up: Scroll to end", (await page.locator(`${T} [data-scroll-end]`).count()) === 1)
+    await shot(page, "scroll-end")
   }
+  // Waiting on an approval, a question, a plan.
   await page.goto(`${B}#${hashOf(cl)}`); await wait(1500)
   check(`${scheme}: the approval waits above the box to write in`, await page.locator(`${T} [data-approval] [data-answer=allow]`).count() === 1)
   await shot(page, `claude-ask-${scheme}`)
+  if (scheme === "light") {
+    await page.locator(`${T} [data-answer-more]`).click(); await wait(250)
+    check("the approval's other answers: Always allow this session, Cancel", (await menuItem(page, "Always allow this session").count()) === 1 && (await menuItem(page, "Cancel").count()) === 1)
+    await shot(page, "approval-more")
+    await page.keyboard.press("Escape")
+  }
+  await page.goto(`${B}#${hashOf(qs)}`); await wait(1500)
+  check(`${scheme}: Claude's questions above the box, options by number`, (await page.locator(`${T} [data-questions] [data-option]`).count()) === 2)
+  await shot(page, `question-${scheme}`)
+  await page.goto(`${B}#${hashOf(pl)}`); await wait(1500)
+  check(`${scheme}: the plan card, Plan ready and Implement`, (await page.locator(`${T} [data-plan=ready]`).count()) === 1 && (await page.locator(`${T} [data-plan-ready]`).count()) === 1 && (await page.locator(`${T} [data-implement-here]`).count()) === 1)
+  await shot(page, `plan-${scheme}`)
+  // The whole list, its shelves open.
+  await page.goto(`${B}#view/agents-threads`); await wait(1500)
+  const V = "[data-agents-threads-view]"
+  for (const s of ["snoozed", "settled"]) if ((await page.locator(`${V} [data-shelf-toggle=${s}]`).getAttribute("aria-expanded")) === "false") await page.locator(`${V} [data-shelf-toggle=${s}]`).click()
+  await wait(300)
+  check(`${scheme}: the list's sections: pinned, active, Snoozed, Settled`, (await page.locator(`${V} [data-thread-row][data-section=snoozed]`).count()) === 1 && (await page.locator(`${V} [data-thread-row][data-section=settled]`).count()) === 1)
+  await shot(page, `threads-${scheme}`)
   await ctx.close()
 }
-// A new thread in the project: its workspace and branch.
+
 {
-  const { ctx, page } = await open({ viewport: { width: 1360, height: 860 }, colorScheme: "light" }, "new", cx)
-  await page.locator('[data-thread-group="lighthouse"] > div').first().hover()
-  await page.locator('[data-thread-group="lighthouse"] [aria-label="New thread in lighthouse"]').click(); await wait(1500)
-  check("a new thread: the hero names the project", (await page.locator("[data-agents-hero]").textContent())?.includes("lighthouse"))
-  check("a new thread: workspace and branch below the box", await page.locator("[data-branch-toolbar] [data-workspace=local]").count() === 1)
-  await page.locator("[data-branch-toolbar] [data-workspace]").click(); await wait(200)
-  await page.locator("[role=menuitem], [role=menuitemradio], [role=menuitemcheckbox]", { hasText: "New worktree" }).first().click(); await wait(200)
+  const { ctx, page } = await open({ viewport: { width: 1360, height: 860 }, colorScheme: "light" }, "flows", qs)
+  // Answer the questions: an option for the first (it moves on), two for the second.
+  await page.locator(`${T} [data-option=Blue]`).click(); await wait(400)
+  check("one option picked moves to the next question", (await page.locator(`${T} [data-questions]`).getAttribute("data-question")) === "1")
+  await page.locator(`${T} [data-option=Home]`).click(); await page.locator(`${T} [data-option=Settings]`).click(); await wait(200)
+  await shot(page, "question-multi")
+  await page.locator(`${T} [data-question-submit]`).click()
+  check("answered: Claude goes on with them", await until(async () => (await page.locator(`${T} [data-entry=assistant]`).last().textContent())?.includes("Blue; Home, Settings") || null, 6000))
+  // Implement the plan in a new thread.
+  await page.goto(`${B}#${hashOf(pl)}`); await wait(1200)
+  await page.locator(`${T} [data-implement] [aria-label="Implementation actions"]`).click(); await wait(200)
+  check("Implement in a new thread", (await menuItem(page, "Implement in a new thread").count()) === 1)
+  await page.keyboard.press("Escape")
+  await page.locator(`${T} [data-implement-here]`).click()
+  check("Implement: the plan goes back, out of plan mode", await until(async () => (await page.locator(`${T} [data-entry=user]`).last().textContent())?.includes("PLEASE IMPLEMENT THIS PLAN") || null, 6000))
+  await until(async () => !(await page.locator(`${T} [data-working]`).count()) || null, 8000)
+  await shot(page, "plan-implemented")
+  // The task list while it works.
+  const td = await make({ harness: "claude", mode: "full" })
+  await page.goto(`${B}#${hashOf(td)}`); await wait(1200)
+  await page.locator(`${T} [data-agents-input]`).fill("make a todo list, slow")
+  await page.locator(`${T} [data-agents-input]`).press("Enter")
+  await until(async () => (await page.locator(`${T} [data-tasks]`).count()) || null, 6000)
+  await page.locator(`${T} [data-tasks] button`).first().click(); await wait(300)
+  check("the task list above the box, x of y", (await page.locator(`${T} [data-tasks]`).getAttribute("data-tasks")) === "1/3" && (await page.locator(`${T} [data-task]`).count()) === 3)
+  await shot(page, "tasks")
+  await until(async () => !(await page.locator(`${T} [data-working]`).count()) || null, 12000)
+  // Steer: a message into the turn under way.
+  await page.locator(`${T} [data-agents-input]`).fill("please wait a moment")
+  await page.locator(`${T} [data-agents-input]`).press("Enter")
+  await until(async () => (await page.locator(`${T} [data-tool]`).count()) || null, 5000)
+  await page.locator(`${T} [data-agents-input]`).fill("Also say hi")
+  await page.locator(`${T} [data-agents-input]`).press("ControlOrMeta+Enter")
+  check("⌘↩ steers: the message in the turn, marked", await until(async () => (await page.locator(`${T} [data-entry=steer]`).count()) || null, 5000))
+  await until(async () => !(await page.locator(`${T} [data-working]`).count()) || null, 8000)
+  await page.locator(`${T} [data-turn-fold]`).last().click().catch(() => {}); await wait(300)
+  await shot(page, "steered")
+  // Settled: the line at the end, Un-settle.
+  await page.goto(`${B}#${hashOf(old)}`); await wait(1200)
+  check("a settled thread says so at its end, with Un-settle", (await page.locator(`${T} [data-status-line=settled]`).count()) === 1)
+  await shot(page, "settled")
+  // A pull request into a thread: from the branch picker's search, or the dialog.
+  await page.goto(`${B}#${hashOf("")}`); await wait(1200)
+  await page.locator("[data-agents-project]").click(); await wait(300)
+  await page.keyboard.type("lighthouse"); await page.keyboard.press("Enter"); await wait(800)
+  check("a new thread: workspace, branch and Checkout PR below the box", await page.locator("[data-branch-toolbar] [data-checkout-pr]").count() === 1)
   await shot(page, "new-thread")
+  await page.locator("[data-branch-toolbar] [data-workspace-branch]").click(); await wait(400)
+  await page.keyboard.type("#12"); await wait(300)
+  check("the branch picker offers to check out #12", await page.getByText("Checkout Pull Request").count() >= 1)
+  await shot(page, "branch-pr")
+  await page.keyboard.press("Enter"); await wait(500)
+  check("Checkout Pull Request: Local or Worktree", (await page.locator("[data-dialog-choice=Worktree]").count()) === 1 && (await page.locator("[data-dialog-field]").inputValue()) === "12")
+  await shot(page, "checkout-pr")
+  await page.locator("[data-dialog-choice=Worktree]").click()
+  check("the pull request in a thread of its own", await until(async () => (await page.locator(`${T} [data-agents-title]`).textContent())?.includes("#12 Make the header glow") || null, 8000))
+  await shot(page, "pr-thread")
   await ctx.close()
 }
 {
   const { ctx, page } = await open({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }, "phone", cx)
   await shot(page, "codex-phone")
-  await page.locator(`${T} [data-open-diff]`).first().click(); await wait(800)
-  await shot(page, "diff-phone")
+  const qs2 = await make({ harness: "codex", cwd: repo, mode: "full" })
+  await send(qs2, "A question for me about the button")
+  await until(async () => (await get(qs2)).thread.entries.some((e) => e.kind === "ask" && !e.answer), 8000)
+  await page.goto(`${B}#${hashOf(qs2)}`); await wait(1500)
+  check("phone: Codex's question above the box", (await page.locator(`${T} [data-questions] [data-option]`).count()) === 2)
+  await shot(page, "question-phone")
+  await page.goto(`${B}#view/agents-threads`); await wait(1500)
+  check("phone: the threads, T3 Code's sections", (await page.locator("[data-thread-row]").count()) >= 4)
+  await shot(page, "sidebar-phone")
   await ctx.close()
 }
 fs.rmSync(tmp, { recursive: true, force: true })

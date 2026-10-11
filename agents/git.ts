@@ -90,9 +90,43 @@ export async function branches(cwd: string) {
   return out.split("\n").filter(Boolean).map((l) => { const [name, head, wt] = l.split("\t"); return { name, current: head === "*", worktree: wt || "" } })
 }
 
-export async function checkout(cwd: string, branch: string) {
+/** Switch the checkout to `branch` (made from where it is when `create`). */
+export async function checkout(cwd: string, branch: string, create = false) {
   if (!/^[\w./-]+$/.test(branch) || branch.startsWith("-")) throw new Error(`'${branch}' isn't a branch name`)
-  await ok(cwd, ["switch", branch])
+  await ok(cwd, ["switch", ...(create ? ["-c"] : []), branch])
+}
+
+// ---------- a pull request into a thread (T3 Code's Checkout Pull Request)
+
+export type PullRequest = { number: number; title: string; url: string; state: string; head: string }
+
+/** A pull request by its number, URL or `gh pr checkout` command, as gh sees it from `cwd`'s checkout. */
+export async function prView(cwd: string, ref: string): Promise<PullRequest> {
+  const gh = ghBin()
+  if (!gh) throw new Error("GitHub's gh isn't installed on this machine")
+  const r = await exec(gh, ["pr", "view", ref, "--json", "number,title,url,state,headRefName"], cwd, { timeout: 30_000 })
+  if (r.code) throw new Error(said(r, "gh"))
+  const j = JSON.parse(r.out)
+  return { number: Number(j.number), title: str(j.title), url: str(j.url), state: str(j.state), head: str(j.headRefName) }
+}
+
+/** The pull request's branch in the checkout itself (gh pr checkout), or in a new worktree of it. */
+export async function prCheckout(cwd: string, pr: PullRequest, worktree: boolean) {
+  const top = await topOf(cwd)
+  if (!top) throw new Error(`${cwd} isn't a git checkout`)
+  if (!worktree) {
+    const r = await exec(ghBin()!, ["pr", "checkout", String(pr.number)], top, { timeout: 120_000 })
+    if (r.code) throw new Error(said(r, "gh"))
+    return { path: cwd, top, branch: (await git(top, ["branch", "--show-current"])).out.trim() || pr.head }
+  }
+  const taken = await branches(top)
+  const held = taken.find((b) => b.name === pr.head && b.worktree)
+  if (held) throw new Error(`${pr.head} is checked out in ${held.worktree}: use Local, or switch that checkout off it first`)
+  await ok(top, ["fetch", "origin", `+refs/pull/${pr.number}/head:refs/heads/${pr.head}`], { timeout: 120_000 })
+  const at = path.join(worktreesDir(), path.basename(top), `pr-${pr.number}`)
+  fs.mkdirSync(path.dirname(at), { recursive: true })
+  if (!fs.existsSync(at)) await ok(top, ["worktree", "add", at, pr.head], { timeout: 120_000 })
+  return { path: fs.realpathSync(at), top: fs.realpathSync(at), branch: pr.head }
 }
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").split("-").slice(0, 5).join("-").slice(0, 40)
@@ -148,6 +182,15 @@ export async function checkpoint(cwd: string, ref: string) {
   } finally { fs.rmSync(tmp, { force: true }) }
 }
 
+/** Keeps checkpoint `tree` under another thread's ref too (a fork's turns), so gc leaves it when the first goes. */
+export async function keepCheckpoint(cwd: string, ref: string, tree: string) {
+  const top = await topOf(cwd)
+  if (!top || !tree) return
+  const who = { GIT_AUTHOR_NAME: "Agents", GIT_AUTHOR_EMAIL: "agents@vaultite", GIT_COMMITTER_NAME: "Agents", GIT_COMMITTER_EMAIL: "agents@vaultite" }
+  const commit = await git(top, ["commit-tree", tree, "-m", "agents checkpoint"], { env: who })
+  if (!commit.code) await git(top, ["update-ref", `refs/vaultite-agents/${ref}`, commit.out.trim()])
+}
+
 export async function dropCheckpoints(cwd: string, thread: string) {
   const out = (await git(cwd, ["for-each-ref", "--format=%(refname)", `refs/vaultite-agents/${thread}/`])).out
   for (const r of out.split("\n").filter(Boolean)) await git(cwd, ["update-ref", "-d", r])
@@ -175,6 +218,17 @@ export async function restore(cwd: string, tree: string) {
 
 // ---------- commit, push, pull request
 
+/** What a branch has that `base` doesn't: its commits (one line each), the diff's stat and patch (a PR's text). */
+export async function branchChanges(cwd: string, base: string) {
+  const range = base ? [`${base}...HEAD`] : ["HEAD~1", "HEAD"]
+  const [log, stat, patch] = await Promise.all([
+    git(cwd, ["log", "--format=%h %s", base ? `${base}..HEAD` : "-1"]),
+    git(cwd, ["diff", "--stat", ...range]),
+    git(cwd, ["diff", "--no-ext-diff", ...range]),
+  ])
+  return { commits: log.out.trim(), stat: stat.out.trim(), patch: patch.out }
+}
+
 export async function commit(cwd: string, message: string) {
   const msg = message.trim()
   if (!msg) throw new Error("write a commit message")
@@ -196,9 +250,13 @@ export async function push(cwd: string) {
 export async function prOf(cwd: string) {
   const gh = ghBin()
   if (!gh) return null
-  const r = await exec(gh, ["pr", "view", "--json", "number,url,state,title"], cwd, { timeout: 20_000 })
+  const r = await exec(gh, ["pr", "view", "--json", "number,url,state,title,mergedAt,closedAt"], cwd, { timeout: 20_000 })
   if (r.code) return null
-  try { const j = JSON.parse(r.out); return { number: Number(j.number), url: str(j.url), state: str(j.state), title: str(j.title) } } catch { return null }
+  try {
+    const j = JSON.parse(r.out)
+    const at = str(j.mergedAt) || str(j.closedAt)
+    return { number: Number(j.number), url: str(j.url), state: str(j.state), title: str(j.title), ...(at ? { at } : {}) }
+  } catch { return null }
 }
 
 export async function createPr(cwd: string, title: string, body: string) {
