@@ -11,7 +11,7 @@
     "shell": true,
     "outsideVault": true
   },
-  "category": "agents",
+  "category": "ai-apps",
   "runsOnServer": true,
   "requires": [
     "terminal"
