@@ -9,8 +9,9 @@ if (process.platform !== "darwin") await skip("the desktop app's App windows are
 const d = await desktop(["app-windows"])
 try {
   watch(d.win, { console: true })
+  // (transparent: Electron reports its clear background without the alpha; an opaque one is the theme's)
   const colors = await d.app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows().map((w) => w.getBackgroundColor()))
-  check("installed and on, the vault's window is see-through (electron/apps.ts appsOn)", colors.includes("#00000000"), colors)
+  check("installed and on, the vault's window is see-through (electron/apps.ts appsOn)", colors.some((c) => /^#0{6}(00)?$/.test(c)), colors)
   await d.win.keyboard.press("ControlOrMeta+P"); await d.win.waitForSelector("[role=option]"); await d.win.keyboard.type("Open app in a tab"); await wait(300)
   await d.win.keyboard.press("Enter")
   check("Open app in a tab… lists the Mac's apps", await until(async () => (await d.win.locator("[role=option]", { hasText: "Finder" }).count()) > 0, 60000))
