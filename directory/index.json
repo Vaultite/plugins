@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-16T22:54:55.408Z",
+  "generated": "2026-10-16T23:29:44.152Z",
   "plugins": [
     {
       "id": "templater",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -45,7 +45,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -76,7 +76,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -107,7 +107,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -143,7 +143,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -174,7 +174,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -212,7 +212,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -233,6 +233,31 @@
       "tint": "blue"
     },
     {
+      "id": "page-tabs",
+      "name": "Page tabs",
+      "description": "Join pages as tabs of one: the first lists the others in tabs:, and each shows a strip under its title to switch between them.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "page-tabs",
+      "version": "1.0.0",
+      "tag": "page-tabs/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:29:25Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:29:34Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "icon": "panels-top-left"
+    },
+    {
       "id": "outliner",
       "name": "Outliner",
       "description": "Lists that work like an outliner in the editor: move an item up or down with its children (⌘⇧↑, ⌘⇧↓), Tab and Shift-Tab indent and outdent it with them, Enter on an empty item steps out a level, ⌘A selects the item's text and then the whole list, and ⌘↑ and ⌘↓ fold and unfold it.",
@@ -244,7 +269,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -274,7 +299,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,7 +328,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -333,7 +358,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -364,7 +389,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -395,7 +420,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -431,7 +456,7 @@
       "stars": 0,
       "released": "2026-10-11T07:48:49Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -463,7 +488,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -482,6 +507,34 @@
       "icon": "panel-top"
     },
     {
+      "id": "dock-icon",
+      "name": "Dock icon",
+      "description": "Try another picture as the desktop app's Dock icon, to see how an icon looks there: any image in the vault (its menu: Use as Dock icon) or on the Mac (Set Dock icon from a file…). Kept on this Mac until you reset it; Finder keeps the app's own.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "dock-icon",
+      "version": "1.0.0",
+      "tag": "dock-icon/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:29:25Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:29:34Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "image",
+      "desktopApp": true
+    },
+    {
       "id": "dataview",
       "name": "Dataview",
       "description": "Dataview's queries, kept working: ```dataview fences (LIST, TABLE, TASK, CALENDAR with FROM, WHERE, SORT, GROUP BY, FLATTEN, LIMIT) over frontmatter, inline fields (key:: value) and the notes' implicit fields, drawn as the app's tables and lists and live as notes change; tasks tick from the list; inline queries (`= this.file.name`). DataviewJS isn't run.",
@@ -493,7 +546,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -524,7 +577,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -538,6 +591,35 @@
       "icon": "book-open"
     },
     {
+      "id": "app-windows",
+      "name": "App windows",
+      "description": "Other Mac apps in a tab of the desktop app, next to your notes: Spotify, Messages, any app with a window. The app's own window is kept right behind the tab, so it works as it always does; closing the tab gives it back where it was. While one shows, ⌃⌘P opens the palette from any app.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "app-windows",
+      "version": "1.0.0",
+      "tag": "app-windows/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:29:25Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:29:34Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "app-window",
+      "tint": "indigo",
+      "desktopApp": true
+    },
+    {
       "id": "advanced-tables",
       "name": "Advanced tables",
       "description": "Markdown tables that edit like a spreadsheet in the editor: Tab and Shift-Tab move between cells and Enter down a row, adding rows at the end, and the table lines up its pipes as you go (wide characters and emoji too). Commands insert, delete and move rows and columns, sort by a column, align a column and format every table in the note.",
@@ -549,7 +631,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -579,7 +661,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T22:54:50Z",
+      "pushed": "2026-10-16T23:29:34Z",
       "issues": {
         "open": 0,
         "closed": 0
