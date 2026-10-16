@@ -1,9 +1,19 @@
 // Claude chat in the app: a sidebar panel (its conversation kept per workspace) and a tab, view:claude-chat/<id>, both
 // the same chat (Chat.tsx); the server runs Claude Code (plugin.ts).
 import { MessageSquarePlus } from "lucide-react"
-import { definePlugin, openView, Panel, useScopedState, type SidebarCtx } from "@vaultite"
+import { definePlugin, notifyError, openView, Panel, post, revealPanel, scopedState, useScopedState, type SidebarCtx } from "@vaultite"
 import { Chat, ChatIcon, TINT } from "./Chat"
 import { titleOf } from "./live"
+
+/** A question about a file (a live answer's follow-up): a new chat with it, in the sidebar's panel, else a tab. */
+async function ask(question: string, file?: string) {
+  try {
+    const { id } = await post<{ id: string }>("claude-chat/conversations", {})
+    await post(`claude-chat/conversations/${id}/send`, { text: question, file })
+    scopedState("claude-chat:current", "", "workspace").set(id)
+    if (!revealPanel("claude-chat:chat")) openView(`claude-chat/${id}`, { newTab: true })
+  } catch (e) { notifyError(e, "Couldn't ask Claude") }
+}
 
 function SidebarChat({ open, bounded }: SidebarCtx) {
   const [id, setId] = useScopedState("claude-chat:current", "", "workspace")
@@ -31,6 +41,7 @@ function Preview() {
 
 export default definePlugin({
   icons: { "claude-chat": ChatIcon },
+  ask: (question, file) => void ask(question, file),
   sidebar: {
     chat: { title: "Claude chat", names: ["claude", "chat", "claudian", "assistant"], heading: false, tall: true, sort: 60, view: "claude-chat",
       flyout: { icon: ChatIcon, width: 380 }, render: (ctx) => <SidebarChat {...ctx} /> },
