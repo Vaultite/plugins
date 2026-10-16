@@ -23,3 +23,25 @@ export function install(base, id, { edits = false } = {}) {
   vau("plugin", "on", id)
   if (edits) vau("plugin", "allow", id, "--edits")
 }
+
+/** The desktop app (Electron, from $VAULTITE_APP) on a throwaway vault, never seen (VAULTITE_QUIET), with plugins `ids`
+ *  of this repository installed and on, then opened again: what it reads as a window opens (App windows) sees them. */
+export async function desktop(ids) {
+  const fs = await import("node:fs"), os = await import("node:os")
+  const { _electron } = await import(pathToFileURL(path.join(APP, "node_modules/playwright-core/index.mjs")).href)
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "vaultite-plugins-desktop-")), vault = path.join(tmp, "vault"), userData = path.join(tmp, "userData")
+  execFileSync(process.execPath, [path.join(APP, "bin", "vau"), "sandbox", vault], { stdio: "ignore", env: ENV })
+  const env = { ...ENV, VAULTITE_QUIET: "1", VAULTITE_USER_DATA: userData, VAULTITE_LOCAL: path.join(tmp, "local") }
+  const open = async () => {
+    const app = await _electron.launch({ executablePath: path.join(APP, "node_modules/.bin/electron"), args: [APP, "--vault", vault], env })
+    const win = await app.firstWindow()
+    await win.waitForSelector("[role=tree]", { timeout: 90000 })
+    return { app, win, base: `${new URL(win.url()).origin}/` }
+  }
+  let d = await open()
+  for (const id of ids) install(d.base, id)
+  await d.app.close()
+  d = await open()
+  const close = async () => { await d.app.close().catch(() => {}); fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }) }
+  return { ...d, vault, userData, vau: vauAt(d.base), close }
+}

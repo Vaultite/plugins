@@ -1,0 +1,12 @@
+{
+  "id": "page-tabs",
+  "icon": "panels-top-left",
+  "name": "Page tabs",
+  "description": "Join pages as tabs of one: the first lists the others in tabs:, and each shows a strip under its title to switch between them.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "navigation",
+  "disclosures": {}
+}
