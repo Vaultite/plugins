@@ -25,12 +25,12 @@ function pages(): Index {
   if (kept?.version === version) return kept
   const files: LinkFile[] = []
   for (const [rel, e] of vault.entries) {
-    const title = e.fm.title, aliases = e.fm.aliases ?? e.fm.alias
-    files.push({ path: rel, title: typeof title === "string" ? title : undefined, aliases: (Array.isArray(aliases) ? aliases : aliases ? [aliases] : []).map(String), archived: e.archived })
+    const aliases = e.fm.aliases ?? e.fm.alias
+    files.push({ path: rel, aliases: (Array.isArray(aliases) ? aliases : aliases ? [aliases] : []).map(String), archived: e.archived })
   }
   for (const rel of vault.others.keys()) files.push({ path: rel })
   const resolve = linkResolver(files)
-  const names = JSON.stringify(files.map((f) => [f.path, f.title, f.aliases]))
+  const names = JSON.stringify(files.map((f) => [f.path, f.aliases]))
   const out: Row[] = []
   for (const [rel, e] of vault.entries) {
     if (rel.split("/").some((p) => p.startsWith("."))) continue

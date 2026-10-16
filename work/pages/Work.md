@@ -3,7 +3,6 @@ type: dashboard
 plugin: work
 icon: briefcase
 tint: work
-subtitle: What I'm working on
 ---
 
 ```block-work-focus

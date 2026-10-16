@@ -3,7 +3,7 @@
 // new note's editing, which would show its Markdown).
 import { lazy, Suspense } from "react"
 import { SquareKanban } from "lucide-react"
-import { definePlugin, freeName, getStore, newNoteFolder, openFile, PageHeader, post, reload, splitFm, type PageCtx, type Store } from "@vaultite"
+import { definePlugin, freeName, getStore, newNoteFolder, openFile, post, reload, splitFm, type PageCtx, type Store } from "@vaultite"
 import { newBoard } from "./format"
 
 const Board = lazy(() => import("./Board"))
@@ -41,8 +41,6 @@ export default definePlugin({
   files: {
     types: ["kanban"], icon: SquareKanban, tint: "var(--kanban)",
     page: {
-      // In a tab the board's name is its title; in a sheet the file's title is there already.
-      header: (ctx) => (ctx.place === "page" ? <PageHeader title={ctx.title} className="mb-4" /> : null),
       render: (ctx) => board(ctx),
     },
   },

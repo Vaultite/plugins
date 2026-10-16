@@ -3,7 +3,6 @@ type: dashboard
 plugin: finance
 icon: wallet
 tint: finance
-subtitle: Spending, income and bills from your transactions
 ---
 
 ```block-spending
