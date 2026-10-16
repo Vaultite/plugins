@@ -136,19 +136,21 @@ export default function Board(ctx: PageCtx) {
             </div>
           </section>
         )}
-        {editable && (
+        {/* (named at the end of the lanes; its button is under the board, so a few lanes don't scroll) */}
+        {editable && newLane && (
           <div style={width} className={column}>
-            {newLane
-              ? <NameField placeholder="Lane name" onDone={(t) => { setNewLane(false); if (t) change((x) => addLane(x, t)) }} />
-              : <button type="button" data-kanban-add-lane onClick={() => setNewLane(true)}
-                className="flex h-9 w-full cursor-pointer items-center gap-1.5 rounded-[10px] px-3 text-[13px] font-medium text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground pointer-coarse:h-11 pointer-coarse:text-[15px]">
-                <Plus className="size-4" strokeWidth={2.25} />Add a lane
-              </button>}
+            <NameField placeholder="Lane name" onDone={(t) => { setNewLane(false); if (t) change((x) => addLane(x, t)) }} />
           </div>
         )}
       </div>
       <div className="flex items-center gap-1 text-[13px] text-muted-foreground pointer-coarse:text-[15px]">
         <span className="tabular-nums" data-kanban-count>{countOf(b)}</span>
+        {editable && (
+          <button type="button" data-kanban-add-lane onClick={() => setNewLane(true)}
+            className="ml-1 flex h-7 cursor-pointer items-center gap-1 rounded-[6px] px-2 font-medium hover:bg-foreground/[0.06] hover:text-foreground pointer-coarse:h-11">
+            <Plus className="size-3.5" strokeWidth={2.25} />Add a lane
+          </button>
+        )}
         {editable && (
           <button type="button" aria-label="Board menu" data-kanban-board-menu
             onClick={(e) => menuBelow(e, boardMenu(path, b, () => setNewLane(true), { shown: archiveShown, toggle: () => setArchiveShown((v) => !v) }))}
