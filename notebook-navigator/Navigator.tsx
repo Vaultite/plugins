@@ -156,16 +156,16 @@ function Places({ store, notes, s, save, place, pick }: PlacesProps) {
       <div data-nn-places={target} data-drops className="flex flex-col pb-2">
         {row("folder:", notes.length)}
         {row("recent", null)}
-        {(shortcuts.length > 0 || pinnedNotes.length > 0) && <SidebarHeading title="Shortcuts" open sticky={false} />}
+        {(shortcuts.length > 0 || pinnedNotes.length > 0) && <SidebarHeading title="Shortcuts" open />}
         {shortcuts.map((p) => row(p, countOf(p)))}
         {pinnedNotes.map((n) => (
           <div key={n.path} className="flex items-center" onContextMenu={menuFor(() => fileMenu(n.path, { phone: !isDesktop() }))}>
             <SidebarRow icon={FileText} label={stem(n.path)} open className="min-w-0 flex-1" onClick={(e) => openFile(n.path, { newTab: e.metaKey || e.ctrlKey || e.button === 1 })} />
           </div>
         ))}
-        {folders.length > 0 && <SidebarHeading title="Folders" open sticky={false} />}
+        {folders.length > 0 && <SidebarHeading title="Folders" open />}
         {folders.map((f) => row(`folder:${f.key}`, f.count, 0, f.kids))}
-        {tags.length > 0 && <SidebarHeading title="Tags" open sticky={false} />}
+        {tags.length > 0 && <SidebarHeading title="Tags" open />}
         {tags.map((t) => row(`tag:${t.key}`, t.count, 0, t.kids))}
       </div>
     </PanelFold.Provider>
