@@ -304,7 +304,8 @@ const STATUS = { works: { text: "Works here", tone: "green" }, partly: { text: "
   unneeded: { text: "Not needed here", tip: "Vaultite does what it does itself (Obsidian's own look and views, images in the editor)" } } as const
 const browse: BrowseSource = {
   title: "Obsidian",
-  sorts: [{ value: "downloads", label: "Downloads" }, { value: "updated", label: "Updated" }, { value: "name", label: "Name" }],
+  // (the Vaultite directory's three, so Get plugins orders both alike)
+  sorts: [{ value: "downloads", label: "Top" }, { value: "new", label: "New" }, { value: "updated", label: "Updated" }],
   search: async (q, sort) => {
     const f = await get<Found>(`plugin-compat/directory?q=${encodeURIComponent(q)}&sort=${sort}`)
     return { available: f.available, total: f.total, entries: f.entries.map((e) => ({

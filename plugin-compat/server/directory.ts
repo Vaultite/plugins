@@ -34,13 +34,15 @@ export async function community(plugin: Plugin): Promise<Community | null> {
   }
 }
 
-/** The first `limit` matching `q` (name, author, description, id), by downloads, newest update or name. */
+/** The first `limit` matching `q` (name, author, description, id), by downloads, newest (the list is in the order
+ *  they were added), newest update or name. */
 export function search(c: Community, q: string, sort: string, limit = 100) {
   const words = q.toLowerCase().split(/\s+/).filter(Boolean)
   const all: Entry[] = c.plugins.map((p) => ({ ...p, downloads: c.stats[p.id]?.downloads ?? 0, updated: c.stats[p.id]?.updated ?? null }))
+  if (sort === "new") all.reverse()
   const hit = words.length ? all.filter((p) => { const t = `${p.name} ${p.author} ${p.description} ${p.id}`.toLowerCase(); return words.every((w) => t.includes(w)) }) : all
   const named = (p: Entry) => (words.length && p.name.toLowerCase().includes(words.join(" ")) ? 1 : 0)
-  hit.sort(sort === "name" ? (a, b) => a.name.localeCompare(b.name) : sort === "updated" ? (a, b) => (b.updated ?? 0) - (a.updated ?? 0)
+  if (sort !== "new") hit.sort(sort === "name" ? (a, b) => a.name.localeCompare(b.name) : sort === "updated" ? (a, b) => (b.updated ?? 0) - (a.updated ?? 0)
     : (a, b) => named(b) - named(a) || b.downloads - a.downloads)
   return { total: hit.length, entries: hit.slice(0, limit) }
 }
