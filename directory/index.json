@@ -1,7 +1,33 @@
 {
   "format": 1,
-  "generated": "2026-10-16T23:29:44.152Z",
+  "generated": "2026-10-16T23:50:03.550Z",
   "plugins": [
+    {
+      "id": "today",
+      "name": "Today",
+      "description": "Routines you tick each day in your daily notes, and the Today page: a dashboard of blocks from this and other plugins (the calendar, this week's goals, sleep, meals).",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "today",
+      "version": "1.0.0",
+      "tag": "today/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "icon": "sun",
+      "tint": "orange"
+    },
     {
       "id": "templater",
       "name": "Templater",
@@ -14,7 +40,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -45,7 +71,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -76,7 +102,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -107,7 +133,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -143,7 +169,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -163,6 +189,62 @@
       "tint": "yellow"
     },
     {
+      "id": "projects",
+      "name": "Projects",
+      "description": "Your projects from the vault's Projects folder (the Projects page): what each one is, its status and links.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "projects",
+      "version": "1.0.0",
+      "tag": "projects/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "icon": "folder-git-2",
+      "tint": "green"
+    },
+    {
+      "id": "podcasts",
+      "name": "Podcasts",
+      "description": "Follow podcasts by name or feed: each new episode is downloaded into your vault, with its artwork and its transcript when the show has one, and lands in your inbox to listen to here, in the background and offline on your iPhone.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "podcasts",
+      "version": "1.0.0",
+      "tag": "podcasts/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "itunes.apple.com",
+          "*"
+        ]
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "mic-vocal"
+    },
+    {
       "id": "plugin-compat",
       "name": "Obsidian plugins",
       "description": "Runs plugins written for Obsidian as they are: each one is listed with your plugins, with its own switch, options, commands, views and panels. They run with the app's full access, as they do in Obsidian.",
@@ -174,7 +256,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -212,7 +294,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -244,7 +326,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -269,7 +351,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -299,7 +381,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -328,7 +410,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -347,6 +429,63 @@
       "icon": "notebook-tabs"
     },
     {
+      "id": "lessons",
+      "name": "Lessons",
+      "description": "Learn a note, a PR or a topic one step at a time, answering as you go, then keep it with cards that come back just before you'd forget.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "lessons",
+      "version": "1.0.0",
+      "tag": "lessons/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "replaces": {
+        "obsidian": [
+          "obsidian-spaced-repetition"
+        ]
+      },
+      "icon": "book-open-check",
+      "tint": "purple"
+    },
+    {
+      "id": "learning",
+      "name": "Learning",
+      "description": "The Learning page: what you study and read, from your logs, and your books.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "learning",
+      "version": "1.0.0",
+      "tag": "learning/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "icon": "graduation-cap",
+      "tint": "blue"
+    },
+    {
       "id": "kanban",
       "name": "Kanban",
       "description": "Kanban boards: a Markdown file with kanban-plugin in its frontmatter opens as lanes of cards you drag, tick, edit and archive, written back in the Kanban plugin's format so other apps still read it.",
@@ -358,7 +497,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -389,7 +528,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -409,6 +548,32 @@
       "tint": "orange"
     },
     {
+      "id": "health",
+      "name": "Health",
+      "description": "Workouts, sleep and nutrition from your logs: the Health page, and sleep and meals blocks for Today.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "health",
+      "version": "1.0.0",
+      "tag": "health/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-16T23:49:46Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-16T23:49:57Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {},
+      "readme": "",
+      "score": 40,
+      "icon": "heart",
+      "tint": "red"
+    },
+    {
       "id": "git",
       "name": "Git",
       "description": "Your vault as a git repository: a Source control panel to stage, commit, pull and push, each file's diff and its history of commits, and commit-and-sync on a timer or after you stop editing. Runs your git on the server's machine, talking to the remotes you set up.",
@@ -420,7 +585,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -456,7 +621,7 @@
       "stars": 0,
       "released": "2026-10-11T07:48:49Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -488,7 +653,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -518,7 +683,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -546,7 +711,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -577,7 +742,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -602,7 +767,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -631,7 +796,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -661,7 +826,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:29:34Z",
+      "pushed": "2026-10-16T23:49:57Z",
       "issues": {
         "open": 0,
         "closed": 0
