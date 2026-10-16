@@ -45,7 +45,7 @@ const CORE: Record<string, string> = {
   "file-explorer:duplicate-file": "file:duplicate", "open-with-default-app:show": "file:reveal-finder", "open-with-default-app:open": "file:open-outside",
   "global-search:open": "search:search", "editor:open-search": "find:open", "editor:open-search-replace": "find:replace", "markdown:toggle-preview": "view:toggle",
   "editor:toggle-source": "view:toggle", "graph:open-local": "graph:local", "backlink:open": "backlinks:open-tab", "outline:open": "outline:open-tab",
-  "tag-pane:open": "tags:open-tab", "file-recovery:open": "history:open", "daily-notes": "today:daily-note", "insert-template": "templates:insert",
+  "tag-pane:open": "tags:open-tab", "file-recovery:open": "history:open", "daily-notes": "daily-notes:today", "insert-template": "templates:insert",
   "insert-current-date": "templates:insert-current-date", "insert-current-time": "templates:insert-current-time", "note-composer:split-file": "note-composer:extract",
   "random-note": "random-note:open", "zk-prefixer": "unique-note:new", "canvas:new-file": "canvas:new", "editor:fold-all": "folding:fold-all",
   "editor:unfold-all": "folding:unfold-all", "editor:toggle-fold": "folding:toggle", "bookmarks:bookmark-current-view": "file:pin", "app:toggle-left-sidebar": "sidebar:focus-left",

@@ -64,7 +64,7 @@ export async function serve(ids: string[]) {
   const stop = () => {
     proc.kill()
     try { execFileSync("tmux", ["-L", `vaultite-${port}`, "kill-server"], { stdio: "ignore" }) } catch { /* (none) */ }
-    fs.rmSync(tmp, { recursive: true, force: true })
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }) // (the server may still be writing as it stops)
   }
   for (let i = 0; ; i++) {
     // (ours: a server of the run before may still answer on the port while it stops)
