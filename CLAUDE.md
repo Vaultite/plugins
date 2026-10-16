@@ -31,13 +31,11 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - **Git**: runs the user's git in the vault's folder (`git.ts`: argv, its own session, prompts off; ops are the API,
   the panel uses them too). Tests and QA use throwaway repositories (a bare one in a temp folder as the remote) with
   `GIT_CONFIG_GLOBAL` pointing at a made-up author, never the machine's config or GitHub.
-- **Claude chat**: the user's `claude` with stream JSON both ways; permission asks reach it only with
-  `--permission-prompt-tool stdio` (else they're denied). Tests and QA use `claude-chat/.test/fake-claude.mjs` (recorded
-  lines replayed, `CLAUDE_CHAT_CLI` and `FAKE_CLAUDE_STATE` on the server), never the real CLI.
-- **Agents**: `claude` with stream JSON (as Claude chat) and `codex app-server` (JSON-RPC; its request ids restart per
-  process, its experimental API on for plan mode). Model-written text (titles, branches, commits, PRs) is `claude -p
-  --json-schema` or `codex exec --output-schema` with a small model. Tests and QA use Claude chat's fake-claude.mjs,
-  `agents/.test/fake-codex.mjs` and `fake-gh.mjs` (recorded lines; never the real CLIs); git in throwaway repositories
+- **Agents**: `claude` with stream JSON both ways (permission asks reach it only with `--permission-prompt-tool stdio`)
+  and `codex app-server` (JSON-RPC; its request ids restart per process, its experimental API on for plan mode).
+  Model-written text (titles, branches, commits, PRs) is `claude -p --json-schema` or `codex exec --output-schema` with a
+  small model. Tests and QA use `agents/.test/fake-claude.mjs`, `fake-codex.mjs` and `fake-gh.mjs` (recorded lines,
+  `FAKE_*_STATE`; never the real CLIs); git in throwaway repositories
   with a made-up `GIT_CONFIG_GLOBAL`, worktrees under `AGENTS_WORKTREES`.
   `Git.tsx` can't exist beside `git.ts` (macOS folds case): the header's git is `GitBar.tsx`.
 - **BrowserOS**: hands a Web viewer page to BrowserOS (`webPageActions`, `appWindows.open`), found by its bundle id

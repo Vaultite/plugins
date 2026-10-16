@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-16T15:11:18.633Z",
+  "generated": "2026-10-16T20:37:37.795Z",
   "plugins": [
     {
       "id": "templater",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -45,7 +45,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -76,7 +76,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -107,7 +107,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -143,7 +143,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -174,7 +174,7 @@
       "stars": 0,
       "released": "2026-10-09T14:48:41Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -212,7 +212,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -244,7 +244,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -274,7 +274,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,7 +303,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -333,7 +333,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -364,7 +364,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -395,7 +395,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -431,7 +431,7 @@
       "stars": 0,
       "released": "2026-10-11T07:48:49Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -463,7 +463,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -493,7 +493,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -513,44 +513,6 @@
       "tint": "indigo"
     },
     {
-      "id": "claude-chat",
-      "name": "Claude chat",
-      "description": "Claude Code as a chat in the sidebar or a tab, working in your vault: it reads, edits and searches your notes while you watch, asking before it changes anything. Runs your own claude CLI on the server's machine (signed in to your Claude account); conversations stay on that machine.",
-      "author": "Vaultite",
-      "repo": "Vaultite/plugins",
-      "dir": "claude-chat",
-      "version": "1.0.3",
-      "tag": "claude-chat/v1.0.3",
-      "stars": 0,
-      "released": "2026-10-16T15:11:16Z",
-      "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
-      "issues": {
-        "open": 0,
-        "closed": 0
-      },
-      "topics": [
-        "vaultite-plugin"
-      ],
-      "disclosures": {
-        "network": [
-          "api.anthropic.com",
-          "claude.ai"
-        ],
-        "shell": true,
-        "outsideVault": true
-      },
-      "readme": "",
-      "score": 40,
-      "replaces": {
-        "obsidian": [
-          "realclaudian"
-        ]
-      },
-      "icon": "claude",
-      "tint": "orange"
-    },
-    {
       "id": "agents",
       "name": "Agents",
       "description": "Claude Code and Codex threads in a sidebar laid out like T3 Code's: pinned and active threads on top, snoozed and settled ones below, a project filter. Each thread is a chat: its work folded behind how long it took, questions and plans answered above the box to write in, messages queued or steered while it works, back to any message or forked from any answer, a diff panel beside it, and git per thread with the model writing commit messages, pull requests and branch names. Runs your own claude and codex CLIs on the server's machine; threads stay on that machine.",
@@ -562,7 +524,7 @@
       "stars": 0,
       "released": "2026-10-11T23:19:09Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -596,7 +558,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -626,7 +588,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T15:11:18Z",
+      "pushed": "2026-10-16T15:12:03Z",
       "issues": {
         "open": 0,
         "closed": 0
