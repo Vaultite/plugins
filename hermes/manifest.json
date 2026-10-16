@@ -1,0 +1,34 @@
+{
+  "id": "hermes",
+  "icon": "feather",
+  "name": "Hermes",
+  "description": "What Hermes Agent (Nous Research) does on this machine, in its main home and each profile: sessions running now, usage and its cost as Hermes records it, by day, project and model, each session's conversation, its memory and its scheduled jobs. Read from Hermes' own files, nothing saved.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "ai-apps",
+  "group": "coding-agents",
+  "disclosures": { "shell": true, "outsideVault": true },
+  "runsOnServer": true,
+  "enhances": ["projects", "terminal"],
+  "draws": ["agent-sessions", "agent-usage", "agent-projects", "agent-models", "agent-project"],
+  "blocks": {
+    "hermes-memory": {
+      "description": "what Hermes keeps about itself and you: its SOUL.md, and each entry of its MEMORY.md and USER.md, read only",
+      "live": "Hermes' files on the machine the server runs on (~/.hermes/SOUL.md, memories/)",
+      "options": {
+        "account": { "type": "string", "description": "a profile's (its name); the main home's when left out" },
+        "machine": { "type": "string", "description": "another machine's (its id in the Machines plugin's list)" }
+      }
+    },
+    "hermes-cron": {
+      "description": "Hermes' scheduled jobs: each one's schedule, whether it's on, its next run and how the last one went",
+      "live": "Hermes' files on the machine the server runs on (~/.hermes/cron/jobs.json)",
+      "options": {
+        "account": { "type": "string", "description": "a profile's (its name); the main home's when left out" },
+        "machine": { "type": "string", "description": "another machine's (its id in the Machines plugin's list)" }
+      }
+    }
+  }
+}

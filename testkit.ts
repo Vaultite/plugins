@@ -40,8 +40,9 @@ const free = (port: number) => new Promise<boolean>((resolve) => {
   s.listen(port, "127.0.0.1", () => s.close(() => resolve(true)))
 })
 
-/** A server of its own: a sandbox vault with `ids` installed from this repository and turned on (so allowed here). */
-export async function serve(ids: string[]) {
+/** A server of its own: a sandbox vault with `ids` installed from this repository and turned on (so allowed here).
+ *  `env`: more of the server's environment (where an agent's plugin reads its files). */
+export async function serve(ids: string[], { env = {} }: { env?: Record<string, string> } = {}) {
   let port = 0
   for (let p = 8930; p <= 8939 && !port; p++) if (await free(p)) port = p
   if (!port) throw new Error("no free port in 8930-8939")
@@ -50,7 +51,7 @@ export async function serve(ids: string[]) {
   const bin = path.join(APP, "bin", "vau")
   execFileSync(process.execPath, [bin, "sandbox", vault], { stdio: "ignore", env: ENV })
   const proc = spawn(process.execPath, [path.join(APP, "server.ts")], {
-    cwd: APP, stdio: "ignore", env: { ...ENV, PORT: String(port), HOST: "127.0.0.1", VAULTITE_VAULT: vault, VAULTITE_LOCAL: local },
+    cwd: APP, stdio: "ignore", env: { ...ENV, ...env, PORT: String(port), HOST: "127.0.0.1", VAULTITE_VAULT: vault, VAULTITE_LOCAL: local },
   })
   const base = `http://127.0.0.1:${port}/`
   const api = async (method: string, route: string, body?: unknown) => {
@@ -77,4 +78,35 @@ export async function serve(ids: string[]) {
   } catch (e) { stop(); throw e }
   return { base, vault, api, vau, stop, read: (p: string) => fs.readFileSync(path.join(vault, p), "utf8"),
     write: (p: string, text: string) => { fs.mkdirSync(path.dirname(path.join(vault, p)), { recursive: true }); fs.writeFileSync(path.join(vault, p), text) } }
+}
+
+/** The app in this process, for what only its objects show (a plugin's services, an op asked as someone else): a
+ *  sandbox vault with `ids` installed from this repository, on and allowed. `env` first: where its plugins read from. */
+export async function inProcess(ids: string[], { env = {} }: { env?: Record<string, string> } = {}) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "vaultite-plugins-test-"))
+  const vault = path.join(tmp, "vault")
+  execFileSync(process.execPath, [path.join(APP, "bin", "vau"), "sandbox", vault], { stdio: "ignore", env: ENV })
+  for (const k of Object.keys(process.env)) if (k.startsWith("VAULTITE") && k !== "VAULTITE_APP") delete process.env[k]
+  Object.assign(process.env, env, { VAULTITE_VAULT: vault, VAULTITE_LOCAL: path.join(tmp, "local") })
+  const core = (name: string) => import(pathToFileURL(path.join(APP, "core", `${name}.ts`)).href)
+  const [{ open }, { Text, service }, { publicOf }] = await Promise.all([core("app"), core("plugins"), core("vault")])
+  const app = await open(vault, { start: false })
+  /** A route run as the server runs it, its query as written: [status, body]. */
+  const api = async (method: string, route: string, body?: unknown, http?: unknown) => {
+    const [p, qs] = route.split("?")
+    const query = qs ? Object.fromEntries(qs.split("&").map((q) => q.split("=", 2))) : {}
+    await app.syncPlugins()
+    const r = await app.run(method, p.split("/").filter(Boolean).map(decodeURIComponent), query, body ?? {}, http)
+    return [r.status, r.body instanceof Text ? r.body.text : publicOf(r.body)] as [number, any] // eslint-disable-line @typescript-eslint/no-explicit-any
+  }
+  for (const id of ids) await app.runOp("plugin.install", { source: path.join(import.meta.dirname, id) })
+  // (turned on through the API, as the app does it: its pages are written)
+  for (const id of ids) await api("POST", "ops/plugin.enable", { id })
+  return { app, vault, tmp, api, service: (name: string) => service(app.plugins, name),
+    read: (p: string) => fs.readFileSync(path.join(vault, p), "utf8"),
+    write: (p: string, text: string) => {
+      const f = path.join(vault, p), t = Date.now() / 1000 + 2 // (a new mtime even within the same second)
+      fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, text); fs.utimesSync(f, t, t)
+    },
+    stop: () => { for (const p of app.plugins) p.unload?.(); fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }) } }
 }

@@ -1,0 +1,16 @@
+{
+  "id": "opencode",
+  "icon": "icon.svg",
+  "name": "OpenCode",
+  "description": "What OpenCode does on this machine: sessions running now, usage and its cost as OpenCode records it, by day, project and model, and each session's conversation. Read from OpenCode's own database, nothing saved.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "ai-apps",
+  "group": "coding-agents",
+  "disclosures": { "shell": true, "outsideVault": true },
+  "runsOnServer": true,
+  "enhances": ["projects", "terminal"],
+  "draws": ["agent-sessions", "agent-usage", "agent-projects", "agent-models", "agent-project"]
+}
