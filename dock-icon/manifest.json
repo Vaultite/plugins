@@ -1,0 +1,15 @@
+{
+  "id": "dock-icon",
+  "icon": "image",
+  "name": "Dock icon",
+  "description": "Try another picture as the desktop app's Dock icon, to see how an icon looks there: any image in the vault (its menu: Use as Dock icon) or on the Mac (Set Dock icon from a file…). Kept on this Mac until you reset it; Finder keeps the app's own.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "desktopApp": true,
+  "disclosures": {
+    "outsideVault": true
+  },
+  "category": "system"
+}
