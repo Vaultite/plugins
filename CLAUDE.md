@@ -10,6 +10,8 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - After tagging a release, rebuild the directory or Browse won't show it (the repo is private, so `index.yml` never runs):
   `GITHUB_TOKEN=$(gh auth token) node ../vaultite/tools/plugin-index.ts --listed directory/listed.json --blocked
   directory/blocked.json --out directory/index.json`, commit and push.
+- Every folder here shows in the app's Get plugins: public plugins only. One person's plugins (their tools, accounts,
+  data) go in a repository of their own.
 - Tests: `node test.ts [id...]` checks each plugin and runs its `<id>/.test/test.ts` (hidden: never installed, not part
   of its version) on a throwaway server (`testkit.ts`: a sandbox vault, ports 8930-8939, the plugin installed and on).
   QA scripts, `<id>/.test/qa/<name>.mjs <base url>`, use the app's `web/qa/lib` (`qa.mjs` here) and install the
@@ -18,27 +20,6 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - Comments at most 2 lines; docs short. No one's personal data: made-up names (Alice Park, Lighthouse).
 
 ## Plugins
-- **GitHub and Code stats**: cached in `.vaultite/cache/`. The server can't read ~/Documents (macOS privacy under
-  launchd), so checkouts there keep the numbers they had.
-- **Reddit**: Reddit blocks scripts here, so refresh through the browser following `reddit/REFRESH.md` exactly
-  (read-only on Reddit).
-- **Tailscale**: reads `tailscale serve status` and `tailscale status` live (blocks `tailscale`, `tailnet`); labels in
-  `.vaultite/plugins/tailscale/data.json` (by port; `host` for one machine's). When you add or remove a `tailscale
-  serve` mapping, update that file too.
-- **Imports** (ops that POST to `/api/logs`: upserts, reruns are safe): `vau hevy import <workouts.csv>` (its times are
-  in this machine's zone; `--tz Area/City` re-dates) and `vau apple-health import <export.zip>` (`--skip strength`
-  when Hevy brings those). Each reads a file on the server's machine, so only its owner may run it.
 - **Git**: runs the user's git in the vault's folder (`git.ts`: argv, its own session, prompts off; ops are the API,
   the panel uses them too). Tests and QA use throwaway repositories (a bare one in a temp folder as the remote) with
   `GIT_CONFIG_GLOBAL` pointing at a made-up author, never the machine's config or GitHub.
-- **Agents**: `claude` with stream JSON both ways (permission asks reach it only with `--permission-prompt-tool stdio`)
-  and `codex app-server` (JSON-RPC; its request ids restart per process, its experimental API on for plan mode).
-  Model-written text (titles, branches, commits, PRs) is `claude -p --json-schema` or `codex exec --output-schema` with a
-  small model. Tests and QA use `agents/.test/fake-claude.mjs`, `fake-codex.mjs` and `fake-gh.mjs` (recorded lines,
-  `FAKE_*_STATE`; never the real CLIs); git in throwaway repositories
-  with a made-up `GIT_CONFIG_GLOBAL`, worktrees under `AGENTS_WORKTREES`.
-  `Git.tsx` can't exist beside `git.ts` (macOS folds case): the header's git is `GitBar.tsx`.
-- **BrowserOS**: hands a Web viewer page to BrowserOS (`webPageActions`, `appWindows.open`), found by its bundle id
-  (`com.browseros.`, neo first); a desktop app without `appWindows.open` says it needs a newer one.
-  Its Browser agents panel reads neo's undocumented local API (what its cockpit uses: `/api/v1/sessions?status=live`,
-  port in neo's config.json) and shows a tab by AppleScript (neo ignores CDP's bringToFront); tests use a fake neo.
