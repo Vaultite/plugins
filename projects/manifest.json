@@ -1,0 +1,28 @@
+{
+  "id": "projects",
+  "icon": "folder-git-2",
+  "name": "Projects",
+  "description": "Your projects from the vault's Projects folder (the Projects page): what each one is, its status and links.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "life",
+  "disclosures": {},
+  "exports": [
+    "types",
+    "Projects"
+  ],
+  "tint": "green",
+  "pageSort": 70,
+  "blocks": {
+    "project": {
+      "description": "a project file's status, tagline and links",
+      "options": {}
+    },
+    "projects": {
+      "description": "a card per project, each made of that project file's blocks",
+      "options": {}
+    }
+  }
+}

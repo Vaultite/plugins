@@ -1,0 +1,27 @@
+{
+  "id": "today",
+  "icon": "sun",
+  "name": "Today",
+  "description": "Routines you tick each day in your daily notes, and the Today page: a dashboard of blocks from this and other plugins (the calendar, this week's goals, sleep, meals).",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "life",
+  "disclosures": {},
+  "forAgents": "Their day or week: `today.render` (the Today page as text).",
+  "tint": "orange",
+  "requires": [
+    "daily-notes"
+  ],
+  "enhances": [
+    "logs"
+  ],
+  "pageSort": 10,
+  "blocks": {
+    "routines": {
+      "description": "this week's routines, to tick, under today's date",
+      "options": {}
+    }
+  }
+}

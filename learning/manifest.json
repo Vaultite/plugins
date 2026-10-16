@@ -1,0 +1,21 @@
+{
+  "id": "learning",
+  "icon": "graduation-cap",
+  "name": "Learning",
+  "description": "The Learning page: what you study and read, from your logs, and your books.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "life",
+  "disclosures": {},
+  "tint": "blue",
+  "requires": [
+    "logs"
+  ],
+  "enhances": [
+    "books",
+    "lessons"
+  ],
+  "pageSort": 30
+}
