@@ -53,7 +53,7 @@ export function config(own: Obj = plugin.settings({}), obsidian: (p: string) => 
     wordsPerDot: Math.max(1, first<number>("number", own.wordsPerDot) ?? 250) }
 }
 
-/** Where the vault's daily notes are (the Today plugin's `type: day`), else Daily. */
+/** Where the vault's daily notes are (Daily notes' `type: day`), else Daily. */
 const home = () => (v().has("days") && v().home("days")) || "Daily"
 
 /** The note of the period starting on `start`. */
@@ -115,7 +115,7 @@ async function periodNote(period: Period, date: Date, offset: number, create: bo
   const path = pathOf(s, start, c.weeks), out = { path, period, date: iso(start), exists: v().entries.has(path), created: false }
   if (out.exists || !create) return out
   const title = path.slice(path.lastIndexOf("/") + 1, -3)
-  // A daily note named by its date is the app's own (`type: day`: Today's routines tick in it).
+  // A daily note named by its date is the app's own (`type: day`: Daily notes').
   const own = period === "day" && /^\d{4}-\d\d-\d\d$/.test(title) ? "---\ntype: day\n---\n" : ""
   let note = own && `${own}\n`, at = path
   if (s.template) {

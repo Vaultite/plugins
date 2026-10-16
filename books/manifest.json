@@ -1,0 +1,22 @@
+{
+  "id": "books",
+  "icon": "book-open",
+  "name": "Books",
+  "description": "What you're reading and want to read, from the vault's Books folder: each book's status, progress and rating, and a block on Learning.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 3,
+  "category": "life",
+  "disclosures": {},
+  "blocks": {
+    "book": {
+      "description": "a book file's fields: status, reading progress, rating",
+      "options": {}
+    },
+    "books": {
+      "description": "the books being read and the ones wanted to read",
+      "options": {}
+    }
+  }
+}
