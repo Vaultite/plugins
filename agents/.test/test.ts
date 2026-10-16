@@ -7,7 +7,7 @@ import path from "node:path"
 
 const state = fs.mkdtempSync(path.join(os.tmpdir(), "agents-test-"))
 const claude = path.join(state, "claude"), codex = path.join(state, "codex")
-fs.symlinkSync(path.join(import.meta.dirname, "..", "..", "claude-chat", ".test", "fake-claude.mjs"), claude)
+fs.symlinkSync(path.join(import.meta.dirname, "fake-claude.mjs"), claude)
 fs.symlinkSync(path.join(import.meta.dirname, "fake-codex.mjs"), codex)
 process.env.AGENTS_CLAUDE_CLI = claude
 process.env.AGENTS_CODEX_CLI = codex
