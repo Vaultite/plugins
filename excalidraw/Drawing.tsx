@@ -1,12 +1,13 @@
 // A drawing drawn by Excalidraw (its own chunk). The file's text is the only state: changes are written back (codec.ts)
 // and text changed under it (an AI, another device) goes into the scene. `Preview` is a still SVG for embeds.
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Excalidraw, exportToSvg, restoreElements, serializeAsJSON } from "@excalidraw/excalidraw"
-import type { AppState, BinaryFiles, ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from "@excalidraw/excalidraw/types"
+import { CaptureUpdateAction, Excalidraw, exportToSvg, restoreElements, serializeAsJSON } from "@excalidraw/excalidraw"
+import type { AppState, BinaryFiles, Collaborator, ExcalidrawImperativeAPI, ExcalidrawInitialDataState, SocketId } from "@excalidraw/excalidraw/types"
 import "@excalidraw/excalidraw/index.css"
 import "./scheme.css"
-import { runShortcut, type FormatCtx, type Store } from "@vaultite"
+import { registerCanvas, runShortcut, type CanvasPeer, type FormatCtx, type Store } from "@vaultite"
 import type { Codec } from "./codec"
+import { applyActions, describe, type El, itemsOf, layout, type Point } from "./scene"
 
 type Elements = Parameters<typeof serializeAsJSON>[0]
 type Scene = { elements: Elements; appState: Partial<AppState>; files: BinaryFiles; embedded: Record<string, string> }
@@ -40,15 +41,18 @@ function useDark() {
   return dark
 }
 
-export default function Drawing({ store, text, editable, onChange, codec }: FormatCtx & { codec: Codec }) {
+export default function Drawing({ store, path, text, editable, onChange, place, codec }: FormatCtx & { codec: Codec }) {
   const dark = useDark()
   const api = useRef<ExcalidrawImperativeAPI | null>(null)
+  const wrap = useRef<HTMLDivElement>(null)
   // The text last seen or written: onChange fires for every pointer move and scroll, but only a different drawing is
   // written; a `text` that differs from it came from elsewhere.
   const last = useRef(text)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [initial] = useState<ExcalidrawInitialDataState>(() => ({ ...parse(codec, text), scrollToContent: true }))
   const [ready, setReady] = useState<ExcalidrawImperativeAPI | null>(null)
+  // (its scene loads after the API is there: others read it from then on)
+  const [loaded, setLoaded] = useState(false)
 
   // Obsidian's images, once Excalidraw is there (and again when the file names others).
   const embedded = useMemo(() => { try { return JSON.stringify(parse(codec, text).embedded ?? {}) } catch { return "{}" } }, [codec, text])
@@ -63,18 +67,46 @@ export default function Drawing({ store, text, editable, onChange, codec }: Form
 
   useEffect(() => {
     if (text === last.current || !api.current) return
-    last.current = text
-    let scene: Scene
+    let scene: Scene, base: Scene
     try { scene = parse(codec, text) } catch { return } // half-written by hand: wait for the next change
+    try { base = parse(codec, last.current) } catch { base = { elements: [], appState: {}, files: {}, embedded: {} } }
+    last.current = text
     const files = Object.values(scene.files)
     if (files.length) api.current.addFiles(files)
     const bg = scene.appState.viewBackgroundColor
-    api.current.updateScene({ elements: restoreElements(scene.elements, null), ...(bg ? { appState: { viewBackgroundColor: bg } } : {}) })
+    const local = api.current.getSceneElementsIncludingDeleted()
+    // (not into the undo history: it's not the user's own step)
+    api.current.updateScene({ elements: restoreElements(merged(base.elements, local, scene.elements) as unknown as Elements, local), captureUpdate: CaptureUpdateAction.NEVER,
+      ...(bg ? { appState: { viewBackgroundColor: bg } } : {}) })
   }, [text])
+
+  // On the canvases others reach (registerCanvas): its items, the user's pointer, others drawn as its collaborators.
+  const pointer = useRef<Point | null>(null)
+  const subs = useRef(new Set<() => void>())
+  useEffect(() => {
+    const el = wrap.current
+    if (!ready || !loaded || !el || place === "embed") return
+    const fire = () => { for (const fn of [...subs.current]) fn() }
+    const ps = new Peers(ready)
+    const offs = [ready.onChange(fire), ready.onScrollChange(() => { fire(); ps.follow() }), ready.onUserFollow((f) => ps.following(f.action === "FOLLOW" ? f.userToFollow.socketId : null))]
+    const off = registerCanvas({
+      path, el,
+      items: () => itemsOf(ready.getSceneElements()),
+      describe: (at) => describe(ready.getSceneElements(), at),
+      view: () => { const s = ready.getAppState(), z = s.zoom.value; return { x: -s.scrollX, y: -s.scrollY, w: s.width / z, h: s.height / z } },
+      editing: () => ready.getAppState().editingTextElement?.id ?? null,
+      pointer: () => pointer.current,
+      selected: () => Object.entries(ready.getAppState().selectedElementIds).filter(([, on]) => on).map(([id]) => id),
+      toScreen: (p) => toScreen(ready, el, p),
+      setPeers: (next) => ps.set(next),
+      apply: (actions, by) => draw(ready, actions, by ? (p) => ps.move(by, p) : undefined),
+      subscribe: (fn) => { subs.current.add(fn); return () => { subs.current.delete(fn) } },
+    })
+    return () => { off(); for (const o of offs) o(); ps.stop() }
+  }, [ready, loaded, path, place])
 
   // Excalidraw keeps keys it knows (⌘E, ⌘K, ⌘P) from the app: the app's shortcuts go to the app first. Its tools'
   // letters and Space (pan) stay its own (`data-keeps-keys`: Vim's keys and its leader don't take them).
-  const wrap = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const on = (e: KeyboardEvent) => { if (wrap.current?.contains(e.target as Node) && runShortcut(e)) e.stopPropagation() }
     addEventListener("keydown", on, true)
@@ -92,8 +124,10 @@ export default function Drawing({ store, text, editable, onChange, codec }: Form
         excalidrawAPI={(a) => { api.current = a; setReady(a) }}
         viewModeEnabled={!editable}
         theme={dark ? "dark" : "light"}
+        onPointerUpdate={(p) => { pointer.current = { x: p.pointer.x, y: p.pointer.y }; for (const fn of [...subs.current]) fn() }}
         UIOptions={{ canvasActions: { loadScene: false, saveToActiveFile: false, export: false } }}
         onChange={(elements, appState, files) => {
+          if (!loaded) setLoaded(true)
           if (!editable) return
           flush.current = () => {
             timer.current = null
@@ -108,6 +142,130 @@ export default function Drawing({ store, text, editable, onChange, codec }: Form
       />
     </div>
   )
+}
+
+/** The scene with a change from elsewhere (`remote`) folded in: what the user changed since the text it was drawn from
+ *  (`base`) stays theirs, the rest is as the file has it now (gone from it: gone). */
+function merged(base: readonly El[], local: readonly El[], remote: readonly El[]): El[] {
+  const was = new Map(base.map((e) => [e.id, e.version])), there = new Map(remote.map((e) => [e.id, e]))
+  const mine = (e: El) => !was.has(e.id) || was.get(e.id) !== e.version
+  const out = local.flatMap((e) => (mine(e) ? [e] : there.has(e.id) ? [there.get(e.id)!] : []))
+  const have = new Set(out.map((e) => e.id))
+  return [...out, ...remote.filter((e) => !have.has(e.id))]
+}
+
+/** A point of the scene on screen. */
+function toScreen(api: ExcalidrawImperativeAPI, el: HTMLElement, p: Point): Point {
+  const s = api.getAppState(), box = (el.querySelector(".excalidraw") ?? el).getBoundingClientRect()
+  return { x: (p.x + s.scrollX) * s.zoom.value + box.left, y: (p.y + s.scrollY) * s.zoom.value + box.top }
+}
+
+/** Typed actions (scene.ts) made as one step undo takes back, all checked first (none is made when one doesn't fit),
+ *  then `by`'s pointer goes over what they touched. Those ids, in order. */
+async function draw(api: ExcalidrawImperativeAPI, actions: unknown[], by?: (p: Point) => void): Promise<string[]> {
+  const now = api.getSceneElementsIncludingDeleted()
+  const made = applyActions(now, actions)
+  const els = restoreElements(made.elements as unknown as Elements, now, { refreshDimensions: true, repairBindings: true }) as El[]
+  layout(els, new Set(made.touched))
+  // (at once: a step at a time, Excalidraw's own updates between them, as fonts loading, would leave some out of undo)
+  api.updateScene({ elements: els as never, captureUpdate: CaptureUpdateAction.IMMEDIATELY })
+  for (const id of by ? made.touched.slice(0, 8) : []) {
+    const e = els.find((x) => x.id === id)
+    if (!e) continue
+    by!({ x: e.x + e.width / 2, y: e.y + e.height })
+    await new Promise((ok) => setTimeout(ok, 160))
+  }
+  return made.touched
+}
+
+/** A colour's hue (rgb() or #hex), or null. */
+function hueOf(color: string) {
+  const m = /rgba?\((\d+)\D+(\d+)\D+(\d+)/.exec(color), h = /^#([0-9a-f]{6})$/i.exec(color)
+  const [r, g, b] = m ? m.slice(1).map(Number) : h ? [0, 2, 4].map((i) => parseInt(h[1].slice(i, i + 2), 16)) : []
+  if (r === undefined) return null
+  const max = Math.max(r, g, b), d = max - Math.min(r, g, b)
+  if (!d) return null
+  const x = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4
+  return x * 60
+}
+/** Excalidraw colours a collaborator by a hash of its id (a hue, in tens of degrees): the id for `id` whose hue is
+ *  nearest `color`'s, so its cursor, name and selection show in the agent's colour. */
+const ids = new Map<string, string>()
+function idFor(id: string, color: string) {
+  const k = `${id}\n${color}`, want = hueOf(color)
+  if (want === null) return id
+  if (ids.has(k)) return ids.get(k)!
+  // (its hash as Excalidraw's own)
+  const hue = (s: string) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i); return (Math.abs(h) % 37) * 10 }
+  let best = id, far = 360
+  for (let n = 0; n < 300 && far > 5; n++) {
+    const c = n ? `${id}~${n}` : id, d = Math.abs(hue(c) - want), off = Math.min(d, 360 - d)
+    if (off < far) { far = off; best = c }
+  }
+  ids.set(k, best)
+  return best
+}
+
+/** Others on the drawing as Excalidraw's own collaborators: each one's pointer glides to where it goes, and the view
+ *  keeps the one the user follows (a click on them, top right) in sight. */
+class Peers {
+  list: CanvasPeer[] = []
+  at = new Map<string, Point>()
+  to = new Map<string, Point>()
+  frame = 0
+  followed: string | null = null
+  key = ""
+  readonly api: ExcalidrawImperativeAPI
+  constructor(api: ExcalidrawImperativeAPI) { this.api = api }
+  // (a peer drawing goes where its strokes are, whatever else says for a moment)
+  driven = new Map<string, number>()
+  set(next: CanvasPeer[]) {
+    const key = JSON.stringify(next)
+    if (key === this.key) return
+    this.key = key
+    this.list = next
+    for (const p of next) {
+      if (Date.now() - (this.driven.get(p.id) ?? 0) > 1500) this.to.set(p.id, { x: p.x, y: p.y })
+      if (!this.at.has(p.id)) this.at.set(p.id, { x: p.x, y: p.y })
+    }
+    this.glide()
+  }
+  move(id: string, p: Point) { if (this.list.some((x) => x.id === id)) { this.driven.set(id, Date.now()); this.to.set(id, p); this.glide() } }
+  following(id: string | null) { this.followed = id; this.follow() }
+  follow() {
+    const p = this.followed ? this.to.get(this.followed) : null
+    if (!p) return
+    const s = this.api.getAppState(), z = s.zoom.value
+    const x = (p.x + s.scrollX) * z, y = (p.y + s.scrollY) * z
+    if (x > s.width * 0.1 && x < s.width * 0.9 && y > s.height * 0.1 && y < s.height * 0.9) return
+    this.api.updateScene({ appState: { scrollX: s.width / 2 / z - p.x, scrollY: s.height / 2 / z - p.y } })
+  }
+  glide() {
+    if (this.frame) return
+    const step = () => {
+      this.frame = 0
+      let moving = false
+      for (const p of this.list) {
+        const a = this.at.get(p.id)!, b = this.to.get(p.id)!
+        const nx = a.x + (b.x - a.x) * 0.22, ny = a.y + (b.y - a.y) * 0.22, done = Math.hypot(b.x - nx, b.y - ny) < 0.5
+        this.at.set(p.id, done ? b : { x: nx, y: ny })
+        moving ||= !done
+      }
+      this.draw()
+      if (moving) this.frame = requestAnimationFrame(step)
+      else this.follow()
+    }
+    this.frame = requestAnimationFrame(step)
+  }
+  draw() {
+    const map = new Map<SocketId, Collaborator>(this.list.map((p) => [p.id as SocketId, {
+      id: idFor(p.id, p.color), socketId: p.id as SocketId, username: p.busy ? `${p.name} …` : p.name, color: { background: p.color, stroke: p.color },
+      pointer: { ...this.at.get(p.id)!, tool: "pointer" }, button: "up", selectedElementIds: Object.fromEntries((p.selected ?? []).map((id) => [id, true])),
+    }]))
+    // (not NEVER: that takes in what an unfinished drawing did, so its undo would miss it)
+    this.api.updateScene({ collaborators: map })
+  }
+  stop() { cancelAnimationFrame(this.frame); this.list = []; try { this.api.updateScene({ collaborators: new Map() }) } catch { /* gone */ } }
 }
 
 /** A still picture of the drawing, fit to its box. */

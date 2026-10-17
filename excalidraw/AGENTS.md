@@ -26,3 +26,10 @@ Element types: rectangle, ellipse, diamond, arrow, line (`points` relative to x/
 inside a shape with `containerId`, the shape listing it in `boundElements`), image (`fileId` into `files`). Missing
 fields (version, seed, angle...) are filled in when it's opened; ids must be unique. Keep the JSON valid: the app saves
 it only while it parses. Sentence case in labels, no emojis.
+
+To read one, `vau render` gives its items as text. To change one, prefer actions to editing its JSON (with the companion on, `vau companion
+draw --path ... --actions '[...]'`: checked first, drawn live when it's open, one undo): `{"op": "add", "type":
+"rectangle" | "ellipse" | "diamond" | "text" | "arrow" | "line", "id", "x", "y", "w", "h", "label", "color", "fill"}`
+(an arrow `"from"`/`"to"`: ids or `[x, y]`), `{"op": "move", "id", "x", "y"}` (or `dx`, `dy`), `{"op": "change", "id",
+"label", "color", "fill", "w", "h"}`, `{"op": "delete", "id"}`. Colours: black, gray, red, pink, purple, violet, blue,
+cyan, teal, green, yellow, orange or #hex (`fill`: none too). Sizes follow the label when left out.
