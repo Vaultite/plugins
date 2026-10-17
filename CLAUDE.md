@@ -15,7 +15,8 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - Tests: `node test.ts [id...]` checks each plugin and runs its `<id>/.test/test.ts` (hidden: never installed, not part
   of its version) on a throwaway server (`testkit.ts`: a sandbox vault, ports 8930-8939, the plugin installed and on).
   QA scripts, `<id>/.test/qa/<name>.mjs <base url>`, use the app's `web/qa/lib` (`qa.mjs` here) and install the
-  plugin themselves: only against a throwaway server.
+  plugin themselves: only against a throwaway server. `inProcess` (testkit) runs the app in the test's own process, for
+  what only its objects show (a plugin's services, an op asked as someone else).
 - Try one in a throwaway server, never the user's vault (the app's CLAUDE.md, Running).
 - Comments at most 2 lines; docs short. No one's personal data: made-up names (Alice Park, Lighthouse).
 
@@ -23,3 +24,7 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - **Git**: runs the user's git in the vault's folder (`git.ts`: argv, its own session, prompts off; ops are the API,
   the panel uses them too). Tests and QA use throwaway repositories (a bare one in a temp folder as the remote) with
   `GIT_CONFIG_GLOBAL` pointing at a made-up author, never the machine's config or GitHub.
+- **Coding agents** (Cursor, Grok Bot, Hermes, OpenClaw, OpenCode) build on the app's agents API
+  (`@vaultite/core/agents.ts`). Their tests read made-up homes (`<id>/.test/fixtures`, pointed at by env vars), never
+  this machine's; `node test_agents.ts` runs them in real terminals with fake agents (`VAULTITE_AGENT_LIVE=1`: the
+  real ones, a few cents), on the app's `tools/test/agentkit.ts`.

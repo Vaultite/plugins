@@ -13,5 +13,5 @@ their own licences (`plugin-compat/lib/LICENSES.md`).
 
 The plugins named after Obsidian community plugins are Vaultite's own, written to read the same files; they contain
 none of those plugins' code, which the user downloads from its authors when they choose the original. Obsidian is a
-trademark of Dynalist Inc., and the logos in plugins' `icon.svg` (Excalidraw, Git) are trademarks of
-their owners; none of them is affiliated with or endorses Vaultite.
+trademark of Dynalist Inc., and the logos in plugins' `icon.svg` (Excalidraw, Git, Cursor, OpenCode, Muse) are
+trademarks of their owners; none of them is affiliated with or endorses Vaultite.

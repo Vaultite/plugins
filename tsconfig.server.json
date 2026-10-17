@@ -2,7 +2,17 @@
   "extends": "../vaultite/tsconfig.server.json",
   "compilerOptions": {
     "incremental": false,
-    "tsBuildInfoFile": null
+    "tsBuildInfoFile": null,
+    "paths": {
+      "@vaultite/core/*": [
+        "../vaultite/core/*"
+      ],
+      "@plugins/*": [
+        "./*.ts",
+        "../vaultite/plugins/core/*.ts",
+        "../vaultite/plugins/core/*/index.ts"
+      ]
+    }
   },
   "include": [
     "*/plugin.ts",
