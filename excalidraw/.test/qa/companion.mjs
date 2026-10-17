@@ -3,7 +3,7 @@
 // a change after a pause, a text with @claude) reaches it with the scene as text. Driven through the ops an agent calls.
 // Installs the plugin; WRITES "Qa companion drawings/", plugins.json and the companion's settings: throwaway server only.
 //   node excalidraw/.test/qa/companion.mjs <base url> <vault path> [out dir]
-import { readFileSync } from "node:fs"
+import { readFileSync, utimesSync, writeFileSync } from "node:fs"
 import { install, SHOTS, qa, setAsideWorkspaces, vauAt, wait } from "../../../qa.mjs"
 const { args: [B, VAULT, OUT = SHOTS], browser, check, watch, done } = await qa(import.meta.url)
 const req = (method, path, body) => fetch(`${B}api/${path}`, { method, headers: { "Content-Type": "application/json" }, body: body && JSON.stringify(body) }).then((r) => r.json())
@@ -19,6 +19,7 @@ await req("DELETE", `file?path=${encodeURIComponent(DIR)}`)
 await req("POST", "file", { path: DRAWING, text: JSON.stringify({ type: "excalidraw", version: 2, source: "qa", appState: { viewBackgroundColor: "#ffffff" }, files: {}, elements: [
   { id: "qa-box", type: "rectangle", x: 0, y: 0, width: 200, height: 90, strokeColor: "#1e1e1e", backgroundColor: "#a5d8ff", fillStyle: "solid", roughness: 1, strokeWidth: 2, seed: 1, boundElements: [{ id: "qa-text", type: "text" }] },
   { id: "qa-text", type: "text", x: 50, y: 32, width: 100, height: 25, text: "Hello", originalText: "Hello", fontSize: 20, fontFamily: 5, textAlign: "center", verticalAlign: "middle", containerId: "qa-box", strokeColor: "#1e1e1e", seed: 2 },
+  { id: "qa-note", type: "text", x: 0, y: 140, width: 60, height: 25, text: "A note", originalText: "A note", fontSize: 20, fontFamily: 5, textAlign: "left", verticalAlign: "top", strokeColor: "#1e1e1e", seed: 3 },
 ] }, null, 2) })
 
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1 })
@@ -33,7 +34,7 @@ const screenOf = (id) => page.evaluate((id) => {
   const c = globalThis.__vaultite.modules["@vaultite"].canvases()[0], i = c.items().find((x) => x.id === id)
   return i && c.toScreen({ x: i.x + i.w / 2, y: i.y + i.h })
 }, id)
-check("the drawing is a canvas others can reach, its label folded into its shape", JSON.stringify((await api())?.items) === JSON.stringify([{ id: "qa-box", type: "rectangle", x: 0, y: 0, w: 200, h: 90, text: "Hello" }]), await api())
+check("the drawing is a canvas others can reach, its label folded into its shape", JSON.stringify((await api())?.items[0]) === JSON.stringify({ id: "qa-box", type: "rectangle", x: 0, y: 0, w: 200, h: 90, text: "Hello" }), await api())
 
 // Opening it (doing something there): an open moment, with the scene as text.
 await page.mouse.move(canvas.x + canvas.width - 200, canvas.y + 200)
@@ -94,6 +95,7 @@ check("draw: one undo takes the whole drawing back", !(await api()).items.some((
 await page.keyboard.press("Meta+Shift+z")
 await wait(600)
 check("draw: and redo brings it back", (await api()).items.some((i) => i.id === "qa-new"))
+await wait(1500)
 
 // A change of theirs after a pause: an edit moment with what changed.
 await op("companion.next", { timeout: 0 })
@@ -102,8 +104,42 @@ await page.mouse.move(canvas.x + 300, canvas.y + canvas.height - 260)
 await page.mouse.down(); await page.mouse.move(canvas.x + 420, canvas.y + canvas.height - 180, { steps: 8 }); await page.mouse.up()
 r = await op("companion.next", { timeout: 8 })
 const edit = r.moments?.find((m) => m.kind === "edit")
-check("edit: what they drew reaches it after a pause", !!edit && edit.changes?.some((c) => /^\+ [\w-]+ rectangle at /.test(c)), r.moments)
+check("edit: what they drew reaches it after a pause, and only that (a text's font loading isn't a change)", edit?.changes?.length === 1 && /^\+ [\w-]+ rectangle at /.test(edit.changes[0]), r.moments)
 check("edit: with the scene, ids and arrows as a -> b", /qa-go arrow qa-box "Hello" -> qa-new "New idea"/.test(r.notes?.[0]?.scene ?? ""), r.notes)
+
+// After the agent draws, and after the file changes elsewhere, what the user then does is all that's said.
+const userShape = async (dx) => {
+  await page.locator(".excalidraw [data-testid=toolbar-ellipse]").click({ force: true })
+  await page.mouse.move(canvas.x + 500 + dx, canvas.y + canvas.height - 160)
+  await page.mouse.down(); await page.mouse.move(canvas.x + 560 + dx, canvas.y + canvas.height - 110, { steps: 6 }); await page.mouse.up()
+  await page.keyboard.press("Escape")
+  const got = await op("companion.next", { timeout: 8 })
+  return { got, edit: got.moments?.find((m) => m.kind === "edit") }
+}
+await op("companion.draw", { path: DRAWING, actions: [{ op: "add", type: "diamond", id: "qa-after", x: 600, y: 0, label: "Later" }] })
+await wait(1500)
+await op("companion.next", { timeout: 0 })
+let u = await userShape(0)
+check("edit after the agent drew: only the user's shape, the scene whole", u.edit?.changes?.length === 1 && /^\+ [\w-]+ ellipse/.test(u.edit.changes[0]) &&
+  /qa-after diamond "Later"/.test(u.got.notes?.[0]?.scene ?? ""), [u.edit, u.got.notes])
+await wait(1500) // (the user's shape saved first: a change on disk then is another's)
+{
+  const f = `${VAULT}/${DRAWING}`, j = JSON.parse(readFileSync(f, "utf8"))
+  j.elements.push({ id: "qa-ai2", type: "rectangle", x: 0, y: 400, width: 100, height: 50, strokeColor: "#1e1e1e", backgroundColor: "transparent", fillStyle: "solid", roughness: 1, strokeWidth: 2, seed: 9, version: 1, versionNonce: 1, isDeleted: false, boundElements: null, updated: 1, link: null, locked: false, angle: 0, opacity: 100, groupIds: [], frameId: null, roundness: null, strokeStyle: "solid" })
+  writeFileSync(f, JSON.stringify(j, null, 2)); const t = Date.now() / 1000 + 2; utimesSync(f, t, t)
+}
+await wait(2500)
+check("a change from elsewhere shows", (await api()).items.some((i) => i.id === "qa-ai2"), { items: (await api()).items.map((i) => i.id), file: readFileSync(`${VAULT}/${DRAWING}`, "utf8").includes("qa-ai2"), banner: await page.locator("[role=alert]").allInnerTexts(), n: await page.evaluate(() => globalThis.__vaultite.modules["@vaultite"].canvases().length) })
+await op("companion.next", { timeout: 0 })
+u = await userShape(120)
+check("edit after the file changed elsewhere: only the user's shape", u.edit?.changes?.length === 1 && /^\+ [\w-]+ ellipse/.test(u.edit.changes[0]), u.edit)
+
+// Read only (reading view): the agent's drawing goes to the file, and shows.
+await page.keyboard.press("Meta+e"); await wait(800)
+r = await op("companion.draw", { path: DRAWING, actions: [{ op: "add", type: "rectangle", id: "qa-read", x: 0, y: 500, label: "Read" }] })
+await wait(2500)
+check("draw in reading view: written to the file, and shown", r.how === "written" && (await api()).items.some((i) => i.id === "qa-read"), r)
+await page.keyboard.press("Meta+e"); await wait(800)
 
 // An ask: a text with @claude, once it's written.
 await page.keyboard.press("Escape")

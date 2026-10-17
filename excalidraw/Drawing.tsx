@@ -1,6 +1,6 @@
 // A drawing drawn by Excalidraw (its own chunk). The file's text is the only state: changes are written back (codec.ts)
 // and text changed under it (an AI, another device) goes into the scene. `Preview` is a still SVG for embeds.
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { CaptureUpdateAction, Excalidraw, exportToSvg, restoreElements, serializeAsJSON } from "@excalidraw/excalidraw"
 import type { AppState, BinaryFiles, Collaborator, ExcalidrawImperativeAPI, ExcalidrawInitialDataState, SocketId } from "@excalidraw/excalidraw/types"
 import "@excalidraw/excalidraw/index.css"
@@ -65,6 +65,10 @@ export default function Drawing({ store, path, text, editable, onChange, place, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, embedded])
 
+  const pointer = useRef<Point | null>(null)
+  const subs = useRef(new Set<(outside?: string[]) => void>())
+  const fire = (outside?: string[]) => { for (const fn of [...subs.current]) fn(outside) }
+
   useEffect(() => {
     if (text === last.current || !api.current) return
     let scene: Scene, base: Scene
@@ -75,20 +79,20 @@ export default function Drawing({ store, path, text, editable, onChange, place, 
     if (files.length) api.current.addFiles(files)
     const bg = scene.appState.viewBackgroundColor
     const local = api.current.getSceneElementsIncludingDeleted()
+    const m = merged(base.elements, local, scene.elements)
     // (not into the undo history: it's not the user's own step)
-    api.current.updateScene({ elements: restoreElements(merged(base.elements, local, scene.elements) as unknown as Elements, local), captureUpdate: CaptureUpdateAction.NEVER,
+    api.current.updateScene({ elements: restoreElements(m.elements as unknown as Elements, local), captureUpdate: CaptureUpdateAction.NEVER,
       ...(bg ? { appState: { viewBackgroundColor: bg } } : {}) })
+    if (m.theirs.length) fire(m.theirs)
   }, [text])
 
   // On the canvases others reach (registerCanvas): its items, the user's pointer, others drawn as its collaborators.
-  const pointer = useRef<Point | null>(null)
-  const subs = useRef(new Set<() => void>())
-  useEffect(() => {
+  // (registered as a layout effect: it goes before Excalidraw does, while its scene can still be read)
+  useLayoutEffect(() => {
     const el = wrap.current
     if (!ready || !loaded || !el || place === "embed") return
-    const fire = () => { for (const fn of [...subs.current]) fn() }
     const ps = new Peers(ready)
-    const offs = [ready.onChange(fire), ready.onScrollChange(() => { fire(); ps.follow() }), ready.onUserFollow((f) => ps.following(f.action === "FOLLOW" ? f.userToFollow.socketId : null))]
+    const offs = [ready.onChange(() => fire()), ready.onScrollChange(() => { fire(); ps.follow() }), ready.onUserFollow((f) => ps.following(f.action === "FOLLOW" ? f.userToFollow.socketId : null))]
     const off = registerCanvas({
       path, el,
       items: () => itemsOf(ready.getSceneElements()),
@@ -99,11 +103,11 @@ export default function Drawing({ store, path, text, editable, onChange, place, 
       selected: () => Object.entries(ready.getAppState().selectedElementIds).filter(([, on]) => on).map(([id]) => id),
       toScreen: (p) => toScreen(ready, el, p),
       setPeers: (next) => ps.set(next),
-      apply: (actions, by) => draw(ready, actions, by ? (p) => ps.move(by, p) : undefined),
+      ...(editable ? { apply: (actions: unknown[], by?: string) => draw(ready, actions, by ? (p) => ps.move(by, p) : undefined) } : {}),
       subscribe: (fn) => { subs.current.add(fn); return () => { subs.current.delete(fn) } },
     })
     return () => { off(); for (const o of offs) o(); ps.stop() }
-  }, [ready, loaded, path, place])
+  }, [ready, loaded, path, place, editable])
 
   // Excalidraw keeps keys it knows (⌘E, ⌘K, ⌘P) from the app: the app's shortcuts go to the app first. Its tools'
   // letters and Space (pan) stay its own (`data-keeps-keys`: Vim's keys and its leader don't take them).
@@ -124,7 +128,7 @@ export default function Drawing({ store, path, text, editable, onChange, place, 
         excalidrawAPI={(a) => { api.current = a; setReady(a) }}
         viewModeEnabled={!editable}
         theme={dark ? "dark" : "light"}
-        onPointerUpdate={(p) => { pointer.current = { x: p.pointer.x, y: p.pointer.y }; for (const fn of [...subs.current]) fn() }}
+        onPointerUpdate={(p) => { pointer.current = { x: p.pointer.x, y: p.pointer.y }; fire() }}
         UIOptions={{ canvasActions: { loadScene: false, saveToActiveFile: false, export: false } }}
         onChange={(elements, appState, files) => {
           if (!loaded) setLoaded(true)
@@ -145,13 +149,16 @@ export default function Drawing({ store, path, text, editable, onChange, place, 
 }
 
 /** The scene with a change from elsewhere (`remote`) folded in: what the user changed since the text it was drawn from
- *  (`base`) stays theirs, the rest is as the file has it now (gone from it: gone). */
-function merged(base: readonly El[], local: readonly El[], remote: readonly El[]): El[] {
+ *  (`base`) stays theirs, the rest is as the file has it now (gone from it: gone). `theirs`: the items that came so (a
+ *  label's, its shape). */
+function merged(base: readonly El[], local: readonly El[], remote: readonly El[]) {
   const was = new Map(base.map((e) => [e.id, e.version])), there = new Map(remote.map((e) => [e.id, e]))
   const mine = (e: El) => !was.has(e.id) || was.get(e.id) !== e.version
   const out = local.flatMap((e) => (mine(e) ? [e] : there.has(e.id) ? [there.get(e.id)!] : []))
-  const have = new Set(out.map((e) => e.id))
-  return [...out, ...remote.filter((e) => !have.has(e.id))]
+  const have = new Set(out.map((e) => e.id)), added = remote.filter((e) => !have.has(e.id))
+  const changed = [...local.filter((e) => !mine(e) && (there.get(e.id)?.version !== e.version || there.get(e.id)?.isDeleted !== e.isDeleted)), ...added]
+  const theirs = new Set(changed.flatMap((e) => [e.id, ...(e.containerId ? [e.containerId] : [])]))
+  return { elements: [...out, ...added], theirs: [...theirs] }
 }
 
 /** A point of the scene on screen. */
