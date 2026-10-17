@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-16T23:50:03.550Z",
+  "generated": "2026-10-17T00:04:11.959Z",
   "plugins": [
     {
       "id": "today",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -40,7 +40,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -71,7 +71,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -102,7 +102,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -133,7 +133,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -169,7 +169,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -200,7 +200,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -226,7 +226,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -256,7 +256,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -294,7 +294,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -326,7 +326,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -351,7 +351,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -370,6 +370,62 @@
       "icon": "list-tree"
     },
     {
+      "id": "opencode",
+      "name": "OpenCode",
+      "description": "What OpenCode does on this machine: sessions running now, usage and its cost as OpenCode records it, by day, project and model, and each session's conversation. Read from OpenCode's own database, nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "opencode",
+      "version": "1.0.0",
+      "tag": "opencode/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EOpenCode%3C%2Ftitle%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M22%2024H2V0h20zM17%204.8H7v14.4h10z%22%2F%3E%3C%2Fsvg%3E"
+    },
+    {
+      "id": "openclaw",
+      "name": "OpenClaw",
+      "description": "What OpenClaw, the personal AI agent, does on this machine: sessions running now, usage and its cost as OpenClaw records it, by day, project and model, each session's conversation, its agents' memory and its scheduled jobs. Read from OpenClaw's own databases and workspace, nothing saved; one step gives it the vault's tools.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "openclaw",
+      "version": "1.0.0",
+      "tag": "openclaw/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "bot"
+    },
+    {
       "id": "now-playing",
       "name": "Now playing",
       "description": "What your Mac is playing, in the sidebar, in a tab and on a page: every app playing at once (Spotify, Music, a browser tab), each with its cover, the song and artist and how far in, with play, pause, skip and shuffle, and the volume. Only on the Mac the app's server runs on.",
@@ -381,7 +437,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -410,7 +466,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -429,6 +485,34 @@
       "icon": "notebook-tabs"
     },
     {
+      "id": "muse",
+      "name": "Muse",
+      "description": "What your Muse agent (a personal AI on its own computer) keeps in its home folder, read live from an agent machine in Machines or this machine: who it is and what's left to tell it, its runs and their conversations, what it learned about you, its nightly dreams, its feed, its scheduled jobs and connectors. Nothing is saved; a new dream, what it learned and a new feed story reach the Inbox.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "muse",
+      "version": "1.0.0",
+      "tag": "muse/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%20100%20100%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EMuse%3C%2Ftitle%3E%3Cpath%20d%3D%22M24.6257%2016.1214C28.2365%2016.1214%2030.8187%2018.9408%2030.8187%2023.3643C30.8185%2027.7868%2030.1055%2031.7765%2028.9225%2040.2466C28.0743%2046.1813%2026.62%2055.2418%2026.0132%2059.0088C27.1782%2056.7815%2029.9074%2051.5757%2030.3914%2050.5982C36.1081%2039.061%2042.0657%2028.7544%2043.7826%2026.0254C46.0594%2022.382%2048.062%2020.9229%2051.1597%2020.9229C52.7685%2020.923%2054.6826%2021.7357%2055.6315%2022.819C56.9178%2024.2895%2057.1859%2026.6602%2057.1411%2029.244C57.0738%2033.2073%2056.5599%2039.5264%2055.8553%2046.5698C55.5416%2049.7057%2054.9365%2056.1066%2054.5288%2060.4004C58.1883%2053.8532%2064.9609%2041.8109%2067.6921%2037.6058C70.0727%2033.9402%2072.466%2031.5797%2075.6836%2031.5796C78.4595%2031.5796%2081.8809%2033.5416%2081.6772%2038.7573C81.3774%2046.4556%2080.2673%2063.2232%2079.7607%2070.7479C83.1662%2065.7913%2087.6377%2058.4543%2089.3148%2055.6966C91.0104%2052.908%2092.75%2050.6542%2095.3898%2050.5778C98.0987%2050.4995%2099.913%2052.341%2099.9959%2055.1839C100.078%2058.0277%2098.3835%2061.2256%2096.1344%2064.856C93.6937%2068.7957%2090.9621%2073.0123%2087.6383%2076.9491C84.3148%2080.8856%2081.2604%2083.8782%2076.5991%2083.8786C72.4243%2083.8786%2069.4869%2081.1043%2069.283%2076.0254C69.1768%2073.364%2069.6804%2067.6405%2070.0602%2063.1673C70.5%2057.9875%2071.0315%2052.9861%2071.403%2049.6786C67.7337%2056.3979%2060.0101%2070.4676%2056.5348%2075.9603C53.1343%2081.3339%2051.4774%2083.2269%2047.8882%2083.2275C44.2977%2083.2275%2042.7226%2080.6416%2042.6717%2076.7497C42.6142%2072.5285%2045.7852%2047.1821%2046.8587%2038.737C45.1183%2042.4616%2040.839%2051.6056%2038.1551%2057.0435C35.5587%2062.3055%2031.204%2071.3978%2028.0436%2076.6357C25.7668%2080.4094%2023.2092%2083.2273%2019.4173%2083.2275C15.6252%2083.2275%2013.4847%2080.6784%2013.4847%2076.5788C13.4847%2072.4794%2014.6716%2065.6492%2015.9465%2057.1777C16.5839%2053.0781%2017.3108%2048.6133%2018.1315%2043.8761C18.7324%2040.448%2019.7764%2034.4169%2020.4183%2030.7129C17.502%2035.2539%2012.2536%2043.4278%2010.6567%2045.8903C8.88113%2048.6291%207.28747%2050.626%204.64681%2050.6266C1.7329%2050.6266%200.000532901%2048.3522%200%2045.7113C0%2043.0703%201.34323%2041.0344%203.52376%2037.4512C6.32403%2032.8465%2011.3578%2026.57%2014.1154%2023.2747C17.3656%2019.3912%2020.6139%2016.1219%2024.6257%2016.1214Z%22%2F%3E%3C%2Fsvg%3E",
+      "tint": "blue"
+    },
+    {
       "id": "lessons",
       "name": "Lessons",
       "description": "Learn a note, a PR or a topic one step at a time, answering as you go, then keep it with cards that come back just before you'd forget.",
@@ -440,7 +524,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -471,7 +555,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -497,7 +581,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -528,7 +612,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -548,6 +632,34 @@
       "tint": "orange"
     },
     {
+      "id": "hermes",
+      "name": "Hermes",
+      "description": "What Hermes Agent (Nous Research) does on this machine, in its main home and each profile: sessions running now, usage and its cost as Hermes records it, by day, project and model, each session's conversation, its memory and its scheduled jobs. Read from Hermes' own files, nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "hermes",
+      "version": "1.0.0",
+      "tag": "hermes/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "feather"
+    },
+    {
       "id": "health",
       "name": "Health",
       "description": "Workouts, sleep and nutrition from your logs: the Health page, and sleep and meals blocks for Today.",
@@ -559,7 +671,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -574,6 +686,37 @@
       "tint": "red"
     },
     {
+      "id": "grok-bot",
+      "name": "Grok Bot",
+      "description": "Grok Bot, Cursor's always-on cloud agent: its week's allowance and when it renews, its value estimated at list prices by day and model, and its latest conversations. Read from Cursor's dashboard with Cursor.app's sign-in on this machine, once you allow it; nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "grok-bot",
+      "version": "1.0.0",
+      "tag": "grok-bot/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "cursor.com"
+        ],
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EGrok%20Bot%3C%2Ftitle%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M12%202a10%2010%200%201%200%200%2020a10%2010%200%201%200%200-20ZM8.3%209.2a1.2%201.2%200%200%201%202.4%200v3.2a1.2%201.2%200%200%201-2.4%200ZM13.3%209.2a1.2%201.2%200%200%201%202.4%200v3.2a1.2%201.2%200%200%201-2.4%200Z%22%2F%3E%3C%2Fsvg%3E",
+      "tint": "teal"
+    },
+    {
       "id": "git",
       "name": "Git",
       "description": "Your vault as a git repository: a Source control panel to stage, commit, pull and push, each file's diff and its history of commits, and commit-and-sync on a timer or after you stop editing. Runs your git on the server's machine, talking to the remotes you set up.",
@@ -585,7 +728,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -621,7 +764,7 @@
       "stars": 0,
       "released": "2026-10-11T07:48:49Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -653,7 +796,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -683,7 +826,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -700,6 +843,36 @@
       "desktopApp": true
     },
     {
+      "id": "dispatch",
+      "name": "Dispatch",
+      "description": "Hand a note to a coding agent: a button in the note's header (and a command, ⌘⇧↩) starts Claude Code in a new terminal on this machine (or another of your machines), told to read the note and do what it asks. Its actions are yours to change: another agent, another prompt, or a shell command of your own.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "dispatch",
+      "version": "1.0.0",
+      "tag": "dispatch/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "*"
+        ],
+        "shell": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "send"
+    },
+    {
       "id": "dataview",
       "name": "Dataview",
       "description": "Dataview's queries, kept working: ```dataview fences (LIST, TABLE, TASK, CALENDAR with FROM, WHERE, SORT, GROUP BY, FLATTEN, LIMIT) over frontmatter, inline fields (key:: value) and the notes' implicit fields, drawn as the app's tables and lists and live as notes change; tasks tick from the list; inline queries (`= this.file.name`). DataviewJS isn't run.",
@@ -711,7 +884,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -731,6 +904,37 @@
       "tint": "indigo"
     },
     {
+      "id": "cursor",
+      "name": "Cursor",
+      "description": "What Cursor and its CLI do on this machine: the plan's included usage and when it renews, chats open now, usage and its value estimated at list prices, by day, project and model. Chats read from Cursor's own files; the plan's usage from Cursor's dashboard, once you allow it; nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "cursor",
+      "version": "1.0.0",
+      "tag": "cursor/v1.0.0",
+      "stars": 0,
+      "released": "2026-10-17T00:03:57Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "cursor.com"
+        ],
+        "shell": true,
+        "outsideVault": true
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "data:image/svg+xml,%3Csvg%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ECursor%3C%2Ftitle%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M11.503.131%201.891%205.678a.84.84%200%200%200-.42.726v11.188c0%20.3.162.575.42.724l9.609%205.55a1%201%200%200%200%20.998%200l9.61-5.55a.84.84%200%200%200%20.42-.724V6.404a.84.84%200%200%200-.42-.726L12.497.131a1.01%201.01%200%200%200-.996%200M2.657%206.338h18.55c.263%200%20.43.287.297.515L12.23%2022.918c-.062.107-.229.064-.229-.06V12.335a.59.59%200%200%200-.295-.51l-9.11-5.257c-.109-.063-.064-.23.061-.23%22%2F%3E%3C%2Fsvg%3E"
+    },
+    {
       "id": "books",
       "name": "Books",
       "description": "What you're reading and want to read, from the vault's Books folder: each book's status, progress and rating, and a block on Learning.",
@@ -742,7 +946,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -767,7 +971,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -796,7 +1000,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -826,7 +1030,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-16T23:49:57Z",
+      "pushed": "2026-10-17T00:04:06Z",
       "issues": {
         "open": 0,
         "closed": 0
