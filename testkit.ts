@@ -25,6 +25,11 @@ registerHooks({
 
 const fails: string[] = []
 
+/** Done again when this process exits however it does (a failed check's done(), a throw): servers ended, folders gone
+ *  (a late write after a stop, like Activity's, would bring one back). */
+const leftovers = new Set<() => void>()
+process.once("exit", () => { for (const end of leftovers) try { end() } catch { /* the OS's temp cleanup */ } })
+
 export function check(name: string, ok: unknown, got?: unknown) {
   console.log((ok ? "ok   " : "FAIL ") + name + (ok ? "" : `  -> ${JSON.stringify(got)?.slice(0, 400)}`))
   if (!ok) fails.push(name)
@@ -63,10 +68,11 @@ export async function serve(ids: string[], { env = {} }: { env?: Record<string, 
   }
   const vau = (...a: string[]) => execFileSync(process.execPath, [bin, "--url", base, ...a], { encoding: "utf8", env: { ...ENV, VAULTITE_URL: base } })
   const stop = () => {
-    proc.kill()
+    proc.kill("SIGKILL") // (at once: one still stopping writes into the folder after it's gone)
     try { execFileSync("tmux", ["-L", `vaultite-${port}`, "kill-server"], { stdio: "ignore" }) } catch { /* (none) */ }
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }) // (the server may still be writing as it stops)
   }
+  leftovers.add(stop)
   for (let i = 0; ; i++) {
     // (ours: a server of the run before may still answer on the port while it stops)
     try { const r = await fetch(`${base}api/state`); if (r.ok && (await r.json()).vault?.path === vault) break } catch { /* (not yet) */ }
@@ -85,12 +91,15 @@ export async function serve(ids: string[], { env = {} }: { env?: Record<string, 
 export async function inProcess(ids: string[], { env = {} }: { env?: Record<string, string> } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "vaultite-plugins-test-"))
   const vault = path.join(tmp, "vault")
+  const gone = () => fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 })
+  leftovers.add(gone)
   execFileSync(process.execPath, [path.join(APP, "bin", "vau"), "sandbox", vault], { stdio: "ignore", env: ENV })
   for (const k of Object.keys(process.env)) if (k.startsWith("VAULTITE") && k !== "VAULTITE_APP") delete process.env[k]
   Object.assign(process.env, env, { VAULTITE_VAULT: vault, VAULTITE_LOCAL: path.join(tmp, "local") })
   const core = (name: string) => import(pathToFileURL(path.join(APP, "core", `${name}.ts`)).href)
   const [{ open }, { Text, service }, { publicOf }] = await Promise.all([core("app"), core("plugins"), core("vault")])
   const app = await open(vault, { start: false })
+  process.once("exit", gone) // (after the app's own: Activity writes as the process exits)
   /** A route run as the server runs it, its query as written: [status, body]. */
   const api = async (method: string, route: string, body?: unknown, http?: unknown) => {
     const [p, qs] = route.split("?")
@@ -108,5 +117,5 @@ export async function inProcess(ids: string[], { env = {} }: { env?: Record<stri
       const f = path.join(vault, p), t = Date.now() / 1000 + 2 // (a new mtime even within the same second)
       fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, text); fs.utimesSync(f, t, t)
     },
-    stop: () => { for (const p of app.plugins) p.unload?.(); fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }) } }
+    stop: () => { for (const p of app.plugins) p.unload?.(); gone() } }
 }

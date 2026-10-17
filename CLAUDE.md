@@ -7,7 +7,7 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - Types against the app: `ln -s ../vaultite/node_modules node_modules` once, then `npm run typecheck`.
 - Check one: `node ../vaultite/tools/check_plugins.ts --plugin <id> --installable`. A release is a tag
   `<id>/v<version>` matching its manifest's `version`.
-- After tagging a release, rebuild the directory or Browse won't show it (the repo is private, so `index.yml` never runs):
+- After tagging a release, rebuild the directory, or Browse won't show it until `index.yml`'s daily run:
   `GITHUB_TOKEN=$(gh auth token) node ../vaultite/tools/plugin-index.ts --listed directory/listed.json --blocked
   directory/blocked.json --out directory/index.json`, commit and push.
 - Every folder here shows in the app's Get plugins: public plugins only. One person's plugins (their tools, accounts,

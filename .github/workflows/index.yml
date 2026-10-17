@@ -1,5 +1,5 @@
 # The plugin directory's index: every GitHub repository with the topic vaultite-plugin, plus listed.json's, read daily
-# into directory/index.json, with blocked.json's blocklist. Waits until the repositories are public.
+# into directory/index.json, with blocked.json's blocklist.
 name: Index
 on:
   schedule: [{ cron: "17 6 * * *" }]
