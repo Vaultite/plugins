@@ -30,15 +30,14 @@ function settings(): Settings {
 const files = new Map<string, { ns: bigint; filter: string; tasks: Found[] }>()
 let all: { version: number; filter: string; tasks: Found[] } | null = null
 
-/** Every task in the vault's notes, outside the templates folder and dot folders. */
+/** Every task in the vault's notes outside dot folders (the templates' and samples' too: answer leaves them out). */
 function allTasks(): Found[] {
   const v = plugin.vault, filter = settings().globalFilter
   if (all && all.version === v.version && all.filter === filter) return all.tasks
-  const plain = v.plain().map((p) => `${p.replace(/\/$/, "")}/`)
   const out: Found[] = []
   const seen = new Set<string>()
   for (const [rel, e] of v.entries) {
-    if (!rel.endsWith(".md") || rel.startsWith(".") || rel.includes("/.") || plain.some((p) => rel.startsWith(p))) continue
+    if (!rel.endsWith(".md") || rel.startsWith(".") || rel.includes("/.")) continue
     seen.add(rel)
     let f = files.get(rel)
     if (!f || f.ns !== e.stat.ns || f.filter !== filter) {
@@ -67,7 +66,10 @@ function shown(t: Found, today: string, s: Settings, blocked: boolean): Shown {
 
 /** A query's answer: its groups of tasks as the app draws them. */
 function answer(q: string, path: string): Answer {
-  const s = settings(), today = localToday(), tasks = allTasks()
+  const s = settings(), today = localToday()
+  // Templates' and sample folders' tasks (the app's plain folders) only for a query in that folder.
+  const plain = plugin.vault.plain().map((p) => `${p.replace(/\/$/, "")}/`), here = plain.find((p) => path.startsWith(p))
+  const tasks = allTasks().filter((t) => { const p = plain.find((d) => t.path.startsWith(d)); return !p || p === here })
   const r = runQuery(parseQuery(q, today, path, s.globalQuery), tasks, today)
   const ids = new Map<string, boolean>()
   for (const t of tasks) if (t.id && !isDone(t)) ids.set(t.id, true)

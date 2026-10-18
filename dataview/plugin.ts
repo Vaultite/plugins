@@ -48,7 +48,10 @@ function pages(): Index {
 
 function context(path: string | undefined, now = new Date()): Context {
   const ix = pages()
-  return { pages: ix.pages, page: (p) => ix.byPath.get(p) ?? null, resolve: ix.resolve, self: path ? ix.byPath.get(path) ?? null : null, now }
+  // Sample folders (the app's files.json `samples`): examples, listed only for a query in that folder.
+  const samples = ((plugin.vault as { samples?: () => string[] }).samples?.() ?? []).map((d) => `${d}/`).filter((d) => !path?.startsWith(d))
+  const listed = samples.length ? ix.pages.filter((p) => !samples.some((d) => String((p.file as Row).path).startsWith(d))) : ix.pages
+  return { pages: listed, page: (p) => ix.byPath.get(p) ?? null, resolve: ix.resolve, self: path ? ix.byPath.get(path) ?? null : null, now }
 }
 
 // ---------- results for the app (JSON)
