@@ -1,6 +1,6 @@
 // Books: Books/<Title>.md (format: AGENTS.md).
 import { bullets, OpError, Plugin, section, today } from "@vaultite/core/plugins.ts"
-import { isArchived, type Item, Kind, nowUtc, num, sortBy, str, truthy } from "@vaultite/core/vault.ts"
+import { isArchived, type Item, Kind, nowStamp, num, sortBy, str, truthy } from "@vaultite/core/vault.ts"
 
 export const plugin = new Plugin(import.meta.url)
 
@@ -23,7 +23,7 @@ plugin.kind(new Kind({
     rating: b.rating, created: b.created,
   }, b.notes || ""],
   prepare(b) {
-    b.created = b.created || nowUtc()
+    b.created = b.created || nowStamp()
     return b
   },
   order: (bs) => sortBy(sortBy(bs, (b) => str(b.finished || b.created || ""), true),
