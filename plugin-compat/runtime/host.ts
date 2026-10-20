@@ -14,7 +14,7 @@ import * as ui from "./ui.ts"
 import * as ws from "./workspace.ts"
 
 export { App, runObsidian, setSettingsOpener } from "./app.ts"
-import { globalsReady, installGlobals } from "./app.ts"
+import { installGlobals } from "./app.ts"
 export * from "./state.ts"
 import { Platform, registered, tell, type Manifest, type ObsCommand } from "./state.ts"
 
@@ -172,7 +172,6 @@ export async function loadPlugin(id: string, manifest: Manifest, hash = "") {
     fetched.delete(id)
     const [{ css, data }, main] = await Promise.all([got.meta, got.main])
     datas.set(id, data)
-    await globalsReady()
     if (css) { const s = document.createElement("style"); s.dataset.obsidianPlugin = id; s.textContent = layered(css); document.head.append(s) }
     const papp = watched(app, id, "app", ["vault", "workspace", "metadataCache", "fileManager", "plugins", "internalPlugins", "commands", "setting", "keymap"])
     const mod = watched(moduleFor(papp as App), id, "obsidian")
