@@ -15,6 +15,9 @@ areas: [workouts]
 ```block-workouts
 ```
 
+```block-activity
+```
+
 ```block-sleep
 nights: 14
 ```

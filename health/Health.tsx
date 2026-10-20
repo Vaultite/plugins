@@ -11,7 +11,8 @@ const meta = (l: Log) => {
   const n = exercises(l).length
   if (n) return [`${n} ${n === 1 ? "exercise" : "exercises"}`, l.data?.volume_kg && `${numberText(Math.round(l.data.volume_kg))} kg`].filter(Boolean).join(" · ")
   const place = l.data?.place && l.data.place !== l.title ? l.data.place : null
-  return [l.data?.kind, place, climbLine(l)].filter(Boolean).join(" · ")
+  const d = l.data ?? {}
+  return [d.kind ?? d.activity, place, climbLine(l), d.distance_km && `${d.distance_km} km`, d.kcal && `${d.kcal} kcal`, d.avg_hr && `${d.avg_hr} bpm`].filter(Boolean).join(" · ")
 }
 
 function Lifts({ logs }: { logs: Log[] }) {

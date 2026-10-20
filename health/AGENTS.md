@@ -5,4 +5,8 @@ with ```` ```block-workouts ```` and `area:`. A workout log has `kind` (Strength
 `kcal`, `protein`, `carbs`, `fat` (estimates from a photo are fine). A workout log has a ```` ```block-workout ````
 fence under its ```` ```block-log ````.
 
-No files of its own: it draws the workout, sleep and nutrition logs (the Health page).
+A day's activity is a log in `health` (Apple Health writes them: `steps`, `active_kcal`, `exercise_min`, `resting_hr`,
+`hrv_ms`, `vo2max`, `weight_kg`), drawn by ```` ```block-activity ````; a night may have `deep_min`, `core_min`, `rem_min`,
+`awake_min`.
+
+No files of its own: it draws the workout, sleep, activity and nutrition logs (the Health page).

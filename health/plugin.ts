@@ -1,4 +1,4 @@
-// Health: workouts, sleep and nutrition drawn from the logs (no files of its own): the areas it brings to Logs, and its
+// Health: workouts, sleep, activity and nutrition drawn from the logs (no files of its own): the areas it brings to Logs, and its
 // blocks as text.
 import { addDays, bullets, type BlockCtx, fmtMin, Plugin, section } from "@vaultite/core/plugins.ts"
 import { isArchived, type Item, str } from "@vaultite/core/vault.ts"
@@ -10,16 +10,24 @@ export const plugin = new Plugin(import.meta.url)
 // The areas it draws, for a vault that has no areas setting (and each area's icon and colour, for one that has them
 // without): Logs asks every plugin that's on (core/logs/plugin.ts).
 plugin.provide("log-areas", () => [
-  { slug: "health", name: "Health", icon: "heart", tint: "health" },
+  { slug: "health", name: "Health", icon: "heart", tint: "health", track_duration: false, fields: [
+    { key: "steps", label: "Steps", type: "number" }, { key: "active_kcal", label: "Move", type: "number", unit: "kcal" },
+    { key: "exercise_min", label: "Exercise", type: "number", unit: "min" }, { key: "resting_hr", label: "Resting heart rate", type: "number", unit: "bpm" },
+    { key: "hrv_ms", label: "HRV", type: "number", unit: "ms" }, { key: "vo2max", label: "VO2 max", type: "number" },
+    { key: "weight_kg", label: "Weight", type: "number", unit: "kg" }] },
   { slug: "workouts", name: "Workouts", icon: "dumbbell", tint: "pink", parent: "health", weekly_goal: 3, blocks: ["workout"], fields: [
     { key: "kind", label: "Kind", type: "text" },
     { key: "place", label: "Place", type: "text" },
     { key: "exercises", label: "Exercises", type: "json" },
     { key: "volume_kg", label: "Volume", type: "number", unit: "kg" },
-    { key: "sets", label: "Sets", type: "number" }] },
+    { key: "sets", label: "Sets", type: "number" },
+    { key: "kcal", label: "Energy", type: "number", unit: "kcal" },
+    { key: "avg_hr", label: "Average heart rate", type: "number", unit: "bpm" }] },
   { slug: "sleep", name: "Sleep", icon: "moon", tint: "indigo", parent: "health", fields: [
     { key: "bed", label: "Bedtime", type: "text" }, { key: "wake", label: "Wake", type: "text" },
-    { key: "in_bed_min", label: "In bed", type: "number", unit: "min" }] },
+    { key: "in_bed_min", label: "In bed", type: "number", unit: "min" },
+    { key: "deep_min", label: "Deep", type: "number", unit: "min" }, { key: "core_min", label: "Core", type: "number", unit: "min" },
+    { key: "rem_min", label: "REM", type: "number", unit: "min" }, { key: "awake_min", label: "Awake", type: "number", unit: "min" }] },
   { slug: "nutrition", name: "Nutrition", icon: "apple", tint: "green", parent: "health", track_duration: false, fields: [
     { key: "meal", label: "Meal", type: "text" },
     { key: "kcal", label: "Calories", type: "number", unit: "kcal" },
@@ -75,9 +83,23 @@ plugin.block("sleep", (ctx) => {
   const got = Array.from({ length: n }, (_, k) => by.get(addDays(t, -k))).filter((l): l is Item => !!l)
   ctx.source(got)
   const avg = got.length ? got.reduce((s, l) => s + (l.duration_min || 0), 0) / got.length : 0
-  const rows = got.map((l) => `${l.date}: ${fmtMin(l.duration_min)}` + (l.data.bed ? ` (${l.data.bed} to ${l.data.wake ?? "None"})` : ""))
+  const stages = (d: Item) => ([["deep_min", "deep"], ["core_min", "core"], ["rem_min", "REM"], ["awake_min", "awake"]] as const)
+    .filter(([k]) => d[k]).map(([k, w]) => `${fmtMin(d[k])} ${w}`).join(", ")
+  const rows = got.map((l) => `${l.date}: ${fmtMin(l.duration_min)}` + (l.data.bed ? ` (${l.data.bed} to ${l.data.wake ?? "None"})` : "") +
+    (stages(l.data) ? `; ${stages(l.data)}` : ""))
   return section("Sleep", `${n}-night average: ${avg ? fmtMin(Math.round(avg)) : "no data"} (${got.length} of ${n} nights recorded).`,
     bullets(rows, "No sleep data."))
+})
+
+plugin.block("activity", (ctx) => {
+  const n = Math.max(1, Math.min(31, Math.trunc(Number(ctx.options.days || 7))))
+  const by = new Map(logs("health").filter((l) => l.data.steps != null || l.data.active_kcal != null || l.data.resting_hr != null).map((l) => [l.date, l]))
+  const got = Array.from({ length: n }, (_, k) => by.get(addDays(ctx.today, -k))).filter((l): l is Item => !!l)
+  ctx.source(got)
+  const UNITS: [string, string][] = [["steps", "steps"], ["active_kcal", "kcal move"], ["exercise_min", "min exercise"], ["resting_hr", "bpm resting"],
+    ["hrv_ms", "ms HRV"], ["vo2max", "VO2 max"], ["weight_kg", "kg"]]
+  const rows = got.map((l) => `${l.date}: ${UNITS.filter(([k]) => l.data[k] != null).map(([k, u]) => `${str(l.data[k])} ${u}`).join(", ")}`)
+  return section("Activity", bullets(rows, "No activity logged."))
 })
 
 plugin.block("nutrition", (ctx) => {

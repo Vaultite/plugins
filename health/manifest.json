@@ -2,8 +2,8 @@
   "id": "health",
   "icon": "heart",
   "name": "Health",
-  "description": "Workouts, sleep and nutrition from your logs: the Health page, and sleep and meals blocks for Today.",
-  "version": "1.0.0",
+  "description": "Workouts, sleep, activity and nutrition from your logs: the Health page, and sleep, activity and meals blocks for Today.",
+  "version": "1.1.0",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 4,
@@ -29,7 +29,7 @@
       }
     },
     "sleep": {
-      "description": "last night's sleep and the average over the last nights",
+      "description": "last night's sleep (its stages when the Watch measured them) and the average over the last nights",
       "options": {
         "nights": {
           "type": "number",
@@ -37,6 +37,18 @@
           "min": 1,
           "max": 60,
           "description": "how many nights the average covers"
+        }
+      }
+    },
+    "activity": {
+      "description": "today's steps, energy and exercise, the latest resting heart rate, HRV and VO2 max, and a week of steps (Apple Health's day logs)",
+      "options": {
+        "days": {
+          "type": "number",
+          "default": 7,
+          "min": 1,
+          "max": 31,
+          "description": "how many days of steps it shows"
         }
       }
     },
