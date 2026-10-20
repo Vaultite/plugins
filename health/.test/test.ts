@@ -29,9 +29,9 @@ try {
     { area: "health", date: day, source: "apple-health", ext_id: `day ${day}`, title: "Activity", data: { steps: 8123, active_kcal: 410, resting_hr: 54 } },
   ])
   const night = (await s.api("GET", "logs?area=sleep"))[1].find((l: { date: string }) => l.date === day)
-  await s.api("PUT", `logs/${encodeURIComponent(night.id)}`, { data: { deep_min: 70, rem_min: 95 } })
+  await s.api("PUT", `logs/${encodeURIComponent(night.id)}`, { data: { deep_min: 70, rem_min: 95, awake_min: 12, timeline: "-5 C60 D70 C50 A12 R95 C30" } })
   const [, page2] = await s.api("GET", "render?path=Dashboards/Health.md")
-  check("its page: last night's stages and today's activity", page2.includes("1 h 10 min deep, 1 h 35 min REM") && page2.includes("8123 steps, 410 kcal move") && page2.includes("54 bpm resting"), page2.slice(page2.indexOf("## Activity"), page2.indexOf("## Activity") + 400))
+  check("its page: last night's stages and today's activity", page2.includes("1 h 10 min deep, 1 h 35 min REM") && /Last night's score: \d+ \((Excellent|High|OK|Low|Very low)\)/.test(page2) && page2.includes("8123 steps, 410 kcal move") && page2.includes("54 bpm resting"), page2.slice(page2.indexOf("## Activity"), page2.indexOf("## Activity") + 400))
   s.vau("plugin", "off", "health")
   check("off, it brings no areas", !(await areas()).some((a) => a.slug === "workouts"), (await areas()).map((a) => a.slug))
 } finally {

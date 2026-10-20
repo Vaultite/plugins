@@ -5,35 +5,47 @@ import {
   Stat, today, type Store,
 } from "@vaultite"
 import { logsOf } from "@plugins/logs/types"
+import { Hypnogram, RING, Rings, ScoreRing, STAGE, Trend, type RingValue } from "./charts"
+import { scoreOf } from "./sleep"
 
 export function SleepPanel({ store, nights = 7 }: { store: Store; nights?: number }) {
   const t = today()
   const logs = logsOf(store, "sleep")
-  const last = logs.find((l) => l.date >= addDays(t, -1))
+  const i = logs.findIndex((l) => l.date >= addDays(t, -1))
+  const last = i >= 0 ? logs[i] : undefined
   const days = range(addDays(t, -(nights - 1)), nights)
   const byDate = new Map(logs.map((l) => [l.date, l]))
   const recent = days.map((d) => byDate.get(d)).filter(Boolean)
   const avg = recent.length ? recent.reduce((n, l) => n + (l!.duration_min || 0), 0) / recent.length : 0
+  const score = last ? scoreOf(last, logs.slice(i + 1)) : null
+  const d = last?.data ?? {}
   return (
     <Panel title="Sleep" icon={Moon} tint="var(--indigo)">
       {!logs.length ? (
         <Empty>No sleep data yet. Turn on Apple Health in the iPhone app's Settings, or tell Claude how you slept.</Empty>
       ) : (
         <>
-          <div className="mb-4 grid grid-cols-2 gap-4">
-            <Stat label={last ? (last.date === t ? "Last night" : fmtDay(last.date)) : "Last night"}
-              value={last ? fmtMin(last.duration_min || 0) : "—"}
-              hint={last?.data?.bed && `${last.data.bed} → ${last.data.wake}`} />
-            <Stat label={`${nights}-night average`} value={avg ? fmtMin(Math.round(avg)) : "—"}
-              hint={`${recent.length} of ${nights} nights recorded`} />
+          <div className="mb-4 flex items-start gap-5">
+            {score && <ScoreRing value={score.total} label={score.label} />}
+            <div className="grid min-w-0 flex-1 grid-cols-2 gap-4">
+              <Stat label={last ? (last.date === t ? "Time asleep" : fmtDay(last.date)) : "Last night"}
+                value={last ? fmtMin(last.duration_min || 0) : "—"}
+                hint={d.bed && `${d.bed} → ${d.wake}${d.in_bed_min ? `, ${fmtMin(Number(d.in_bed_min))} in bed` : ""}`} />
+              <Stat label={`${nights}-night average`} value={avg ? fmtMin(Math.round(avg)) : "—"}
+                hint={`${recent.length} of ${nights} nights recorded`} />
+            </div>
           </div>
-          {last && <Stages data={last.data ?? {}} />}
-          <Bars color="var(--indigo)" height={72} goal={8}
+          {last && <Hypnogram timeline={d.timeline} bed={d.bed} wake={d.wake} />}
+          {last && <StageTotals data={d} />}
+          {score && <p className="num mb-4 text-[12px] text-muted-foreground">
+            Score: duration {score.duration} of 50, bedtime {score.bedtime} of 30, interruptions {score.interruptions} of 20
+          </p>}
+          <Bars color={STAGE.R.color} height={72} goal={8}
             format={(v) => (v ? fmtMin(Math.round(v * 60)) : "no data")}
-            data={days.map((d) => ({
-              label: dateText(parse(d), { weekday: "narrow" }),
-              tip: fmtDay(d),
-              value: (byDate.get(d)?.duration_min || 0) / 60,
+            data={days.map((day) => ({
+              label: dateText(parse(day), { weekday: "narrow" }),
+              tip: fmtDay(day),
+              value: (byDate.get(day)?.duration_min || 0) / 60,
             }))} />
         </>
       )}
@@ -41,51 +53,67 @@ export function SleepPanel({ store, nights = 7 }: { store: Store; nights?: numbe
   )
 }
 
-// A night's stages as the Watch measured them, in the order of a night's chart.
-const STAGES = [["deep_min", "Deep", "var(--indigo)"], ["core_min", "Core", "var(--blue)"], ["rem_min", "REM", "var(--teal)"], ["awake_min", "Awake", "var(--orange)"]] as const
-
-function Stages({ data }: { data: Record<string, unknown> }) {
-  const parts = STAGES.map(([k, label, color]) => ({ label, color, min: Number(data[k]) || 0 })).filter((p) => p.min > 0)
+/** Each stage's time and share of the night, as under Health's chart. */
+function StageTotals({ data }: { data: Record<string, unknown> }) {
+  const parts = ([["A", "awake_min"], ["R", "rem_min"], ["C", "core_min"], ["D", "deep_min"]] as const)
+    .map(([s, k]) => ({ ...STAGE[s], min: Number(data[k]) || 0 })).filter((p) => p.min > 0)
   const total = parts.reduce((n, p) => n + p.min, 0)
   if (!total) return null
   return (
-    <div className="mb-4">
-      <div className="flex h-2 overflow-hidden rounded-full">
-        {parts.map((p) => <div key={p.label} style={{ width: `${(p.min / total) * 100}%`, background: p.color }} />)}
-      </div>
-      <div className="mt-1.5 flex flex-wrap gap-x-3 text-[13px] text-muted-foreground">
-        {parts.map((p) => <span key={p.label} className="num"><span className="mr-1 inline-block size-2 rounded-full" style={{ background: p.color }} />{p.label} {fmtMin(p.min)}</span>)}
-      </div>
+    <div className="mb-3 grid grid-cols-4 gap-2">
+      {parts.map((p) => (
+        <div key={p.label} className="min-w-0">
+          <div className="flex items-center gap-1 text-[12px] text-muted-foreground"><span className="inline-block size-2 rounded-full" style={{ background: p.color }} />{p.label}</div>
+          <div className="num text-[15px] font-semibold">{fmtMin(p.min)}</div>
+          <div className="num text-[11px] text-muted-foreground">{Math.round((p.min / total) * 100)}%</div>
+        </div>
+      ))}
     </div>
   )
 }
 
-/** ```block-activity: today's steps, energy and exercise as the phone counted them, the latest heart numbers, a week of
- *  steps. From the day logs Apple Health writes (area health). */
+/** ```block-activity: today's rings and steps as the phone counted them, a week of steps, and resting heart rate, HRV
+ *  and VO2 max over the last month. From the day logs Apple Health writes (area health). */
 export function ActivityPanel({ store, days = 7 }: { store: Store; days?: number }) {
   const t = today()
   const logs = logsOf(store, "health").filter((l) => l.data?.steps != null || l.data?.active_kcal != null || l.data?.resting_hr != null)
   const byDate = new Map(logs.map((l) => [l.date, l]))
   const day = byDate.get(t)?.data ?? {}
-  const latest = (k: string) => logs.find((l) => l.data?.[k] != null)?.data?.[k] as number | undefined
   const shown = range(addDays(t, -(days - 1)), days)
+  const month = range(addDays(t, -29), 30)
+  const series = (k: string) => month.map((d) => { const v = byDate.get(d)?.data?.[k]; return typeof v === "number" ? v : null })
+  // Without the day's goals (before the rings came in), Apple's defaults.
+  const rings: RingValue[] = [
+    { label: "Move", value: Number(day.active_kcal) || 0, goal: Number(day.move_goal) || 500, unit: "kcal", color: RING.move },
+    { label: "Exercise", value: Number(day.exercise_min) || 0, goal: Number(day.exercise_goal) || 30, unit: "min", color: RING.exercise },
+    { label: "Stand", value: Number(day.stand_h) || 0, goal: Number(day.stand_goal) || 12, unit: "h", color: RING.stand },
+  ]
   return (
     <Panel title="Activity" icon={Activity} tint="var(--red)">
       {!logs.length ? (
         <Empty>No activity yet. Turn on Apple Health in the iPhone app's Settings.</Empty>
       ) : (
         <>
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <Stat label="Steps" value={day.steps != null ? numberText(day.steps) : "—"} />
-            <Stat label="Move" value={day.active_kcal ?? "—"} unit={day.active_kcal != null ? "kcal" : undefined} />
-            <Stat label="Exercise" value={day.exercise_min ?? "—"} unit={day.exercise_min != null ? "min" : undefined} />
+          <div className="mb-4 flex items-center gap-5">
+            <Rings rings={day.stand_h != null ? rings : rings.slice(0, 2)} />
+            <div className="grid min-w-0 flex-1 gap-1.5">
+              {(day.stand_h != null ? rings : rings.slice(0, 2)).map((r) => (
+                <div key={r.label} className="num text-[15px]">
+                  <span className="text-[13px]" style={{ color: r.color }}>{r.label}</span>{" "}
+                  <span className="font-semibold">{numberText(Math.round(r.value))}</span>
+                  <span className="text-muted-foreground">/{numberText(Math.round(r.goal))} {r.unit}</span>
+                </div>
+              ))}
+              <div className="num text-[15px]"><span className="text-[13px] text-muted-foreground">Steps</span>{" "}
+                <span className="font-semibold">{day.steps != null ? numberText(day.steps) : "—"}</span></div>
+            </div>
           </div>
-          <Bars color="var(--red)" height={64} format={(v) => (v ? `${numberText(Math.round(v))} steps` : "no data")}
+          <Bars color={RING.move} height={64} format={(v) => (v ? `${numberText(Math.round(v))} steps` : "no data")}
             data={shown.map((d) => ({ label: dateText(parse(d), { weekday: "narrow" }), tip: fmtDay(d), value: Number(byDate.get(d)?.data?.steps) || 0 }))} />
           <div className="mt-4 grid grid-cols-3 gap-4">
-            <Stat label="Resting" value={latest("resting_hr") ?? "—"} unit={latest("resting_hr") ? "bpm" : undefined} />
-            <Stat label="HRV" value={latest("hrv_ms") ?? "—"} unit={latest("hrv_ms") ? "ms" : undefined} />
-            <Stat label="VO₂ max" value={latest("vo2max") ?? "—"} hint={latest("weight_kg") ? `${latest("weight_kg")} kg` : undefined} />
+            <Trend label="Resting HR" unit="bpm" values={series("resting_hr")} color="var(--red)" />
+            <Trend label="HRV" unit="ms" values={series("hrv_ms")} color="var(--indigo)" />
+            <Trend label="VO₂ max" unit="" values={series("vo2max")} color="var(--green)" />
           </div>
         </>
       )}
