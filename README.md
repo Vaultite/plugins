@@ -1,10 +1,15 @@
 # Vaultite plugins
 
-Vaultite's own plugins that don't ship with the app, and the plugin directory's data. Each top-level folder is one
-plugin, installed like anyone's: `vau plugin install Vaultite/plugins/<id>`, or from the Plugins page's Browse.
+Vaultite's own plugins that don't ship with the app, community bundles, and the plugin directory's data. Each top-level
+folder is one plugin, installed like anyone's: `vau plugin install Vaultite/plugins/<id>`, or from the Plugins page's
+Browse.
 
-- `directory/`: `listed.json` (repositories the topic search misses), `blocked.json` (versions with a known problem) and
-  `index.json`, the directory the app reads (built by the app's `tools/plugin-index.ts`).
+- `bundles/<id>/`: bundles (whole setups of the app) that aren't built in, listed in the directory:
+  `vau bundle import Vaultite/plugins/bundles/<id>`, or from the Bundles page's Browse. `agents`: coding agents in
+  terminals beside your pages, their sessions and limits, your machines and the server.
+- `directory/`: `listed.json` (what the topic searches miss: `plugins`, repositories; `bundles`, a repository or a folder
+  in one), `blocked.json` (plugin versions, or bundles' places, with a known problem) and `index.json`, the directory the
+  app reads (built by the app's `tools/plugin-index.ts`).
 
 ## License
 

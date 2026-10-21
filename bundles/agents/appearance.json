@@ -1,0 +1,21 @@
+{
+  "theme": "system",
+  "scheme": "tokyo-night",
+  "density": "compact",
+  "sidebarScroll": "panels",
+  "panelDividers": false,
+  "quickTextSize": false,
+  "interfaceFont": "",
+  "textFont": "",
+  "monoFont": "",
+  "snippets": [],
+  "fileIcons": true,
+  "tabBar": true,
+  "paneTitles": true,
+  "rails": true,
+  "lineNumbers": false,
+  "statusBar": null,
+  "statusBarMore": [],
+  "fileBar": null,
+  "pullActions": null
+}

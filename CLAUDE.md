@@ -4,14 +4,18 @@ Plugins that live outside the app's repo, written against the public plugin API 
 plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's checkout is `../vaultite` (`$VAULTITE_APP`).
 
 - One folder per plugin, its id as the name, `manifest.json` at its top with `repo: "Vaultite/plugins"`.
+- `bundles/<id>/`: community bundles (the app's `core/docs/bundles.md`), listed in `directory/listed.json`'s `bundles`
+  (`Vaultite/plugins/bundles/<id>`). Each states every appearance key and plugin setting the app's own bundles set (so it
+  replaces their look), installs only this repository's plugins, and passes `node test_bundles.ts` (run by test.ts).
 - Types against the app: `ln -s ../vaultite/node_modules node_modules` once, then `npm run typecheck`.
 - Check one: `node ../vaultite/tools/check_plugins.ts --plugin <id> --installable`. A release is a tag
   `<id>/v<version>` matching its manifest's `version`.
-- After tagging a release, rebuild the directory, or Browse won't show it until `index.yml`'s daily run:
+- After tagging a release or changing a bundle (and pushing), rebuild the directory, or Browse won't show it until
+  `index.yml`'s daily run:
   `GITHUB_TOKEN=$(gh auth token) node ../vaultite/tools/plugin-index.ts --listed directory/listed.json --blocked
   directory/blocked.json --out directory/index.json`, commit and push.
-- Every folder here shows in the app's Get plugins: public plugins only. One person's plugins (their tools, accounts,
-  data) go in a repository of their own.
+- Every plugin here shows in the app's Get plugins (and every bundle in its Browse): public ones only. One person's
+  plugins (their tools, accounts, data) go in a repository of their own.
 - Tests: `node test.ts [id...]` checks each plugin and runs its `<id>/.test/test.ts` (hidden: never installed, not part
   of its version) on a throwaway server (`testkit.ts`: a sandbox vault, ports 8930-8939, the plugin installed and on).
   QA scripts, `<id>/.test/qa/<name>.mjs <base url>`, use the app's `web/qa/lib` (`qa.mjs` here) and install the

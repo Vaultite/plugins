@@ -1,0 +1,89 @@
+{
+  "disabled": [],
+  "enabled": [
+    "activity",
+    "agent-meters",
+    "ai-import",
+    "audio-recorder",
+    "codex",
+    "cursor",
+    "dispatch",
+    "grok-bot",
+    "hermes",
+    "lessons",
+    "machines",
+    "muse",
+    "notes",
+    "openclaw",
+    "opencode",
+    "projects",
+    "token-count",
+    "web-viewer",
+    "workspaces"
+  ],
+  "install": {
+    "cursor": {
+      "name": "Cursor",
+      "source": "Vaultite/plugins/cursor",
+      "tag": "cursor/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "77bab6cf7a4edcd7"
+    },
+    "dispatch": {
+      "name": "Dispatch",
+      "source": "Vaultite/plugins/dispatch",
+      "tag": "dispatch/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "994fa6c06576657b"
+    },
+    "grok-bot": {
+      "name": "Grok Bot",
+      "source": "Vaultite/plugins/grok-bot",
+      "tag": "grok-bot/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "1781a0c2b115b2ad"
+    },
+    "hermes": {
+      "name": "Hermes",
+      "source": "Vaultite/plugins/hermes",
+      "tag": "hermes/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "effa6ce6cf101ed5"
+    },
+    "lessons": {
+      "name": "Lessons",
+      "source": "Vaultite/plugins/lessons",
+      "tag": "lessons/v1.0.0",
+      "commit": "fa9a82bad699995dc5c55aa2489ccd9ac62f3e28",
+      "hash": "534db975a47b4580"
+    },
+    "muse": {
+      "name": "Muse",
+      "source": "Vaultite/plugins/muse",
+      "tag": "muse/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "53aff2a35b2f3c6a"
+    },
+    "openclaw": {
+      "name": "OpenClaw",
+      "source": "Vaultite/plugins/openclaw",
+      "tag": "openclaw/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "1d4757be1fa99a4b"
+    },
+    "opencode": {
+      "name": "OpenCode",
+      "source": "Vaultite/plugins/opencode",
+      "tag": "opencode/v1.0.0",
+      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
+      "hash": "42ba5d71ce69be6a"
+    },
+    "projects": {
+      "name": "Projects",
+      "source": "Vaultite/plugins/projects",
+      "tag": "projects/v1.0.0",
+      "commit": "fa9a82bad699995dc5c55aa2489ccd9ac62f3e28",
+      "hash": "eb729c28cc0f9176"
+    }
+  }
+}

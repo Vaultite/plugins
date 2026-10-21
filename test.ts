@@ -1,5 +1,5 @@
 // Every plugin here, against the app at $VAULTITE_APP (default ../vaultite): the app's check as an installable vault
-// plugin, then its own tests (<id>/.test/test.ts: hidden, so never installed).   node test.ts [id...]
+// plugin, then its own tests (<id>/.test/test.ts: hidden, so never installed); then the bundles.   node test.ts [id...]
 import { spawnSync } from "node:child_process"
 import fs from "node:fs"
 import path from "node:path"
@@ -22,5 +22,6 @@ for (const id of ids) {
   const test = path.join(id, ".test", "test.ts")
   if (fs.existsSync(path.join(HERE, test))) run(`${id} (test)`, [test])
 }
-console.log(failed.length ? `\nFailed: ${failed.join(", ")}` : `\nAll ${ids.length} plugins pass`)
+if (process.argv.length <= 2) run("bundles", ["test_bundles.ts"])
+console.log(failed.length ? `\nFailed: ${failed.join(", ")}` : `\nAll ${ids.length} plugins and the bundles pass`)
 process.exit(failed.length ? 1 : 0)
