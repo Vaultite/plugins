@@ -4,7 +4,7 @@ import { agentsOn, cell, cn, confirmDialog, currentEditor, currentFile, currentW
 import type { Action } from "./types"
 
 // Dispatch: each action is a button in a note's header (after Provenance's label), a command and a file menu item; the
-// backend (plugin.ts, the op dispatch.run) starts it in a new terminal, here or on another machine, and this page opens its tab.
+// backend (plugin.ts, the op dispatch.run, through Terminal's terminal.run) starts it in a new terminal, here or on another machine, and this page opens its tab.
 
 const dispatchable = (path: string) => /\.md$/i.test(path) && !isHidden(path)
 const actionsOf = (store: Store | null): Action[] => store?.dispatch?.actions ?? []

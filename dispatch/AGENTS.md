@@ -4,7 +4,9 @@ Claude Code", ⌘⇧↩) and an item in the file's menus (an inbox result's too)
 Mac: an agent given a prompt with the note's path (not its text: it reads the latest version and may edit it), or a
 shell command typed into a new shell. An agent that reports to the inbox runs in the background (a toast offers "Open
 session"; option-click the button to watch it); a command, or an agent with `report: false`, opens its tab in the
-user's window. From outside the app: `vau dispatch <file>` (`--open` to open its tab anyway).
+user's window. From outside the app: `vau dispatch <file>` (`--open` to open its tab anyway). Dispatch is only these
+buttons, commands and menus: Terminal's `terminal.run` (`vau terminal run <file>`) starts each run, here or on another
+machine, and a scheduled note (a vault plugin's `schedule`) should call that, not Dispatch.
 
 On another of the Machines that has this vault (the same `vault` id): `vau dispatch <file> --machine <id>`; in another
 of the agent's accounts: `--account <id>` (personal). In the app: right-click (hold, on a phone) the header button, the
@@ -14,8 +16,8 @@ menu run at the workspace's default place, where its new terminals and agents op
 where ("Personal · M1") when there's more than one place; a default machine that's away gives way to this one.
 While a session a dispatch started still runs, the same dispatch again (a second click) opens that one rather than
 starting another (`running: true`), and its button wears a dot meanwhile (`GET /api/dispatch/running`); "Dispatch
-again" in that menu, or `--again`, starts another anyway. The server
-asked passes it to that machine's (both check it's the owner), once its copy of the file matches; the terminal there
+again" in that menu, or `--again`, starts another anyway. terminal.run
+passes it to that machine's server (both check it's the owner), once its copy of the file matches; the terminal there
 opens here as `<id>@<machine>`, and a reply to its report resumes the session there.
 
 The actions are `.vaultite/plugins/dispatch/data.json` (or its settings sheet), in the header's order:

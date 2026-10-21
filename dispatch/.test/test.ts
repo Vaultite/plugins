@@ -1,5 +1,5 @@
-// Dispatch in this process, on another machine (a made-up peer server, listed in Machines): passed on to its server
-// once its copy of the note matches, the terminal named with its machine; and what it refuses.
+// Dispatch in this process: an action handed to terminal.run, which passes it on to another machine (a made-up peer
+// server, listed in Machines) once its copy of the note matches; and what it refuses.
 //   node dispatch/.test/test.ts
 import fs from "node:fs"
 import http from "node:http"
@@ -17,10 +17,10 @@ const peer = http.createServer((req, res) => {
   if (req.url === "/api/machines/self") return json(200, { instance: "peer-1", host: "box", platform: "linux", version: "0.1.0", commit: "abc1234", plugins: ["terminal", "dispatch"],
     vault: peerVault ?? JSON.parse(fs.readFileSync(path.join(s.vault, ".vaultite/plugins/machines/vault.json"), "utf8")).id })
   if (req.url === "/api/file?path=Notes%2FQa%20there.md") return json(200, { path: "Notes/Qa there.md", text: "Over there.\n" })
-  if (req.url === "/api/ops/dispatch.run" && req.method === "POST") {
+  if (req.url === "/api/ops/terminal.run" && req.method === "POST") {
     let b = ""
     req.on("data", (d) => { b += d })
-    req.on("end", () => { seen.push(`dispatch ${b}`); json(200, { id: "claude-qa1", action: "claude", path: "Notes/Qa there.md", shown: false }) })
+    req.on("end", () => { seen.push(`run ${b}`); json(200, { id: "claude-qa1", path: "Notes/Qa there.md", shown: false, handed: true }) })
     return
   }
   json(404, { error: "no such thing" })
@@ -33,8 +33,9 @@ try {
   await api("GET", "machines") // (this vault's id made)
   write("Notes/Qa there.md", "Over there.\n")
   let [c, body] = await api("POST", "ops/dispatch.run", { path: "Notes/Qa there.md", machine: "box", open: false })
-  check("on another machine, its terminal there", c === 200 && body.id === "claude-qa1@box" && body.machine === "box" &&
-    seen.includes(`dispatch ${JSON.stringify({ path: "Notes/Qa there.md", action: "claude", open: false })}`), [c, body, seen.slice(-3)])
+  check("on another machine, its terminal there, the action's agent and prompt", c === 200 && body.id === "claude-qa1@box" && body.machine === "box" &&
+    body.action === "claude" && seen.includes(`run ${JSON.stringify({ path: "Notes/Qa there.md", agent: "claude", prompt: "Read the note {path} and do what it asks.", open: false })}`),
+    [c, body, seen.slice(-3)])
   const passed = await s.app.runOp("dispatch.run", { path: "Notes/Qa there.md", machine: "box" }, { who: { client: "machine/other", agent: null, label: "other", source: "other" } })
     .then(() => null, (e: Any) => e)
   check("one passed on from another machine isn't passed on again", passed?.status === 409, passed?.message)
