@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-21T17:34:50.138Z",
+  "generated": "2026-10-21T18:05:21.369Z",
   "plugins": [
     {
       "id": "today",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -41,7 +41,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -73,7 +73,7 @@
       "stars": 0,
       "released": "2026-10-19T04:22:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -105,7 +105,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -137,7 +137,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -174,7 +174,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -206,7 +206,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -233,7 +233,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -264,7 +264,7 @@
       "stars": 0,
       "released": "2026-10-20T18:27:54Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,7 +303,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -336,7 +336,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -362,7 +362,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -393,7 +393,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -422,7 +422,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -451,7 +451,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -481,7 +481,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -512,7 +512,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -541,7 +541,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -573,7 +573,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -600,7 +600,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -632,7 +632,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -664,7 +664,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -693,7 +693,7 @@
       "stars": 0,
       "released": "2026-10-20T20:46:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -720,7 +720,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -752,7 +752,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -789,7 +789,7 @@
       "stars": 0,
       "released": "2026-10-17T05:13:58Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -822,7 +822,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -853,7 +853,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -873,16 +873,16 @@
     {
       "id": "dispatch",
       "name": "Dispatch",
-      "description": "Hand a note to a coding agent: a button in the note's header (and a command, ⌘⇧↩) starts Claude Code in a new terminal on this machine (or another of your machines), told to read the note and do what it asks. Its actions are yours to change: another agent, another prompt, or a shell command of your own.",
+      "description": "Hand a note to a coding agent: a button in the note's header (and a command, ⌘⇧↩) starts Claude Code in a new terminal on this machine (or another of your machines), told to read the note and do what it asks. Its actions are yours to change: another agent, another prompt, or a shell command of your own. Terminal's `vau terminal run` starts them, which scheduled notes use too.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "dispatch",
-      "version": "1.0.0",
-      "tag": "dispatch/v1.0.0",
+      "version": "1.1.0",
+      "tag": "dispatch/v1.1.0",
       "stars": 0,
-      "released": "2026-10-17T00:03:57Z",
+      "released": "2026-10-21T17:59:49Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -913,7 +913,7 @@
       "stars": 0,
       "released": "2026-10-19T04:22:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -945,7 +945,7 @@
       "stars": 0,
       "released": "2026-10-17T00:03:57Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -977,7 +977,7 @@
       "stars": 0,
       "released": "2026-10-19T05:08:18Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1003,7 +1003,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1033,7 +1033,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1064,7 +1064,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-10-21T17:31:41Z",
+      "pushed": "2026-10-21T18:05:20Z",
       "issues": {
         "open": 0,
         "closed": 0
