@@ -133,8 +133,8 @@ export class Vault extends Events {
 
   private async loadConfig() {
     try {
-      const { base64 } = await get<{ base64: string }>(`plugin-compat/config/read?${q(".obsidian/app.json")}`)
-      Object.assign(this.config, JSON.parse(new TextDecoder().decode(unb64(base64))))
+      const { base64 } = await get<{ base64: string | null }>(`plugin-compat/config/read?optional=1&${q(".obsidian/app.json")}`)
+      if (base64 !== null) Object.assign(this.config, JSON.parse(new TextDecoder().decode(unb64(base64))))
     } catch { /* no app.json: Obsidian's defaults */ }
   }
 

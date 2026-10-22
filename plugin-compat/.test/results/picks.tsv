@@ -1,0 +1,11 @@
+id	web	phone	notes
+obsidian-map-view	works	untested	map view with markers from frontmatter and inline geolinks, its code blocks, geolinks in the editor, settings; CARTO's default tiles now ask for an API key (Obsidian too), OpenStreetMap's draw; its Bases view and CLI handler aren't here
+obsidian-file-info-plugin	works	untested	side view and status bar follow the open note: size, dates, words, sentences, word frequency
+obsidian-nomnoml-diagram	works	untested	nomnoml code blocks drawn as SVG; New diagram inserts a block at the cursor
+obsidian-plugin-todo	works	untested	side view lists the vault's todos by Today, Scheduled and Inbox; ticking one writes the note; reading every note at load takes a while (one request each)
+obsidian-read-it-later	works	untested	a URL from the clipboard saved as a note with its images (a Wikipedia article, a YouTube video)
+simple-embeds	partly	untested	YouTube and others embedded in live preview (its option); reading view, its default, is the app's read-only editor, which Obsidian's Markdown post-processors don't reach
+wikipedia-search	works	untested	search modal (Wikipedia's API), Open and Link article; the link is written at the cursor
+obsidian-zoom	works	untested	zoom into a list item hides the rest and shows its breadcrumb; zoom out restores
+music-code-blocks	works	untested	abc code blocks drawn as a score (abcjs)
+scales-chords	partly	untested	tab blocks bold their chords; the chord pictures come from scales-chords.com's API, which answers 403 (a Cloudflare challenge) to any app

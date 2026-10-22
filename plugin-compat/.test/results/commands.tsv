@@ -9,6 +9,6 @@ obsidian-advanced-uri	works	works	obsidian://advanced-uri links clicked in notes
 find-unlinked-files	works	works	writes the orphaned files note
 text-extractor	works	n/a	OCR of an image into a new note (computer); phone not run (Tesseract model download)
 obsidian-book-search-plugin	partly	partly	search goes to Google Books through requestUrl; its keyless daily quota answers 429 here (curl too)
-obsidian-dictionary-plugin	partly	partly	view opens, searches; api.dictionaryapi.dev answered 522 upstream (curl too)
+obsidian-dictionary-plugin	partly	partly	view, language switcher and settings work, a failed lookup says so; definitions come from api.dictionaryapi.dev, which answered 522 and 530 when tested (curl too)
 readwise-official	works	works	Connect reaches Readwise's login (no account to go further)
 obsidian-languagetool-plugin	works	works	Check text underlines the mistakes (api.languagetool.org)

@@ -239,17 +239,32 @@ export const editorViews = () => [...views]
 
 /** Obsidian's state fields: what an editor belongs to (its app, file and Editor: Linter, Dataview and Tasks read it from
  *  the state), and whether it's live preview. `info.cm` is set once its view exists. */
-export let infoOf: (cm: EditorView | null, path?: string) => { app: any; file: any; editor: Editor | null } = () => ({ app: null, file: null, editor: null })
+type Info = { app: any; file: any; editor: Editor | null; view?: any }
+export let infoOf: (cm: EditorView | null, path?: string) => Info = () => ({ app: null, file: null, editor: null })
 export const setInfoOf = (fn: typeof infoOf) => { infoOf = fn }
+/** Obsidian's field holds the editor's view (a note's MarkdownView: plugins test `instanceof MarkdownView` and call its
+ *  getDisplayText), so what this lacks is the view's, once there is one; as it, it's that view's class too. */
 class EditorInfo {
   cm: EditorView | null = null
   path: string | undefined
   /** An editor that isn't a note's tab (an inline one) says whose it is itself. */
-  own: { app: any; file: any; editor: Editor | null } | null = null
+  own: Info | null = null
   get app() { return this.own?.app ?? infoOf(this.cm, this.path).app }
   get file() { return this.own ? this.own.file : infoOf(this.cm, this.path).file }
   get editor() { return this.own ? this.own.editor : this.cm ? infoOf(this.cm, this.path).editor : null }
   get hoverPopover() { return null }
+  get view() { return this.own ? this.own.view ?? null : this.cm ? infoOf(this.cm, this.path).view ?? null : null }
+  constructor() {
+    return new Proxy(this, {
+      get(t, k, r) {
+        if (k in t) return Reflect.get(t, k, r)
+        const v = t.view, x = v?.[k]
+        return typeof x === "function" ? x.bind(v) : x
+      },
+      has: (t, k) => k in t || (!!t.view && k in t.view),
+      getPrototypeOf: (t) => (t.view ? Object.getPrototypeOf(t.view) : EditorInfo.prototype),
+    })
+  }
 }
 export const editorInfoField = StateField.define<EditorInfo>({ create: () => new EditorInfo(), update: (v) => v })
 /** The editor's EditorView, as Obsidian's field holds it: a stand-in until the view exists (an extension's create reads it). */
@@ -336,7 +351,7 @@ export class InlineMarkdownEditor extends Component {
     this.cm = new EditorView({ parent: this.editorEl, state: EditorState.create({ doc: "", extensions: this.extensions() }) })
     this.editor = new Editor({ view: this.cm, kind: "markdown" } as OpenEditor)
     this.info.cm = this.cm
-    this.info.own = { app, get file() { return owner?.file ?? null }, editor: this.editor }
+    this.info.own = { app, get file() { return owner?.file ?? null }, editor: this.editor, view: owner }
     // (a subclass's buildLocalExtensions reads what its constructor sets after super(): asked once that's done)
     queueMicrotask(() => {
       try { this.cm.dispatch({ effects: this.local.reconfigure(this.buildLocalExtensions()) }) } catch (e) { console.error(e) }

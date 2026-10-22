@@ -206,6 +206,8 @@ ownRoute("GET", "plugin-compat/config/stat", (req) => {
 })
 ownRoute("GET", "plugin-compat/config/read", (req) => {
   const b = config().read(cfgPath(req.query.path))
+  // (optional: a settings file Obsidian makes only once changed; its absence isn't an error in the page's console)
+  if (!b && req.query.optional) return { base64: null }
   if (!b) throw new HTTPError(404, "not there")
   return { base64: b.toString("base64") }
 })

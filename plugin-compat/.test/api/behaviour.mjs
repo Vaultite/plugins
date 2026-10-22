@@ -34,7 +34,9 @@ const r1 = await run(async (o, app) => {
 check("create: same object, events", r1.same && r1.ev.some((e) => e.startsWith("create Api test/A.md")) && r1.ev.some((e) => e.startsWith("changed Api test/A.md")), r1)
 check("metadata: links, tags, frontmatter", JSON.stringify(r1.links) === JSON.stringify(["B", "B#Sub", "Nowhere"]) && r1.tags?.join() === "#x,#y,#inline" && r1.fm?.aliases?.[0] === "Alpha", r1)
 check("links resolved and unresolved", r1.resolved?.["Api test/B.md"] === 2 && r1.unresolved?.Nowhere === 1, r1)
-check("list items and blocks", JSON.stringify(r1.tasks) === JSON.stringify([[" ", -9], ["x", 8]]) && r1.blocks.includes("c1"), r1)
+// (a child's parent is its item's line; a top item's is minus its list's first line, minus one: the file's lines,
+// the frontmatter the server adds included)
+check("list items and blocks", r1.tasks?.[0]?.[0] === " " && r1.tasks[1]?.[0] === "x" && r1.tasks[1][1] > 0 && r1.tasks[0][1] === -(r1.tasks[1][1] + 1) && r1.blocks.includes("c1"), r1)
 check("subpaths", r1.sub === "Sub" && r1.blk === "block", r1)
 check("link resolution and text", r1.dest === "Api test/B.md" && r1.linktext === "B" && r1.mdlink === "[[B#Sub|bee]]" && r1.backlinks.includes("Api test/A.md"), r1)
 
@@ -85,6 +87,30 @@ const r4 = await run(async (o, app) => {
 check("ES5 subclasses of Plugin and Modal", r4.plugin && r4.modal, r4)
 check("Component unloads children", r4.unloaded === 1 && r4.deb.join() === "2", r4)
 check("requestUrl's promise has .json", r4.req === true, r4)
+const r4b = await run(async (o) => {
+  const stray = []
+  const on = (e) => stray.push(String(e.reason).slice(0, 120))
+  window.addEventListener("unhandledrejection", on)
+  // (a page that isn't JSON: its text, no parse unless asked; a 404 that isn't JSON fails with its status)
+  const text = await o.requestUrl({ url: location.origin + "/" }).text
+  const failed = await o.requestUrl({ url: location.origin + "/no/such/file.png" }).then(() => null, (e) => ({ status: e.status, msg: e.message, text: typeof e.text }))
+  const kept = await o.requestUrl({ url: location.origin + "/no/such/file.png", throw: false })
+  const asked = (() => { try { return kept.json } catch (e) { return e.name } })()
+  await new Promise((r) => setTimeout(r, 300))
+  window.removeEventListener("unhandledrejection", on)
+  return { html: /^<!doctype/i.test(text), failed, kept: kept.status, asked, stray }
+})
+check("requestUrl: non-JSON answers parse only when asked, errors keep their status", r4b.html && r4b.failed?.status === 404 && /status 404/.test(r4b.failed.msg)
+  && r4b.failed.text === "string" && r4b.kept === 404 && r4b.asked === "SyntaxError" && !r4b.stray.length, r4b)
+const r4c = await run(async () => {
+  const r = await fetch(`${location.origin}/api/plugin-compat/config/read?optional=1&path=${encodeURIComponent(".obsidian/no-such.json")}`)
+  return { status: r.status, body: await r.json() }
+})
+await run(async () => { window.__probe.plugin.registerEditorExtension([]) })
+const probeReport = await until(async () => Object.values(await (await fetch(`${B}api/plugin-compat/report`)).json())
+  .flatMap((c) => c?.results ?? []).find((x) => x.id === "probe" && x.editorExtensions), 20000, 1000).catch(() => null)
+check("the load report says a plugin added editor extensions", !!probeReport, probeReport)
+check("absent settings files read as none, not a 404", r4c.status === 200 && r4c.body.base64 === null, r4c)
 
 // The editor: a note with frontmatter, positions in the whole file's lines.
 await page.evaluate(() => { location.hash = `#file/${encodeURIComponent("Api test/B.md")}` })
@@ -112,19 +138,35 @@ const r6 = await run(async (o, app) => {
   const end = ed.getCursor().ch === ed.getLine(n).length
   const info = ed.cm.state.field(o.editorInfoField, false)
   const view = ed.cm.state.field(o.editorEditorField, false)
-  return { sel, list: list[0]?.head?.ch, line: ed.getLine(n).slice(0, 4), word: word && ed.getRange(word.from, word.to), cur, end, info: info?.file?.path, view: view?.state === ed.cm.state }
+  const mv = app.workspace.getActiveViewOfType(o.MarkdownView), viewField = ed.cm.state.field(o.editorViewField, false)
+  return { sel, list: list[0]?.head?.ch, line: ed.getLine(n).slice(0, 4), word: word && ed.getRange(word.from, word.to), cur, end, info: info?.file?.path, view: view?.state === ed.cm.state,
+    isView: info instanceof o.MarkdownView && viewField instanceof o.MarkdownView, title: viewField?.getDisplayText?.(), leaf: info?.leaf === mv?.leaf && !!mv, type: info?.getViewType?.() }
 })
 check("editor selections, transactions, words, commands", r6.sel === "See" && r6.list === 3 && r6.line === "Read" && r6.word === "Read" && r6.cur?.ch === 4 && r6.end, r6)
 check("editor fields: info and view", r6.info === "Api test/A2.md" && r6.view === true, r6)
+check("a note's editor field is its MarkdownView (instanceof, title, leaf)", r6.isView && r6.title === "A2" && r6.leaf && r6.type === "markdown", r6)
 const r7 = await run(async (o, app) => ({
   daily: app.internalPlugins.getPluginById("daily-notes")?.instance?.options, on: !!app.internalPlugins.getEnabledPluginById("daily-notes"),
   templates: app.internalPlugins.getEnabledPluginById("templates")?.options?.folder, newParent: app.fileManager.getNewFileParent("Api test/A2.md").path,
-  cmd: app.commands.findCommand("editor:toggle-bold")?.name ?? null, manifests: Object.keys(app.plugins.manifests).length, scope: app.scope.register(["Mod"], "F9", () => false) && true,
+  cmd: app.commands.findCommand("editor:toggle-bold")?.name ?? null, manifests: Object.keys(app.plugins.manifests).length,
+  installed: (await (await fetch(`${location.origin}/api/plugin-compat/plugins`)).json()).length, scope: app.scope.register(["Mod"], "F9", () => false) && true,
 }))
 check("core plugins' options from .obsidian/", r7.daily?.folder === "Daily" && r7.daily?.template === "Templates/Daily" && r7.on && r7.templates === "Templates", r7)
 check("new notes go where app.json says", r7.newParent === "Notes", r7)
-check("Obsidian's core commands by id, every installed manifest", !!r7.cmd && r7.manifests > 50, r7)
+check("Obsidian's core commands by id, every installed manifest", !!r7.cmd && r7.manifests >= r7.installed, r7)
 check("editor lines are the file's", r5.starts && r5.line === "# A" && r5.after === "# Title A" && r5.back?.line === r5.n && r5.cm, r5)
+
+const r8 = await run(async (o, app) => {
+  const seen = [], ref = app.workspace.on("file-open", (f) => seen.push(f?.path ?? null))
+  // (a note left before it's drawn: plugins hear of the one shown after it, last)
+  location.hash = `#file/${encodeURIComponent("Api test/B.md")}`
+  await new Promise((r) => setTimeout(r, 30))
+  location.hash = `#file/${encodeURIComponent("Api test/A2.md")}`
+  await new Promise((r) => setTimeout(r, 3000))
+  app.workspace.offref(ref)
+  return { seen }
+})
+check("file-open: the note shown last is the last one announced", r8.seen.at(-1) === "Api test/A2.md", r8)
 
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)

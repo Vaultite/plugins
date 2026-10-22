@@ -49,15 +49,17 @@ export function requestUrl(o: string | RequestParam) {
     const res = await post<{ status: number; headers: Record<string, string>; body: string }>("plugin-compat/request", { url: r.url, method: r.method ?? "GET", headers, body, base64: bin })
       .catch((e: Error) => { throw new Error(`${r.url}: ${e.message}`) })
     const buf = b64ToBuf(res.body), text = new TextDecoder().decode(buf)
-    const out = { status: res.status, headers: res.headers, arrayBuffer: buf, text, get json() { return JSON.parse(text) } }
+    // (json parsed when read: a page that isn't JSON fails only the caller that asks for it)
+    const fields = { status: res.status, headers: res.headers, arrayBuffer: buf, text }
+    const json = { get: () => JSON.parse(text), enumerable: true }
     if (res.status >= 400 && r.throw !== false) {
-      const e = Object.assign(new Error(`Request failed, status ${res.status}`), out)
+      const e = Object.defineProperty(Object.assign(new Error(`Request failed, status ${res.status}`), fields), "json", json)
       e.stack = `${e.stack}\n${site}`
       throw e
     }
-    return out
+    return Object.defineProperty(fields, "json", json) as typeof fields & { json: any }
   })()
-  return Object.assign(p, { get json() { return p.then((x) => x.json) }, get text() { return p.then((x) => x.text) }, get arrayBuffer() { return p.then((x) => x.arrayBuffer) } })
+  return Object.defineProperties(p, { json: { get: () => p.then((x) => x.json) }, text: { get: () => p.then((x) => x.text) }, arrayBuffer: { get: () => p.then((x) => x.arrayBuffer) } }) as typeof p & { json: Promise<any>; text: Promise<string>; arrayBuffer: Promise<ArrayBuffer> }
 }
 
 const turndown = new TurndownService({ headingStyle: "atx", codeBlockStyle: "fenced", bulletListMarker: "-", emDelimiter: "*", hr: "---" })

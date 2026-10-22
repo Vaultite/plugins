@@ -109,3 +109,13 @@ obsidian-citation-plugin	network	Loads on a computer; its settings render
 obsidian-pandoc	network	Export to docx works through the bridge when pandoc is installed
 obsidian-enhancing-export	network	Export runs pandoc through the bridge when installed
 better-export-pdf	network	Export preview renders (needs Electron's printToPDF: may be partial)
+obsidian-map-view	picks	Map view opens with the notes' locations as markers (frontmatter and inline geo: links); mapview code block draws a map
+obsidian-file-info-plugin	picks	File info view shows the open note's size, dates and counts, and follows note switches
+obsidian-nomnoml-diagram	picks	A nomnoml code block draws its diagram; New diagram inserts a block
+obsidian-plugin-todo	picks	Its side view lists the vault's open todos; ticking one checks it in the note
+obsidian-read-it-later	picks	Save clipboard makes a note of the page at the copied URL (network)
+simple-embeds	picks	A YouTube link in a note becomes an embedded player (reading view; live preview with its option)
+wikipedia-search	picks	Search modal lists Wikipedia articles; Link article writes a link at the cursor (network)
+obsidian-zoom	picks	Zoom in on a list item shows only it and its children, with a breadcrumb; zoom out restores
+music-code-blocks	picks	An abc code block draws its score
+scales-chords	picks	A tab block bolds lines' chords and draws their pictures (scales-chords.com)

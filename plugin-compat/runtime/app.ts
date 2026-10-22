@@ -19,8 +19,8 @@ const phone = Platform.isPhone
 /** A file in .obsidian/ (ours over Obsidian's): its JSON, or null. */
 export async function readConfig<T = any>(rel: string): Promise<T | null> {
   try {
-    const { base64 } = await get<{ base64: string }>(`plugin-compat/config/read?path=${encodeURIComponent(`.obsidian/${rel}`)}`)
-    return JSON.parse(new TextDecoder().decode(fromB64(base64)))
+    const { base64 } = await get<{ base64: string | null }>(`plugin-compat/config/read?optional=1&path=${encodeURIComponent(`.obsidian/${rel}`)}`)
+    return base64 === null ? null : JSON.parse(new TextDecoder().decode(fromB64(base64)))
   } catch { return null }
 }
 export async function writeConfig(rel: string, data: unknown) {

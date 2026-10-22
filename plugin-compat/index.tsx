@@ -356,8 +356,8 @@ async function restoreSidebars() {
   if (localStorage.getItem(RESTORED)) return
   localStorage.setItem(RESTORED, "1")
   const ws = appOf().workspace
-  const r = await get<{ base64: string }>(`plugin-compat/config/read?path=${encodeURIComponent(".obsidian/workspace.json")}`).catch(() => null)
-  if (!r) return
+  const r = await get<{ base64: string | null }>(`plugin-compat/config/read?optional=1&path=${encodeURIComponent(".obsidian/workspace.json")}`).catch(() => null)
+  if (!r?.base64) return
   let layout: { left?: unknown; right?: unknown; lastOpenFiles?: string[] }
   try { layout = JSON.parse(new TextDecoder().decode(fromB64(r.base64))) } catch { return }
   type Node = { type?: string; children?: Node[]; state?: { type?: string; state?: unknown } }
@@ -420,17 +420,22 @@ function Runtime({ seen }: { seen: unknown }) {
   }, [])
   useVaultChange((paths) => { void app.vault.refresh(paths) })
   useEffect(() => {
+    // (a file left before it was drawn isn't announced after the one shown since)
+    let gone = false
     void (async () => {
       // (a file made a moment ago may not have reached this window's picture yet: a hidden window hears changes late)
       if (focused.path && !app.vault.getFileByPath(focused.path)) await app.vault.refresh([focused.path]).catch(() => {})
       const f = focused.path ? app.vault.getFileByPath(focused.path) : null
+      if (gone) return
       if (f) app.workspace.recent = [f.path, ...app.workspace.recent.filter((p) => p !== f.path)].slice(0, 50)
       // (a note's leaf is its editor's: once it's drawn, so the leaf plugins are told of is the note's)
-      for (let i = 0; f?.extension === "md" && currentEditor()?.path !== f.path && i < 60; i++) await new Promise((r) => requestAnimationFrame(r))
+      for (let i = 0; f?.extension === "md" && currentEditor()?.path !== f.path && i < 60 && !gone; i++) await new Promise((r) => requestAnimationFrame(r))
+      if (gone) return
       app.workspace.trigger("file-open", f)
       leafChanged()
       if (f) void app.vault.cachedRead(f).catch(() => {})
     })()
+    return () => { gone = true }
   }, [focused.path])
   useEffect(watchAppMarkdown, [])
   return <>{[...portals].filter(([el]) => el.isConnected || document.body.contains(el)).map(([el, node], i) => createPortal(node, el, String(i)))}</>
@@ -452,7 +457,8 @@ setSettingsOpener((id) => { const to = id ?? [...registered.settingTabs.keys()][
 setInfoOf((cm, own) => {
   const app = appOf(), open = currentEditor()
   const path = own ?? (open?.view === cm ? open.path : currentFile())
-  return { app, file: path ? app.vault.getFileByPath(path) : null, editor: open?.view === cm ? new Editor(open) : null }
+  const view = open?.view === cm ? app.workspace.markdownLeaf()?.view : null
+  return { app, file: path ? app.vault.getFileByPath(path) : null, editor: open?.view === cm ? new Editor(open) : null, view: view?.editor?.cm === cm ? view : null }
 })
 
 /** A note embedded as Obsidian draws embeds (`![[note]]` rendered, then plugins' post-processors: Excalidraw's picture). */

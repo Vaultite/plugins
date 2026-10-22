@@ -66,7 +66,12 @@ export class Plugin extends Component {
     this.register(() => { registered.postProcessors = registered.postProcessors.filter((x) => x !== p) })
     return fn
   }
-  registerEditorExtension(ext: any) { this.register(editor.addEditorExtension(ext)) }
+  registerEditorExtension(ext: any) {
+    // (the loader's id is its folder's name, which a manifest's id may not be)
+    const r = results.get(this.manifest.dir?.split("/").pop() ?? this.manifest.id)
+    if (r) r.editorExtensions = true
+    this.register(editor.addEditorExtension(ext))
+  }
   registerEditorSuggest(s: editor.EditorSuggest<any>) { owners.set(s, this.manifest.id); registered.suggests.push(s); this.register(() => { registered.suggests = registered.suggests.filter((x) => x !== s) }) }
   // (CodeMirror 5's editors, which Obsidian no longer has: never called, as there)
   registerCodeMirror(_fn: (cm: any) => any) {}
