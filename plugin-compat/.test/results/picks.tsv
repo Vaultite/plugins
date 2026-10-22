@@ -4,7 +4,7 @@ obsidian-file-info-plugin	works	untested	side view and status bar follow the ope
 obsidian-nomnoml-diagram	works	untested	nomnoml code blocks drawn as SVG; New diagram inserts a block at the cursor
 obsidian-plugin-todo	works	untested	side view lists the vault's todos by Today, Scheduled and Inbox; ticking one writes the note; reading every note at load takes a while (one request each)
 obsidian-read-it-later	works	untested	a URL from the clipboard saved as a note with its images (a Wikipedia article, a YouTube video)
-simple-embeds	partly	untested	YouTube and others embedded in live preview (its option); reading view, its default, is the app's read-only editor, which Obsidian's Markdown post-processors don't reach
+simple-embeds	works	untested	YouTube and others become players in reading view (its default; the app offers a note's blocks to post-processors) and in live preview (its option)
 wikipedia-search	works	untested	search modal (Wikipedia's API), Open and Link article; the link is written at the cursor
 obsidian-zoom	works	untested	zoom into a list item hides the rest and shows its breadcrumb; zoom out restores
 music-code-blocks	works	untested	abc code blocks drawn as a score (abcjs)

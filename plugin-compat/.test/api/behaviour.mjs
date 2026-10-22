@@ -1,7 +1,8 @@
 // Obsidian's API doing what it says, in the lab's page (the probe plugin hands over the module): files, events,
-// metadata, links, the file manager, the adapter, ES5 subclasses, the editor's positions. WRITES "Api test/": lab only.
+// metadata, links, the file manager, the adapter, ES5 subclasses, the editor's positions, post-processors over a note
+// being read. WRITES "Api test/": lab only.
 //   node behaviour.mjs <base url>
-import { qa, until, wait } from "../../../qa.mjs"
+import { palette, qa, until, wait } from "../../../qa.mjs"
 
 const { args: [B0], browser, check, done } = await qa(import.meta.url)
 const B = B0.endsWith("/") ? B0 : `${B0}/`
@@ -167,6 +168,37 @@ const r8 = await run(async (o, app) => {
   return { seen }
 })
 check("file-open: the note shown last is the last one announced", r8.seen.at(-1) === "Api test/A2.md", r8)
+
+// Reading: each block of the note goes to post-processors as Obsidian's section (its lines, the frontmatter's
+// pre.frontmatter), only one that changed shows as drawn, and its children unload when the note is edited.
+await run(async (o, app) => {
+  await app.vault.create("Api test/R.md", "---\ntags: [r]\n---\n# Reading\n\nFirst paragraph.\n\nmark me, please\n\n- one\n- two\n")
+  const seen = window.__readingSeen = []
+  class Child extends o.MarkdownRenderChild { onunload() { seen.push("unloaded") } }
+  window.__readingFn = (el, ctx) => {
+    if (ctx.sourcePath !== "Api test/R.md") return
+    const info = ctx.getSectionInfo(el)
+    seen.push([el.className.split(" ").find((c) => /^el-|^mod-frontmatter$/.test(c)), info?.lineStart, info?.lineEnd, ctx.frontmatter?.tags?.[0] ?? null, !!el.querySelector("pre.frontmatter")])
+    if (el.textContent.includes("mark me")) { el.querySelector("p").createSpan({ cls: "probe-mark", text: "!" }); ctx.addChild(new Child(el)) }
+  }
+  o.MarkdownPreviewRenderer.registerPostProcessor(window.__readingFn)
+})
+await page.evaluate(() => { location.hash = `#file/${encodeURIComponent("Api test/R.md")}` })
+await wait(2500)
+await palette(page, "Switch to reading view")
+const shown = () => page.evaluate(() => ({ seen: window.__readingSeen, marked: !!document.querySelector(".cm-content .cm-block-read .probe-mark"),
+  drawn: document.querySelectorAll(".cm-content .cm-block-read").length, lines: [...document.querySelectorAll(".cm-content > .cm-line")].map((l) => l.textContent).filter(Boolean) }))
+const r9 = await until(async () => { const r = await shown(); return r.marked && r }, 10000) || await shown()
+// (the lines as the file has them: the server adds to its frontmatter)
+const rl = (await run(async (o, app) => app.vault.read(app.vault.getFileByPath("Api test/R.md")))).split("\n"), at = (t) => rl.indexOf(t)
+const sec = (cls) => JSON.stringify(r9.seen?.find((x) => Array.isArray(x) && x[0] === cls))
+check("reading: post-processors get each section with its lines", sec("mod-frontmatter") === JSON.stringify(["mod-frontmatter", 0, at("# Reading") - 1, "r", true])
+  && sec("el-h1") === JSON.stringify(["el-h1", at("# Reading"), at("# Reading"), "r", false]) && sec("el-ul") === JSON.stringify(["el-ul", at("- one"), at("- two"), "r", false]), { r9, rl })
+check("reading: only the block a post-processor changed is drawn by it", r9.marked && r9.drawn === 1 && r9.lines.includes("First paragraph."), r9)
+await palette(page, "Switch to live preview")
+const r10 = await until(async () => { const r = await shown(); return r.seen.includes("unloaded") && !r.drawn && r }, 5000) || await shown()
+check("editing: the note's source, the block's children unloaded", r10.seen?.includes("unloaded") && !r10.drawn && r10.lines.some((l) => l.includes("mark me")), r10)
+await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__readingFn) })
 
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)

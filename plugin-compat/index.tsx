@@ -13,7 +13,7 @@ import { appOf, changed, loaded, loadPlugin, prefetch, skipped, missedOf, Platfo
 import { LooseStatus, NoteActions, ViewActions } from "./actions.tsx"
 import type { FileExplorerView } from "./runtime/explorer.ts"
 import { obsidianTokens } from "./runtime/tags.ts"
-import { renderMarkdown, watchAppMarkdown } from "./runtime/render.ts"
+import { readingBlocks, renderMarkdown, watchAppMarkdown } from "./runtime/render.ts"
 import { routeWindowOpen, runUri } from "./runtime/uri.ts"
 import { Menu, setIcon, prefetchIcons } from "./runtime/ui.ts"
 import { Component, fromB64, type Events } from "./runtime/core.ts"
@@ -498,6 +498,7 @@ export default definePlugin({
   fileBar: { actions: { render: (f) => <NoteActions path={f.path} /> } },
   ambient: { status: { title: "Obsidian plugins' status bar", render: () => <LooseStatus /> } },
   fileRows: () => (appOf().workspace.internal.find((l) => l.view.getViewType() === "file-explorer")?.view as FileExplorerView | undefined)?.fileRows() ?? {},
+  reading: readingBlocks,
   editor: (ctx) => [ctx.kind === "markdown" ? obsidianTokens() : [], editorExtension(ctx.path, ctx.kind === "markdown"), hotkeysFirst, suggestExtension(registered.suggests, () => activeEditor(), () => appOf().workspace.getActiveFile())],
   // (one menu for all: a plugin turned off has unloaded its handler)
   editorMenu: ({ view }) => {

@@ -2,9 +2,9 @@
 // tags, tasks, callouts, embeds), plugins' code blocks and post-processors run over it.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CM } from "./cm.ts"
-import { followLink, getStore, get, hydrateMarkdown, markdownHtml, noteFor, onMarkdownDrawn, rawUrl } from "@vaultite"
+import { followLink, getStore, get, hydrateMarkdown, markdownHtml, noteFor, onMarkdownDrawn, rawUrl, type ReadingBlock, type ReadingBlocks } from "@vaultite"
 import { Component } from "./core.ts"
-import { registered } from "./state.ts"
+import { changed, registered, tell } from "./state.ts"
 import * as ui from "./ui.ts"
 
 export class MarkdownRenderChild extends Component {
@@ -13,7 +13,7 @@ export class MarkdownRenderChild extends Component {
 }
 
 type Section = { text: string; lineStart: number; lineEnd: number }
-export type PostCtx = { docId: string; sourcePath: string; frontmatter: any; displayMode?: boolean; el?: HTMLElement
+export type PostCtx = { docId: string; sourcePath: string; frontmatter: any; displayMode?: boolean; el?: HTMLElement; containerEl?: HTMLElement
   addChild(c: Component): void; getSectionInfo(el: HTMLElement): Section | null; remainingNestLevel: number }
 
 const IMAGE = /\.(png|jpe?g|gif|webp|svg|bmp|avif)$/i
@@ -45,9 +45,16 @@ function draw(md: string, el: HTMLElement) {
   const raw = holdHtml(stripFm(md))
   box.innerHTML = raw.back(markdownHtml(raw.md))
   clean(box)
+  reshape(box)
+  el.append(...box.childNodes)
+}
+
+/** The app's HTML in `box` as Obsidian's elements: internal links, tags, headings, callouts, tasks (`keep`: the app's
+ *  own checkboxes kept, which tick the file), text in paragraphs, blocks marked dir="auto". */
+function reshape(box: HTMLElement, keep = false) {
   for (const a of box.querySelectorAll<HTMLAnchorElement>("a[data-wiki]")) {
     const target = a.dataset.wiki ?? ""
-    if (a.hasAttribute("data-wiki-embed")) {
+    if (a.hasAttribute("data-wiki-embed") && !keep) {
       const s = document.createElement("span")
       s.className = "internal-embed"
       s.setAttribute("src", target)
@@ -71,7 +78,8 @@ function draw(md: string, el: HTMLElement) {
   for (const li of box.querySelectorAll<HTMLLIElement>("li")) {
     const first = li.firstChild
     let mark: string | null = null
-    if (first instanceof HTMLInputElement && first.type === "checkbox") { mark = first.checked ? "x" : " "; first.remove() }
+    let own: HTMLInputElement | null = null
+    if (first instanceof HTMLInputElement && first.type === "checkbox") { mark = first.checked ? "x" : " "; if (keep) own = first; else first.remove() }
     else {
       const node = first instanceof HTMLParagraphElement ? first.firstChild : first
       const m = node?.nodeType === Node.TEXT_NODE ? TASK.exec(node.textContent ?? "") : null
@@ -81,11 +89,11 @@ function draw(md: string, el: HTMLElement) {
     li.classList.add("task-list-item")
     if (mark !== " ") li.classList.add("is-checked")
     li.setAttribute("data-task", mark)
-    const box2 = document.createElement("input")
+    const box2 = own ?? document.createElement("input")
     box2.type = "checkbox"
-    box2.className = "task-list-item-checkbox"
+    box2.classList.add("task-list-item-checkbox")
     box2.checked = mark !== " "
-    li.prepend(box2)
+    if (!own) li.prepend(box2)
     li.parentElement?.classList.add("contains-task-list")
   }
   // As Obsidian's: text never loose at the top (a paragraph), blocks marked dir="auto" (plugins slice "<p dir=\"auto\">")
@@ -98,7 +106,6 @@ function draw(md: string, el: HTMLElement) {
     para.append(n)
   }
   for (const b of box.querySelectorAll<HTMLElement>("p, h1, h2, h3, h4, h5, h6, li")) b.setAttribute("dir", "auto")
-  el.append(...box.childNodes)
 }
 const BLOCK = /^(P|DIV|H[1-6]|UL|OL|LI|PRE|BLOCKQUOTE|TABLE|HR|DETAILS|FIGURE|SECTION|DL)$/
 
@@ -258,8 +265,8 @@ export class MarkdownPreviewView extends MarkdownRenderChild {
 }
 
 export const MarkdownPreviewRenderer = {
-  registerPostProcessor(fn: (el: HTMLElement, ctx: any) => any) { registered.postProcessors.push({ plugin: "?", fn }) },
-  unregisterPostProcessor(fn: (el: HTMLElement, ctx: any) => any) { registered.postProcessors = registered.postProcessors.filter((p) => p.fn !== fn) },
+  registerPostProcessor(fn: (el: HTMLElement, ctx: any) => any) { registered.postProcessors = [...registered.postProcessors, { plugin: "?", fn }]; tell() },
+  unregisterPostProcessor(fn: (el: HTMLElement, ctx: any) => any) { registered.postProcessors = registered.postProcessors.filter((p) => p.fn !== fn); tell() },
   createCodeBlockPostProcessor(lang: string, fn: (source: string, el: HTMLElement, ctx: any) => any) {
     return (el: HTMLElement, ctx: PostCtx) => {
       for (const code of el.querySelectorAll<HTMLElement>(`code.language-${CSS.escape(lang)}`)) {
@@ -287,4 +294,46 @@ export function watchAppMarkdown() {
     void postProcess(el, postCtx(path, new Component(), null))
   })
   return () => { stop(); if (ref) ws.offref(ref) }
+}
+
+// Obsidian's reading view: the note in sections (a paragraph, a list, a heading, the frontmatter), each a <div> that
+// every post-processor gets with the section's lines. Here the app's reading offers its blocks, kept where one changed.
+const sections = new WeakMap<HTMLElement, ReadingBlock>()
+const TAGS: Record<string, string> = { frontmatter: "mod-frontmatter mod-ui" }
+
+/** Post-processors over the blocks of a note being read (the app's `reading`): a block one changed shows as it made it,
+ *  its components loaded until the block or the note goes. */
+export const readingBlocks: ReadingBlocks = {
+  active: () => registered.postProcessors.length > 0,
+  subscribe(fn) {
+    let was = registered.postProcessors, t: ReturnType<typeof setTimeout> | null = null
+    // (a plugin that registers or drops one: told once for the plugins loading together)
+    const ref = changed.on("changed", () => {
+      if (registered.postProcessors === was) return
+      was = registered.postProcessors
+      t ??= setTimeout(() => { t = null; fn() }, 50)
+    })
+    return () => { changed.offref(ref); if (t) clearTimeout(t) }
+  },
+  async draw(el, block) {
+    if (block.kind === "frontmatter") {
+      const pre = el.createEl("pre", { cls: "frontmatter language-yaml", attr: { style: "display: none" } })
+      pre.createEl("code", { cls: "language-yaml is-loaded", text: block.text.replace(/^---\n/, "").replace(/\n?---\s*$/, "") })
+    } else reshape(el, true)
+    el.addClass(...(TAGS[block.kind] ?? `el-${el.firstElementChild?.tagName.toLowerCase() ?? "div"}`).split(" "))
+    for (const a of el.querySelectorAll<HTMLAnchorElement>("a[data-wiki]")) a.removeAttribute("target")
+    sections.set(el, block)
+    const before = el.outerHTML, comp = new Component()
+    comp.load()
+    const ctx: PostCtx = { docId: block.path, sourcePath: block.path, frontmatter: fmOf(block.path), remainingNestLevel: 4, el, containerEl: block.container,
+      addChild: (c) => comp.addChild(c),
+      // (Obsidian's answers for a section's element; for one inside it, its section's)
+      getSectionInfo: (x) => {
+        const sec = x.closest?.(".cm-read") as HTMLElement | null, b = sec && sections.get(sec)
+        return b ? { text: b.doc, lineStart: b.lineStart, lineEnd: b.lineEnd } : null
+      } }
+    await postProcess(el, ctx)
+    if (el.outerHTML === before && !comp._children.length) { comp.unload(); return null }
+    return { destroy: () => comp.unload() }
+  },
 }

@@ -62,8 +62,10 @@ export class Plugin extends Component {
   }
   registerMarkdownPostProcessor(fn: (el: HTMLElement, ctx: any) => any) {
     const p = { plugin: this.manifest.id, fn }
-    registered.postProcessors.push(p)
-    this.register(() => { registered.postProcessors = registered.postProcessors.filter((x) => x !== p) })
+    // (a new list each time: reading's blocks follow it, render.ts)
+    registered.postProcessors = [...registered.postProcessors, p]
+    this.register(() => { registered.postProcessors = registered.postProcessors.filter((x) => x !== p); tell() })
+    tell()
     return fn
   }
   registerEditorExtension(ext: any) {

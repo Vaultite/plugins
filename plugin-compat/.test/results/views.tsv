@@ -12,9 +12,9 @@ file-explorer-note-count	works	works	phone: counts in the drawer's tree
 colored-tags	works	works	tags carry Obsidian's cm-hashtag cm-tag-<name> classes
 folder-notes	works	works	a folder with its same-named note opens that note; phone: from the drawer's tree
 tag-wrangler	works	works	rename from a tag's menu (right-click; a held finger on a phone) renames body and frontmatter
-supercharged-links-obsidian	partly	not checked	file tree and rendered links; links in the editor need Obsidian's parser tokens (P-data's token tree may cover them now)
+supercharged-links-obsidian	works	not checked	links carry its data attributes, so its selectors' styles apply: in reading view (its post-processor), live preview and the file tree
 pretty-properties	unneeded	unneeded	restyles Obsidian's properties view; the app draws its own
-obsidian-banners	partly	partly	the banner draws in the note (with P-data's token tree) but over its first lines, and not reliably after the app redraws
+obsidian-banners	partly	partly	reading view draws the banner above the note, pushing the text down (its post-processor on the frontmatter's section); live preview shows none, as its editor extension looks for frontmatter tokens the app's hidden frontmatter doesn't have
 obsidian-hider	unneeded	unneeded	hides Obsidian's own chrome; its settings show and set its classes
 obsidian-minimal-settings	unneeded	unneeded	for the Minimal theme; its settings show and set its classes
 obsidian-style-settings	works	works	a snippet's @settings listed; changing a slider sets the variable
