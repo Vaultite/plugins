@@ -1,0 +1,24 @@
+{
+  "theme": "system",
+  "scheme": "flexoki",
+  "density": "comfortable",
+  "sidebarScroll": "panels",
+  "panelDividers": false,
+  "quickTextSize": false,
+  "interfaceFont": "",
+  "textFont": "",
+  "monoFont": "",
+  "snippets": [
+    "Serif titles"
+  ],
+  "fileIcons": true,
+  "tabBar": true,
+  "paneTitles": false, "tabTint": false,
+  "rails": true, "peekShade": false, "typingFade": false, "translucent": false,
+  "lineNumbers": false,
+  "statusBar": null,
+  "statusBarMore": [],
+  "fileBar": null,
+  "sidebarHeader": null,
+  "pullActions": null
+}

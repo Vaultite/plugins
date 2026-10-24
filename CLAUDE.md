@@ -5,9 +5,9 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 
 - One folder per plugin, its id as the name, `manifest.json` at its top with `repo: "Vaultite/plugins"`.
 - `bundles/<id>/`: community bundles (the app's `core/docs/bundles.md`), listed in `directory/listed.json`'s `bundles`
-  (`Vaultite/plugins/bundles/<id>`). Each states every appearance key and plugin setting the app's own bundles set (so it
-  replaces their look; a restyle, only appearance.json and its themes and snippets, names just the keys it changes),
-  installs only this repository's plugins, and passes `node test_bundles.ts` (run by test.ts).
+  (`Vaultite/plugins/bundles/<id>`). Each states every key the app's own bundles set (the look, the editor, the new
+  tab, plugin settings: so it replaces their setup; a restyle, only appearance.json and its themes and snippets, names
+  just the keys it changes), installs only this repository's plugins, and passes `node test_bundles.ts` (run by test.ts).
 - Types against the app: `ln -s ../vaultite/node_modules node_modules` once, then `npm run typecheck`.
 - Check one: `node ../vaultite/tools/check_plugins.ts --plugin <id> --installable`. A release is a tag
   `<id>/v<version>` matching its manifest's `version`.

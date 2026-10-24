@@ -1,5 +1,5 @@
 // The bundles here (bundles/<id>/), against the app at $VAULTITE_APP: each names only plugins there are, states every
-// setting the app's own bundles set, and applies on a throwaway server (over Zen too).   node test_bundles.ts [id...]
+// setting the app's own bundles set, and applies on a throwaway server (over Zen and Browser too).   node test_bundles.ts [id...]
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
@@ -15,7 +15,9 @@ const appPlugins = new Map(fs.readdirSync(path.join(APP, "plugins", "core")).map
 
 // What the app's own bundles set: a bundle that leaves one out keeps the last bundle's (Zen's tab bar) when applied.
 const builtIns = fs.readdirSync(path.join(APP, "bundles")).filter((d) => fs.existsSync(path.join(APP, "bundles", d, "bundle.json")))
-const looks = new Set(builtIns.flatMap((b) => Object.keys(json(path.join(APP, "bundles", b, "appearance.json")) ?? {})))
+/** The keys the app's bundles say in one of their files (appearance.json, editor.json, newtab.json). */
+const keysIn = (rel: string) => new Set(builtIns.flatMap((b) => Object.keys(json(path.join(APP, "bundles", b, rel)) ?? {})))
+const looks = keysIn("appearance.json"), FILES = ["editor", "newtab"].map((n) => [n, keysIn(`${n}.json`)] as const)
 const lookKeys: string[] = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)).LOOK_KEYS
 /** What a restyle may hold besides its card. */
 const RESTYLE = new Set(["bundle.json", "appearance.json", "preview.png", "preview-dark.png", "themes", "snippets"])
@@ -43,8 +45,9 @@ for (const id of ids) {
     const strange = Object.keys(look).filter((k) => !lookKeys.includes(k))
     check(`${rel}: a restyle names only keys of the look`, Object.keys(look).length > 0 && !strange.length, strange)
   } else {
-    const missing = [...[...looks].filter((k) => !Object.hasOwn(look, k)).map((k) => `appearance ${k}`), ...[...settings].filter((k) => !own.has(k))]
-    check(`${rel}: states every appearance key and plugin setting the app's bundles set`, !missing.length, missing)
+    const missing = [...[...looks].filter((k) => !Object.hasOwn(look, k)).map((k) => `appearance ${k}`), ...[...settings].filter((k) => !own.has(k)),
+      ...FILES.flatMap(([n, keys]) => { const o = json(path.join(at, `${n}.json`)) ?? {}; return [...keys].filter((k) => !Object.hasOwn(o, k)).map((k) => `${n} ${k}`) })]
+    check(`${rel}: states every appearance key, editor and new tab key and plugin setting the app's bundles set`, !missing.length, missing)
   }
 
   // Applied for real: Vaultite's plugins it installs come from this checkout (a made-up GitHub), at their tags.
@@ -65,7 +68,7 @@ for (const id of ids) {
     check(`${rel}: installed from Vaultite/plugins at their tags`, Object.keys(install).every((p) => lock[p]?.tag?.startsWith(`${p}/v`)), lock)
     // (the setup it makes: the same over Zen as over the sample's; a restyle's, Zen's with its keys)
     const setup = (but: string[] = []) => JSON.stringify({ look: Object.fromEntries(Object.entries(conf("appearance")).filter(([k]) => !but.includes(k))),
-      sidebars: conf("sidebars"), pinned: conf("pages").pinned,
+      sidebars: conf("sidebars"), pinned: conf("pages").pinned, editor: conf("editor"), newtab: conf("newtab"),
       settings: [...settings].map((k) => { const [p, key] = k.split("."); return [k, conf(`plugins/${p}/data`)[key] ?? null] }) })
     if (restyle) {
       ;[code, r] = await s.api("POST", "bundles/zen/apply", {})
@@ -79,10 +82,13 @@ for (const id of ids) {
       continue
     }
     const alone = setup()
-    ;[code, r] = await s.api("POST", "bundles/zen/apply", {})
-    check(`${rel}: (Zen applied)`, code === 200 && setup() !== alone, r)
-    ;[code, r] = await s.api("POST", `bundles/${id}/apply`, { allowCode: true })
-    check(`${rel}: over Zen, it makes the same setup (none of Zen's look or settings left)`, code === 200 && setup() === alone, { alone, now: setup() })
+    // (over each of the app's own but Standard, the defaults: Zen, Browser)
+    for (const other of builtIns.filter((b) => b !== "standard")) {
+      ;[code, r] = await s.api("POST", `bundles/${other}/apply`, {})
+      check(`${rel}: (${other} applied)`, code === 200 && setup() !== alone, r)
+      ;[code, r] = await s.api("POST", `bundles/${id}/apply`, { allowCode: true })
+      check(`${rel}: over ${other}, it makes the same setup (none of its look or settings left)`, code === 200 && setup() === alone, { alone, now: setup() })
+    }
     const pins: string[] = json(path.join(at, "pages.json"))?.pinned ?? []
     check(`${rel}: its pinned pages are there`, pins.every((p) => fs.existsSync(path.join(s.vault, p))), pins.filter((p) => !fs.existsSync(path.join(s.vault, p))))
     for (const p of pins) {
