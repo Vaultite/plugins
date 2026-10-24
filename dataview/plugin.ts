@@ -13,17 +13,17 @@ export const plugin = new Plugin(import.meta.url)
 
 // ---------- the index
 
-type Index = { version: string; names: string; resolver: (t: string) => string | null; pages: Row[]; byPath: Map<string, Row>; resolve: (t: string) => string | null }
+type Index = { version: string; pages: Row[]; byPath: Map<string, Row>; resolve: (t: string) => string | null }
 let kept: Index | null = null
 // Each note's page, kept while its text is the same and what its links resolved to still is: a new or renamed file
 // parses again only the notes whose links it changes.
 const parsed = new WeakMap<Entry, { fm: unknown; body: string; names: string; row: Row; asked: [string, string | null][] }>()
 
-/** The notes as pages, rebuilt when the vault changes: only changed notes are parsed again. */
-function pages(): Index {
-  const vault = plugin.vault
-  const version = String(vault.version)
-  if (kept?.version === version) return kept
+/** What links resolve to as of now: the files' names (and aliases) and a resolver over them, kept while they're the same. */
+let linking: { version: string; names: string; resolver: (t: string) => string | null; resolve: (t: string) => string | null } | null = null
+function links() {
+  const vault = plugin.vault, version = String(vault.version)
+  if (linking?.version === version) return linking
   const files: LinkFile[] = []
   for (const [rel, e] of vault.entries) {
     const aliases = e.fm.aliases ?? e.fm.alias
@@ -31,25 +31,56 @@ function pages(): Index {
   }
   for (const rel of vault.others.keys()) files.push({ path: rel })
   const names = JSON.stringify(files.map((f) => [f.path, f.aliases]))
-  const resolver = kept?.names === names ? kept.resolver : linkResolver(files), now = new Map<string, string | null>()
+  const resolver = linking?.names === names ? linking.resolver : linkResolver(files), now = new Map<string, string | null>()
   const resolve = (t: string) => { let r = now.get(t); if (r === undefined) now.set(t, r = resolver(t)); return r }
-  const out: Row[] = []
-  for (const [rel, e] of vault.entries) {
-    if (rel[0] === "." || rel.includes("/.")) continue
-    let c = parsed.get(e)
-    if (c && c.fm === e.fm && c.body === e.body && c.names !== names && c.asked.every(([t, r]) => resolve(t) === r)) c.names = names
-    if (!c || c.fm !== e.fm || c.body !== e.body || c.names !== names) {
-      const asked: [string, string | null][] = []
-      const row = page({ path: rel, fm: e.fm, body: e.body, ctime: e.stat.born, mtime: Number(e.stat.ns / 1000000n), size: e.stat.size },
-        (t) => { const r = resolve(t); asked.push([t, r]); return r })
-      parsed.set(e, c = { fm: e.fm, body: e.body, names, row, asked })
-    }
-    out.push(c.row)
+  return linking = { version, names, resolver, resolve }
+}
+
+/** A note's page, parsed again only when it changed or what its links resolved to did. */
+function pageOf(rel: string, e: Entry): Row {
+  const { names, resolve } = links()
+  let c = parsed.get(e)
+  if (c && c.fm === e.fm && c.body === e.body && c.names !== names && c.asked.every(([t, r]) => resolve(t) === r)) c.names = names
+  if (!c || c.fm !== e.fm || c.body !== e.body || c.names !== names) {
+    const asked: [string, string | null][] = []
+    const row = page({ path: rel, fm: e.fm, body: e.body, ctime: e.stat.born, mtime: Number(e.stat.ns / 1000000n), size: e.stat.size },
+      (t) => { const r = resolve(t); asked.push([t, r]); return r })
+    parsed.set(e, c = { fm: e.fm, body: e.body, names, row, asked })
   }
+  return c.row
+}
+
+const noted = (rel: string) => rel[0] !== "." && !rel.includes("/.")
+
+/** The notes as pages, rebuilt when the vault changes: only changed notes are parsed again, and their inlinks worked
+ *  out again only when a page changed. */
+function pages(): Index {
+  const vault = plugin.vault
+  const version = String(vault.version)
+  if (kept?.version === version) return kept
+  const out: Row[] = []
+  for (const [rel, e] of vault.entries) if (noted(rel)) out.push(pageOf(rel, e))
+  if (kept && out.length === kept.pages.length && out.every((r, i) => r === kept!.pages[i])) return kept = { ...kept, version, resolve: links().resolve }
   linkUp(out)
-  kept = { version, names, resolver, pages: out, byPath: new Map(out.map((p) => [String((p.file as Row).path), p])), resolve }
+  kept = { version, pages: out, byPath: new Map(out.map((p) => [String((p.file as Row).path), p])), resolve: links().resolve }
   return kept
 }
+
+// A vault's notes parsed a few at a time once the server is up, so the first query doesn't wait seconds for them all.
+let unloaded = false
+plugin.onUnload(() => { unloaded = true })
+setTimeout(async () => {
+  let n = 0
+  try {
+    for (const [rel, e] of [...plugin.vault.entries]) {
+      if (unloaded || plugin.isOff()) return
+      if (!noted(rel) || plugin.vault.entries.get(rel) !== e) continue
+      pageOf(rel, e)
+      if (++n % 200 === 0) await new Promise((r) => setImmediate(r))
+    }
+    if (!unloaded) pages()
+  } catch (e) { console.error("dataview: reading the notes ahead:", e) }
+}, 5000).unref()
 
 function context(path: string | undefined, now = new Date()): Context {
   const ix = pages()
