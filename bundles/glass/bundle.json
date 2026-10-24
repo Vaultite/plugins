@@ -1,0 +1,6 @@
+{
+  "name": "Glass",
+  "description": "A translucent window over any setup: the desktop shows through the sidebars, the tab bar and the status bar, blurred and in your colour scheme, while pages stay solid. In the Mac and Windows 11 apps.",
+  "icon": "blend",
+  "tint": "teal"
+}

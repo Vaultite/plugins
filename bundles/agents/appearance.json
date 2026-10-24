@@ -12,10 +12,15 @@
   "fileIcons": true,
   "tabBar": true,
   "paneTitles": true,
+  "tabTint": false,
   "rails": true,
+  "peekShade": false,
+  "typingFade": false,
+  "translucent": false,
   "lineNumbers": false,
   "statusBar": null,
   "statusBarMore": [],
   "fileBar": null,
+  "sidebarHeader": null,
   "pullActions": null
 }

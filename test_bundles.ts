@@ -16,6 +16,9 @@ const appPlugins = new Map(fs.readdirSync(path.join(APP, "plugins", "core")).map
 // What the app's own bundles set: a bundle that leaves one out keeps the last bundle's (Zen's tab bar) when applied.
 const builtIns = fs.readdirSync(path.join(APP, "bundles")).filter((d) => fs.existsSync(path.join(APP, "bundles", d, "bundle.json")))
 const looks = new Set(builtIns.flatMap((b) => Object.keys(json(path.join(APP, "bundles", b, "appearance.json")) ?? {})))
+const lookKeys: string[] = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)).LOOK_KEYS
+/** What a restyle may hold besides its card. */
+const RESTYLE = new Set(["bundle.json", "appearance.json", "preview.png", "preview-dark.png", "themes", "snippets"])
 const settings = new Set(builtIns.flatMap((b) => {
   const pd = path.join(APP, "bundles", b, "plugins")
   return fs.existsSync(pd) ? fs.readdirSync(pd).flatMap((p) => Object.keys(json(path.join(pd, p, "data.json")) ?? {}).map((k) => `${p}.${k}`)) : []
@@ -34,8 +37,15 @@ for (const id of ids) {
   const look = json(path.join(at, "appearance.json")) ?? {}
   const pd = path.join(at, "plugins")
   const own = new Set(fs.existsSync(pd) ? fs.readdirSync(pd).flatMap((p) => Object.keys(json(path.join(pd, p, "data.json")) ?? {}).map((k) => `${p}.${k}`)) : [])
-  const missing = [...[...looks].filter((k) => !Object.hasOwn(look, k)).map((k) => `appearance ${k}`), ...[...settings].filter((k) => !own.has(k))]
-  check(`${rel}: states every appearance key and plugin setting the app's bundles set`, !missing.length, missing)
+  // A restyle (only appearance.json, with its themes and snippets) sets the look's keys it names, over any setup.
+  const restyle = fs.readdirSync(at).every((f) => RESTYLE.has(f))
+  if (restyle) {
+    const strange = Object.keys(look).filter((k) => !lookKeys.includes(k))
+    check(`${rel}: a restyle names only keys of the look`, Object.keys(look).length > 0 && !strange.length, strange)
+  } else {
+    const missing = [...[...looks].filter((k) => !Object.hasOwn(look, k)).map((k) => `appearance ${k}`), ...[...settings].filter((k) => !own.has(k))]
+    check(`${rel}: states every appearance key and plugin setting the app's bundles set`, !missing.length, missing)
+  }
 
   // Applied for real: Vaultite's plugins it installs come from this checkout (a made-up GitHub), at their tags.
   const gh = fs.mkdtempSync(path.join(os.tmpdir(), "vaultite-bundles-gh-"))
@@ -53,9 +63,21 @@ for (const id of ids) {
     check(`${rel}: its plugins are on`, (pj.enabled ?? []).every((p: string) => enabled.includes(p)), enabled)
     const lock = conf("plugins-lock")
     check(`${rel}: installed from Vaultite/plugins at their tags`, Object.keys(install).every((p) => lock[p]?.tag?.startsWith(`${p}/v`)), lock)
-    // (the setup it makes: the same over Zen as over the sample's)
-    const setup = () => JSON.stringify({ look: conf("appearance"), sidebars: conf("sidebars"), pinned: conf("pages").pinned,
+    // (the setup it makes: the same over Zen as over the sample's; a restyle's, Zen's with its keys)
+    const setup = (but: string[] = []) => JSON.stringify({ look: Object.fromEntries(Object.entries(conf("appearance")).filter(([k]) => !but.includes(k))),
+      sidebars: conf("sidebars"), pinned: conf("pages").pinned,
       settings: [...settings].map((k) => { const [p, key] = k.split("."); return [k, conf(`plugins/${p}/data`)[key] ?? null] }) })
+    if (restyle) {
+      ;[code, r] = await s.api("POST", "bundles/zen/apply", {})
+      const zen = setup(Object.keys(look))
+      ;[code, r] = await s.api("POST", `bundles/${id}/apply`, {})
+      const now = conf("appearance")
+      check(`${rel}: over Zen, it sets its keys`, code === 200 && Object.entries(look).every(([k, v]) => JSON.stringify(now[k]) === JSON.stringify(v)), { look, now })
+      const after = JSON.parse(setup(Object.keys(look))), was = JSON.parse(zen)
+      const moved = Object.keys(was).filter((k) => JSON.stringify(was[k]) !== JSON.stringify(after[k])).map((k) => ({ [k]: [was[k], after[k]] }))
+      check(`${rel}: over Zen, the rest of Zen's setup stays`, !moved.length, moved)
+      continue
+    }
     const alone = setup()
     ;[code, r] = await s.api("POST", "bundles/zen/apply", {})
     check(`${rel}: (Zen applied)`, code === 200 && setup() !== alone, r)

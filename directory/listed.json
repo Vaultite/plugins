@@ -1,6 +1,7 @@
 {
   "plugins": [],
   "bundles": [
-    "Vaultite/plugins/bundles/agents"
+    "Vaultite/plugins/bundles/agents",
+    "Vaultite/plugins/bundles/glass"
   ]
 }

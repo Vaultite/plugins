@@ -6,7 +6,8 @@ Browse.
 
 - `bundles/<id>/`: bundles (whole setups of the app) that aren't built in, listed in the directory:
   `vau bundle import Vaultite/plugins/bundles/<id>`, or from the Bundles page's Browse. `agents`: coding agents in
-  terminals beside your pages, their sessions and limits, your machines and the server.
+  terminals beside your pages, their sessions and limits, your machines and the server. `glass`: only a look, over any
+  setup: a translucent window in the Mac and Windows 11 apps.
 - `directory/`: `listed.json` (what the topic searches miss: `plugins`, repositories; `bundles`, a repository or a folder
   in one), `blocked.json` (plugin versions, or bundles' places, with a known problem) and `index.json`, the directory the
   app reads (built by the app's `tools/plugin-index.ts`).
