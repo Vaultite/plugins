@@ -76,7 +76,7 @@ setTimeout(async () => {
       if (unloaded || plugin.isOff()) return
       if (!noted(rel) || plugin.vault.entries.get(rel) !== e) continue
       pageOf(rel, e)
-      if (++n % 200 === 0) await new Promise((r) => setImmediate(r))
+      if (++n % 50 === 0) await new Promise((r) => setImmediate(r))
     }
     if (!unloaded) pages()
   } catch (e) { console.error("dataview: reading the notes ahead:", e) }
