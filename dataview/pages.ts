@@ -195,7 +195,7 @@ export function page(n: Note, resolve: Resolve): Row {
   if (!fileDay && row.date instanceof DvDate) fileDay = new DvDate(new Date(row.date.d.getFullYear(), row.date.d.getMonth(), row.date.d.getDate()).getTime(), false)
   const aliases = n.fm.aliases ?? n.fm.alias
   const startOf = (t: number) => { const d = new Date(t); return new DvDate(new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(), false) }
-  const unique = (ls: Link[]) => ls.filter((l, i) => ls.findIndex((x) => x.path === l.path && x.subpath === l.subpath) === i)
+  const unique = (ls: Link[]) => { const seen = new Set<string>(); return ls.filter((l) => { const k = `${l.path}\0${l.subpath ?? ""}`; return !seen.has(k) && !!seen.add(k) }) }
   row.file = {
     name, folder, path: n.path, ext: n.path.includes(".") ? n.path.slice(n.path.lastIndexOf(".") + 1) : "", link, size: n.size,
     ctime: new DvDate(n.ctime, true), cday: startOf(n.ctime), mtime: new DvDate(n.mtime, true), mday: startOf(n.mtime),
@@ -213,16 +213,16 @@ export function index(notes: Note[], resolve: Resolve): Row[] {
   return pages
 }
 
-/** Fill in each page's file.inlinks from the others' outlinks. */
+/** Fill in each page's file.inlinks from the others' outlinks (each other file once in them: page's unique). */
 export function linkUp(pages: Row[]) {
   const by = new Map<string, Link[]>()
   for (const p of pages) {
     const f = p.file as Row
     for (const l of f.outlinks as Link[]) {
       if (!l.exists || l.path === f.path) continue
-      const into = by.get(l.path) ?? []
-      if (!into.some((x) => x.path === f.path)) into.push(f.link as Link)
-      by.set(l.path, into)
+      const into = by.get(l.path)
+      if (into) into.push(f.link as Link)
+      else by.set(l.path, [f.link as Link])
     }
   }
   for (const p of pages) { const f = p.file as Row; f.inlinks = by.get(String(f.path)) ?? [] }
