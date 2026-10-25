@@ -3,7 +3,7 @@
   "icon": "icon.svg",
   "name": "OpenCode",
   "description": "What OpenCode does on this machine: sessions running now, usage and its cost as OpenCode records it, by day, project and model, and each session's conversation. Read from OpenCode's own database, nothing saved.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "apiVersion": 4,

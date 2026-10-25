@@ -1,11 +1,12 @@
 // OpenCode: what OpenCode (opencode.ai) does on this machine, read from its SQLite database; nothing is written anywhere.
 // Cost = what OpenCode recorded for each reply (models.dev prices; 0 for free models and subscriptions); no plan limits.
+import { execFile } from "node:child_process"
 import crypto from "node:crypto"
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { type AgentStart, argvOf, codingAgent, cwds, firstPrompts, HOME, type Live, notOnThisMachine, numberOf, processes, shellQuote, buildCache, projectRoots, scanDays,
+import { type AgentAsk, type AgentModels, type AgentStart, argvOf, findBin, codingAgent, cwds, firstPrompts, HOME, type Live, notOnThisMachine, numberOf, processes, shellQuote, buildCache, projectRoots, scanDays,
   sessionsOf, SqliteFile, Tally } from "@vaultite/core/agents.ts"
 import { localDate, Plugin } from "@vaultite/core/plugins.ts"
 import type { Item } from "@vaultite/core/vault.ts"
@@ -246,19 +247,19 @@ function tmpFile(ext: string, text: string) {
 /** An OpenCode plugin (loaded from a file:// path) that marks the terminal's state from OpenCode's events: working
  *  while any session of the process is busy, waiting while a permission or a question is asked, idle otherwise. */
 function statePlugin(state: NonNullable<AgentStart["state"]>) {
-  const cmds = JSON.stringify({ working: state("working"), waiting: state("waiting"), idle: state("idle") })
+  const cmds = JSON.stringify({ working: state("working"), permission: state("waiting", "permission"), question: state("waiting", "question"), idle: state("idle") })
   return `// Written by Vaultite: marks its terminal working, waiting or idle.
 import { spawn } from "node:child_process"
 const cmd = ${cmds}
 let last = ""
-const busy = new Set(), asks = new Set()
+const busy = new Set(), asks = new Map()
 const set = (s) => { if (s === last) return; last = s; spawn("/bin/sh", ["-c", cmd[s]], { stdio: "ignore", detached: true }).unref() }
-const show = () => set(asks.size ? "waiting" : busy.size ? "working" : "idle")
+const show = () => set(asks.size ? [...asks.values()].at(-1) : busy.size ? "working" : "idle")
 export default { id: "vaultite-state", server: async () => { show(); return { event: async ({ event }) => {
   const p = event.properties || {}
   if (event.type === "session.status") { if (p.status?.type === "idle") busy.delete(p.sessionID); else busy.add(p.sessionID) }
   else if (event.type === "session.idle") busy.delete(p.sessionID)
-  else if (event.type === "permission.asked" || event.type === "question.asked") asks.add(p.id)
+  else if (event.type === "permission.asked" || event.type === "question.asked") asks.set(p.id, event.type.split(".")[0])
   else if (event.type === "permission.replied" || event.type === "question.replied") asks.delete(p.requestID ?? p.id)
   else return
   show()
@@ -266,9 +267,9 @@ export default { id: "vaultite-state", server: async () => { show(); return { ev
 `
 }
 
-/** `opencode`, or `opencode --session <id>` in the folder it ran in, told where it runs through OPENCODE_CONFIG_CONTENT
- *  (merged into the user's config): an instructions file and the state plugin above. */
-plugin.provide("agent:opencode", async ({ resume, context, state, prompt }: AgentStart) => {
+/** `opencode` (`-m`: the model given), or `opencode --session <id>` in the folder it ran in, told where it runs through
+ *  OPENCODE_CONFIG_CONTENT (merged into the user's config): an instructions file and the state plugin above. */
+plugin.provide("agent:opencode", async ({ resume, context, state, prompt, model }: AgentStart) => {
   const row = resume ? sessionRow(resume) : null
   if (resume && !row) return notOnThisMachine("OpenCode", resume)
   const config: Item = {}
@@ -278,9 +279,34 @@ plugin.provide("agent:opencode", async ({ resume, context, state, prompt }: Agen
   } catch {
     // no temp folder: it runs as it is
   }
-  const env = Object.keys(config).length ? `OPENCODE_CONFIG_CONTENT=${shellQuote(JSON.stringify(config))} ` : ""
-  return { command: `${env}opencode${resume ? ` --session ${shellQuote(resume)}` : ""}${prompt ? ` --prompt ${shellQuote(prompt)}` : ""}`, cwd: row?.directory || null }
+  // (one started with a prompt runs unattended: OpenCode's update dialog, which reads only its global config, would sit over it)
+  const env = `${Object.keys(config).length ? `OPENCODE_CONFIG_CONTENT=${shellQuote(JSON.stringify(config))} ` : ""}${prompt ? "OPENCODE_DISABLE_AUTOUPDATE=1 " : ""}`
+  const flags = ([["--session", resume], ["-m", model], ["--prompt", prompt]] as const).filter(([, v]) => v).map(([f, v]) => ` ${f} ${shellQuote(v!)}`)
+  return { command: `${env}opencode${flags.join("")}`, cwd: row?.directory || null }
 })
+
+/** Its permission dialog, by its last lines: Approve is Allow once (selected first), Deny is Esc (Reject). */
+plugin.provide("agent-asks:opencode", (): AgentAsk[] => [
+  { id: "permission", match: /Permission required[\s\S]*Allow once\s+Allow always\s+Reject/, says: "Asks permission", approve: ["\r"], deny: ["\x1b"], lines: 20 },
+])
+
+// The models its pickers list: `opencode models` (the providers it's signed in to, and its free ones), read in the
+// background since a service answers at once; no efforts (OpenCode's variants aren't a flag).
+let models: { t: number; list: AgentModels["models"] } = { t: 0, list: [] }
+function readModels() {
+  const bin = findBin("opencode")
+  models.t = Date.now()
+  if (!bin) return
+  execFile(bin, ["models"], { timeout: 20_000, maxBuffer: 4 << 20 }, (err, out) => {
+    const ids = err ? [] : out.split("\n").map((l) => l.trim()).filter((l) => /^[\w.-]+\/\S+$/.test(l))
+    if (ids.length) void modelNames().then((names) => { models = { t: models.t, list: ids.map((id) => ({ id, label: modelName(names, id) })) } })
+  })
+}
+plugin.provide("agent-models:opencode", (): AgentModels => {
+  if (Date.now() - models.t > 10 * 60_000) readModels()
+  return { models: models.list, efforts: [] }
+})
+setTimeout(() => { if (!models.t) readModels() }, 3000).unref?.()
 
 // ---------- blocks as text (GET /api/render)
 

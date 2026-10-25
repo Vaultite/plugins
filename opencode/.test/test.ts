@@ -52,6 +52,8 @@ try {
   check("in a terminal: resumes in the session's folder, told where it runs (instructions) and marking its state (a plugin)",
     run.command.endsWith("opencode --session 'ses_fixtureA001'") && run.cwd === "/Users/sam/lighthouse" &&
     fs.readFileSync(cfg.instructions[0], "utf8") === "Inside Vaultite." && fs.readFileSync(new URL(cfg.plugin[0]), "utf8").includes('"working":"echo working"'), [run, cfg])
+  const fresh = await agent({ resume: null, context: "", state: null, prompt: "Say hi", model: "opencode/big-pickle" })
+  check("in a terminal: a new session runs the model it's given, without the update dialog", fresh.command === "OPENCODE_DISABLE_AUTOUPDATE=1 opencode -m 'opencode/big-pickle' --prompt 'Say hi'", fresh)
   const [, oc] = await api("GET", "render?path=Dashboards/OpenCode.md")
   check("its page: sessions, usage, projects and models as text", typeof oc === "string" && oc.includes("## OpenCode sessions") &&
     oc.includes("Make the header sticky") && oc.includes("## OpenCode by project") && oc.includes("lighthouse: $0.14") &&
