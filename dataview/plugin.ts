@@ -66,6 +66,31 @@ function pages(): Index {
   return kept
 }
 
+/** Some notes alone as pages (dataview:within), by `scope`: their links resolved among themselves only, so nothing
+ *  outside them is seen, not even by name. */
+const scoped = new Map<string, Index>()
+function pagesWithin(scope: string, only: (rel: string) => boolean): Index {
+  const vault = plugin.vault, version = String(vault.version), had = scoped.get(scope)
+  if (had?.version === version) return had
+  const files: LinkFile[] = []
+  for (const [rel, e] of vault.entries) {
+    if (!only(rel)) continue
+    const aliases = e.fm.aliases ?? e.fm.alias
+    files.push({ path: rel, aliases: (Array.isArray(aliases) ? aliases : aliases ? [aliases] : []).map(String), archived: e.archived })
+  }
+  for (const rel of vault.others.keys()) if (only(rel)) files.push({ path: rel })
+  const resolve = linkResolver(files), out: Row[] = []
+  for (const [rel, e] of vault.entries) {
+    if (noted(rel) && only(rel)) out.push(page({ path: rel, fm: e.fm, body: e.body, ctime: e.stat.born, mtime: Number(e.stat.ns / 1000000n), size: e.stat.size }, resolve))
+  }
+  linkUp(out)
+  const ix = { version, pages: out, byPath: new Map(out.map((p) => [String((p.file as Row).path), p])), resolve }
+  scoped.delete(scope)
+  scoped.set(scope, ix)
+  if (scoped.size > 20) scoped.delete(scoped.keys().next().value!)
+  return ix
+}
+
 // A vault's notes parsed a few at a time once the server is up, so the first query doesn't wait seconds for them all.
 let unloaded = false
 plugin.onUnload(() => { unloaded = true })
@@ -82,12 +107,11 @@ setTimeout(async () => {
   } catch (e) { console.error("dataview: reading the notes ahead:", e) }
 }, 5000).unref()
 
-function context(path: string | undefined, now = new Date()): Context {
-  const ix = pages()
+function context(path: string | undefined, now = new Date(), ix = pages(), bounded?: { until: number }): Context {
   // Sample folders (the app's files.json `samples`): examples, listed only for a query in that folder.
   const samples = ((plugin.vault as { samples?: () => string[] }).samples?.() ?? []).map((d) => `${d}/`).filter((d) => !path?.startsWith(d))
   const listed = samples.length ? ix.pages.filter((p) => !samples.some((d) => String((p.file as Row).path).startsWith(d))) : ix.pages
-  return { pages: listed, page: (p) => ix.byPath.get(p) ?? null, resolve: ix.resolve, self: path ? ix.byPath.get(path) ?? null : null, now }
+  return { pages: listed, page: (p) => ix.byPath.get(p) ?? null, resolve: ix.resolve, self: path ? ix.byPath.get(path) ?? null : null, now, ...(bounded ? { bounded } : {}) }
 }
 
 // ---------- results for the app (JSON)
@@ -123,11 +147,11 @@ function titleOf(q: Query): string | undefined {
   return undefined
 }
 
-/** A query's text run in the note at `path`: its answer, or the error to show. */
-function runQuery(text: string, path?: string): { result: Result; title?: string } | { error: string } {
+/** A query's text run in the note at `path` (over the pages `ix`, within `bounded`): its answer, or the error to show. */
+function runQuery(text: string, path?: string, ix?: Index, bounded?: { until: number }): { result: Result; title?: string } | { error: string } {
   try {
     const q = parseQuery(text)
-    return { result: execute(q, context(path)), title: titleOf(q) }
+    return { result: execute(q, context(path, new Date(), ix, bounded)), title: titleOf(q) }
   } catch (e) {
     if (e instanceof DqlError) return { error: e.message }
     throw e
@@ -151,6 +175,27 @@ plugin.route("GET", "dataview/inline", (req) => {
     throw e
   }
 })
+
+/** Queries over some notes alone (a shared folder's: the app's share plugin), named `scope`: their pages and links only,
+ *  so nothing else of the vault is seen; bounded (engine.ts), as someone else's. As the routes answer them. */
+const QUICK = 250
+plugin.provide("dataview:within", (scope: string, only: (rel: string) => boolean) => ({
+  query: (text: string, path?: string) => {
+    if (text.length > 4000) return { error: "this query is too long here" }
+    const r = runQuery(text, path, pagesWithin(scope, only), { until: Date.now() + QUICK })
+    return "error" in r ? r : { result: wire(r.result), ...(r.title ? { title: r.title } : {}) }
+  },
+  inline: (text: string, path?: string) => {
+    if (text.length > 1000) return { error: "this query is too long here" }
+    try {
+      const v = evaluateInline(parseExpr(text), context(path, new Date(), pagesWithin(scope, only), { until: Date.now() + QUICK }))
+      return { value: toWire(v), text: inlineText(v) }
+    } catch (e) {
+      if (e instanceof DqlError) return { error: e.message }
+      throw e
+    }
+  },
+}))
 
 // A task's box ticked from a TASK query: that line's box changed, the rest as it is (409 if the line changed).
 plugin.route("POST", "dataview/task", (req) => {

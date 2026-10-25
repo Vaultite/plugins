@@ -2,7 +2,7 @@
 // output, its values still Dataview's (values.ts). Expressions and the functions Dataview's docs list are here.
 import { DqlError, type Command, type Expr, type Query, type Source } from "./dql.ts"
 import {
-  canonicalKey, compare, DvDate, Duration, equal, fromText, isObject, isoWeek, Link, parseDate, parseDuration, truthy, typeOf, UNITS,
+  canonicalKey, compare as compareValues, DvDate, Duration, fromText, isObject, isoWeek, Link, parseDate, parseDuration, truthy, typeOf, UNITS,
   type Fn, type Value, formatDate, formatDuration, toText,
 } from "./values.ts"
 
@@ -17,7 +17,48 @@ export type Context = {
   /** The page the query is in (`this`, `[[]]`). */
   self: Row | null
   now: Date
+  /** Run for someone the vault isn't theirs (a shared folder's guest): done by `until` (ms), no regular expressions (one
+   *  can run forever), no huge text. */
+  bounded?: { until: number }
 }
+
+let bounded: { until: number; steps: number; next: number; out: number } | null = null
+/** Bounded, the most of a text, of a value (all it holds, all the way down), of a query's rows and all it shows, and of
+ *  the work in all (each step a value made or compared: memory too). */
+const MAX_TEXT = 100_000, MAX_SIZE = 250_000, MAX_ROWS = 10_000, MAX_OUTPUT = 500_000, MAX_WORK = 2_000_000
+/** `fn` under `b`'s bounds (none: as ever). */
+function inBounds<T>(b: { until: number } | undefined, fn: () => T): T {
+  if (!b) return fn()
+  const was = bounded
+  bounded = { until: b.until, steps: 0, next: 1000, out: 0 }
+  try { return fn() } finally { bounded = was }
+}
+/** `n` steps of work (bounded: the clock looked at every thousand). */
+function work(n = 1) {
+  if (!bounded) return
+  bounded.steps += n
+  if (bounded.steps < bounded.next) return
+  bounded.next = bounded.steps + 1000
+  if (bounded.steps > MAX_WORK || Date.now() > bounded.until) throw new DqlError("this query takes too long here")
+}
+const sizes = new WeakMap<object, number>()
+/** How many values `v` holds, all the way down: a list held twice counts twice (one made of itself n times is 2^n). */
+function size(v: Value): number {
+  if (!v || typeof v !== "object" || !(Array.isArray(v) || isObject(v))) return 1
+  const had = sizes.get(v)
+  if (had !== undefined) return had
+  sizes.set(v, 1) // (while it's counted: one that holds itself counts it once)
+  let n = 1
+  for (const x of Array.isArray(v) ? v : Object.values(v)) if ((n += size(x)) > MAX_SIZE) break
+  sizes.set(v, n)
+  return n
+}
+// (comparing walks both values down: as much work as the smaller holds)
+const compare = (a: Value, b: Value) => { if (bounded) work(Math.min(size(a), size(b))); return compareValues(a, b) }
+const equal = (a: Value, b: Value) => compare(a, b) === 0
+const noRegex = () => { if (bounded) throw new DqlError("regular expressions aren't run here") }
+/** A text this long or less (bounded). */
+const fits = (n: number) => { if (bounded && n > MAX_TEXT) throw new DqlError("that text is too long here"); return n }
 
 export type ListItem = { id: Value | undefined; value: Value | undefined }
 export type TaskGroup = { key: Value | undefined; tasks: Row[] }
@@ -120,6 +161,12 @@ function dateWord(word: string, now: Date): DvDate | null {
 }
 
 export function evaluate(e: Expr, s: Scope): Value {
+  const v = evaluateOnce(e, s)
+  if (bounded && v && typeof v === "object" && size(v) > MAX_SIZE) throw new DqlError("that value is too big here")
+  return v
+}
+function evaluateOnce(e: Expr, s: Scope): Value {
+  work()
   switch (e.k) {
     case "lit": return e.v as Value
     case "var": return lookup(e.name, s)
@@ -206,9 +253,9 @@ export function binary(op: string, a: Value, b: Value): Value {
     if (a instanceof DvDate && b instanceof Duration) return addDur(a, b, 1)
     if (a instanceof Duration && b instanceof DvDate) return addDur(b, a, 1)
     if (a instanceof Duration && b instanceof Duration) return a.plus(b)
-    if (Array.isArray(a) && Array.isArray(b)) return [...a, ...b]
+    if (Array.isArray(a) && Array.isArray(b)) { work(fits(a.length + b.length)); return [...a, ...b] }
     if (isObject(a) && isObject(b)) return { ...a, ...b }
-    if (typeof a === "string" || typeof b === "string") return toText(a) + toText(b)
+    if (typeof a === "string" || typeof b === "string") { const x = toText(a), y = toText(b); fits(x.length + y.length); return x + y }
     return null
   }
   if (op === "-") {
@@ -222,7 +269,7 @@ export function binary(op: string, a: Value, b: Value): Value {
     if (typeof a === "number" && typeof b === "number") return a * b
     if (a instanceof Duration && typeof b === "number") return a.times(b)
     if (typeof a === "number" && b instanceof Duration) return b.times(a)
-    if (typeof a === "string" && typeof b === "number") return a.repeat(Math.max(0, Math.floor(b)))
+    if (typeof a === "string" && typeof b === "number") { const n = Math.max(0, Math.floor(b)); fits(a.length * n); return a.repeat(n) }
     return null
   }
   if (op === "/") {
@@ -240,7 +287,7 @@ export function binary(op: string, a: Value, b: Value): Value {
 type Impl = (args: Value[], ctx: Context) => Value
 const str = (v: Value) => (typeof v === "string" ? v : v === null ? "" : toText(v))
 const num = (v: Value) => (typeof v === "number" ? v : typeof v === "string" && v.trim() !== "" && !isNaN(Number(v)) ? Number(v) : null)
-const list = (v: Value): Value[] => (Array.isArray(v) ? v : v === null ? [] : [v])
+const list = (v: Value): Value[] => (Array.isArray(v) ? (work(v.length), v) : v === null ? [] : [v])
 const call = (f: Value, ...args: Value[]): Value => {
   if (typeof f !== "function") throw new DqlError("expected a function, like (x) => x.rating")
   return f(...args)
@@ -248,7 +295,7 @@ const call = (f: Value, ...args: Value[]): Value => {
 /** A function of one value applied to each of a list's (Dataview's vectorization). */
 const each = (f: (v: Value, ...rest: Value[]) => Value): Impl => (args) => {
   const [first, ...rest] = args
-  return Array.isArray(first) ? first.map((x) => f(x ?? null, ...rest)) : f(first ?? null, ...rest)
+  return Array.isArray(first) ? (work(first.length), first.map((x) => f(x ?? null, ...rest))) : f(first ?? null, ...rest)
 }
 const nums = (args: Value[]) => (args.length === 1 && Array.isArray(args[0]) ? args[0] : args).filter((x) => x !== null)
 
@@ -301,7 +348,7 @@ function round(v: Value, digits: Value): Value {
   return Math.round(n * f) / f
 }
 
-const flat = (v: Value[], depth: number): Value[] => v.flatMap((x) => (Array.isArray(x) && depth > 0 ? flat(x, depth - 1) : [x]))
+const flat = (v: Value[], depth: number): Value[] => v.flatMap((x) => (Array.isArray(x) && depth > 0 ? (work(x.length), flat(x, depth - 1)) : [x]))
 
 export const FUNCTIONS: Record<string, Impl> = {
   // constructors
@@ -374,7 +421,7 @@ export const FUNCTIONS: Record<string, Impl> = {
   all: (a) => (typeof a[1] === "function" ? list(a[0] ?? null).every((x) => truthy(call(a[1] ?? null, x))) : (a.length === 1 && Array.isArray(a[0]) ? a[0] : a).every(truthy)),
   any: (a) => (typeof a[1] === "function" ? list(a[0] ?? null).some((x) => truthy(call(a[1] ?? null, x))) : (a.length === 1 && Array.isArray(a[0]) ? a[0] : a).some(truthy)),
   none: (a) => (typeof a[1] === "function" ? !list(a[0] ?? null).some((x) => truthy(call(a[1] ?? null, x))) : !(a.length === 1 && Array.isArray(a[0]) ? a[0] : a).some(truthy)),
-  join: (a) => list(a[0] ?? null).map((x) => toText(x)).join(typeof a[1] === "string" ? a[1] : ", "),
+  join: (a) => { const t = list(a[0] ?? null).map((x) => toText(x)).join(typeof a[1] === "string" ? a[1] : ", "); fits(t.length); return t },
   filter: (a) => list(a[0] ?? null).filter((x) => truthy(call(a[1] ?? null, x))),
   map: (a) => list(a[0] ?? null).map((x) => call(a[1] ?? null, x)),
   flat: (a) => flat(list(a[0] ?? null), typeof a[1] === "number" ? a[1] : 1),
@@ -385,20 +432,29 @@ export const FUNCTIONS: Record<string, Impl> = {
   },
   unique: (a) => list(a[0] ?? null).filter((x, i, xs) => xs.findIndex((y) => equal(x, y)) === i),
   // text
-  regextest: (a) => { try { return new RegExp(str(a[0] ?? null)).test(str(a[1] ?? null)) } catch { return false } },
-  regexmatch: (a) => { try { return new RegExp(`^(?:${str(a[0] ?? null)})$`).test(str(a[1] ?? null)) } catch { return false } },
-  regexreplace: each((v, p, r) => { try { return typeof v === "string" ? v.replace(new RegExp(str(p), "g"), str(r)) : null } catch { return v } }),
-  replace: each((v, p, r) => (typeof v === "string" ? v.split(str(p)).join(str(r)) : null)),
+  regextest: (a) => { noRegex(); try { return new RegExp(str(a[0] ?? null)).test(str(a[1] ?? null)) } catch { return false } },
+  regexmatch: (a) => { noRegex(); try { return new RegExp(`^(?:${str(a[0] ?? null)})$`).test(str(a[1] ?? null)) } catch { return false } },
+  regexreplace: each((v, p, r) => { noRegex(); try { return typeof v === "string" ? v.replace(new RegExp(str(p), "g"), str(r)) : null } catch { return v } }),
+  replace: each((v, p, r) => {
+    if (typeof v !== "string") return null
+    const parts = v.split(str(p))
+    fits(v.length + (parts.length - 1) * str(r).length)
+    return parts.join(str(r))
+  }),
   lower: each((v) => (typeof v === "string" ? v.toLowerCase() : v)),
   upper: each((v) => (typeof v === "string" ? v.toUpperCase() : v)),
   split: (a) => {
     const s = str(a[0] ?? null)
-    try { const parts = s.split(new RegExp(str(a[1] ?? null))); return typeof a[2] === "number" ? parts.slice(0, a[2]) : parts } catch { return [s] }
+    // (bounded, the separator is text: a regular expression could run forever)
+    let parts: string[]
+    try { parts = s.split(bounded ? str(a[1] ?? null) : new RegExp(str(a[1] ?? null))) } catch { return [s] }
+    work(parts.length)
+    return typeof a[2] === "number" ? parts.slice(0, a[2]) : parts
   },
   startswith: each((v, p) => typeof v === "string" && v.startsWith(str(p))),
   endswith: each((v, p) => typeof v === "string" && v.endsWith(str(p))),
-  padleft: each((v, n, c) => str(v).padStart(typeof n === "number" ? n : 0, typeof c === "string" ? c : " ")),
-  padright: each((v, n, c) => str(v).padEnd(typeof n === "number" ? n : 0, typeof c === "string" ? c : " ")),
+  padleft: each((v, n, c) => str(v).padStart(typeof n === "number" ? fits(n) : 0, typeof c === "string" ? c : " ")),
+  padright: each((v, n, c) => str(v).padEnd(typeof n === "number" ? fits(n) : 0, typeof c === "string" ? c : " ")),
   substring: each((v, s, e) => str(v).substring(typeof s === "number" ? s : 0, typeof e === "number" ? e : undefined)),
   truncate: each((v, n, suffix) => {
     const s = str(v), len = typeof n === "number" ? n : s.length, suf = typeof suffix === "string" ? suffix : "..."
@@ -517,7 +573,11 @@ function run(cmds: Command[], rows: Row[], ctx: Context): { rows: Row[]; grouped
       const out: Row[] = []
       for (const r of rows) {
         const v = ev(c.e, r)
-        for (const x of Array.isArray(v) ? v : [v]) out.push(setPath(r, c.as, x))
+        for (const x of Array.isArray(v) ? v : [v]) {
+          work()
+          if (bounded && out.length >= MAX_ROWS) throw new DqlError("that's too many rows here")
+          out.push(setPath(r, c.as, x))
+        }
       }
       rows = out
     } else if (c.k === "group") {
@@ -542,6 +602,9 @@ function run(cmds: Command[], rows: Row[], ctx: Context): { rows: Row[]; grouped
 
 /** The query run: its rows as the query type draws them. Throws DqlError. */
 export function execute(q: Query, ctx: Context): Result {
+  return inBounds(ctx.bounded, () => executeAll(q, ctx))
+}
+function executeAll(q: Query, ctx: Context): Result {
   const pages = ctx.pages.filter((p) => inSource(q.from, p, ctx))
   pages.sort((a, b) => compare(fileOf(a)?.path ?? null, fileOf(b)?.path ?? null))
   if (q.type === "task") {
@@ -556,8 +619,13 @@ export function execute(q: Query, ctx: Context): Result {
     return { type: "task", grouped: false, groups: [...byFile.entries()].map(([p, ts]) => ({ key: fileOf(ctx.page(p) ?? {})?.link ?? new Link(p), tasks: nest(ts) })) }
   }
   const { rows, grouped } = run(q.commands, pages, ctx)
-  const id = (r: Row): Value => (grouped ? r.key ?? null : fileOf(r)?.link ?? null)
-  const ev = (e: Expr, row: Row) => evaluate(e, { row, ctx })
+  // (bounded, what it shows in all: each cell is written out whole, however cheaply it was made)
+  const shown = (v: Value) => {
+    if (bounded && (bounded.out += size(v)) > MAX_OUTPUT) throw new DqlError("that's too much to show here")
+    return v
+  }
+  const id = (r: Row): Value => shown(grouped ? r.key ?? null : fileOf(r)?.link ?? null)
+  const ev = (e: Expr, row: Row) => shown(evaluate(e, { row, ctx }))
   if (q.type === "table") {
     const headers = [...(q.withoutId ? [] : [grouped ? "Group" : "File"]), ...q.columns.map((c) => c.name)]
     return {
@@ -599,7 +667,7 @@ function nest(tasks: Row[]): Row[] {
 
 /** An inline query's value (`= this.file.name`): the expression over the page it's in. Throws DqlError. */
 export function evaluateInline(e: Expr, ctx: Context): Value {
-  return evaluate(e, { row: ctx.self ?? {}, ctx })
+  return inBounds(ctx.bounded, () => evaluate(e, { row: ctx.self ?? {}, ctx }))
 }
 
 /** A frontmatter value or a field's text read as Dataview does, for callers that have only text. */

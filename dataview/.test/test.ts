@@ -190,5 +190,31 @@ const throws = (f: () => unknown, re: RegExp) => { try { f(); return false } cat
   check("inline: vectorized lower", JSON.stringify(inline(`lower(["A", "B"])`)) === `["a","b"]`)
 }
 
+// ---------- bounded: a query run for someone the vault isn't theirs (a shared folder's guest)
+{
+  const b = (src: string, ms = 500) => { try { return evaluateInline(parseExpr(src), { ...ctx(), bounded: { until: Date.now() + ms } }) } catch (e) { return e instanceof DqlError ? `error: ${e.message}` : `threw: ${e}` } }
+  check("bounded: no regular expressions (one can run forever)", String(b(`regextest("(a+)+$", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!")`)).startsWith("error:") && String(b(`regexreplace("ab", "a", "x")`)).startsWith("error:"))
+  check("bounded: split takes text, not a pattern", JSON.stringify(b(`split("a.b", ".")`)) === `["a","b"]`)
+  check("bounded: no huge text", [`padleft("x", 100000000)`, `"ab" * 100000000`, `replace(padleft("x", 50000), "", padleft("y", 50000))`].every((q) => String(b(q)).startsWith("error:")))
+  const t0 = Date.now(), slow = b(`length(flat(map(split("x" * 99999, ""), (x) => map([1,2,3,4,5,6,7,8,9,10], (y) => map([1,2,3,4,5,6,7,8,9,10], (z) => x + y + z)))))`, 100)
+  check("bounded: a query that takes too long stops", String(slow).startsWith("error:") && Date.now() - t0 < 3000, slow)
+  // (loops that evaluate nothing count too: a list made all at once, each value compared with each)
+  const D = [...Array(300)].map((_, i) => String.fromCodePoint(0x4e00 + i)).join("")
+  const t1 = Date.now(), pairs = b(`length(unique(flat(map(split("${D}", ""), (a) => map(split("${D}", ""), (b) => a + b)))))`, 250)
+  check("bounded: comparing each with each stops in time", String(pairs).startsWith("error:") && Date.now() - t1 < 2000, [pairs, Date.now() - t1])
+  const t2 = Date.now()
+  let bomb: unknown
+  try { bomb = execute(parseQuery(`TABLE a FLATTEN [split("x" * 99999, "")] AS big FLATTEN split("x" * 99999, "") AS a FLATTEN big AS b LIMIT 1`), { ...ctx(), bounded: { until: Date.now() + 250 } }) } catch (e) { bomb = `error: ${(e as Error).message}` }
+  check("bounded: rows FLATTEN makes stop in time, before they fill memory", String(bomb).startsWith("error:") && Date.now() - t2 < 2000, [String(bomb).slice(0, 80), Date.now() - t2])
+  // (a list holding one list twice, made so again and again: little work to make, 2^n to walk)
+  const twice = (n: number, f = "(x) => [x, x]") => `((d) => ${"d(".repeat(n)}[1]${")".repeat(n)})(${f})`
+  const t3 = Date.now(), doubled = [b(`${twice(28)} = ${twice(28)}`, 250), b(twice(6, `(x) => map(split("x" * 50, ""), (i) => x)`), 250)]
+  check("bounded: a value that holds itself many times over stops, before it's walked", doubled.every((x) => String(x).startsWith("error:")) && Date.now() - t3 < 2000, [doubled, Date.now() - t3])
+  let wide: unknown
+  try { wide = execute(parseQuery(`TABLE big, big, big FLATTEN [map(split("x" * 9000, ""), (c) => [c, c, c, c, c])] AS big FLATTEN split("x" * 300, "") AS n`), { ...ctx(), bounded: { until: Date.now() + 250 } }) } catch (e) { wide = `error: ${(e as Error).message}` }
+  check("bounded: what a query shows in all is bounded too (a cell made cheaply is still written out whole)", /too much to show/.test(String(wide)), String(wide).slice(0, 80))
+  check("bounded: an ordinary query runs as ever", b(`[[Dune]].rating`) === 9 && inline(`regextest("a+", "aa")`) === true)
+}
+
 console.log(`${passed} passed, ${failed} failed`)
 if (failed) process.exit(1)
