@@ -8,7 +8,7 @@ Browse.
   `vau bundle import Vaultite/plugins/bundles/<id>`, or from the Bundles page's Browse. `agents`: coding agents in
   terminals beside your pages, their sessions and limits, your machines and the server. `life-os`: your days, people
   and health, logged by your AI, with pages over them. `glass`: only a look, over any setup: a translucent window in the
-  Mac and Windows 11 apps.
+  Mac and Windows 11 apps. `full-glass`: the same, with notes and terminals translucent too.
 - `directory/`: `listed.json` (what the topic searches miss: `plugins`, repositories; `bundles`, a repository or a folder
   in one), `blocked.json` (plugin versions, or bundles' places, with a known problem) and `index.json`, the directory the
   app reads (built by the app's `tools/plugin-index.ts`).

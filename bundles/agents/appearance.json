@@ -17,6 +17,7 @@
   "peekShade": false,
   "typingFade": false,
   "translucent": false,
+  "translucentPages": false,
   "lineNumbers": false,
   "statusBar": null,
   "statusBarMore": [],

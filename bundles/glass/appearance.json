@@ -1,3 +1,4 @@
 {
-  "translucent": true
+  "translucent": true,
+  "translucentPages": false
 }

@@ -2,6 +2,7 @@
   "plugins": [],
   "bundles": [
     "Vaultite/plugins/bundles/agents",
+    "Vaultite/plugins/bundles/full-glass",
     "Vaultite/plugins/bundles/glass",
     "Vaultite/plugins/bundles/life-os"
   ]

@@ -18,7 +18,7 @@ const builtIns = fs.readdirSync(path.join(APP, "bundles")).filter((d) => fs.exis
 /** The keys the app's bundles say in one of their files (appearance.json, editor.json, newtab.json). */
 const keysIn = (rel: string) => new Set(builtIns.flatMap((b) => Object.keys(json(path.join(APP, "bundles", b, rel)) ?? {})))
 const looks = keysIn("appearance.json"), FILES = ["editor", "newtab"].map((n) => [n, keysIn(`${n}.json`)] as const)
-const lookKeys: string[] = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)).LOOK_KEYS
+const { LOOK_KEYS: lookKeys, LOOK: lookDefaults } = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)) as { LOOK_KEYS: string[]; LOOK: Record<string, unknown> }
 /** What a restyle may hold besides its card. */
 const RESTYLE = new Set(["bundle.json", "appearance.json", "preview.png", "preview-dark.png", "themes", "snippets"])
 const settings = new Set(builtIns.flatMap((b) => {
@@ -74,8 +74,8 @@ for (const id of ids) {
       ;[code, r] = await s.api("POST", "bundles/zen/apply", {})
       const zen = setup(Object.keys(look))
       ;[code, r] = await s.api("POST", `bundles/${id}/apply`, {})
-      const now = conf("appearance")
-      check(`${rel}: over Zen, it sets its keys`, code === 200 && Object.entries(look).every(([k, v]) => JSON.stringify(now[k]) === JSON.stringify(v)), { look, now })
+      const now = conf("appearance") // (a default isn't written: missing is its default)
+      check(`${rel}: over Zen, it sets its keys`, code === 200 && Object.entries(look).every(([k, v]) => JSON.stringify(now[k] ?? lookDefaults[k]) === JSON.stringify(v)), { look, now })
       const after = JSON.parse(setup(Object.keys(look))), was = JSON.parse(zen)
       const moved = Object.keys(was).filter((k) => JSON.stringify(was[k]) !== JSON.stringify(after[k])).map((k) => ({ [k]: [was[k], after[k]] }))
       check(`${rel}: over Zen, the rest of Zen's setup stays`, !moved.length, moved)
