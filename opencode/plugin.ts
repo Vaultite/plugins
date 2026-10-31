@@ -6,7 +6,7 @@ import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { type AgentAsk, type AgentModels, type AgentStart, argvOf, findBin, codingAgent, cwds, firstPrompts, HOME, type Live, notOnThisMachine, numberOf, processes, shellQuote, buildCache, projectRoots, scanDays,
+import { type AgentAsk, type AgentModels, type AgentStart, type PermissionMode, argvOf, findBin, codingAgent, cwds, firstPrompts, HOME, type Live, notOnThisMachine, numberOf, processes, shellQuote, buildCache, projectRoots, scanDays,
   sessionsOf, SqliteFile, Tally } from "@vaultite/core/agents.ts"
 import { localDate, Plugin } from "@vaultite/core/plugins.ts"
 import type { Item } from "@vaultite/core/vault.ts"
@@ -269,10 +269,18 @@ export default { id: "vaultite-state", server: async () => { show(); return { ev
 
 /** `opencode` (`-m`: the model given), or `opencode --session <id>` in the folder it ran in, told where it runs through
  *  OPENCODE_CONFIG_CONTENT (merged into the user's config): an instructions file and the state plugin above. */
-plugin.provide("agent:opencode", async ({ resume, context, state, prompt, model }: AgentStart) => {
+/** Claude Code's permission modes as OpenCode's permissions: plan only reads, default asks before it edits or runs
+ *  anything, acceptEdits edits unasked, auto fetches unasked too, bypass is everything. */
+const PERMISSIONS: Record<PermissionMode, Item> = {
+  plan: { edit: "deny", bash: "ask", webfetch: "allow" }, dontAsk: { edit: "deny", bash: "deny", webfetch: "deny" },
+  default: { edit: "ask", bash: "ask", webfetch: "ask" }, acceptEdits: { edit: "allow", bash: "ask", webfetch: "ask" },
+  auto: { edit: "allow", bash: "ask", webfetch: "allow" }, bypassPermissions: { edit: "allow", bash: "allow", webfetch: "allow" },
+}
+
+plugin.provide("agent:opencode", async ({ resume, context, state, prompt, model, mode }: AgentStart) => {
   const row = resume ? sessionRow(resume) : null
   if (resume && !row) return notOnThisMachine("OpenCode", resume)
-  const config: Item = {}
+  const config: Item = mode && PERMISSIONS[mode] ? { permission: PERMISSIONS[mode] } : {}
   try {
     if (context) config.instructions = [tmpFile(".md", context)]
     if (state) config.plugin = [pathToFileURL(tmpFile(".mjs", statePlugin(state))).href]
@@ -304,7 +312,7 @@ function readModels() {
 }
 plugin.provide("agent-models:opencode", (): AgentModels => {
   if (Date.now() - models.t > 10 * 60_000) readModels()
-  return { models: models.list, efforts: [] }
+  return { models: models.list, efforts: [], modes: Object.keys(PERMISSIONS) as PermissionMode[] }
 })
 setTimeout(() => { if (!models.t) readModels() }, 3000).unref?.()
 
