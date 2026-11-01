@@ -243,6 +243,8 @@ export class Vault extends Events {
   getRoot() { return this.root }
   getAbstractFileByPath(p: string) { const n = normalizePath(p); return n === "/" ? this.root : this.files.get(n) ?? null }
   getAbstractFileByPathInsensitive(p: string) { const l = normalizePath(p).toLowerCase(); return [...this.files.values()].find((f) => f.path.toLowerCase() === l) ?? null }
+  /** Obsidian's private check, the adapter's (hidden files too). */
+  exists(p: string, sensitive?: boolean) { return this.adapter.exists(p, sensitive) }
   getFileByPath(p: string) { const f = this.getAbstractFileByPath(p); return f instanceof TFile ? f : null }
   getFolderByPath(p: string) { const f = this.getAbstractFileByPath(p); return f instanceof TFolder ? f : null }
   getFiles() { return [...this.files.values()].filter((f): f is TFile => f instanceof TFile) }
@@ -519,6 +521,9 @@ export class MetadataCache extends Events {
   resolveLinks(_path?: string) { this.resolve() }
   async computeFileMetadataAsync(data: ArrayBuffer | string) { return metadataOf(typeof data === "string" ? data : new TextDecoder().decode(data)) }
   async computeMetadataAsync(data: ArrayBuffer | string) { return this.computeFileMetadataAsync(data) }
+  private clean: (() => any)[] = []
+  /** Obsidian's private wait for the first full index: `cb` runs once it's there (at once if it is). */
+  onCleanCache(cb: () => any) { if (this.initialized) cb(); else this.clean.push(cb) }
   /** Links resolved again, every note's (a new or renamed file can resolve links elsewhere). */
   resolve(only?: string[]) {
     if (!only) {
@@ -541,6 +546,7 @@ export class MetadataCache extends Events {
     }
     this.resolvedLinks = res; this.unresolvedLinks = un
     this.resolved = this.initialized = true
+    for (const cb of this.clean.splice(0)) { try { cb() } catch (e) { console.error(e) } }
   }
 }
 

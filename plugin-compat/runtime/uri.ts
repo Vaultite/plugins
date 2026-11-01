@@ -10,10 +10,10 @@ export function runUri(url: string, plugin?: string) {
   if (u.protocol !== "obsidian:") return false
   const action = u.hostname || u.pathname.replace(/^\/+/, "")
   const h = registered.protocols.get(action)
-  if (!h || (plugin && h.plugin !== plugin)) return false
+  if (!h || (plugin && registered.protocolPlugins.get(action) !== plugin)) return false
   const params: Record<string, string> = { action }
   for (const [k, v] of u.searchParams) params[k] = v
-  try { void h.fn(params) } catch (e) { console.error(e) }
+  try { void h(params) } catch (e) { console.error(e) }
   return true
 }
 

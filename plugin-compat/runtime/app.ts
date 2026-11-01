@@ -459,6 +459,7 @@ export class App {
   }
   loadLocalStorage(k: string) { try { const v = localStorage.getItem(`obsidian-compat:${k}`); return v === null ? null : JSON.parse(v) } catch { return null } }
   saveLocalStorage(k: string, v: unknown) { try { if (v === null || v === undefined) localStorage.removeItem(`obsidian-compat:${k}`); else localStorage.setItem(`obsidian-compat:${k}`, JSON.stringify(v)) } catch { /* private mode */ } }
+  isVimEnabled() { return !!this.vault.getConfig("vimMode") }
   isDarkMode() { return document.documentElement.classList.contains("dark") }
   getTheme() { return this.isDarkMode() ? "obsidian" : "moonstone" }
   getAccentColor() { return getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() }

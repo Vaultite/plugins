@@ -85,8 +85,9 @@ export class Plugin extends Component {
     tell()
   }
   registerObsidianProtocolHandler(action: string, fn: (params: Record<string, string>) => any) {
-    registered.protocols.set(action, { plugin: this.manifest.id, fn })
-    this.register(() => { if (registered.protocols.get(action)?.fn === fn) registered.protocols.delete(action); tell() })
+    registered.protocols.set(action, fn)
+    registered.protocolPlugins.set(action, this.manifest.id)
+    this.register(() => { if (registered.protocols.get(action) === fn) { registered.protocols.delete(action); registered.protocolPlugins.delete(action) } tell() })
     tell()
   }
   registerBasesView(type: string) { miss(this.manifest.id, `registerBasesView(${type})`); return false }

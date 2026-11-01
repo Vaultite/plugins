@@ -264,7 +264,7 @@ function defOf(p: Installed): HostedPlugin {
     ...(ribbon.length ? { header: { ribbon: { sort: 60, render: (ctx: SidebarCtx) => <Ribbon plugin={id} ctx={ctx} /> } } } : {}),
     ...(registered.statusBar.some((s) => s.plugin === id) ? { ambient: { status: { title: p.manifest.name, render: () => <StatusItems plugin={id} /> } } } : {}),
     ...(registered.settingTabs.has(id) ? { settingsPanel: () => <SettingTab plugin={id} /> } : {}),
-    ...([...registered.protocols.values()].some((h) => h.plugin === id) ? { schemeLink: (url: string) => runUri(url, id) } : {}),
+    ...([...registered.protocolPlugins.values()].includes(id) ? { schemeLink: (url: string) => runUri(url, id) } : {}),
   }
 }
 

@@ -36,10 +36,12 @@ export type Registered = {
   views: Map<string, string>
   /** Extensions a plugin's view opens (registerExtensions): extension -> its plugin and view type. */
   extensions: Map<string, { plugin: string; type: string }>
-  /** obsidian://<action> links a plugin answers (registerObsidianProtocolHandler). */
-  protocols: Map<string, { plugin: string; fn: (params: Record<string, string>) => any }>
+  /** obsidian://<action> links plugins answer (registerObsidianProtocolHandler): Obsidian's map, handlers by action. */
+  protocols: Map<string, (params: Record<string, string>) => any>
+  /** Which plugin registered each action. */
+  protocolPlugins: Map<string, string>
 }
-export const registered: Registered = { commands: new Map(), fences: new Map(), postProcessors: [], settingTabs: new Map(), ribbon: [], statusBar: [], suggests: [], views: new Map(), extensions: new Map(), protocols: new Map() }
+export const registered: Registered = { commands: new Map(), fences: new Map(), postProcessors: [], settingTabs: new Map(), ribbon: [], statusBar: [], suggests: [], views: new Map(), extensions: new Map(), protocols: new Map(), protocolPlugins: new Map() }
 export const changed = new Events()
 export const tell = () => changed.trigger("changed")
 

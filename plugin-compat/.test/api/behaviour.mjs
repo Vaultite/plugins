@@ -206,6 +206,28 @@ check("new notes go where app.json says", r7.newParent === "Notes", r7)
 check("Obsidian's core commands by id, every installed manifest", !!r7.cmd && r7.manifests >= r7.installed, r7)
 check("editor lines are the file's", r5.starts && r5.line === "# A" && r5.after === "# Title A" && r5.back?.line === r5.n && r5.cm, r5)
 
+// Obsidian's private parts popular plugins use: leaves of one split, the title bar's sidebar toggles, vault.exists,
+// onCleanCache, isVimEnabled, the protocol handlers' map (plugins wrap its get).
+const rp = await run(async (o, app) => {
+  const ws = app.workspace, mine = new o.WorkspaceSplit(ws, "vertical"), a = new o.WorkspaceLeaf(app), b = new o.WorkspaceLeaf(app)
+  mine.insertChild(0, a); mine.insertChild(1, b)
+  const walked = [], stopped = ws.iterateLeaves(mine, (l) => { walked.push(l === a ? "a" : "b"); return true })
+  let roots = 0; ws.iterateLeaves(ws.rootSplit, () => { roots++ })
+  const ids = [mine.id, ws.rootSplit.id, ws.leftSplit.id].every((x) => typeof x === "string" && x) && ws.rootSplit.resizeHandleEl instanceof HTMLElement
+  const copy = ws.rightSidebarToggleButtonEl.cloneNode(true), was = ws.rightSplit.collapsed
+  ws.rightSidebarToggleButtonEl.click(); const toggled = ws.rightSplit.collapsed !== was; ws.rightSplit.toggle()
+  let clean = false; app.metadataCache.onCleanCache(() => { clean = true })
+  const handler = () => {}; window.__probe.plugin.registerObsidianProtocolHandler("probe-uri", handler)
+  const fn = ws.protocolHandlers.get("probe-uri") === handler
+  return { walked, stopped, ids, roots: roots === ws.rootSplit.children.length, copy: copy.classList.contains("mod-right"), toggled, clean,
+    exists: [await app.vault.exists("Api test/B.md"), await app.vault.exists("Api test/none.md"), await app.vault.exists(".obsidian/app.json")],
+    vim: app.isVimEnabled() === !!app.vault.getConfig("vimMode"), fn }
+})
+check("workspace.iterateLeaves walks one split's leaves, stops on true; splits have ids, resize handles", rp.walked?.join() === "a" && rp.stopped === true && rp.roots && rp.ids, rp)
+check("the sidebar toggle buttons clone and toggle their split", rp.copy && rp.toggled, rp)
+check("vault.exists, metadataCache.onCleanCache, app.isVimEnabled", rp.exists?.join() === "true,false,true" && rp.clean && rp.vim, rp)
+check("protocolHandlers maps each action to its handler, as Obsidian's", rp.fn === true, rp)
+
 const r8 = await run(async (o, app) => {
   const seen = [], ref = app.workspace.on("file-open", (f) => seen.push(f?.path ?? null))
   // (a note left before it's drawn: plugins hear of the one shown after it, last)

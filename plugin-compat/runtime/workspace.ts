@@ -316,6 +316,13 @@ class Ribbon {
   hide() {}
 }
 
+function sidebarToggle(side: string, toggle: () => void) {
+  const el = hidden().createDiv({ cls: `sidebar-toggle-button mod-${side}`, attr: { "aria-label": "Toggle sidebar" } })
+  setIcon(el.createDiv({ cls: "clickable-icon" }), `panel-${side}`)
+  el.addEventListener("click", toggle)
+  return el
+}
+
 type Factory = (leaf: WorkspaceLeaf) => View
 let parked: HTMLElement | null = null
 export const parking = () => {
@@ -328,8 +335,12 @@ export const parking = () => {
 }
 /** Obsidian's layout items, for plugins that build their own (a split holding a leaf they made). */
 export class WorkspaceItem extends Events {
+  id = Math.random().toString(36).slice(2, 10)
   parent: any = null
   protected el = createEl("div")
+  // (Obsidian's drag handle and size, which tab plugins reach for: the app sizes its panes itself)
+  resizeHandleEl = createEl("hr", { cls: "workspace-leaf-resize-handle" })
+  setDimension(_size: number | null) {}
   get containerEl() { return this.el }
   getRoot(): any { return this.parent?.getRoot?.() ?? this }
   getContainer(): any { return this.parent?.getContainer?.() ?? this.getRoot() }
@@ -389,6 +400,9 @@ export class Workspace extends Events {
   rightSplit: Split
   leftRibbon = new Ribbon("left")
   rightRibbon = new Ribbon("right")
+  // (Obsidian's title bar buttons, which plugins clone for their own: the app draws its sidebars' toggles)
+  leftSidebarToggleButtonEl = sidebarToggle("left", () => this.leftSplit.toggle())
+  rightSidebarToggleButtonEl = sidebarToggle("right", () => this.rightSplit.toggle())
   /** obsidian:// actions plugins handle, by action (Obsidian's private map, which some plugins check). */
   get protocolHandlers() { return registered.protocols }
   requestSaveLayout = Object.assign(() => {}, { cancel() {}, run() {} })
@@ -526,6 +540,13 @@ export class Workspace extends Events {
   getGroupLeaves() { return [] }
   iterateAllLeaves(cb: (l: WorkspaceLeaf) => any) { this.allLeaves().forEach(cb) }
   iterateRootLeaves(cb: (l: WorkspaceLeaf) => any) { this.allLeaves().filter((l) => l.side === "main").forEach(cb) }
+  /** Obsidian's private walk of one item's leaves (a split, a popover's): stops when `cb` returns true. */
+  iterateLeaves(item: any, cb: (l: WorkspaceLeaf) => any): boolean {
+    if (typeof item === "function") [item, cb] = [cb, item]
+    if (!item) return false
+    if (item instanceof WorkspaceLeaf) return !!cb(item)
+    return [...(item.children ?? [])].some((c) => this.iterateLeaves(c, cb))
+  }
   iterateCodeMirrors(cb: (cm: any) => any) { const md = this.markdownLeaf(); if (md) cb(md.view.editor.cm) }
   setActiveLeaf(l: WorkspaceLeaf, _o?: any) {
     if (this.last === l) return
