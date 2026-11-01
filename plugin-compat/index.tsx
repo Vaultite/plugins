@@ -15,7 +15,7 @@ import type { FileExplorerView } from "./runtime/explorer.ts"
 import { obsidianTokens } from "./runtime/tags.ts"
 import { readingBlocks, renderMarkdown, watchAppMarkdown } from "./runtime/render.ts"
 import { routeWindowOpen, runUri } from "./runtime/uri.ts"
-import { Menu, setIcon, prefetchIcons } from "./runtime/ui.ts"
+import { Menu, MenuItem, setIcon, prefetchIcons } from "./runtime/ui.ts"
 import { Component, fromB64, type Events } from "./runtime/core.ts"
 import { parking, portals, portalsChanged, rootEl, viewName, type WorkspaceLeaf } from "./runtime/workspace.ts"
 
@@ -514,6 +514,6 @@ export default definePlugin({
     if (!f) return []
     const m = new Menu()
     app.workspace.trigger("file-menu", m, f, "file-explorer-context-menu", null)
-    return m.items.flatMap((i): FileMenuItem[] => (i === "sep" ? [] : [{ label: i.titleEl.textContent ?? "", section: "more", run: () => i.callback?.(new MouseEvent("click")) }]))
+    return m.items.flatMap((i): FileMenuItem[] => (!(i instanceof MenuItem) ? [] : [{ label: i.titleEl.textContent ?? "", section: "more", run: () => i.callback?.(new MouseEvent("click")) }]))
   },
 })

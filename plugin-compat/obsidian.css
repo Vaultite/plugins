@@ -165,8 +165,8 @@ input[type="range"].slider { accent-color: var(--primary); width: 140px; }
 .modal, .prompt { position: relative; display: flex; flex-direction: column; width: var(--modal-width); max-width: var(--modal-max-width); max-height: var(--modal-height);
   overflow: auto; padding: 20px; border: 0.5px solid var(--border); border-radius: var(--modal-radius); background: var(--card); color: var(--foreground);
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); font-size: var(--font-ui-medium); line-height: 1.45; animation: oc-in 150ms ease-out; overscroll-behavior: contain; }
-/* (a modal takes focus to hold the keyboard, as the app's sheets do: no ring around the whole sheet) */
-:is(.modal, .prompt)[tabindex="-1"]:focus-visible { outline: none; }
+/* (a modal or a plugin's menu takes focus to hold the keyboard, as the app's do: no ring around the whole of it) */
+:is(.modal, .prompt, .menu)[tabindex="-1"]:focus-visible { outline: none; }
 .modal-close-button { position: absolute; top: 12px; right: 12px; display: flex; padding: 3px; border-radius: 6px; cursor: pointer; color: var(--muted-foreground); }
 .modal-close-button:hover { background: var(--background-modifier-hover); color: var(--foreground); }
 .modal-close-button svg { width: 16px; height: 16px; }
@@ -267,7 +267,8 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
   background: color-mix(in srgb, var(--popover) 85%, transparent); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%);
   box-shadow: inset 0 0 0 0.5px var(--border), 0 10px 30px rgb(0 0 0 / 0.18); font-size: 13px; color: var(--foreground); }
 .menu-item { display: flex; align-items: center; gap: 10px; height: 28px; padding: 0 10px; border-radius: 4px; cursor: pointer; white-space: nowrap; }
-.menu-item:hover, .menu-item.selected { background: color-mix(in srgb, var(--foreground) 7%, transparent); }
+.menu-item:hover, .menu-item.selected { background: color-mix(in srgb, var(--foreground) 7%, transparent); color: var(--foreground); }
+.menu-item:is(:hover, .selected) .menu-item-icon { color: var(--muted-foreground); }
 .menu-item.is-disabled { opacity: 0.4; cursor: default; }
 .menu-item.is-label { color: var(--muted-foreground); cursor: default; }
 .menu-item.mod-warning, .menu-item.mod-warning .menu-item-icon { color: var(--red); }

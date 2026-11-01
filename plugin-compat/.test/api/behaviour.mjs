@@ -426,6 +426,32 @@ const r21 = await run(async (o, app) => {
 })
 check("a plugin that takes page preview's onLinkHover gets hovered links; the app's preview steps aside", r21.off && r21.seen[0]?.[0] === "B" && r21.seen[0][1] && r21.back, r21)
 
+// A plugin's own kind of menu (a Menu subclass, Quick Explorer's) is Obsidian's DOM menu: its items in its element,
+// arrows select, Enter runs, Escape closes; a plain Menu stays the app's own and draws nothing of its own.
+const r23 = await run(async (o, app) => {
+  const ran = []
+  class Mine extends o.Menu {}
+  const m = new Mine(app)
+  m.addItem((i) => i.setTitle("Opal").onClick(() => ran.push("opal")))
+  m.addSeparator()
+  m.addItem((i) => i.setTitle("Ruby").onClick(() => ran.push("ruby")))
+  m.showAtPosition({ x: 100, y: 100 })
+  const shown = m.dom.isConnected && m.dom.querySelectorAll(".menu-item").length === 2 && !!m.dom.querySelector(".menu-separator")
+  const key = (k) => window.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }))
+  key("ArrowDown"); key("ArrowDown")
+  const sel = m.dom.querySelector(".menu-item.selected")?.textContent
+  key("Enter")
+  const closed = !m.dom.isConnected
+  const plain = new o.Menu()
+  plain.addItem((i) => i.setTitle("Jade"))
+  plain.addSeparator()
+  plain.showAtPosition({ x: 100, y: 100 })
+  const plainDrawn = plain.dom.isConnected, rows = plain.rows().length
+  plain.hide()
+  return { shown, sel, ran, closed, plainDrawn, rows }
+})
+check("a Menu subclass is drawn as Obsidian's DOM menu, keys and all; a plain one is the app's", r23.shown && r23.sel === "Ruby" && r23.ran.join() === "ruby" && r23.closed && !r23.plainDrawn && r23.rows === 1, r23)
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {

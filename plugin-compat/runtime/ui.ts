@@ -748,7 +748,8 @@ export class MenuItem {
   submenu?: Menu
   constructor(menu: Menu) {
     this.menu = menu
-    this.dom = createEl("div", { cls: "menu-item" })
+    // (in its menu's element, as Obsidian's: a plugin's own menu shows them there)
+    this.dom = menu.dom.createDiv({ cls: "menu-item" })
     this.iconEl = this.dom.createDiv({ cls: "menu-item-icon" })
     this.titleEl = this.dom.createDiv({ cls: "menu-item-title" })
     this.dom.addEventListener("click", (e) => { if (this.disabled) return; this.menu.hide(); this.callback?.(e) })
@@ -763,6 +764,7 @@ export class MenuItem {
   setActive(a: boolean) { this.dom.toggleClass("selected", a); return this }
   setSubmenu() { this.submenu = new Menu(); this.submenu.parent = this.menu; return this.submenu }
   onClick(fn: (e: any) => any) { this.callback = fn; return this }
+  handleEvent(e: Event) { if (!this.disabled) this.callback?.(e) }
 }
 
 /** Obsidian's menu sections in its order; others after, in the order they came. */
@@ -770,21 +772,28 @@ const SECTIONS = ["title", "open", "action-primary", "action", "info", "view", "
 
 export class Menu extends Component {
   dom: HTMLElement
-  items: (MenuItem | "sep")[] = []
+  items: (MenuItem | MenuSeparator)[] = []
   parent: Menu | null = null
+  selected = -1
+  scope: Scope | null = null
+  app: any
   private hidden: (() => any)[] = []
+  private offs: (() => void)[] = []
   private shown = false
-  constructor() { super(); this.dom = createEl("div", { cls: "menu" }) }
+  constructor(app?: any) { super(); this.app = app; this.dom = createEl("div", { cls: "menu" }) }
   setNoIcon() { return this }
   setUseNativeMenu() { return this }
   addItem(cb: (i: MenuItem) => any) { const i = new MenuItem(this); this.items.push(i); cb(i); return this }
-  addSeparator() { this.items.push("sep"); return this }
+  addSeparator() { this.items.push(new MenuSeparator(this)); return this }
   showAtMouseEvent(e: MouseEvent) { return this.showAtPosition({ x: e.clientX, y: e.clientY }) }
+  /** A plugin's own kind of menu (a subclass: Quick Explorer's folders) works Obsidian's DOM menu itself, so it's drawn
+   *  as one, in the app's look; a plain menu is the app's own. */
+  private get drawn() { return this.constructor !== Menu }
   /** The items as the app's menu rows: sections in order with a line between, submenus as its submenus. */
   rows(): AppMenuItem[] {
     const order = (s: string) => { const i = SECTIONS.indexOf(s.split(".")[0]); return i < 0 ? SECTIONS.length - 1.5 : i }
     const groups: MenuItem[][] = [[]]
-    for (const i of this.items) { if (i === "sep") groups.push([]); else groups[groups.length - 1].push(i) }
+    for (const i of this.items) { if (i instanceof MenuSeparator) groups.push([]); else groups[groups.length - 1].push(i) }
     const out: AppMenuItem[] = []
     for (const g of groups) {
       const sorted = g.map((it, n) => [it, n] as const).sort((a, b) => order(a[0].section) - order(b[0].section) || a[1] - b[1]).map(([it]) => it)
@@ -801,7 +810,42 @@ export class Menu extends Component {
     }
     return out
   }
+  // Obsidian's keys for a drawn menu: the selection moved, chosen, or the menu closed.
+  private selectable(j: number) { const it = this.items[j]; return it instanceof MenuItem && !it.disabled && !it.label }
+  select(n: number) {
+    this.unselect()
+    this.selected = n
+    const it = this.items[n]
+    if (it instanceof MenuItem) { it.dom.addClass("selected"); it.dom.scrollIntoView?.({ block: "nearest" }) }
+  }
+  unselect() { const it = this.items[this.selected]; if (it instanceof MenuItem) it.dom.removeClass("selected") }
+  onArrowDown(_e?: KeyboardEvent) { for (let j = this.selected + 1; j < this.items.length; j++) if (this.selectable(j)) { this.select(j); break } return false }
+  onArrowUp(_e?: KeyboardEvent) { for (let j = Math.min(this.selected, this.items.length) - 1; j >= 0; j--) if (this.selectable(j)) { this.select(j); break } return false }
+  onEnter(e: KeyboardEvent) { const it = this.items[this.selected]; if (it instanceof MenuItem) { it.handleEvent(e); this.hide() } return false }
+  onEscape(_e?: KeyboardEvent) { this.hide(); return false }
+  onArrowLeft(_e?: KeyboardEvent) { return false }
+  onArrowRight(_e?: KeyboardEvent) { return false }
+  private showDrawn(p: { x: number; y: number; left?: boolean }) {
+    if (!this.dom.isConnected) document.body.append(this.dom)
+    const w = this.dom.offsetWidth, h = this.dom.offsetHeight, x = p.left ? p.x - w : p.x
+    Object.assign(this.dom.style, { left: `${Math.max(4, Math.min(x, innerWidth - w - 4))}px`, top: `${Math.max(4, Math.min(p.y, innerHeight - h - 4))}px` })
+    if (this.shown) return this
+    this.shown = true
+    if (!this.scope) {
+      this.scope = new Scope()
+      for (const [k, f] of [["ArrowDown", this.onArrowDown], ["ArrowUp", this.onArrowUp], ["Enter", this.onEnter], ["Escape", this.onEscape]] as const) this.scope.register([], k, f.bind(this))
+    }
+    const scope = this.scope
+    scopes.push(scope)
+    // (a press anywhere else closes it, as Obsidian's)
+    const away = (e: PointerEvent) => { if (!this.dom.contains(e.target as Node)) this.hide() }
+    document.addEventListener("pointerdown", away, true)
+    this.offs.push(() => document.removeEventListener("pointerdown", away, true), () => { const i = scopes.lastIndexOf(scope); if (i >= 0) scopes.splice(i, 1) })
+    this.load()
+    return this
+  }
   showAtPosition(p: { x: number; y: number; left?: boolean; width?: number }) {
+    if (this.drawn) return this.showDrawn(p)
     const rows = this.rows()
     if (!rows.length) return this
     this.shown = true
@@ -815,6 +859,8 @@ export class Menu extends Component {
   hide() {
     if (!this.shown) return this
     this.shown = false
+    for (const f of this.offs.splice(0)) f()
+    if (this.drawn) this.dom.detach()
     for (const f of this.hidden.splice(0)) { try { f() } catch (e) { console.error(e) } }
     this.unload()
     return this
@@ -823,7 +869,10 @@ export class Menu extends Component {
   onHide(fn: () => any) { this.hidden.push(fn) }
   static forEvent(e: MouseEvent) { const m = new Menu(); queueMicrotask(() => m.showAtMouseEvent(e)); return m }
 }
-export class MenuSeparator {}
+export class MenuSeparator {
+  dom: HTMLElement
+  constructor(menu?: Menu) { this.dom = menu ? menu.dom.createDiv({ cls: "menu-separator" }) : createEl("div", { cls: "menu-separator" }) }
+}
 
 /** A plugin's own popover over an element it hovers (a calendar day's notes): shown after a moment, gone once the
  *  pointer leaves both. */
