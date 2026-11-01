@@ -69,7 +69,8 @@ export const miss = (plugin: string, what: string) => {
   m[what] = (m[what] ?? 0) + 1
 }
 
-const SKIP = new Set(["then", "toJSON", "constructor", "$$typeof", "prototype", "__esModule", "default", "asymmetricMatch", "nodeType", "tagName"])
+// (and what other plugins put on the app, which Obsidian hasn't either: the AI Providers plugin's aiProviders)
+const SKIP = new Set(["then", "toJSON", "constructor", "$$typeof", "prototype", "__esModule", "default", "asymmetricMatch", "nodeType", "tagName", "aiProviders"])
 
 /** `target` as `plugin` sees it: reading a name it doesn't have is recorded as `label.name`; parts named in `deep` are
  *  watched the same way. */

@@ -460,6 +460,8 @@ export class Workspace extends Events {
   rightSidebarToggleButtonEl = sidebarToggle("right", () => this.rightSplit.toggle())
   /** obsidian:// actions plugins handle, by action (Obsidian's private map, which some plugins check). */
   get protocolHandlers() { return registered.protocols }
+  // (newer Obsidian keeps them on a handler object: Media Extended reads either)
+  get protocolHandler() { return { handlers: registered.protocols } }
   requestSaveLayout = Object.assign(() => {}, { cancel() {}, run() {} })
   requestUpdateLayout = Object.assign(() => { this.trigger("resize") }, { cancel() {}, run: () => { this.trigger("resize") } })
   private last: WorkspaceLeaf | null = null
