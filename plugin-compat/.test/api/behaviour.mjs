@@ -41,6 +41,24 @@ check("list items and blocks", r1.tasks?.[0]?.[0] === " " && r1.tasks[1]?.[0] ==
 check("subpaths", r1.sub === "Sub" && r1.blk === "block", r1)
 check("link resolution and text", r1.dest === "Api test/B.md" && r1.linktext === "B" && r1.mdlink === "[[B#Sub|bee]]" && r1.backlinks.includes("Api test/A.md"), r1)
 
+// Obsidian's order: vault create/modify first, then the note's metadata and one "changed", then "resolved"; a plugin
+// handling both create and changed builds once (Map View's markers did twice).
+const r1b = await run(async (o, app) => {
+  const ev = [], P = "Api test/Once.md", mine = (f) => f.path === P, fm = (f) => app.metadataCache.getFileCache(f)?.frontmatter?.n ?? null
+  const refs = [app.vault.on("create", (f) => mine(f) && ev.push(["create", app.metadataCache.getFileCache(f)])), app.vault.on("modify", (f) => mine(f) && ev.push(["modify", fm(f)])),
+    app.metadataCache.on("changed", (f, data, c) => mine(f) && ev.push(["changed", c?.frontmatter?.n ?? null, fm(f)])), app.metadataCache.on("resolved", () => ev.push(["resolved"]))]
+  const f = await app.vault.create(P, "---\nn: 1\n---\nfirst\n")
+  await new Promise((r) => setTimeout(r, 1500))
+  const made = ev.splice(0)
+  await app.vault.modify(f, "---\nn: 2\n---\nsecond\n")
+  await new Promise((r) => setTimeout(r, 1500))
+  refs.forEach((x) => x.e.offref(x))
+  return { made: JSON.stringify(made.slice(0, 3)), more: made.slice(3).filter(([e]) => e !== "resolved").length, changed: JSON.stringify(ev.filter(([e]) => e !== "resolved")) }
+})
+check("a new note: one create (metadata not in yet), one changed with it, then resolved",
+  r1b.made === JSON.stringify([["create", null], ["changed", 1, 1], ["resolved"]]) && r1b.more === 0, r1b)
+check("a changed note: modify sees the old metadata, one changed the new", r1b.changed === JSON.stringify([["modify", 1], ["changed", 2, 2]]), r1b)
+
 const r2 = await run(async (o, app) => {
   const a = app.vault.getFileByPath("Api test/A.md")
   let renamed = null

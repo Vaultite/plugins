@@ -216,15 +216,20 @@ export class Vault extends Events {
     const prev = new Map(gone.map((f) => [f.path, this.meta.cache.get(f.path)]))
     for (const f of gone) this.meta.cache.delete(f.path)
     for (const [f, to] of moves) this.moveInPlace(f, to)
-    for (const [p, c] of Object.entries(l.cache)) this.meta.cache.set(p, c)
+    const notes = [...made, ...modified].filter((f): f is TFile => f instanceof TFile && f.extension === "md")
+    // As in Obsidian, a made or changed note's metadata lands after vault create/modify, just before "changed": a plugin
+    // handling both would otherwise build from it twice (Map View's duplicate markers).
+    const parsed = first ? new Set<string>() : new Set(notes.map((f) => f.path))
+    for (const [p, c] of Object.entries(l.cache)) if (!parsed.has(p)) this.meta.cache.set(p, c)
     if (first) { this.loaded = true; this.meta.resolve(); return }
-    // (names came or went: every link may resolve differently; else only the changed notes' own links)
+    for (const f of made) if (parsed.has(f.path)) this.meta.unparsed.add(f.path)
+    // (names came or went: every link may resolve differently; else only the changed notes' own links, below)
     if (made.length || gone.length || moves.length || !partial) this.meta.resolve()
-    else this.meta.resolve(modified.map((f) => f.path))
     for (const f of made) this.trigger("create", f)
     for (const f of modified) this.trigger("modify", f)
     for (const f of gone) this.trigger("delete", f)
-    const notes = [...made, ...modified].filter((f): f is TFile => f instanceof TFile && f.extension === "md")
+    for (const p of parsed) { this.meta.unparsed.delete(p); if (p in l.cache) this.meta.cache.set(p, l.cache[p]) }
+    if (notes.length) this.meta.resolve(notes.map((f) => f.path))
     for (const f of notes) this.meta.trigger("changed", f, this.text.get(f.path) ?? "", this.meta.getFileCache(f))
     for (const f of gone) if (f instanceof TFile) this.meta.trigger("deleted", f, prev.get(f.path) ?? null)
     for (const f of notes) this.meta.trigger("resolve", f)
@@ -429,10 +434,12 @@ export class MetadataCache extends Events {
   initialized = false
   /** Files by lower-cased name, and Markdown ones by basename too (Obsidian's uniqueFileLookup). */
   uniqueFileLookup = new ArrayDict<TFile>()
+  /** Notes just made whose metadata isn't in yet (Obsidian's getFileCache is null until it's parsed). */
+  unparsed = new Set<string>()
   constructor(v: Vault) { super(); this.vault = v }
 
   getFileCache(f: TFile | null) { return f ? this.getCache(f.path) : null }
-  getCache(p: string) { return this.cache.get(p) ?? (this.vault.files.has(p) && p.endsWith(".md") ? {} : null) }
+  getCache(p: string) { return this.cache.get(p) ?? (this.vault.files.has(p) && p.endsWith(".md") && !this.unparsed.has(p) ? {} : null) }
   getCachedFiles() { return [...this.cache.keys()] }
   /** Obsidian's private per-file records (mtime, size, hash) and caches by hash: the hash here is the path. */
   get fileCache() { return Object.fromEntries(this.vault.getMarkdownFiles().map((f) => [f.path, { mtime: f.stat.mtime, size: f.stat.size, hash: f.path }])) }
