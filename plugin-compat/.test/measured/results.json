@@ -1,13 +1,13 @@
 {
- "at": "2026-11-01T13:18:48.614Z",
+ "at": "2026-11-01T13:33:12.430Z",
  "app": "a1aa7d56",
- "compat": "1fe068b9",
+ "compat": "d58acdbd",
  "client": "web, desktop size, headless Chrome",
  "of": 300,
  "counts": {
-  "pass": 272,
-  "partial": 25,
-  "fail": 3,
+  "pass": 281,
+  "partial": 17,
+  "fail": 2,
   "standin": 0
  },
  "plugins": [
@@ -165,21 +165,18 @@
    "repo": "logancyang/obsidian-copilot",
    "downloads": 3114245,
    "version": "4.0.17",
-   "verdict": "fail",
-   "why": "started, then stopped: Copilot failed to start. TypeError: Cannot read properties of undefined (reading 'isTTY')",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Copilot failed to start. TypeError: Cannot read properties of undefined (reading 'isTTY')"
-   ],
+   "errors": [],
    "registered": {
-    "commands": 0,
-    "views": 0,
+    "commands": 23,
+    "views": 6,
     "codeBlocks": 0,
-    "settings": false,
-    "ribbon": 0,
+    "settings": true,
+    "ribbon": 1,
     "statusBar": 0,
     "postProcessors": 0,
-    "editorExtensions": false
+    "editorExtensions": true
    }
   },
   {
@@ -231,12 +228,8 @@
    "repo": "yishentu/claudian",
    "downloads": 2589856,
    "version": "2.3.37",
-   "verdict": "partial",
-   "why": "missed require(bufferutil), require(utf-8-validate)",
-   "missed": [
-    "require(bufferutil)",
-    "require(utf-8-validate)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 9,
@@ -703,13 +696,9 @@
    "repo": "make-md/makemd",
    "downloads": 884446,
    "version": "1.3.5",
-   "verdict": "partial",
-   "why": "Obsidian plugin make-md: TypeError: Cannot read properties of undefined (reading 'forEach')",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Obsidian plugin make-md: TypeError: Cannot read properties of undefined (reading 'forEach')",
-    "Cannot read properties of undefined (reading 'forEach')"
-   ],
+   "errors": [],
    "registered": {
     "commands": 22,
     "views": 10,
@@ -749,11 +738,8 @@
    "repo": "mszturc/obsidian-advanced-slides",
    "downloads": 841333,
    "version": "1.20.0",
-   "verdict": "partial",
-   "why": "missed require(esprima)",
-   "missed": [
-    "require(esprima)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 2,
@@ -1382,25 +1368,18 @@
    "repo": "chrisgurney/obsidian-note-toolbar",
    "downloads": 462589,
    "version": "1.35.22",
-   "verdict": "partial",
-   "why": "Obsidian plugin note-toolbar: TypeError: e.getMode is not a function",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Obsidian plugin note-toolbar: TypeError: e.getMode is not a function",
-    "Obsidian plugin note-toolbar: TypeError: e.getMode is not a function",
-    "Obsidian plugin note-toolbar: TypeError: e.getMode is not a function",
-    "e.getMode is not a function",
-    "e.getMode is not a function"
-   ],
+   "errors": [],
    "registered": {
-    "commands": 0,
-    "views": 0,
+    "commands": 20,
+    "views": 4,
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 0,
     "statusBar": 0,
     "postProcessors": 0,
-    "editorExtensions": false
+    "editorExtensions": true
    }
   },
   {
@@ -1438,8 +1417,8 @@
     "registerBasesView(mx-media-lib)"
    ],
    "errors": [
-    "%c05:14:28.530%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
-    "%c05:14:28.534%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
+    "%c05:29:41.904%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+    "%c05:29:41.907%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
    ],
    "registered": {
     "commands": 100,
@@ -1585,11 +1564,8 @@
    "repo": "ozntel/oz-image-in-editor-obsidian",
    "downloads": 367182,
    "version": "2.2.6",
-   "verdict": "partial",
-   "why": "missed require(esprima)",
-   "missed": [
-    "require(esprima)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 6,
@@ -2057,11 +2033,11 @@
     "commands": 0,
     "views": 0,
     "codeBlocks": 0,
-    "settings": false,
+    "settings": true,
     "ribbon": 0,
     "statusBar": 0,
     "postProcessors": 0,
-    "editorExtensions": false
+    "editorExtensions": true
    }
   },
   {
@@ -2746,12 +2722,8 @@
    "repo": "jamiebrynes7/obsidian-todoist-plugin",
    "downloads": 183379,
    "version": "2.6.0",
-   "verdict": "partial",
-   "why": "missed require(@emotion/is-prop-valid), require(@emotion/is-prop-valid).default",
-   "missed": [
-    "require(@emotion/is-prop-valid)",
-    "require(@emotion/is-prop-valid).default"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 4,
@@ -2792,25 +2764,12 @@
    "repo": "taskgenius/taskgenius-plugin",
    "downloads": 179132,
    "version": "9.13.1",
-   "verdict": "partial",
-   "why": "missed registerBasesView(task-genius-inbox), registerBasesView(task-genius-forecast), registerBasesView(task-genius-projects), registerBasesView(task-genius-tags), registerBasesView(task-genius-calendar), registerBasesView(task-genius-kanban), registerBasesView(task-genius-gantt), registerBasesView(",
-   "missed": [
-    "registerBasesView(task-genius-calendar)",
-    "registerBasesView(task-genius-flagged)",
-    "registerBasesView(task-genius-forecast)",
-    "registerBasesView(task-genius-gantt)",
-    "registerBasesView(task-genius-habits)",
-    "registerBasesView(task-genius-inbox)",
-    "registerBasesView(task-genius-kanban)",
-    "registerBasesView(task-genius-projects)",
-    "registerBasesView(task-genius-quadrant)",
-    "registerBasesView(task-genius-review)",
-    "registerBasesView(task-genius-tags)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 19,
-    "views": 6,
+    "views": 2,
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 0,
@@ -3915,12 +3874,8 @@
    "repo": "lapis0x0/obsidian-yolo",
    "downloads": 119976,
    "version": "1.6.13",
-   "verdict": "partial",
-   "why": "missed require(@emotion/is-prop-valid), require(@emotion/is-prop-valid).default",
-   "missed": [
-    "require(@emotion/is-prop-valid)",
-    "require(@emotion/is-prop-valid).default"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 23,
@@ -4406,10 +4361,10 @@
    "downloads": 98201,
    "version": "2.103.0",
    "verdict": "partial",
-   "why": "DG:  Sun, 01 Nov 2026 13:17:01 GMT Initial settings sync failed Error: Could not get file .env from repository /",
+   "why": "DG:  Sun, 01 Nov 2026 13:31:26 GMT Initial settings sync failed Error: Could not get file .env from repository /",
    "missed": [],
    "errors": [
-    "DG:  Sun, 01 Nov 2026 13:17:01 GMT Initial settings sync failed Error: Could not get file .env from repository /"
+    "DG:  Sun, 01 Nov 2026 13:31:26 GMT Initial settings sync failed Error: Could not get file .env from repository /"
    ],
    "registered": {
     "commands": 15,
@@ -4535,12 +4490,9 @@
    "downloads": 94653,
    "version": "0.8.0",
    "verdict": "partial",
-   "why": "Obsidian plugin workspaces-plus: TypeError: this.app.vault.readConfigJson is not a function",
+   "why": "Obsidian plugin workspaces-plus: TypeError: Cannot convert undefined or null to object",
    "missed": [],
    "errors": [
-    "Obsidian plugin workspaces-plus: TypeError: this.app.vault.readConfigJson is not a function",
-    "Obsidian plugin workspaces-plus: TypeError: this.app.vault.readConfigJson is not a function",
-    "Obsidian plugin workspaces-plus: TypeError: this.app.vault.readConfigJson is not a function",
     "Obsidian plugin workspaces-plus: TypeError: Cannot convert undefined or null to object"
    ],
    "registered": {
@@ -6375,15 +6327,11 @@
    "downloads": 63463,
    "version": "4.4.0",
    "verdict": "partial",
-   "why": "missed require(./locale/en-us), registerBasesView(chronos-timeline-view)",
+   "why": "missed registerBasesView(chronos-timeline-view)",
    "missed": [
-    "registerBasesView(chronos-timeline-view)",
-    "require(./locale/en-us)"
+    "registerBasesView(chronos-timeline-view)"
    ],
-   "errors": [
-    "[Chronos] Failed to fetch GitHub releases: Error: Request failed, status 403",
-    "[Chronos] Error fetching changelogs from GitHub: Error: Request failed, status 403"
-   ],
+   "errors": [],
    "registered": {
     "commands": 5,
     "views": 1,
