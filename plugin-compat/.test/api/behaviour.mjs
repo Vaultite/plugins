@@ -492,17 +492,27 @@ const r21 = await run(async (o, app) => {
   const pp = app.internalPlugins.plugins["page-preview"], proto = Object.getPrototypeOf(pp.instance), orig = proto.onLinkHover, seen = []
   const toggle = async () => { await pp.disable(); await pp.enable(); await new Promise((r) => setTimeout(r, 50)) }
   const was = document.body.dataset.noPreview !== undefined
-  proto.onLinkHover = function (parent, targetEl, linktext) { seen.push([linktext, !!parent && "hoverPopover" in parent]) }
+  // (a block link it gives back to the original, as Hover Editor does: the app's preview shows it)
+  proto.onLinkHover = function (parent, targetEl, linktext, ...rest) {
+    if (linktext.includes("#^")) return orig.call(this, parent, targetEl, linktext, ...rest)
+    seen.push([linktext, !!parent && "hoverPopover" in parent])
+  }
   await toggle()
   const off = document.body.dataset.noPreview !== undefined
   const a = document.querySelector(".file-view").createEl("a", { text: "B", attr: { "data-wiki": "B" } })
   a.dispatchEvent(new PointerEvent("pointerover", { bubbles: true }))
+  const blk = document.querySelector(".file-view").createEl("a", { text: "blk", attr: { "data-wiki": "B#^blk" } }), br = blk.getBoundingClientRect()
+  blk.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, clientX: br.x + 2, clientY: br.y + 2 }))
+  let given = false
+  for (let i = 0; i < 30 && !given; i++) { await new Promise((r) => setTimeout(r, 100)); given = !!document.querySelector("[data-preview-level]") }
+  document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+  blk.remove()
   proto.onLinkHover = orig
   await toggle()
   a.remove()
-  return { off, seen, back: (document.body.dataset.noPreview !== undefined) === was }
+  return { off, seen, given, back: (document.body.dataset.noPreview !== undefined) === was }
 })
-check("a plugin that takes page preview's onLinkHover gets hovered links; the app's preview steps aside", r21.off && r21.seen[0]?.[0] === "B" && r21.seen[0][1] && r21.back, r21)
+check("a plugin that takes page preview's onLinkHover gets hovered links, the app's preview steps aside but shows what it gives back", r21.off && r21.seen[0]?.[0] === "B" && r21.seen[0][1] && r21.given && r21.back, r21)
 
 // A Menu subclass that works Obsidian's DOM menu (overrides its keys: Quick Explorer's) is drawn as one: arrows select,
 // Enter runs, Escape closes; a plain Menu, or a subclass only tied to a component (Calendarium's), is the app's own.

@@ -949,6 +949,7 @@ export class HoverPopover extends Component {
   }
 }
 
+let hovering: MouseEvent | KeyboardEvent | null = null
 /** Obsidian's page preview (its core plugin's instance): a hover-link event, its modifier checked, to onLinkHover, the
  *  app's own preview here. Plugins patch both on its prototype (Hover Editor takes onLinkHover). */
 export class PagePreviewInstance {
@@ -956,7 +957,9 @@ export class PagePreviewInstance {
   onHoverLink(o: { event?: MouseEvent; source?: string; hoverParent?: any; targetEl?: HTMLElement; linktext?: string; sourcePath?: string; state?: any }) {
     const mod = this.options?.[o.source ?? ""] ?? this.app?.workspace?.hoverLinkSources?.[o.source ?? ""]?.defaultMod ?? false
     if (mod && !Keymap.isModEvent(o.event)) return
-    this.onLinkHover(o.hoverParent, o.targetEl as HTMLElement, o.linktext ?? "", o.sourcePath ?? "", o.state)
+    // (onLinkHover has no event: the one being handled, for the app's preview if a plugin gives the link back)
+    hovering = o.event ?? null
+    try { this.onLinkHover(o.hoverParent, o.targetEl as HTMLElement, o.linktext ?? "", o.sourcePath ?? "", o.state) } finally { hovering = null }
   }
   onLinkHover(_parent: any, targetEl: HTMLElement, linktext: string, sourcePath: string, _state?: any) { hoverLink({ targetEl, linktext, sourcePath }) }
 }
@@ -1007,11 +1010,18 @@ export function watchLinkHovers(app: () => any) {
 /** Obsidian's `hover-link` event: the app's page preview, for the element and link a plugin names. */
 export function hoverLink(ev: { event?: MouseEvent; targetEl?: HTMLElement; linktext?: string; sourcePath?: string }) {
   const el = ev.targetEl ?? (ev.event?.target as HTMLElement | undefined)
-  if (!el || !ev.linktext || el.dataset.wiki) return
-  el.dataset.preview = ev.linktext
-  if (ev.sourcePath) el.dataset.previewPath = ev.sourcePath
-  const e = ev.event
-  el.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, clientX: e?.clientX ?? 0, clientY: e?.clientY ?? 0, metaKey: e?.metaKey, ctrlKey: e?.ctrlKey }))
+  if (!el || !ev.linktext) return
+  // (an app link a plugin that has the hovers gives back, Hover Editor's block links: the app's preview, this once)
+  const back = el.dataset.wiki !== undefined && document.body.dataset.noPreview !== undefined
+  if (el.dataset.wiki !== undefined && !back) return
+  if (!back) {
+    el.dataset.preview = ev.linktext
+    if (ev.sourcePath) el.dataset.previewPath = ev.sourcePath
+  }
+  const e = (ev.event ?? hovering ?? undefined) as MouseEvent | undefined
+  if (back) delete document.body.dataset.noPreview
+  try { el.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, clientX: e?.clientX ?? 0, clientY: e?.clientY ?? 0, metaKey: e?.metaKey, ctrlKey: e?.ctrlKey })) }
+  finally { if (back) document.body.dataset.noPreview = "" }
 }
 
 export class WorkspaceEvents extends Events {}
