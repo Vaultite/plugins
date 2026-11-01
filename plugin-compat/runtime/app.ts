@@ -13,6 +13,7 @@ import * as ui from "./ui.ts"
 import * as vault from "./vault.ts"
 import * as ws from "./workspace.ts"
 import { FileExplorerView } from "./explorer.ts"
+import { basesViews } from "./bases.ts"
 
 const phone = Platform.isPhone
 
@@ -232,7 +233,8 @@ class InternalPlugins extends Events {
       inst.removeItem = async (item: any) => { inst.options.items = (inst.options.items ?? []).filter((x: any) => x !== item); await inst.saveData() }
       inst.on = () => ({}); inst.off = () => {}; inst.offref = () => {}
     }
-    if (id === "bases") inst.registrations = Object.fromEntries(["table", "cards", "list", "map"].map((t) => [t, { name: t, icon: "lucide-table", factory: () => null }]))
+    if (id === "bases") Object.defineProperty(inst, "registrations", { get: () => ({ ...Object.fromEntries(["table", "cards", "list", "map"].map((t) => [t, { name: t, icon: "lucide-table", factory: () => null }])),
+      ...Object.fromEntries([...basesViews].map(([t, r]) => [t, { name: r.name, icon: r.icon, factory: r.factory, options: r.options }])) }) })
     // (Obsidian Sync never runs here: the vault syncs by itself, so it reads as idle and fully synced)
     if (id === "sync") Object.assign(inst, { syncing: false, syncStatus: "Fully synced", getStatus: () => "synced", pause: async () => {}, resume: async () => {} })
     if (id === "templates") inst.insertTemplate = async (f: any) => { void f; runCommandById("templates:insert") }

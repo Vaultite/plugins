@@ -8,6 +8,7 @@ import { installDom } from "./dom.ts"
 import { App } from "./app.ts"
 import { moduleFor } from "./module.ts"
 import { scopeFor, SCOPE_NAMES } from "./require.ts"
+import { registerBasesView, type Registration } from "./bases.ts"
 import { FileSystemAdapter } from "./node/adapter.ts"
 import * as editor from "./editor.ts"
 import * as ui from "./ui.ts"
@@ -90,7 +91,11 @@ export class Plugin extends Component {
     this.register(() => { if (registered.protocols.get(action) === fn) { registered.protocols.delete(action); registered.protocolPlugins.delete(action) } tell() })
     tell()
   }
-  registerBasesView(type: string) { miss(this.manifest.id, `registerBasesView(${type})`); return false }
+  registerBasesView(type: string, reg: Registration) {
+    const done = registerBasesView(this.app, this.manifest.id, type, reg, (fn) => this.register(fn))
+    if (done === null) miss(this.manifest.id, `registerBasesView(${type})`)
+    return !!done
+  }
   registerCliHandler(command: string, description: string, flags: CliHandler["flags"], handler: CliHandler["handler"]) {
     const h = { plugin: this.manifest.id, description, flags, handler }
     cliHandlers.set(command, h)

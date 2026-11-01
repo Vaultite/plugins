@@ -380,6 +380,48 @@ const r17 = await run(async (o, app) => {
 })
 check("a sidebar's leaves are in its tab group, their root the sidebar", r17.groups === 1 && r17.leaves > 0 && r17.root, r17)
 
+// A plugin's Bases view (TaskNotes' board) draws a base's view of its type: its factory gets the element, entries with
+// their files and values, the view's options and the base's YAML on its controller; a changed note draws it again.
+const r18a = await run(async (o, app) => {
+  const { plugin } = window.__probe
+  window.__probeBases = []
+  const ok = plugin.registerBasesView("probeBoard", { name: "Probe board", icon: "lucide-kanban", factory: (controller, el) => new (class extends o.BasesView {
+    onDataUpdated() {
+      window.__probeBases.push({ n: this.data.data.length, status: this.data.data.map((e) => String(e.getValue("note.status"))).sort().join(), name: this.config.name,
+        groups: this.data.groupedData.map((g) => String(g.key ?? "")).sort().join(), groupBy: controller.query?.views?.[0]?.groupBy?.property, path: this.data.data[0]?.file?.path })
+      el.textContent = `probe ${this.data.data.length}`
+    }
+  })(controller) })
+  await app.vault.create("Api test/Bases/One.md", "---\nstatus: open\n---\n")
+  await app.vault.create("Api test/Bases/Two.md", "---\nstatus: done\n---\n")
+  await app.vault.create("Api test/Probe.base", 'filters:\n  and:\n    - file.inFolder("Api test/Bases")\nviews:\n  - type: probeBoard\n    name: Board\n    groupBy:\n      property: status\n')
+  return { ok }
+})
+await page.goto(`${B}#file/${encodeURIComponent("Api test/Probe.base")}`)
+await until(() => page.evaluate(() => window.app?.workspace?.layoutReady && !!window.__probe), 60000, 500)
+const r18 = await run(async (o, app) => {
+  if (!window.__probeBases) {
+    // (the page came again: the probe's view registered anew, as a plugin does each time it loads)
+    window.__probeBases = []
+    window.__probe.plugin.registerBasesView("probeBoard", { name: "Probe board", factory: (controller, el) => new (class extends o.BasesView {
+      onDataUpdated() {
+        window.__probeBases.push({ n: this.data.data.length, status: this.data.data.map((e) => String(e.getValue("note.status"))).sort().join(), name: this.config.name,
+          groups: this.data.groupedData.map((g) => String(g.key ?? "")).sort().join(), groupBy: controller.query?.views?.[0]?.groupBy?.property, path: this.data.data[0]?.file?.path })
+        el.textContent = `probe ${this.data.data.length}`
+      }
+    })(controller) })
+  }
+  const wait = async (fn) => { for (let i = 0; i < 75 && !fn(); i++) await new Promise((r) => setTimeout(r, 200)) }
+  await wait(() => window.__probeBases.length)
+  const first = window.__probeBases.at(-1)
+  await app.fileManager.processFrontMatter(app.vault.getFileByPath("Api test/Bases/One.md"), (fm) => { fm.status = "done" })
+  await wait(() => window.__probeBases.at(-1)?.status === "done,done")
+  return { first, later: window.__probeBases.at(-1), drawn: document.querySelector('[data-base-plugin-layout="probeBoard"]')?.textContent }
+})
+check("a plugin's Bases view draws a base's view: entries, values, groups, its options", r18a.ok === true && r18.first?.n === 2 && r18.first.status === "done,open"
+  && r18.first.groups === "done,open" && r18.first.groupBy === "status" && r18.first.name === "Board" && r18.drawn === "probe 2", { r18a, r18 })
+check("a changed note draws a plugin's Bases view again", r18.later?.status === "done,done", r18)
+
 // A leaf in a split a plugin made (Hover Editor's popover): the note in the app's editor there, edited and saved, walked
 // with its split, gone when detached; no tab opens for it.
 const tabs = () => page.evaluate(() => document.querySelectorAll("[role=tab]").length)
