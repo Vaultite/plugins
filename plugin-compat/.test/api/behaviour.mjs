@@ -291,6 +291,19 @@ check("reading: a callout and a table the editor draws get their sections", draw
   && drawnSec("table") === JSON.stringify(["table", cat("| Gem"), cat("| Ruby"), true]), { r11, cl })
 await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__drawnFn) })
 
+// Reading: the view's previewMode.renderer.sections, Obsidian's sections with their lines, those plugins drew (Execute
+// Code finds its code block's lines from them).
+await run(async (o) => { window.__secFn = (el) => el.addClass("sec-mark"); o.MarkdownPreviewRenderer.registerPostProcessor(window.__secFn) })
+await palette(page, "Switch to reading view")
+const r11b = await until(() => run(async (o, app) => {
+  const v = app.workspace.getActiveViewOfType(o.MarkdownView), s = v?.previewMode?.renderer?.sections ?? []
+  return s.length >= 2 && { file: v.file.path, lines: s.map((x) => [x.lineStart, x.lineEnd]), inPage: s.every((x) => x.el.isConnected) }
+}), 10000) || await run(async (o, app) => ({ sections: app.workspace.getActiveViewOfType(o.MarkdownView)?.previewMode?.renderer?.sections?.length }))
+await palette(page, "Switch to live preview")
+await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__secFn) })
+check("reading: previewMode.renderer.sections, in order with their lines", r11b.file === "Api test/C.md" && r11b.inPage
+  && r11b.lines.every((l, i) => l[0] <= l[1] && (i === 0 || l[0] > r11b.lines[i - 1][1])) && r11b.lines.some((l) => l[0] === cat("# Drawn")), r11b)
+
 // A post-processor's context has containerEl, what the Markdown is drawn into (Pixel Banner reads its classes).
 const r12 = await run(async (o, app) => {
   const into = document.createElement("div"), seen = []

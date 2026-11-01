@@ -10,6 +10,7 @@ import { activeEditor, Editor, editorInFront, reconfigureEditors } from "./edito
 import { setIcon } from "./ui.ts"
 import { TFile, type Vault } from "./vault.ts"
 import { registered, tell } from "./state.ts"
+import { readingSections } from "./render.ts"
 
 /** The app's view (a tab) that draws an Obsidian view type. */
 export const viewName = (type: string) => `obsidian-${type.replace(/[^\w-]/g, "_")}`
@@ -143,7 +144,8 @@ export class MarkdownView extends TextFileView {
     this.currentMode = Object.assign(new Component(), { type: "source", editor, cm: editor.cm })
     // (a note's text, as typed: Obsidian's TextFileView.data)
     Object.defineProperty(this, "data", { get: () => this.editor.getValue(), set: (v: string) => { if (v !== this.editor.getValue()) this.editor.setValue(v) }, configurable: true })
-    this.previewMode = Object.assign(new Component(), { type: "preview", rerender: () => {}, containerEl: createEl("div"), renderer: {}, get: () => this.editor.getValue(), set() {}, applyScroll() {}, getScroll: () => 0 })
+    const view = this
+    this.previewMode = Object.assign(new Component(), { type: "preview", rerender: () => {}, containerEl: createEl("div"), renderer: { get sections() { return readingSections(view.file?.path) } }, get: () => this.editor.getValue(), set() {}, applyScroll() {}, getScroll: () => 0 })
     this.containerEl = editor.cm.dom.closest(".file-view") as HTMLElement ?? editor.cm.dom
     this.contentEl = this.containerEl
   }

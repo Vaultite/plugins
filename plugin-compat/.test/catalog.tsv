@@ -121,3 +121,4 @@ music-code-blocks	picks	An abc code block draws its score
 scales-chords	picks	A tab block bolds lines' chords and draws their pictures (scales-chords.com)
 pexels-banner	views	A note with banner: frontmatter shows its banner above the text
 quick-explorer	views	The open note's folders as a path; clicking one browses it in cascading menus
+execute-code	editor	A code block in reading view runs and shows its output

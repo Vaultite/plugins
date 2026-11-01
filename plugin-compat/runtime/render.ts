@@ -303,6 +303,20 @@ export function watchAppMarkdown() {
 // Obsidian's reading view: the note in sections (a paragraph, a list, a heading, the frontmatter), each a <div> that
 // every post-processor gets with the section's lines. Here the app's reading offers its blocks, kept where one changed.
 const sections = new WeakMap<HTMLElement, ReadingBlock>()
+// (by note, then by first line: a block drawn again replaces its old element)
+const drawnSections = new Map<string, Map<number, HTMLElement>>(), drawing = new Set<HTMLElement>()
+
+/** A note's sections as its reading view has them now, top to bottom (Obsidian's previewMode.renderer.sections): the
+ *  ones on the page, and one being drawn (a post-processor asks while it runs, before the block is placed). */
+export function readingSections(path: string | undefined) {
+  const out: { el: HTMLElement; lineStart: number; lineEnd: number; rendered: boolean }[] = []
+  for (const [at, el] of drawnSections.get(path ?? "") ?? []) {
+    const b = sections.get(el)
+    if (!b || (!el.isConnected && !drawing.has(el))) { drawnSections.get(path ?? "")?.delete(at); continue }
+    out.push({ el, lineStart: b.lineStart, lineEnd: b.lineEnd, rendered: true })
+  }
+  return out.sort((a, b) => a.lineStart - b.lineStart)
+}
 const TAGS: Record<string, string> = { frontmatter: "mod-frontmatter mod-ui" }
 
 /** Post-processors over the blocks of a note being read (the app's `reading`): a block one changed shows as it made it,
@@ -327,6 +341,8 @@ export const readingBlocks: ReadingBlocks = {
     el.addClass(...(TAGS[block.kind] ?? `el-${el.firstElementChild?.tagName.toLowerCase() ?? "div"}`).split(" "))
     for (const a of el.querySelectorAll<HTMLAnchorElement>("a[data-wiki]")) a.removeAttribute("target")
     sections.set(el, block)
+    if (!drawnSections.has(block.path)) drawnSections.set(block.path, new Map())
+    drawnSections.get(block.path)!.set(block.lineStart, el)
     const before = el.outerHTML, comp = new Component()
     comp.load()
     const ctx: PostCtx = { docId: block.path, sourcePath: block.path, frontmatter: fmOf(block.path), remainingNestLevel: 4, el, containerEl: block.container,
@@ -336,7 +352,8 @@ export const readingBlocks: ReadingBlocks = {
         const sec = x.closest?.(".cm-read") as HTMLElement | null, b = sec && sections.get(sec)
         return b ? { text: b.doc, lineStart: b.lineStart, lineEnd: b.lineEnd } : null
       } }
-    await postProcess(el, ctx)
+    drawing.add(el)
+    try { await postProcess(el, ctx) } finally { drawing.delete(el) }
     if (el.outerHTML === before && !comp._children.length) { comp.unload(); return null }
     return { destroy: () => comp.unload() }
   },

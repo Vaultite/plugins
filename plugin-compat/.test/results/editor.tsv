@@ -19,3 +19,4 @@ oz-image-plugin	unneeded	unneeded	web: the app already draws images, transclusio
 obsidian-auto-link-title	works	works	pasting a URL makes [title](url) (computers: the bridge's BrowserWindow stand-in; phones: its fetch path)
 note-refactor-obsidian	works	works	
 obsidian-plugin-toc	works	works	
+execute-code	works	n/a	Desktop only. Reading view gives each supported code block a Run button (on hover, as in Obsidian); bash and js run on the computer through the bridge, their output under the block; a language whose program is missing says so. Its experimental persistent output can't find the block (the app wraps code blocks)
