@@ -1,13 +1,13 @@
 {
- "at": "2026-11-01T14:24:16.772Z",
- "app": "eebae263",
- "compat": "269e6fd5",
+ "at": "2026-11-01T14:50:37.648Z",
+ "app": "94839c1c",
+ "compat": "e3fd5792",
  "client": "web, desktop size, headless Chrome",
  "checks": "load, views, settings",
  "of": 300,
  "counts": {
-  "pass": 279,
-  "partial": 19,
+  "pass": 284,
+  "partial": 14,
   "fail": 2,
   "standin": 0
  },
@@ -730,12 +730,9 @@
    "repo": "ryotaushio/obsidian-pdf-plus",
    "downloads": 871865,
    "version": "0.40.31",
-   "verdict": "partial",
-   "why": "Obsidian plugin pdf-plus: its settings: TypeError: Cannot read properties of undefined (reading 'pdf-plus')",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Obsidian plugin pdf-plus: its settings: TypeError: Cannot read properties of undefined (reading 'pdf-plus')"
-   ],
+   "errors": [],
    "registered": {
     "commands": 43,
     "views": 0,
@@ -796,12 +793,9 @@
    "repo": "jsmorabito/obsidian-commander",
    "downloads": 816067,
    "version": "0.7.0",
-   "verdict": "partial",
-   "why": "Obsidian plugin cmdr: its settings: TypeError: Cannot read properties of undefined (reading 'forEach')",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Obsidian plugin cmdr: its settings: TypeError: Cannot read properties of undefined (reading 'forEach')"
-   ],
+   "errors": [],
    "registered": {
     "commands": 1,
     "views": 0,
@@ -841,12 +835,9 @@
    "repo": "chetachiezikeuzor/Highlightr-Plugin",
    "downloads": 744856,
    "version": "1.2.2",
-   "verdict": "partial",
-   "why": "Obsidian plugin highlightr-plugin: its settings: TypeError: Cannot read properties of null (reading 'parentNode')",
+   "verdict": "pass",
    "missed": [],
-   "errors": [
-    "Obsidian plugin highlightr-plugin: its settings: TypeError: Cannot read properties of null (reading 'parentNode')"
-   ],
+   "errors": [],
    "registered": {
     "commands": 11,
     "views": 0,
@@ -1441,11 +1432,11 @@
    "downloads": 407880,
    "version": "4.2.9",
    "verdict": "partial",
-   "why": "%c06:16:53.539%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+   "why": "%c06:44:00.890%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
    "missed": [],
    "errors": [
-    "%c06:16:53.539%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
-    "%c06:16:53.542%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
+    "%c06:44:00.890%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+    "%c06:44:00.894%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
    ],
    "registered": {
     "commands": 100,
@@ -1612,11 +1603,8 @@
    "repo": "anareaty/pretty-properties",
    "downloads": 362343,
    "version": "2.3.1",
-   "verdict": "partial",
-   "why": "missed app.plugins.pp_patched",
-   "missed": [
-    "app.plugins.pp_patched"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 15,
@@ -1766,11 +1754,8 @@
    "repo": "blacksmithgu/datacore",
    "downloads": 354290,
    "version": "0.1.29",
-   "verdict": "partial",
-   "why": "missed app.fileManager.linkUpdaters",
-   "missed": [
-    "app.fileManager.linkUpdaters"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 1,
@@ -2377,9 +2362,7 @@
    "missed": [
     "app.metadataCache.db"
    ],
-   "errors": [
-    "Obsidian plugin system3-relay: its settings: TypeError: Cannot read properties of null (reading 'empty')"
-   ],
+   "errors": [],
    "viewErrors": [
     "TypeError: Cannot read properties of undefined (reading 'getBoundingClientRect')"
    ],
@@ -4330,10 +4313,6 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
-   "viewErrors": [
-    "Obsidian plugin obsidian-shellcommands: Error: No tab content was found with activate_tab_id 'SC-tab-main-shell-commands'! Hmph!",
-    "Obsidian plugin obsidian-shellcommands: Error: No tab content was found with activate_tab_id 'SC-tab-main-shell-commands'! Hmph!"
-   ],
    "registered": {
     "commands": 1,
     "views": 1,
@@ -4437,10 +4416,10 @@
    "downloads": 98201,
    "version": "2.103.0",
    "verdict": "partial",
-   "why": "DG:  Sun, 01 Nov 2026 14:21:08 GMT Initial settings sync failed Error: Could not get file .env from repository /",
+   "why": "DG:  Sun, 01 Nov 2026 14:47:30 GMT Initial settings sync failed Error: Could not get file .env from repository /",
    "missed": [],
    "errors": [
-    "DG:  Sun, 01 Nov 2026 14:21:08 GMT Initial settings sync failed Error: Could not get file .env from repository /"
+    "DG:  Sun, 01 Nov 2026 14:47:30 GMT Initial settings sync failed Error: Could not get file .env from repository /"
    ],
    "registered": {
     "commands": 15,
