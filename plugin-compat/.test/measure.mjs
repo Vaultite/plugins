@@ -81,6 +81,7 @@ if (cmd === "top") {
     const r = got.get(p.id), v = verdict(r)
     return { rank: p.rank, id: p.id, name: p.name, repo: p.repo, downloads: p.downloads, version: r?.version ?? null, ...v,
       missed: Object.keys(r?.missed ?? {}).sort(), errors: [...(r?.errors ?? []), ...(r?.thrown ?? [])].map((e) => e.split("\n")[0].slice(0, 300)).slice(0, 5),
+      ...(r?.viewErrors?.length ? { viewErrors: r.viewErrors.map((e) => e.split("\n")[0].slice(0, 300)).slice(0, 3) } : {}),
       registered: r?.state === "ok" ? { commands: r.commands?.length ?? 0, views: r.views?.length ?? 0, codeBlocks: r.codeBlocks?.length ?? 0, settings: !!r.settings,
         ribbon: r.ribbon ?? 0, statusBar: r.statusBar ?? 0, postProcessors: r.postProcessors ?? 0, editorExtensions: !!r.editorExtensions } : null }
   })

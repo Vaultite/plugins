@@ -35,17 +35,20 @@ try {
   if (ids.length) {
     const page = await (await browser.newContext({ viewport: { width: 1400, height: 900 } })).newPage()
     const errs = []
+    let phase = "load"
     // (whose: its main.js in the stack, or the runtime's "Obsidian plugin <id>:" when it caught what the plugin threw)
     const owner = (s) => /obsidian-plugin:([^/\s)]+)\/main\.js/.exec(s ?? "")?.[1] ?? /(?:Obsidian plugin|Plugin failure:) ([^\s:()]+)/.exec(s ?? "")?.[1] ?? "?"
-    page.on("pageerror", (e) => errs.push({ by: owner(e.stack), text: String(e.stack ?? e).slice(0, 400) }))
-    page.on("console", (m) => { if (m.type() === "error" || (m.type() === "warning" && /Obsidian plugin/.test(m.text()))) errs.push({ by: owner(m.text()), text: m.text().slice(0, 400) }) })
+    page.on("pageerror", (e) => errs.push({ by: owner(e.stack), text: String(e.stack ?? e).slice(0, 400), phase }))
+    page.on("console", (m) => { if (m.type() === "error" || (m.type() === "warning" && /Obsidian plugin/.test(m.text()))) errs.push({ by: owner(m.text()), text: m.text().slice(0, 400), phase: /: its settings: /.test(m.text()) ? "settings" : phase }) })
     const started = Date.now()
     await page.goto(base)
     const mine = async () => Object.values(await api("GET", "plugin-compat/report")).find((v) => v?.client?.startsWith("web") && Date.parse(v.at) >= started)
     await until(async () => ((await mine())?.results.length ?? 0) >= ids.length, 120000, 1000)
     await wait(4000) // (what plugins do once the layout is ready)
     let got = (await mine())?.results ?? []
+    const loaded = got
     if (open) {
+      phase = "views"
       report.opened = await page.evaluate(async (list) => {
         const out = {}, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), app = window.app
         for (const { id, views } of list) {
@@ -68,8 +71,10 @@ try {
     for (const id of ids) {
       const r = got.find((x) => x.id === id)
       Object.assign(report.plugins[id], r ? { state: r.state, error: r.error, ms: r.ms, commands: seen[id].commands, views: r.views, codeBlocks: r.fences, settings: r.settings,
-        ribbon: r.ribbon, statusBar: r.statusBar, postProcessors: r.postProcessors, editorExtensions: r.editorExtensions, suggests: r.suggests, missed: r.missed, thrown: r.thrown }
-        : { state: "not loaded" }, { errors: errs.filter((e) => e.by === id).map((e) => e.text).slice(0, 10) })
+        ribbon: r.ribbon, statusBar: r.statusBar, postProcessors: r.postProcessors, editorExtensions: r.editorExtensions, suggests: r.suggests, missed: r.missed, thrown: loaded.find((x) => x.id === id)?.thrown }
+        : { state: "not loaded" }, { errors: errs.filter((e) => e.by === id && e.phase !== "views").map((e) => e.text).slice(0, 10),
+          // (a view opened bare, without the state its plugin opens it with, may throw in Obsidian too: said, not counted)
+          ...(open ? { viewErrors: errs.filter((e) => e.by === id && e.phase === "views").map((e) => e.text).slice(0, 5) } : {}) })
     }
     report.unattributed = errs.filter((e) => !ids.includes(e.by)).map((e) => e.text).slice(0, 20)
     await page.context().close()
