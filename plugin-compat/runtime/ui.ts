@@ -658,6 +658,8 @@ export class Setting {
   setTooltip(t: string) { setTooltip(this.nameEl, t); return this }
   setHeading() { this.settingEl.addClass("setting-item-heading"); return this }
   setDisabled(d: boolean) { this.settingEl.toggleClass("is-disabled", d); for (const c of this.components) c.setDisabled(d); return this }
+  // (shown or hidden, as Obsidian's newer Setting has it: Extended Graph's toggles show their dependent settings)
+  setVisibility(on: boolean) { this.settingEl.style.display = on ? "" : "none"; return this }
   private add<C extends BaseComponent>(c: C, cb?: (c: C) => any) { this.components.push(c); cb?.(c); return this }
   addButton(cb: (c: ButtonComponent) => any) { return this.add(new ButtonComponent(this.controlEl), cb) }
   addExtraButton(cb: (c: ExtraButtonComponent) => any) { return this.add(new ExtraButtonComponent(this.controlEl), cb) }
