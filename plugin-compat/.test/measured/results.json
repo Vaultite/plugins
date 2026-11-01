@@ -1,12 +1,13 @@
 {
- "at": "2026-11-01T13:57:01.231Z",
+ "at": "2026-11-01T14:24:16.772Z",
  "app": "eebae263",
- "compat": "1a78e9e4",
+ "compat": "269e6fd5",
  "client": "web, desktop size, headless Chrome",
+ "checks": "load, views, settings",
  "of": 300,
  "counts": {
-  "pass": 289,
-  "partial": 9,
+  "pass": 279,
+  "partial": 19,
   "fail": 2,
   "standin": 0
  },
@@ -105,6 +106,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'split')",
+    "view obsidian-git-read-only-file-view TypeError: Cannot read properties of undefined (reading 'split')",
+    "view obsidian-git-read-only-file-view TypeError: Cannot read properties of undefined (reading 'split')"
+   ],
    "registered": {
     "commands": 42,
     "views": 5,
@@ -168,6 +174,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'map')",
+    "Obsidian plugin copilot: TypeError: Cannot read properties of undefined (reading 'map')"
+   ],
    "registered": {
     "commands": 23,
     "views": 6,
@@ -254,13 +264,13 @@
    "errors": [],
    "registered": {
     "commands": 39,
-    "views": 0,
+    "views": 4,
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 8,
-    "statusBar": 0,
-    "postProcessors": 0,
-    "editorExtensions": false
+    "statusBar": 1,
+    "postProcessors": 1,
+    "editorExtensions": true
    }
   },
   {
@@ -378,6 +388,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: d.setDisplayFormat is not a function",
+    "TypeError: d.setDisplayFormat is not a function"
+   ],
    "registered": {
     "commands": 51,
     "views": 0,
@@ -486,12 +500,12 @@
    "registered": {
     "commands": 8,
     "views": 3,
-    "codeBlocks": 0,
+    "codeBlocks": 1,
     "settings": true,
     "ribbon": 3,
     "statusBar": 1,
     "postProcessors": 0,
-    "editorExtensions": false
+    "editorExtensions": true
    }
   },
   {
@@ -593,7 +607,7 @@
     "views": 4,
     "codeBlocks": 0,
     "settings": true,
-    "ribbon": 2,
+    "ribbon": 3,
     "statusBar": 1,
     "postProcessors": 0,
     "editorExtensions": false
@@ -693,6 +707,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of null (reading 'refType')",
+    "Obsidian plugin make-md: TypeError: Cannot read properties of null (reading 'refType')",
+    "Obsidian plugin make-md: TypeError: Cannot read properties of null (reading 'refType')"
+   ],
    "registered": {
     "commands": 22,
     "views": 10,
@@ -711,9 +730,12 @@
    "repo": "ryotaushio/obsidian-pdf-plus",
    "downloads": 871865,
    "version": "0.40.31",
-   "verdict": "pass",
+   "verdict": "partial",
+   "why": "Obsidian plugin pdf-plus: its settings: TypeError: Cannot read properties of undefined (reading 'pdf-plus')",
    "missed": [],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin pdf-plus: its settings: TypeError: Cannot read properties of undefined (reading 'pdf-plus')"
+   ],
    "registered": {
     "commands": 43,
     "views": 0,
@@ -774,9 +796,12 @@
    "repo": "jsmorabito/obsidian-commander",
    "downloads": 816067,
    "version": "0.7.0",
-   "verdict": "pass",
+   "verdict": "partial",
+   "why": "Obsidian plugin cmdr: its settings: TypeError: Cannot read properties of undefined (reading 'forEach')",
    "missed": [],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin cmdr: its settings: TypeError: Cannot read properties of undefined (reading 'forEach')"
+   ],
    "registered": {
     "commands": 1,
     "views": 0,
@@ -816,9 +841,12 @@
    "repo": "chetachiezikeuzor/Highlightr-Plugin",
    "downloads": 744856,
    "version": "1.2.2",
-   "verdict": "pass",
+   "verdict": "partial",
+   "why": "Obsidian plugin highlightr-plugin: its settings: TypeError: Cannot read properties of null (reading 'parentNode')",
    "missed": [],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin highlightr-plugin: its settings: TypeError: Cannot read properties of null (reading 'parentNode')"
+   ],
    "registered": {
     "commands": 11,
     "views": 0,
@@ -926,11 +954,11 @@
    "errors": [],
    "registered": {
     "commands": 9,
-    "views": 1,
+    "views": 2,
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 1,
-    "statusBar": 0,
+    "statusBar": 3,
     "postProcessors": 0,
     "editorExtensions": false
    }
@@ -1092,6 +1120,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Error extracting image metadata for File: Error: Error loading image 'example-image.png' for metadata extraction: error",
+    "Error extracting image metadata for File: Error: Error loading image 'example-image.png' for metadata extraction: error",
+    "Error extracting image metadata for File: Error: Error loading image 'example-image.png' for metadata extraction: error"
+   ],
    "registered": {
     "commands": 4,
     "views": 0,
@@ -1341,8 +1374,11 @@
    "repo": "polyipseity/obsidian-terminal",
    "downloads": 465897,
    "version": "3.29.0",
-   "verdict": "pass",
-   "missed": [],
+   "verdict": "partial",
+   "why": "missed app.setAccentColor",
+   "missed": [
+    "app.setAccentColor"
+   ],
    "errors": [],
    "registered": {
     "commands": 37,
@@ -1388,7 +1424,7 @@
    "errors": [],
    "registered": {
     "commands": 26,
-    "views": 0,
+    "views": 2,
     "codeBlocks": 1,
     "settings": true,
     "ribbon": 0,
@@ -1405,11 +1441,11 @@
    "downloads": 407880,
    "version": "4.2.9",
    "verdict": "partial",
-   "why": "%c05:54:27.379%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+   "why": "%c06:16:53.539%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
    "missed": [],
    "errors": [
-    "%c05:54:27.379%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
-    "%c05:54:27.382%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
+    "%c06:16:53.539%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+    "%c06:16:53.542%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
    ],
    "registered": {
     "commands": 100,
@@ -1576,8 +1612,11 @@
    "repo": "anareaty/pretty-properties",
    "downloads": 362343,
    "version": "2.3.1",
-   "verdict": "pass",
-   "missed": [],
+   "verdict": "partial",
+   "why": "missed app.plugins.pp_patched",
+   "missed": [
+    "app.plugins.pp_patched"
+   ],
    "errors": [],
    "registered": {
     "commands": 15,
@@ -1663,6 +1702,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin excalibrain: TypeError: Cannot read properties of null (reading 'reset')",
+    "Obsidian plugin excalibrain: TypeError: Cannot read properties of null (reading 'reset')"
+   ],
    "registered": {
     "commands": 0,
     "views": 0,
@@ -1723,8 +1766,11 @@
    "repo": "blacksmithgu/datacore",
    "downloads": 354290,
    "version": "0.1.29",
-   "verdict": "pass",
-   "missed": [],
+   "verdict": "partial",
+   "why": "missed app.fileManager.linkUpdaters",
+   "missed": [
+    "app.fileManager.linkUpdaters"
+   ],
    "errors": [],
    "registered": {
     "commands": 1,
@@ -1831,6 +1877,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "[AcpClient] Initialization Error: Error: ACP connection closed"
+   ],
    "registered": {
     "commands": 28,
     "views": 2,
@@ -1912,8 +1961,13 @@
    "repo": "obsidian-ttrpg-community/dice-roller",
    "downloads": 288222,
    "version": "11.4.2",
-   "verdict": "pass",
-   "missed": [],
+   "verdict": "partial",
+   "why": "missed require(get-fonts), require(get-fonts).getFonts, call get-fonts.getFonts",
+   "missed": [
+    "call get-fonts.getFonts",
+    "require(get-fonts)",
+    "require(get-fonts).getFonts"
+   ],
    "errors": [],
    "registered": {
     "commands": 2,
@@ -1957,6 +2011,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'join')",
+    "TypeError: this.state.files is not iterable"
+   ],
    "registered": {
     "commands": 6,
     "views": 4,
@@ -2024,11 +2082,11 @@
     "commands": 0,
     "views": 0,
     "codeBlocks": 0,
-    "settings": false,
+    "settings": true,
     "ribbon": 0,
     "statusBar": 0,
     "postProcessors": 0,
-    "editorExtensions": false
+    "editorExtensions": true
    }
   },
   {
@@ -2146,6 +2204,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin nutstore-sync: opening nutstore-memory-editor: TypeError: Cannot read properties of undefined (reading 'cm')"
+   ],
    "registered": {
     "commands": 5,
     "views": 3,
@@ -2316,7 +2377,12 @@
    "missed": [
     "app.metadataCache.db"
    ],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin system3-relay: its settings: TypeError: Cannot read properties of null (reading 'empty')"
+   ],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'getBoundingClientRect')"
+   ],
    "registered": {
     "commands": 9,
     "views": 2,
@@ -2335,8 +2401,12 @@
    "repo": "mdelobelle/obsidian_supercharged_links",
    "downloads": 225131,
    "version": "0.14.0",
-   "verdict": "pass",
-   "missed": [],
+   "verdict": "partial",
+   "why": "missed app.i18n, app.localization",
+   "missed": [
+    "app.i18n",
+    "app.localization"
+   ],
    "errors": [],
    "registered": {
     "commands": 0,
@@ -2401,6 +2471,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: this.loadProgress.setMessage is not a function"
+   ],
    "registered": {
     "commands": 1,
     "views": 2,
@@ -2449,7 +2522,7 @@
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 1,
-    "statusBar": 0,
+    "statusBar": 1,
     "postProcessors": 1,
     "editorExtensions": false
    }
@@ -2569,6 +2642,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin google-calendar: Dt: Not logged in",
+    "Obsidian plugin google-calendar: Dt: Not logged in",
+    "Obsidian plugin google-calendar: Dt: Not logged in"
+   ],
    "registered": {
     "commands": 20,
     "views": 7,
@@ -2632,6 +2710,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin meld-encrypt: opening meld-encrypted-view: TypeError: Cannot read properties of undefined (reading 'cm')"
+   ],
    "registered": {
     "commands": 6,
     "views": 1,
@@ -2700,7 +2781,7 @@
     "views": 1,
     "codeBlocks": 0,
     "settings": false,
-    "ribbon": 0,
+    "ribbon": 1,
     "statusBar": 0,
     "postProcessors": 0,
     "editorExtensions": false
@@ -2763,10 +2844,10 @@
     "views": 6,
     "codeBlocks": 0,
     "settings": true,
-    "ribbon": 0,
-    "statusBar": 0,
-    "postProcessors": 0,
-    "editorExtensions": false
+    "ribbon": 1,
+    "statusBar": 1,
+    "postProcessors": 1,
+    "editorExtensions": true
    }
   },
   {
@@ -2821,6 +2902,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'split')",
+    "Obsidian plugin smart-composer: TypeError: Cannot read properties of undefined (reading 'split')"
+   ],
    "registered": {
     "commands": 4,
     "views": 2,
@@ -3439,13 +3524,13 @@
    "errors": [],
    "registered": {
     "commands": 45,
-    "views": 0,
-    "codeBlocks": 0,
-    "settings": false,
-    "ribbon": 0,
+    "views": 9,
+    "codeBlocks": 2,
+    "settings": true,
+    "ribbon": 7,
     "statusBar": 0,
-    "postProcessors": 0,
-    "editorExtensions": false
+    "postProcessors": 1,
+    "editorExtensions": true
    }
   },
   {
@@ -3653,7 +3738,7 @@
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 0,
-    "statusBar": 0,
+    "statusBar": 1,
     "postProcessors": 0,
     "editorExtensions": true
    }
@@ -3799,6 +3884,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin markdown-table-editor: TypeError: Cannot set properties of undefined (setting 'data')",
+    "TypeError: Cannot set properties of undefined (setting 'data')",
+    "The above error occurred in the <TableEditor> component:"
+   ],
    "registered": {
     "commands": 3,
     "views": 1,
@@ -3863,7 +3953,7 @@
    "missed": [],
    "errors": [],
    "registered": {
-    "commands": 23,
+    "commands": 26,
     "views": 1,
     "codeBlocks": 0,
     "settings": true,
@@ -4240,6 +4330,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin obsidian-shellcommands: Error: No tab content was found with activate_tab_id 'SC-tab-main-shell-commands'! Hmph!",
+    "Obsidian plugin obsidian-shellcommands: Error: No tab content was found with activate_tab_id 'SC-tab-main-shell-commands'! Hmph!"
+   ],
    "registered": {
     "commands": 1,
     "views": 1,
@@ -4343,10 +4437,10 @@
    "downloads": 98201,
    "version": "2.103.0",
    "verdict": "partial",
-   "why": "DG:  Sun, 01 Nov 2026 13:55:43 GMT Initial settings sync failed Error: Could not get file .env from repository /",
+   "why": "DG:  Sun, 01 Nov 2026 14:21:08 GMT Initial settings sync failed Error: Could not get file .env from repository /",
    "missed": [],
    "errors": [
-    "DG:  Sun, 01 Nov 2026 13:55:43 GMT Initial settings sync failed Error: Could not get file .env from repository /"
+    "DG:  Sun, 01 Nov 2026 14:21:08 GMT Initial settings sync failed Error: Could not get file .env from repository /"
    ],
    "registered": {
     "commands": 15,
@@ -4942,6 +5036,11 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin project-manager: opening pm-project: TypeError: Cannot read properties of undefined (reading 'view')",
+    "Obsidian plugin project-manager: opening pm-project-overview: TypeError: Cannot read properties of undefined (reading 'view')",
+    "Obsidian plugin project-manager: opening pm-project-edit: TypeError: Cannot read properties of undefined (reading 'view')"
+   ],
    "registered": {
     "commands": 10,
     "views": 0,
@@ -5002,9 +5101,12 @@
    "repo": "elsatam/obsidian-extended-graph",
    "downloads": 80515,
    "version": "2.7.6",
-   "verdict": "pass",
+   "verdict": "partial",
+   "why": "Obsidian plugin extended-graph: its settings: TypeError: this.colorSetting?.setVisibility is not a function",
    "missed": [],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin extended-graph: its settings: TypeError: this.colorSetting?.setVisibility is not a function"
+   ],
    "registered": {
     "commands": 18,
     "views": 0,
@@ -5094,6 +5196,10 @@
     "Obsidian plugin translate: TypeError: Cannot read properties of undefined (reading 'available_languages')",
     "Cannot read properties of undefined (reading 'selected_languages')",
     "Cannot read properties of undefined (reading 'available_languages')"
+   ],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'auto_translate')",
+    "Obsidian plugin translate: TypeError: Cannot read properties of undefined (reading 'has_autodetect_capability')"
    ],
    "registered": {
     "commands": 8,
@@ -5326,6 +5432,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin slash-commander: TypeError: Cannot read properties of undefined (reading 'enabled')"
+   ],
    "registered": {
     "commands": 2,
     "views": 0,
@@ -5431,6 +5540,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'reduce')"
+   ],
    "registered": {
     "commands": 6,
     "views": 3,
@@ -5789,6 +5901,10 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin beautitab: Error: https://api.quotable.io/random: fetch failed",
+    "Obsidian plugin beautitab: Error: https://api.quotable.io/random: fetch failed"
+   ],
    "registered": {
     "commands": 0,
     "views": 1,
@@ -5810,6 +5926,9 @@
    "verdict": "pass",
    "missed": [],
    "errors": [],
+   "viewErrors": [
+    "Obsidian plugin vscode-editor: TypeError: Cannot read properties of undefined (reading 'layout')"
+   ],
    "registered": {
     "commands": 1,
     "views": 1,
@@ -5912,9 +6031,12 @@
    "repo": "wanxp/obsidian-douban",
    "downloads": 67850,
    "version": "2.5.0",
-   "verdict": "pass",
+   "verdict": "partial",
+   "why": "Obsidian plugin obsidian-douban-plugin: its settings: TypeError: Cannot read properties of undefined (reading 'match')",
    "missed": [],
-   "errors": [],
+   "errors": [
+    "Obsidian plugin obsidian-douban-plugin: its settings: TypeError: Cannot read properties of undefined (reading 'match')"
+   ],
    "registered": {
     "commands": 9,
     "views": 0,
