@@ -276,9 +276,12 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
 .menu-separator { height: 0.5px; margin: 4px 10px; background: var(--border); }
 
 /* --- popovers */
+/* (in the app's components layer, under plugins' own styles: Hover Editor's popovers size and frame themselves) */
+@layer components {
 .popover.hover-popover { position: fixed; z-index: var(--layer-popover); width: 460px; max-width: calc(100vw - 16px); max-height: 400px; overflow: auto; padding: 8px 16px;
   border-radius: 12px; background: var(--card); box-shadow: inset 0 0 0 0.5px var(--border), 0 16px 40px rgb(0 0 0 / 0.2); font-size: 14px; color: var(--foreground); }
 .popover.hover-popover:empty { display: none; }
+}
 
 /* --- views: a leaf's header and content, trees, nav files and folders */
 .workspace-leaf, .workspace-leaf-content { display: flex; flex-direction: column; height: 100%; min-height: 0; color: var(--foreground); }
@@ -359,3 +362,5 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
 .plugin-compat-anchors:not(:has(> :not(.metadata-container))) { display: none; }
 /* A banner a plugin puts there (Pixel Banner's, absolute behind Obsidian's text): it flows, pushing the text below it. */
 .plugin-compat-anchors:has(> .pixel-banner-image) { position: relative; isolation: isolate; padding-top: var(--pixel-banner-content-start, 355px); margin-bottom: 8px; }
+/* Obsidian's .app-container (the app's root): the window's size, as plugins measure it (Hover Editor keeps its popovers in it). */
+#root.app-container { min-height: 100dvh; }

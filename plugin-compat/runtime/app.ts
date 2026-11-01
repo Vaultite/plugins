@@ -215,7 +215,7 @@ class InternalPlugins extends Events {
   private instanceFor(id: string, name: string) {
     const app = this.app
     // (each of its own class, as Obsidian's: plugins patch instance.constructor.prototype, which mustn't be Object's)
-    const inst: any = Object.assign(new (class InternalPluginInstance {})(), { id, name, app, plugin: null, options: structuredClone(DEFAULT_OPTIONS[id] ?? {}),
+    const inst: any = Object.assign(id === "page-preview" ? new ui.PagePreviewInstance() : new (class InternalPluginInstance {})(), { id, name, app, plugin: null, options: structuredClone(DEFAULT_OPTIONS[id] ?? {}),
       saveData: async (o: any) => { inst.options = o ?? inst.options; await writeConfig(CORE_PLUGINS[id].options!, inst.options) } })
     if (id === "switcher") inst.QuickSwitcherModal = QuickSwitcherModal
     if (id === "global-search") {
@@ -232,8 +232,6 @@ class InternalPlugins extends Events {
       inst.removeItem = async (item: any) => { inst.options.items = (inst.options.items ?? []).filter((x: any) => x !== item); await inst.saveData() }
       inst.on = () => ({}); inst.off = () => {}; inst.offref = () => {}
     }
-    if (id === "page-preview") inst.onLinkHover = (parent: any, targetEl: HTMLElement, linktext: string, sourcePath: string, state?: any) =>
-      app.workspace.trigger("hover-link", { event: null, source: "preview", hoverParent: parent, targetEl, linktext, sourcePath, state })
     if (id === "bases") inst.registrations = Object.fromEntries(["table", "cards", "list", "map"].map((t) => [t, { name: t, icon: "lucide-table", factory: () => null }]))
     // (Obsidian Sync never runs here: the vault syncs by itself, so it reads as idle and fully synced)
     if (id === "sync") Object.assign(inst, { syncing: false, syncStatus: "Fully synced", getStatus: () => "synced", pause: async () => {}, resume: async () => {} })
@@ -357,12 +355,16 @@ class FileEmbed extends Component {
   onload() { this.loadFile() }
 }
 
+/** What Obsidian's markdown maker gives here: a view of MarkdownView's class (plugins patch its prototype), no editor. */
+const markdownMaker = (leaf: any) => Object.assign(Object.create(ws.MarkdownView.prototype), { leaf, app: leaf?.app })
+
 /** Views by type and the file extensions they open (registerView, registerExtensions). */
 class ViewRegistry extends Events {
   app: App
-  typeByExtension: Record<string, string> = {}
+  // (a note is the app's editor, but its type is Obsidian's: plugins ask which view opens .md)
+  typeByExtension: Record<string, string> = { md: "markdown" }
   constructor(app: App) { super(); this.app = app }
-  get viewByType(): Record<string, any> { return Object.fromEntries(this.app.workspace.factories) }
+  get viewByType(): Record<string, any> { return { markdown: markdownMaker, ...Object.fromEntries(this.app.workspace.factories) } }
   registerView(type: string, fn: any) { this.app.workspace.factories.set(type, fn); this.trigger("view-registered", type) }
   unregisterView(type: string) { this.app.workspace.factories.delete(type); this.trigger("view-unregistered", type) }
   getViewCreatorByType(type: string) { return this.app.workspace.factories.get(type) }

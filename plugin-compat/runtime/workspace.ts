@@ -1,8 +1,8 @@
 // Obsidian's workspace over the app's: a leaf in the main area is a tab (view:obsidian-<type>/<file>), one in a side
 // split is its plugin's sidebar panel, and each open note's editor is a MarkdownView leaf.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ReactNode } from "react"
-import { closeView, currentEditor, currentFile, getTabLayout, isDesktop, openAt, openFile, openInSplit, openView, panesOf } from "@vaultite"
+import { createElement, type ReactNode } from "react"
+import { closeView, currentEditor, currentFile, editorAt, FileEditor, getStore, getTabLayout, isDesktop, openAt, openFile, openInSplit, openView, panesOf } from "@vaultite"
 import type { EditorView } from "@codemirror/view"
 import { Component, Events } from "./core.ts"
 import { createEl, hidden } from "./dom.ts"
@@ -182,13 +182,23 @@ export class MarkdownView extends TextFileView {
   getDisplayText() { return this.file?.basename ?? "" }
   getState(): any { return { file: this.file?.path, mode: "source", source: false } }
   getEphemeralState() { const c = this.editor.getCursor(); return { cursor: { from: c, to: c } } }
-  setEphemeralState(s: any) { if (this.file) void placeCursor(this.file.path, s) }
+  setEphemeralState(s: any) {
+    // (a floating leaf's note is its own editor, not the one in front)
+    if (this.leaf?.floatEl) {
+      const line = s?.line ?? s?.cursor?.from?.line ?? s?.startLoc?.line
+      if (typeof line === "number") this.editor.setCursor({ line, ch: 0 })
+      if (s?.focus) this.editor.focus()
+      return
+    }
+    if (this.file) void placeCursor(this.file.path, s)
+  }
   async setState(s: any) { if (s?.file && s.file !== this.file?.path) openFile(s.file) }
   getViewData() { return this.editor.getValue() }
   setViewData(d: string) { this.editor.setValue(d) }
   async save() {}
   showSearch() {}
-  get hoverPopover() { return null }
+  /** The popover a plugin shows from this view's links (Hover Editor's), which it keeps here. */
+  hoverPopover: any = null
 }
 export class MarkdownEditView {}
 
@@ -220,7 +230,9 @@ export class WorkspaceLeaf extends Events {
     this.parent = side === "main" ? ws?.rootSplit : (side === "left" ? ws?.leftSplit : ws?.rightSplit)?.tabs
     this.view = new EmptyView(this)
   }
-  get containerEl() { return this.view.containerEl }
+  /** A leaf in a split a plugin made (Hover Editor's popover): drawn in its own element there, never a tab. */
+  floatEl: HTMLElement | null = null
+  get containerEl() { return this.floatEl ?? this.view.containerEl }
   get key() { return `${viewName(this.view.getViewType())}${this.arg ? `/${this.arg}` : ""}` }
   getViewState() { return { type: this.view.getViewType(), state: this.view.getState?.() ?? {}, active: this.app.workspace.activeLeaf === this, pinned: this.pinned } }
   /** Asked which view plugins give a note (Workspace.viewTypeFor): records the type their patches settle on, opens nothing. */
@@ -229,6 +241,7 @@ export class WorkspaceLeaf extends Events {
   async setViewState(s: { type: string; state?: any; active?: boolean; pinned?: boolean }, eState?: any) {
     if (this.probe) { this.probed = s.type; return }
     const ws: Workspace = this.app.workspace
+    if (this.floatEl) return ws.showFloating(this, s, eState)
     if (s.type === "markdown" || (s.type === "empty" && s.state?.file)) {
       // (a note's leaf a plugin's view had, back to the note: the view goes, the app's editor shows it again)
       if (ws.isNoteLeaf(this) && this.view.getViewType() !== "empty") { await ws.detach(this, true); this.view = new EmptyView(this) }
@@ -271,14 +284,14 @@ export class WorkspaceLeaf extends Events {
   }
   async open(view: View) { await this.closeView(); this.view = view; await this.opening(); this.app.workspace.place(this, {}); return view }
   async openFile(f: TFile, o?: { active?: boolean; state?: any; eState?: any }) {
-    const type = this.app.workspace.typeForExtension(f.extension)
+    const type = this.app.workspace.typeForExtension(f.extension) ?? (this.floatEl && f.extension === "md" ? "markdown" : null)
     if (type) return this.setViewState({ type, state: { ...(o?.state ?? {}), file: f.path }, active: o?.active ?? true }, o?.eState)
     this.app.workspace.showFile(f.path, this.fresh, o?.eState)
   }
   getDisplayText() { return this.view.getDisplayText() }
   getIcon() { return this.view.getIcon() }
-  getRoot() { return this.side === "main" ? this.app.workspace.rootSplit : this.parent?.getRoot?.() ?? this.parent }
-  getContainer() { return this.app.workspace.rootSplit }
+  getRoot() { return this.floatEl ? this.parent?.getRoot?.() ?? this.app.workspace.rootSplit : this.side === "main" ? this.app.workspace.rootSplit : this.parent?.getRoot?.() ?? this.parent }
+  getContainer() { return this.floatEl ? this.parent?.getContainer?.() ?? this.app.workspace.rootSplit : this.app.workspace.rootSplit }
   getEphemeralState() { return this.view.getEphemeralState?.() ?? {} }
   setEphemeralState(s: any) { this.view.setEphemeralState?.(s) }
   setPinned(p: boolean) { this.pinned = p }
@@ -290,7 +303,13 @@ export class WorkspaceLeaf extends Events {
   updateHeader() { this.app.workspace.changed.trigger("changed") }
   detach() { void this.app.workspace.detach(this) }
 }
-class EmptyView extends ItemView { getViewType() { return "empty" } getDisplayText() { return "New tab" } }
+class EmptyView extends ItemView {
+  // (Obsidian's empty tab: its title and actions, which a plugin's popover fills: Hover Editor's "create this note")
+  emptyTitleEl = this.contentEl.createDiv({ cls: "empty-state-title" })
+  actionListEl = this.contentEl.createDiv({ cls: "empty-state-action-list" })
+  getViewType() { return "empty" }
+  getDisplayText() { return "New tab" }
+}
 
 /** Obsidian's ribbon as plugins read it: their icons' elements, in the page but drawn by the app's own (index.tsx). */
 class Ribbon {
@@ -352,9 +371,23 @@ export class WorkspaceItem extends Events {
 export class WorkspaceParent extends WorkspaceItem {
   private kids: any[] = []
   get children(): any[] { return this.kids }
-  insertChild(i: number, item: any) { item.parent = this; this.kids.splice(i, 0, item) }
-  removeChild(item: any) { this.kids = this.kids.filter((x) => x !== item) }
-  replaceChild(i: number, item: any) { item.parent = this; this.kids[i] = item }
+  // (a split a plugin made holds its floating leaves' elements and its splits', as Obsidian's: Hover Editor's popover)
+  private holds(item: any) { return !appOwned(this) && (!!item?.floatEl || (item instanceof WorkspaceParent && !appOwned(item))) }
+  insertChild(i: number, item: any) {
+    item.parent = this
+    this.kids.splice(i, 0, item)
+    if (this.holds(item)) this.el.insertBefore(item.containerEl, this.el.children[i] ?? null)
+  }
+  removeChild(item: any) {
+    this.kids = this.kids.filter((x) => x !== item)
+    if (this.holds(item) && item.containerEl.parentElement === this.el) item.containerEl.remove()
+  }
+  replaceChild(i: number, item: any) {
+    const old = this.kids[i]
+    item.parent = this
+    this.kids[i] = item
+    if (this.holds(item)) { if (old?.containerEl?.parentElement === this.el) old.containerEl.replaceWith(item.containerEl); else this.el.append(item.containerEl) }
+  }
 }
 export class WorkspaceSplit extends WorkspaceParent {
   ws: any; direction: string
@@ -386,6 +419,9 @@ class Split extends WorkspaceSplit {
   getRoot() { return this }
   getContainer() { return this.ws.rootSplit }
 }
+
+/** The app's own layout items (its panes, its sidebars' groups), not a split a plugin made. */
+const appOwned = (p: any) => p instanceof Split || p instanceof SideTabs
 
 class SideTabs extends WorkspaceParent {
   split: Split
@@ -463,6 +499,8 @@ export class Workspace extends Events {
   markdownLeaf(): WorkspaceLeaf | null {
     const ed = activeEditor()
     if (!ed) return null
+    const floating = this.md.get(ed.cm)
+    if (floating?.floatEl) return floating
     const file = ed.open.path ? this.vault.getFileByPath(ed.open.path) : null
     // (a note's editor is its note leaf, unless a plugin's view has that leaf now)
     const note = ed.open.path ? this.noteLeaf(ed.open.path) : null
@@ -514,7 +552,7 @@ export class Workspace extends Events {
     return this.getActiveViewOfType(MarkdownView) ?? this.ownEditor
   }
   set activeEditor(e: any) { this.ownEditor = e }
-  allLeaves() { const md = this.markdownLeaf(); return [...(md ? [md] : []), ...this.leaves, ...this.internal] }
+  allLeaves() { const md = this.markdownLeaf(); return [...(md ? [md] : []), ...this.leaves, ...this.internal, ...this.floating] }
   /** An Obsidian view the app draws itself, as a leaf in a sidebar for plugins to find. */
   addInternal(make: (leaf: WorkspaceLeaf) => View) {
     const l = new WorkspaceLeaf(this.app, "left")
@@ -542,7 +580,62 @@ export class Workspace extends Events {
   }
   getUnpinnedLeaf() { return this.getLeaf(false) }
   getMostRecentLeaf() { return this.activeLeaf }
-  createLeafInParent(parent: any) { return new WorkspaceLeaf(this.app, parent?.side ?? "main", true) }
+  createLeafInParent(parent: any, index?: number) {
+    if (!(parent instanceof WorkspaceParent) || appOwned(parent)) return new WorkspaceLeaf(this.app, parent?.side ?? "main", true)
+    const l = new WorkspaceLeaf(this.app, "main")
+    l.floatEl = createEl("div", { cls: "workspace-leaf" })
+    l.floatEl.append(l.view.containerEl)
+    parent.insertChild(index ?? parent.children.length, l)
+    this.floating.add(l)
+    return l
+  }
+  /** Leaves in splits plugins made (Hover Editor's popovers). */
+  floating = new Set<WorkspaceLeaf>()
+  /** A floating leaf's view: a note is the app's own editor drawn there, wired to a MarkdownView; else a plugin's. */
+  async showFloating(l: WorkspaceLeaf, s: { type: string; state?: any; active?: boolean }, eState?: any) {
+    const el = l.floatEl!
+    await l.closeView()
+    this.unfloat(l)
+    const path = s.state?.file
+    if (s.type === "markdown" && typeof path === "string") {
+      const file = this.vault.getFileByPath(path)
+      const content = el.createDiv({ cls: "workspace-leaf-content", attr: { "data-type": "markdown" } })
+      content.createDiv({ cls: "view-header" }).createDiv({ cls: "view-header-title", text: file?.basename ?? path })
+      const body = content.createDiv({ cls: "view-content plugin-compat-float" })
+      portal(body, createElement(FileEditor, { path, store: getStore()!, autoFocus: !!eState?.focus }))
+      // (drawn once the popover is in the page: asked again until the editor is there)
+      let open = null
+      for (let i = 0; i < 100 && !open; i++) {
+        await new Promise((r) => setTimeout(r, 50))
+        if (!body.isConnected) continue
+        const cm = body.querySelector(".cm-editor")
+        open = cm && editorAt(cm)
+        if (!cm && i % 4 === 0) portalsChanged.trigger("changed")
+      }
+      if (!open || !el.contains(body)) return
+      const v = new MarkdownView(l, new Editor(open), file)
+      v.containerEl = content
+      v.contentEl = body
+      l.view = v
+      l.opened = true
+      this.md.set(open.view, l)
+    } else {
+      const make = this.factories.get(s.type)
+      if (!make) { this.missing(`view type '${s.type}'`); return }
+      l.view = make(l)
+      await l.opening()
+      el.append(l.view.containerEl)
+      try { await l.view.setState?.(s.state ?? {}, { history: false }) } catch (e) { console.error(e) }
+    }
+    if (eState) l.view.setEphemeralState?.(eState)
+    this.trigger("layout-change")
+  }
+  private unfloat(l: WorkspaceLeaf) {
+    const body = l.floatEl?.querySelector<HTMLElement>(".plugin-compat-float")
+    if (body) { portals.delete(body); portalsChanged.trigger("changed") }
+    if (l.view instanceof MarkdownView) this.md.delete(l.view.editor.cm)
+    l.floatEl?.empty()
+  }
   createLeafBySplit(_l?: any, _dir?: string) { return new WorkspaceLeaf(this.app, "main", "split") }
   splitActiveLeaf() { return this.createLeafBySplit() }
   getRightLeaf(_split?: boolean) { return new WorkspaceLeaf(this.app, "right") }
@@ -588,6 +681,7 @@ export class Workspace extends Events {
   typeForExtension(ext: string) { return this.extensions.get(ext.toLowerCase()) ?? null }
   /** A leaf now shows a plugin's view: kept, and drawn in its tab or panel. */
   place(l: WorkspaceLeaf, o: { reveal?: boolean; show?: boolean }) {
+    if (l.floatEl) { this.trigger("layout-change"); return }
     // (a note's leaf given back its editor is the note's tab, never a tab of its own)
     if (l.view instanceof MarkdownView) { if (l.view.file && o.show !== false) this.showFile(l.view.file.path, l.fresh); return }
     if (!this.leaves.includes(l)) this.leaves.push(l)
@@ -654,6 +748,16 @@ export class Workspace extends Events {
   }
   /** A leaf closed (by its plugin, or its tab by the user: `fromTab`, the tab already gone). */
   async detach(l: WorkspaceLeaf, fromTab = false) {
+    if (l.floatEl) {
+      if (!this.floating.delete(l)) return
+      await l.closeView()
+      this.unfloat(l)
+      l.parent?.removeChild?.(l)
+      l.floatEl.remove()
+      if (this.last === l) this.last = null
+      this.trigger("layout-change")
+      return
+    }
     if (!this.leaves.includes(l)) return
     this.leaves = this.leaves.filter((x) => x !== l)
     if (l.side === "main" && !fromTab) closeView(l.key)
@@ -693,7 +797,8 @@ export class Workspace extends Events {
   onLayoutChange() { this.trigger("layout-change") }
   requestActiveLeafEvents() { return false }
   // Obsidian's private parts plugins reach for (WS4): hover link sources, the file view in front, suggesters.
-  hoverLinkSources: Record<string, { display: string; defaultMod: boolean }> = {}
+  // (Obsidian's own: a link hovered in the editor previews with ⌘ held, one in reading at once)
+  hoverLinkSources: Record<string, { display: string; defaultMod: boolean }> = { editor: { display: "Editor", defaultMod: true }, preview: { display: "Reading view", defaultMod: false } }
   registerHoverLinkSource(id: string, info: { display: string; defaultMod: boolean }) { this.hoverLinkSources[id] = info }
   unregisterHoverLinkSource(id: string) { delete this.hoverLinkSources[id] }
   editorSuggest = { get suggests() { return registered.suggests }, currentSuggest: null }

@@ -5,6 +5,7 @@ import { DisplayValueComponent } from "./values.ts"
 import { dismissNotice, menuShowing, namedIcon, notify, openMenu, type MenuItem as AppMenuItem } from "@vaultite"
 import { Component, Events } from "./core.ts"
 import { createEl } from "./dom.ts"
+import { changed } from "./state.ts"
 
 // --- icons: Lucide's, by name, from the server (plugin.ts); Obsidian's older names mapped
 
@@ -831,12 +832,23 @@ export class HoverPopover extends Component {
   targetEl: HTMLElement | null
   state = 0
   parent: any
+  // (Obsidian's private parts, which plugins that make their own popovers set and read: Hover Editor's)
+  onTarget = false
+  onHover = false
+  shownPos: { x: number; y: number } | null = null
+  waitTime = 300
+  timer = 0
+  isPinned = false
+  abortController: Component | undefined = new Component()
   private timers: ReturnType<typeof setTimeout>[] = []
-  constructor(parent: any, targetEl: HTMLElement | null, waitTime = 300) {
+  constructor(parent?: any, targetEl?: HTMLElement | null, waitTime = 300) {
     super()
     this.parent = parent
-    this.targetEl = targetEl
+    this.targetEl = targetEl ?? null
+    this.waitTime = waitTime
     this.hoverEl = createEl("div", { cls: "popover hover-popover" })
+    // (made with nothing, as a subclass that shows itself does: no timers or listeners of its own)
+    if (parent === undefined && targetEl === undefined) return
     if (parent) { parent.hoverPopover?.hide?.(); parent.hoverPopover = this }
     this.timers.push(setTimeout(() => this.show(), waitTime))
     const leave = () => this.timers.push(setTimeout(() => { if (!this.targetEl?.matches(":hover") && !this.hoverEl.matches(":hover")) this.hide() }, 300))
@@ -854,6 +866,15 @@ export class HoverPopover extends Component {
     this.load()
     this.onShow()
   }
+  /** In the page, by its target (or `pos`), inside the window. */
+  position(pos?: { x: number; y: number } | null) {
+    if (!this.hoverEl.isConnected) document.body.append(this.hoverEl)
+    const r = this.targetEl?.isConnected ? this.targetEl.getBoundingClientRect() : new DOMRect(pos?.x ?? innerWidth / 2, pos?.y ?? innerHeight / 3, 0, 0)
+    const w = this.hoverEl.offsetWidth || 460, h = this.hoverEl.offsetHeight || 300
+    const below = r.bottom + 6 + h < innerHeight
+    Object.assign(this.hoverEl.style, { left: `${Math.max(8, Math.min(r.left, innerWidth - w - 8))}px`, top: `${below ? r.bottom + 6 : Math.max(8, r.top - h - 6)}px` })
+  }
+  shouldShow() { return this.onTarget || this.onHover }
   onShow(): any {}
   onHide(): any {}
   hide() {
@@ -864,6 +885,61 @@ export class HoverPopover extends Component {
     if (this.parent?.hoverPopover === this) this.parent.hoverPopover = null
     this.unload()
     this.onHide()
+  }
+}
+
+/** Obsidian's page preview (its core plugin's instance): a hover-link event, its modifier checked, to onLinkHover, the
+ *  app's own preview here. Plugins patch both on its prototype (Hover Editor takes onLinkHover). */
+export class PagePreviewInstance {
+  [k: string]: any
+  onHoverLink(o: { event?: MouseEvent; source?: string; hoverParent?: any; targetEl?: HTMLElement; linktext?: string; sourcePath?: string; state?: any }) {
+    const mod = this.options?.[o.source ?? ""] ?? this.app?.workspace?.hoverLinkSources?.[o.source ?? ""]?.defaultMod ?? false
+    if (mod && !Keymap.isModEvent(o.event)) return
+    this.onLinkHover(o.hoverParent, o.targetEl as HTMLElement, o.linktext ?? "", o.sourcePath ?? "", o.state)
+  }
+  onLinkHover(_parent: any, targetEl: HTMLElement, linktext: string, sourcePath: string, _state?: any) { hoverLink({ targetEl, linktext, sourcePath }) }
+}
+
+/** Whether a plugin has taken page preview's onLinkHover (patched on its prototype, or its own). */
+const ownLinkHover = PagePreviewInstance.prototype.onLinkHover
+export const linkHoverTaken = (pp: any) => !!pp?.enabled && pp.instance?.onLinkHover !== ownLinkHover
+
+/** While a plugin has page preview's onLinkHover (Hover Editor), the app's own preview steps aside (data-no-preview)
+ *  and links in notes hovered reach it as Obsidian's hover-link events; the parent, the note's view or popover. */
+export function watchLinkHovers(app: () => any) {
+  const pp = () => app()?.internalPlugins?.plugins?.["page-preview"]
+  const taken = () => linkHoverTaken(pp())
+  const sync = () => { if (taken()) document.body.dataset.noPreview = ""; else delete document.body.dataset.noPreview }
+  const loose = { hoverPopover: null }
+  let armed: { el: HTMLElement; ev: any } | null = null
+  const fire = (e: Event) => { if (armed) app().workspace.trigger("hover-link", { ...armed.ev, event: e }) }
+  const over = (e: PointerEvent) => {
+    if (!taken()) return
+    const el = (e.target as Element).closest?.<HTMLElement>("[data-wiki]")
+    if (el === armed?.el) return
+    armed = null
+    if (!el) return
+    const ws = app().workspace
+    const leaf = [...(ws.floating ?? [])].find((l: any) => l.floatEl?.contains(el))
+    const front = ws.activeLeaf?.view, view = leaf?.view ?? (front?.getViewType?.() === "markdown" ? front : null)
+    const from = el.closest<HTMLElement>("[data-preview-path]")?.dataset.previewPath ?? view?.file?.path ?? ws.getActiveFile?.()?.path ?? ""
+    armed = { el, ev: { source: el.closest(".cm-content[contenteditable=true]") ? "editor" : "preview", hoverParent: view && "hoverPopover" in view ? view : loose,
+      targetEl: el, linktext: el.dataset.wiki ?? "", sourcePath: from } }
+    fire(e)
+  }
+  // (a link that needs ⌘ previews once it's pressed over it)
+  const key = (e: KeyboardEvent) => { if ((e.key === "Meta" || e.key === "Control") && armed?.el.matches(":hover")) fire(e) }
+  document.addEventListener("pointerover", over, true)
+  document.addEventListener("keydown", key, true)
+  // (checked once what changed settles: a plugin's unload restores the prototype after it toggles page preview)
+  const soon = () => setTimeout(sync, 0)
+  const plugins = app()?.internalPlugins, ref = plugins?.on?.("change", soon), ref2 = changed.on("changed", soon)
+  sync()
+  return () => {
+    document.removeEventListener("pointerover", over, true); document.removeEventListener("keydown", key, true)
+    if (ref) plugins.offref(ref)
+    changed.offref(ref2)
+    delete document.body.dataset.noPreview
   }
 }
 

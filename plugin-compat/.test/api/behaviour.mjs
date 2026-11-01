@@ -380,6 +380,64 @@ const r17 = await run(async (o, app) => {
 })
 check("a sidebar's leaves are in its tab group, their root the sidebar", r17.groups === 1 && r17.leaves > 0 && r17.root, r17)
 
+// A leaf in a split a plugin made (Hover Editor's popover): the note in the app's editor there, edited and saved, walked
+// with its split, gone when detached; no tab opens for it.
+const tabs = () => page.evaluate(() => document.querySelectorAll("[role=tab]").length)
+const tabsBefore = await tabs()
+const r20 = await run(async (o, app) => {
+  const f = await app.vault.create("Api test/F.md", "# Float\n\nSome text\n")
+  const split = new o.WorkspaceSplit(app.workspace, "vertical")
+  const box = document.body.createDiv({ attr: { style: "position: fixed; left: 0; top: 0; width: 400px; height: 300px; z-index: 90" } })
+  box.append(split.containerEl)
+  const leaf = app.workspace.createLeafInParent(split, 0)
+  await leaf.openFile(f)
+  const inSplit = split.containerEl.contains(leaf.containerEl) && !!leaf.containerEl.querySelector(".cm-editor")
+  const isMd = leaf.view instanceof o.MarkdownView && leaf.view.file === f
+  const ed = leaf.view.editor, last = ed.lastLine()
+  ed.replaceRange("\nTyped in the float.", { line: last, ch: ed.getLine(last).length })
+  await new Promise((r) => setTimeout(r, 2000))
+  const saved = (await app.vault.adapter.read(f.path)).includes("Typed in the float.")
+  const walked = []
+  app.workspace.iterateLeaves(split, (l) => { walked.push(l === leaf) })
+  leaf.detach()
+  await new Promise((r) => setTimeout(r, 300))
+  const gone = !split.containerEl.querySelector(".cm-editor") && !app.workspace.getLeafById(leaf.id)
+  box.remove()
+  return { inSplit, isMd, saved, walked, gone }
+})
+check("a leaf in a plugin's split: the note's editor there, saved, walked, detached", r20.inSplit && r20.isMd && r20.saved && r20.walked?.join() === "true" && r20.gone, r20)
+check("a leaf in a plugin's split opens no tab", (await tabs()) === tabsBefore, { tabsBefore, after: await tabs() })
+
+// Page preview's onLinkHover taken by a plugin (on its prototype, as Hover Editor does): links hovered go to it, with
+// a parent it can keep its popover on, and the app's own preview steps aside until it's given back.
+const r21 = await run(async (o, app) => {
+  const pp = app.internalPlugins.plugins["page-preview"], proto = Object.getPrototypeOf(pp.instance), orig = proto.onLinkHover, seen = []
+  const toggle = async () => { await pp.disable(); await pp.enable(); await new Promise((r) => setTimeout(r, 50)) }
+  const was = document.body.dataset.noPreview !== undefined
+  proto.onLinkHover = function (parent, targetEl, linktext) { seen.push([linktext, !!parent && "hoverPopover" in parent]) }
+  await toggle()
+  const off = document.body.dataset.noPreview !== undefined
+  const a = document.querySelector(".file-view").createEl("a", { text: "B", attr: { "data-wiki": "B" } })
+  a.dispatchEvent(new PointerEvent("pointerover", { bubbles: true }))
+  proto.onLinkHover = orig
+  await toggle()
+  a.remove()
+  return { off, seen, back: (document.body.dataset.noPreview !== undefined) === was }
+})
+check("a plugin that takes page preview's onLinkHover gets hovered links; the app's preview steps aside", r21.off && r21.seen[0]?.[0] === "B" && r21.seen[0][1] && r21.back, r21)
+
+// The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
+// win over the defaults here.
+const r22 = await page.evaluate(() => {
+  const st = document.head.appendChild(document.createElement("style"))
+  st.textContent = "@layer plugins { .popover.lab-pop { padding: 0px; max-height: none; } }"
+  const p = document.body.appendChild(Object.assign(document.createElement("div"), { className: "popover hover-popover lab-pop", textContent: "x" }))
+  const cs = getComputedStyle(p), out = { app: document.querySelector(".app-container").getBoundingClientRect().height, win: innerHeight, padding: cs.padding, max: cs.maxHeight }
+  p.remove(); st.remove()
+  return out
+})
+check("the app container is the window's height; a plugin's popover styles win", r22.app === r22.win && r22.padding === "0px" && r22.max === "none", r22)
+
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)
 const mine = errs.filter((e) => !e.includes("obsidian-plugin:") && !e.includes("Request failed, status"))

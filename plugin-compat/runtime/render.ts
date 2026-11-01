@@ -286,7 +286,14 @@ export function watchAppMarkdown() {
   const root = document.body as HTMLElement
   follow(root, "")
   ;(window as any).__obsidianCompat = { ...ui, renderMarkdown, CM } // (for QA and debugging in the console)
-  const ws = app()?.workspace, ref = ws?.on?.("hover-link", ui.hoverLink)
+  // (Obsidian's page preview hears hover-link: its onHoverLink, when a plugin has taken it; else the app's preview)
+  const pp = () => app()?.internalPlugins?.plugins?.["page-preview"]
+  const ws = app()?.workspace, ref = ws?.on?.("hover-link", (ev: any) => {
+    const p = pp()
+    if (ui.linkHoverTaken(p)) p.instance.onHoverLink(ev)
+    else ui.hoverLink(ev)
+  })
+  const unwatch = ui.watchLinkHovers(app)
   const stop = onMarkdownDrawn((el, lines) => {
     if (!registered.postProcessors.length || el.closest(".markdown-rendered")) return
     const from = el.closest<HTMLElement>("[data-markdown-from], [data-embed], [data-note-preview], [data-preview-path], [data-path]")
@@ -297,7 +304,7 @@ export function watchAppMarkdown() {
     if (lines) ctx.getSectionInfo = () => { const l = lines(); return l && { text: l.doc, lineStart: l.lineStart, lineEnd: l.lineEnd } }
     void postProcess(el, ctx)
   })
-  return () => { stop(); if (ref) ws.offref(ref) }
+  return () => { stop(); unwatch(); if (ref) ws.offref(ref) }
 }
 
 // Obsidian's reading view: the note in sections (a paragraph, a list, a heading, the frontmatter), each a <div> that
