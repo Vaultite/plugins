@@ -374,3 +374,6 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
 .nav-files-container :is(.nav-file-title, .nav-folder-title)::after { flex: none; max-width: 45%; margin-right: 8px; color: var(--muted-foreground); font-size: 11px; }
 /* Obsidian's loading indicator as a plugin's view shows it while it loads (draw.io's): a quiet line in the middle. */
 .plugin-compat-progress { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted-foreground); font-size: 13px; pointer-events: none; }
+/* A plugin's block's task rows stay inside the block (the app pulls its own checkboxes into the margin, where the editor's
+   fold gutter is on top: Tasks' checkboxes couldn't be ticked). */
+.vau-editor .cm-block .plugin-compat-fence li:has(> input[type="checkbox"]), .plugin-compat-fence li:has(> input[type="checkbox"]) { margin-left: 0; }

@@ -601,6 +601,17 @@ const r27 = await run(async (o, app) => {
 })
 check("app.loadProgress's class makes working indicators", r27.el && r27.chain, r27)
 
+// A plugin's block's task rows stay inside the block, out of the editor's fold gutter (Tasks' checkboxes).
+const r28 = await page.evaluate(() => {
+  const box = document.body.createDiv({ cls: "vau-editor" }).createDiv({ cls: "cm-block" }).createDiv({ cls: "plugin-compat-fence" })
+  const li = box.createEl("ul").createEl("li")
+  li.createEl("input", { attr: { type: "checkbox" } })
+  const m = getComputedStyle(li).marginLeft
+  box.closest(".vau-editor").remove()
+  return m
+})
+check("a plugin block's task rows aren't pulled into the margin", r28 === "0px", r28)
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {
