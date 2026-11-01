@@ -362,13 +362,17 @@ class FileEmbed extends Component {
 /** What Obsidian's markdown maker gives here: a view of MarkdownView's class (plugins patch its prototype), no editor. */
 const markdownMaker = (leaf: any) => Object.assign(Object.create(ws.MarkdownView.prototype), { leaf, app: leaf?.app })
 
+/** Obsidian's own media views' makers: a stand-in of the type (the app draws pictures, sounds and films itself). */
+const coreMaker = (type: string) => (leaf: any) => ({ leaf, app: leaf?.app, getViewType: () => type })
+
 /** Views by type and the file extensions they open (registerView, registerExtensions). */
 class ViewRegistry extends Events {
   app: App
   // (a note is the app's editor, but its type is Obsidian's: plugins ask which view opens .md)
-  typeByExtension: Record<string, string> = { md: "markdown" }
+  typeByExtension: Record<string, string> = { md: "markdown", ...Object.fromEntries([..."png jpg jpeg gif svg webp bmp avif".split(" ").map((e) => [e, "image"]),
+    ..."mp3 wav m4a ogg flac".split(" ").map((e) => [e, "audio"]), ..."mp4 webm mov".split(" ").map((e) => [e, "video"])]) }
   constructor(app: App) { super(); this.app = app }
-  get viewByType(): Record<string, any> { return { markdown: markdownMaker, ...Object.fromEntries(this.app.workspace.factories) } }
+  get viewByType(): Record<string, any> { return { markdown: markdownMaker, image: coreMaker("image"), audio: coreMaker("audio"), video: coreMaker("video"), ...Object.fromEntries(this.app.workspace.factories) } }
   registerView(type: string, fn: any) { this.app.workspace.factories.set(type, fn); this.trigger("view-registered", type) }
   unregisterView(type: string) { this.app.workspace.factories.delete(type); this.trigger("view-unregistered", type) }
   getViewCreatorByType(type: string) { return this.app.workspace.factories.get(type) }

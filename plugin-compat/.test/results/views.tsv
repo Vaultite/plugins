@@ -21,7 +21,7 @@ obsidian-style-settings	works	works	a snippet's @settings listed; changing a sli
 homepage	works	works	opens the configured note on start
 cmdr	works	partly	page header buttons run; phones have no status bar (as Obsidian mobile)
 note-toolbar	works	works	toolbar under the note's properties (noteTop); its buttons run commands
-obsidian-hover-editor	works	n/a	a link hovered (in reading, or with ⌘ in the editor) opens its floating editor in place of the app's preview: the note in the app's own editor, edited and saved, dragged, resized, pinned, minimized; its commands open the current note or a link in one. Images and PDFs in one, and docking one to the workspace, open as tabs instead
+obsidian-hover-editor	works	n/a	a link hovered (in reading, or with ⌘ in the editor) opens its floating editor in place of the app's preview: the note in the app's own editor, edited and saved, dragged, resized, pinned, minimized; a picture, sound or film link opens in one too (sized to the picture); its commands open the current note or a link in one. PDFs in one, and docking one to the workspace, open as tabs instead
 callout-manager	partly	partly	settings and custom callouts work; the built-in list comes from Obsidian's own app.css, which isn't here
 obsidian-admonition	works	works	
 mermaid-tools	works	works	its toolbar view inserts elements into the note

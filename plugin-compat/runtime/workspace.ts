@@ -85,6 +85,8 @@ const IMAGE = /^(png|jpe?g|gif|svg|webp|bmp|avif)$/
 /** Obsidian's view type for a file the app draws itself ("" for a tab that isn't a file: "empty"). */
 const coreType = (path: string) => { const e = path.slice(path.lastIndexOf(".") + 1).toLowerCase()
   return !path ? "empty" : e === "md" ? "markdown" : IMAGE.test(e) ? "image" : e === "pdf" ? "pdf" : /^(mp3|wav|m4a|ogg|flac)$/.test(e) ? "audio" : /^(mp4|webm|mov)$/.test(e) ? "video" : e === "canvas" ? "canvas" : e === "base" ? "bases" : "empty" }
+/** What a floating leaf shows itself: a note in the app's editor, a picture, a sound or a film. */
+const FLOAT_TYPES: Record<string, string> = { markdown: "markdown", image: "image", audio: "audio", video: "video" }
 /** A tab the app draws, as the core view Obsidian would have there (its type and file; nothing drawn). */
 class CoreView extends FileView {
   type: string
@@ -284,7 +286,7 @@ export class WorkspaceLeaf extends Events {
   }
   async open(view: View) { await this.closeView(); this.view = view; await this.opening(); this.app.workspace.place(this, {}); return view }
   async openFile(f: TFile, o?: { active?: boolean; state?: any; eState?: any }) {
-    const type = this.app.workspace.typeForExtension(f.extension) ?? (this.floatEl && f.extension === "md" ? "markdown" : null)
+    const type = this.app.workspace.typeForExtension(f.extension) ?? (this.floatEl ? FLOAT_TYPES[coreType(f.path)] ?? null : null)
     if (type) return this.setViewState({ type, state: { ...(o?.state ?? {}), file: f.path }, active: o?.active ?? true }, o?.eState)
     this.app.workspace.showFile(f.path, this.fresh, o?.eState)
   }
@@ -621,6 +623,22 @@ export class Workspace extends Events {
       l.view = v
       l.opened = true
       this.md.set(open.view, l)
+    } else if ((s.type === "image" || s.type === "audio" || s.type === "video") && typeof path === "string" && !this.factories.has(s.type)) {
+      // (a picture, a sound or a film, as Obsidian's own views of them: Hover Editor sizes its popover to a picture)
+      const file = this.vault.getFileByPath(path)
+      const v = new CoreView(l, s.type)
+      v.file = file
+      const content = el.createDiv({ cls: "workspace-leaf-content", attr: { "data-type": s.type } })
+      content.createDiv({ cls: "view-header" }).createDiv({ cls: "view-header-title", text: file?.name ?? path })
+      const body = content.createDiv({ cls: `view-content ${s.type === "image" ? "image-container" : "media-container"}` })
+      const src = file ? this.vault.getResourcePath(file) : ""
+      if (s.type === "image") body.createEl("img", { attr: { src, alt: file?.name ?? "" } })
+      else body.createEl(s.type, { attr: { src, controls: "" } })
+      v.containerEl = content
+      v.contentEl = body
+      l.view = v
+      l.opened = true
+      if (s.type === "image") await new Promise((r) => { const img = body.querySelector("img")!; if (img.complete) r(null); else { img.onload = img.onerror = () => r(null) } })
     } else {
       const make = this.factories.get(s.type)
       if (!make) { this.missing(`view type '${s.type}'`); return }

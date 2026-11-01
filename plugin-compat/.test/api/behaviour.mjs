@@ -450,6 +450,23 @@ const r20 = await run(async (o, app) => {
 check("a leaf in a plugin's split: the note's editor there, saved, walked, detached", r20.inSplit && r20.isMd && r20.saved && r20.walked?.join() === "true" && r20.gone, r20)
 check("a leaf in a plugin's split opens no tab", (await tabs()) === tabsBefore, { tabsBefore, after: await tabs() })
 
+// A picture in a leaf of a plugin's split: Obsidian's image view, the picture in it (Hover Editor on an image link).
+const r20b = await run(async (o, app) => {
+  const png = Uint8Array.from(atob("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="), (c) => c.charCodeAt(0))
+  const f = await app.vault.createBinary("Api test/dot.png", png.buffer)
+  const split = new o.WorkspaceSplit(app.workspace, "vertical")
+  const box = document.body.createDiv()
+  box.append(split.containerEl)
+  const leaf = app.workspace.createLeafInParent(split, 0)
+  await leaf.openFile(f)
+  const img = leaf.containerEl.querySelector(".view-content img")
+  const out = { type: leaf.view.getViewType(), file: leaf.view.file?.path, loaded: img?.naturalWidth, registered: app.viewRegistry.getTypeByExtension("png") }
+  leaf.detach()
+  box.remove()
+  return out
+})
+check("a picture in a plugin's split shows in Obsidian's image view", r20b.type === "image" && r20b.file === "Api test/dot.png" && r20b.loaded === 1 && r20b.registered === "image", r20b)
+
 // Page preview's onLinkHover taken by a plugin (on its prototype, as Hover Editor does): links hovered go to it, with
 // a parent it can keep its popover on, and the app's own preview steps aside until it's given back.
 const r21 = await run(async (o, app) => {
