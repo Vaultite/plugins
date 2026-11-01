@@ -322,6 +322,18 @@ const r14 = await run(async () => {
 })
 check("http client: headers on the response event, a redirect followed to its body", r14.a?.status === 302 && r14.a.location === "/b" && r14.b?.body === "arrived", r14)
 
+// A plugin's modal holds the focus as the app's sheets do, without a ring around the whole sheet.
+const r15 = await run(async (o, app) => {
+  const m = new o.Modal(app)
+  m.contentEl.setText("Lighthouse")
+  m.open()
+  await new Promise((r) => setTimeout(r, 300))
+  const focused = m.modalEl.contains(document.activeElement), ring = getComputedStyle(document.activeElement).outlineStyle
+  m.close()
+  return { focused, ring }
+})
+check("a modal takes focus without a focus ring around it", r15.focused && r15.ring === "none", r15)
+
 // A banner a plugin puts absolute in the note's anchors (Pixel Banner's) flows: the text starts under it.
 const r13 = await run(async () => {
   const box = document.querySelector(".plugin-compat-anchors")

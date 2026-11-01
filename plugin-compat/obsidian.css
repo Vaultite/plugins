@@ -165,6 +165,8 @@ input[type="range"].slider { accent-color: var(--primary); width: 140px; }
 .modal, .prompt { position: relative; display: flex; flex-direction: column; width: var(--modal-width); max-width: var(--modal-max-width); max-height: var(--modal-height);
   overflow: auto; padding: 20px; border: 0.5px solid var(--border); border-radius: var(--modal-radius); background: var(--card); color: var(--foreground);
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); font-size: var(--font-ui-medium); line-height: 1.45; animation: oc-in 150ms ease-out; overscroll-behavior: contain; }
+/* (a modal takes focus to hold the keyboard, as the app's sheets do: no ring around the whole sheet) */
+:is(.modal, .prompt)[tabindex="-1"]:focus-visible { outline: none; }
 .modal-close-button { position: absolute; top: 12px; right: 12px; display: flex; padding: 3px; border-radius: 6px; cursor: pointer; color: var(--muted-foreground); }
 .modal-close-button:hover { background: var(--background-modifier-hover); color: var(--foreground); }
 .modal-close-button svg { width: 16px; height: 16px; }
