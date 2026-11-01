@@ -151,11 +151,13 @@ await test("file-tree-alternative", async () => {
   // (the copy in the tab, inside its leaf's own element: the sidebar may show another)
   const inTab = (sel, t) => ev(([s2, t2]) => { const l = window.app.workspace.getLeavesOfType("file-tree-view").find((x) => x.side === "main"); return [...(l?.view.containerEl.querySelectorAll(s2) ?? [])].find((e) => e.textContent?.includes(t2)) ? (([...l.view.containerEl.querySelectorAll(s2)].find((e) => e.textContent?.includes(t2))).click(), true) : false }, [sel, t])
   await until(() => inTab(".oz-folder-name", "Notes"), 8000)
-  await until(() => ev(() => [...document.querySelectorAll(".oz-nav-file-title-content")].some((e) => e.textContent?.includes("Table"))), 6000)
-  await until(() => inTab(".oz-nav-file-title-content", "Table"), 6000)
-  const a = await until(async () => ((await activePath()) === "Notes/Table.md" ? "Notes/Table.md" : null), 5000).catch(() => activePath())
+  // (its file list draws only the rows in view: the first note listed, whichever the sandbox's notes put there)
+  const name = await until(() => ev(() => { const l = window.app.workspace.getLeavesOfType("file-tree-view").find((x) => x.side === "main"); return l?.view.containerEl.querySelector(".oz-nav-file-title-content")?.textContent?.trim() || null }), 6000)
+  await until(() => inTab(".oz-nav-file-title-content", name), 6000)
+  const want = `Notes/${name}.md`
+  const a = await until(async () => ((await activePath()) === want ? want : null), 5000).catch(() => activePath())
   await shot("file-tree-alternative")
-  return a === "Notes/Table.md" ? ok() : fails(`opened ${a}`)
+  return a === want ? ok() : fails(`opened ${a}, not ${want}`)
 })
 
 await test("obsidian-tagfolder", async () => {
