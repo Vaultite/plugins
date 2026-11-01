@@ -26,4 +26,4 @@ callout-manager	partly	partly	settings and custom callouts work; the built-in li
 obsidian-admonition	works	works	
 mermaid-tools	works	works	its toolbar view inserts elements into the note
 pexels-banner	works	untested	Pixel Banner: a note's banner (vault image, URL or keyword) shows under its title and properties, as the app has banners, the text below it in editing and reading; its icons, settings and commands
-quick-explorer	works	n/a	the open note's folders as a path in the status bar, following it; a click on one opens its folder as a menu in the app's look (counts, icons), cascading into subfolders, arrows and Escape, its preview of the selected note (Hover Editor's when that's on)
+quick-explorer	works	n/a	the open note's folders as a path in the status bar (when the app's status bar is on), following it; a click on one, or Browse vault, opens a folder as a menu in the app's look (counts, icons), cascading into subfolders, arrows and Escape, its preview of the selected note (Hover Editor's when that's on)

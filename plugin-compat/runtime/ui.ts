@@ -786,9 +786,9 @@ export class Menu extends Component {
   addItem(cb: (i: MenuItem) => any) { const i = new MenuItem(this); this.items.push(i); cb(i); return this }
   addSeparator() { this.items.push(new MenuSeparator(this)); return this }
   showAtMouseEvent(e: MouseEvent) { return this.showAtPosition({ x: e.clientX, y: e.clientY }) }
-  /** A plugin's own kind of menu (a subclass: Quick Explorer's folders) works Obsidian's DOM menu itself, so it's drawn
-   *  as one, in the app's look; a plain menu is the app's own. */
-  private get drawn() { return this.constructor !== Menu }
+  /** A plugin's own kind of menu that works Obsidian's DOM menu itself (it overrides its keys or selection: Quick
+   *  Explorer's folders) is drawn as one, in the app's look; any other is the app's own menu. */
+  private get drawn() { return drawnMenu(this.constructor) }
   /** The items as the app's menu rows: sections in order with a line between, submenus as its submenus. */
   rows(): AppMenuItem[] {
     const order = (s: string) => { const i = SECTIONS.indexOf(s.split(".")[0]); return i < 0 ? SECTIONS.length - 1.5 : i }
@@ -868,6 +868,18 @@ export class Menu extends Component {
   close() { this.hide() }
   onHide(fn: () => any) { this.hidden.push(fn) }
   static forEvent(e: MouseEvent) { const m = new Menu(); queueMicrotask(() => m.showAtMouseEvent(e)); return m }
+}
+const MENU_INTERNALS = ["select", "unselect", "onArrowUp", "onArrowDown", "onArrowLeft", "onArrowRight", "onEnter", "onEscape", "setChildMenu", "onMouseOver"]
+const drawnKinds = new WeakMap<object, boolean>()
+function drawnMenu(c: any): boolean {
+  if (c === Menu) return false
+  let hit = drawnKinds.get(c)
+  if (hit === undefined) {
+    hit = false
+    for (let p = c.prototype; p && p !== Menu.prototype; p = Object.getPrototypeOf(p)) if (MENU_INTERNALS.some((k) => Object.prototype.hasOwnProperty.call(p, k))) { hit = true; break }
+    drawnKinds.set(c, hit)
+  }
+  return hit
 }
 export class MenuSeparator {
   dom: HTMLElement

@@ -485,11 +485,12 @@ const r21 = await run(async (o, app) => {
 })
 check("a plugin that takes page preview's onLinkHover gets hovered links; the app's preview steps aside", r21.off && r21.seen[0]?.[0] === "B" && r21.seen[0][1] && r21.back, r21)
 
-// A plugin's own kind of menu (a Menu subclass, Quick Explorer's) is Obsidian's DOM menu: its items in its element,
-// arrows select, Enter runs, Escape closes; a plain Menu stays the app's own and draws nothing of its own.
+// A Menu subclass that works Obsidian's DOM menu (overrides its keys: Quick Explorer's) is drawn as one: arrows select,
+// Enter runs, Escape closes; a plain Menu, or a subclass only tied to a component (Calendarium's), is the app's own.
 const r23 = await run(async (o, app) => {
   const ran = []
-  class Mine extends o.Menu {}
+  class Mine extends o.Menu { onEscape(e) { return super.onEscape(e) } }
+  class Tied extends o.Menu {}
   const m = new Mine(app)
   m.addItem((i) => i.setTitle("Opal").onClick(() => ran.push("opal")))
   m.addSeparator()
@@ -507,9 +508,14 @@ const r23 = await run(async (o, app) => {
   plain.showAtPosition({ x: 100, y: 100 })
   const plainDrawn = plain.dom.isConnected, rows = plain.rows().length
   plain.hide()
-  return { shown, sel, ran, closed, plainDrawn, rows }
+  const tied = new Tied()
+  tied.addItem((i) => i.setTitle("Jade"))
+  tied.showAtPosition({ x: 100, y: 100 })
+  const tiedDrawn = tied.dom.isConnected
+  tied.hide()
+  return { shown, sel, ran, closed, plainDrawn, rows, tiedDrawn }
 })
-check("a Menu subclass is drawn as Obsidian's DOM menu, keys and all; a plain one is the app's", r23.shown && r23.sel === "Ruby" && r23.ran.join() === "ruby" && r23.closed && !r23.plainDrawn && r23.rows === 1, r23)
+check("a Menu subclass working its keys is drawn as Obsidian's DOM menu; a plain one, or one only tied to a component, is the app's", r23.shown && r23.sel === "Ruby" && r23.ran.join() === "ruby" && r23.closed && !r23.plainDrawn && r23.rows === 1 && !r23.tiedDrawn, r23)
 
 // A plugin's view with a frame keeps the frame's page while its tab is left and come back to (moved, not reloaded:
 // Annotator's viewer lives in one).
