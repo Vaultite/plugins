@@ -1,12 +1,12 @@
 {
- "at": "2026-11-01T13:33:12.430Z",
- "app": "a1aa7d56",
- "compat": "d58acdbd",
+ "at": "2026-11-01T13:45:04.307Z",
+ "app": "eebae263",
+ "compat": "46f83671",
  "client": "web, desktop size, headless Chrome",
  "of": 300,
  "counts": {
-  "pass": 281,
-  "partial": 17,
+  "pass": 287,
+  "partial": 11,
   "fail": 2,
   "standin": 0
  },
@@ -249,14 +249,8 @@
    "repo": "callumalpass/tasknotes",
    "downloads": 2508942,
    "version": "4.15.0",
-   "verdict": "partial",
-   "why": "missed registerBasesView(tasknotesTaskList), registerBasesView(tasknotesKanban), registerBasesView(tasknotesCalendar), registerBasesView(tasknotesMiniCalendar)",
-   "missed": [
-    "registerBasesView(tasknotesCalendar)",
-    "registerBasesView(tasknotesKanban)",
-    "registerBasesView(tasknotesMiniCalendar)",
-    "registerBasesView(tasknotesTaskList)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 39,
@@ -931,7 +925,7 @@
    "missed": [],
    "errors": [],
    "registered": {
-    "commands": 0,
+    "commands": 9,
     "views": 1,
     "codeBlocks": 0,
     "settings": true,
@@ -1411,14 +1405,13 @@
    "downloads": 407880,
    "version": "4.2.9",
    "verdict": "partial",
-   "why": "missed app.workspace.protocolHandler, registerBasesView(mx-media-lib)",
+   "why": "missed app.workspace.protocolHandler",
    "missed": [
-    "app.workspace.protocolHandler",
-    "registerBasesView(mx-media-lib)"
+    "app.workspace.protocolHandler"
    ],
    "errors": [
-    "%c05:29:41.904%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
-    "%c05:29:41.907%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
+    "%c05:42:28.425%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+    "%c05:42:28.428%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
    ],
    "registered": {
     "commands": 100,
@@ -2033,11 +2026,11 @@
     "commands": 0,
     "views": 0,
     "codeBlocks": 0,
-    "settings": true,
+    "settings": false,
     "ribbon": 0,
     "statusBar": 0,
     "postProcessors": 0,
-    "editorExtensions": true
+    "editorExtensions": false
    }
   },
   {
@@ -2806,11 +2799,8 @@
    "repo": "esm7/obsidian-map-view",
    "downloads": 178568,
    "version": "6.1.4",
-   "verdict": "partial",
-   "why": "missed registerBasesView(map-view-plugin)",
-   "missed": [
-    "registerBasesView(map-view-plugin)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 8,
@@ -3698,11 +3688,8 @@
    "repo": "edrickleong/obsidian-calendar-bases",
    "downloads": 128917,
    "version": "0.2.8",
-   "verdict": "partial",
-   "why": "missed registerBasesView(calendar)",
-   "missed": [
-    "registerBasesView(calendar)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 0,
@@ -4361,10 +4348,10 @@
    "downloads": 98201,
    "version": "2.103.0",
    "verdict": "partial",
-   "why": "DG:  Sun, 01 Nov 2026 13:31:26 GMT Initial settings sync failed Error: Could not get file .env from repository /",
+   "why": "DG:  Sun, 01 Nov 2026 13:43:49 GMT Initial settings sync failed Error: Could not get file .env from repository /",
    "missed": [],
    "errors": [
-    "DG:  Sun, 01 Nov 2026 13:31:26 GMT Initial settings sync failed Error: Could not get file .env from repository /"
+    "DG:  Sun, 01 Nov 2026 13:43:49 GMT Initial settings sync failed Error: Could not get file .env from repository /"
    ],
    "registered": {
     "commands": 15,
@@ -4870,12 +4857,8 @@
    "repo": "churnish/dynamic-views",
    "downloads": 83029,
    "version": "0.15.0",
-   "verdict": "partial",
-   "why": "missed registerBasesView(dynamic-views-grid), registerBasesView(dynamic-views-masonry)",
-   "missed": [
-    "registerBasesView(dynamic-views-grid)",
-    "registerBasesView(dynamic-views-masonry)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 6,
@@ -5729,11 +5712,8 @@
    "repo": "obsidianmd/obsidian-maps",
    "downloads": 70340,
    "version": "0.2.2",
-   "verdict": "partial",
-   "why": "missed registerBasesView(map)",
-   "missed": [
-    "registerBasesView(map)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 0,
@@ -6326,11 +6306,8 @@
    "repo": "clairefro/obsidian-plugin-chronos",
    "downloads": 63463,
    "version": "4.4.0",
-   "verdict": "partial",
-   "why": "missed registerBasesView(chronos-timeline-view)",
-   "missed": [
-    "registerBasesView(chronos-timeline-view)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 5,
