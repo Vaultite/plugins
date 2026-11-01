@@ -8,7 +8,9 @@ import { community, search, type Status } from "./directory.ts"
 import type { Store } from "./store.ts"
 
 const HERE = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const statuses = (): Record<string, Status> => { try { return JSON.parse(fs.readFileSync(path.join(HERE, "compat.json"), "utf8")) } catch { return {} } }
+const read = (f: string): Record<string, Status> => { try { return JSON.parse(fs.readFileSync(path.join(HERE, f), "utf8")) } catch { return {} } }
+// (tried by hand, compat.json, over measured, measured.json: how each of the most downloaded loaded, from measure.mjs)
+const statuses = (): Record<string, Status> => ({ ...read("measured.json"), ...read("compat.json") })
 
 export function wireRunner(plugin: Plugin, store: () => Store) {
   // Which are on and allowed, in /api/state: every window follows a change made elsewhere (an op, the Obsidian sheet).

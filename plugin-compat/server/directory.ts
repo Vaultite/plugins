@@ -7,7 +7,7 @@ export type Listing = { id: string; name: string; author: string; description: s
 type Stats = Record<string, { downloads?: number; updated?: number }>
 export type Community = { plugins: Listing[]; stats: Stats; fetched: string }
 // (unneeded: what it does, Vaultite does itself: Obsidian's look, images in the editor)
-export type Status = "works" | "partly" | "no" | "unneeded" | "untested"
+export type Status = "works" | "partly" | "no" | "unneeded" | "loads" | "untested"
 export type Entry = Listing & { downloads: number; updated: number | null }
 
 const str = (v: unknown) => (typeof v === "string" ? v : "")

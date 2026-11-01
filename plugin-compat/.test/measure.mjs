@@ -92,6 +92,8 @@ if (cmd === "top") {
   const at = new Date().toISOString(), app = git(APP), compat = git(HERE)
   fs.writeFileSync(RESULTS, JSON.stringify({ at, app, compat, client: "web, desktop size, headless Chrome", of: plugins.length, counts, plugins }, null, 1) + "\n")
   if (!fs.existsSync(HISTORY)) fs.writeFileSync(HISTORY, "at\tapp\tplugin-compat\tmeasured\tpass\tpartial\tfail\tstandin\n")
+  // (what Browse shows for those nobody tried by hand: a verdict on loading, never "works")
+  fs.writeFileSync(path.join(HERE, "..", "measured.json"), JSON.stringify(Object.fromEntries(plugins.map((p) => [p.id, { pass: "loads", partial: "partly", fail: "no", standin: "unneeded" }[p.verdict]])), null, 1) + "\n")
   fs.appendFileSync(HISTORY, [at, app, compat, rows.length, counts.pass, counts.partial, counts.fail, counts.standin].join("\t") + "\n")
   console.log(`${plugins.length} plugins: ${counts.pass} pass, ${counts.partial} partial, ${counts.fail} fail, ${counts.standin} stand-in`)
 } else if (cmd === "gaps") {

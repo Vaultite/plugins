@@ -298,10 +298,11 @@ async function sync() {
 }
 const run = (op: string, id: string) => post(`ops/plugin-compat.${op}`, { id })
 type Found = { available: boolean; total: number; entries: { id: string; name: string; author: string; description: string; repo: string; downloads: number
-  installed: boolean; desktopOnly: boolean | null; status: "works" | "partly" | "no" | "unneeded" | "untested"; natives: { id: string; name: string; on: boolean }[] }[] }
+  installed: boolean; desktopOnly: boolean | null; status: "works" | "partly" | "no" | "unneeded" | "loads" | "untested"; natives: { id: string; name: string; on: boolean }[] }[] }
 const count = (n: number) => (n >= 1e6 ? `${(n / 1e6).toFixed(1).replace(/\.0$/, "")}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n))
 const STATUS = { works: { text: "Works here", tone: "green" }, partly: { text: "Partly works here", tone: "orange" }, no: { text: "Doesn't run here", tone: "red" },
-  unneeded: { text: "Not needed here", tip: "Vaultite does what it does itself (Obsidian's own look and views, images in the editor)" } } as const
+  unneeded: { text: "Not needed here", tip: "Vaultite does what it does itself (Obsidian's own look and views, images in the editor)" },
+  loads: { text: "Loads here", tip: "Measured: it starts here and reaches for nothing missing; not yet tried feature by feature" } } as const
 const browse: BrowseSource = {
   title: "Obsidian",
   // (the Vaultite directory's three, so Get plugins orders both alike)
