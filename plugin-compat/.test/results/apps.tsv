@@ -11,6 +11,6 @@ obsidian-annotator	partly	partly	Its view takes notes with annotation-target and
 pdf-plus	n/a	n/a	Extends Obsidian's PDF viewer (internals); Vaultite draws PDFs itself. Loads without breaking anything
 media-extended	partly	n/a	Desktop only. Loads; its main daemon is an Electron helper installed into Obsidian's app folder, so its setup modal shows each start and playback features that need it don't run. Not checked further
 image-converter	works	partly	Pasted image converted to webp and linked (editor-paste). On a phone the app's own paste handled it (not traced)
-obsidian-advanced-slides	partly	n/a	Desktop only. Its preview server runs through the Node bridge, but its reveal.js files (a zip it downloads into its folder on first run) didn't arrive, so the preview is empty
+obsidian-advanced-slides	works	n/a	Desktop only. Its first start downloads reveal.js (a zip, through GitHub's redirect) into its folder; the preview pane beside the note shows the deck from its local server and follows edits
 obsidian-custom-frames	works	works	A frame opens as its pane: Electron's <webview> is an iframe here (sites refusing frames show nothing)
 obsidian-memos	partly	partly	Thino's view opens with its onboarding; capturing a memo wasn't exercised (closed source)

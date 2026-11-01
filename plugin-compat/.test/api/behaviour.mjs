@@ -302,6 +302,26 @@ const r12 = await run(async (o, app) => {
 })
 check("post-processors get containerEl: the element drawn into", r12.length > 0 && r12.every(Boolean), r12)
 
+// Node's http client: a response's headers are there on its response event (the request library follows a redirect
+// from them: Advanced Slides' download), its body after.
+const r14 = await run(async () => {
+  const http = window.require("http")
+  const srv = http.createServer((req, res) => {
+    if (req.url === "/a") { res.writeHead(302, { location: "/b" }); res.end() } else { res.writeHead(200, { "content-type": "text/plain" }); res.end("arrived") }
+  })
+  await new Promise((r) => srv.listen(0, "127.0.0.1", r))
+  const port = srv.address().port
+  const get = (p) => new Promise((done) => http.get(`http://127.0.0.1:${port}${p}`, (res) => {
+    const seen = { status: res.statusCode, location: res.headers.location ?? null }, chunks = []
+    res.on("data", (c) => chunks.push(c))
+    res.on("end", () => done({ ...seen, body: chunks.map(String).join("") }))
+  }))
+  const a = await get("/a"), b = a.location ? await get(a.location) : null
+  srv.close()
+  return { a, b }
+})
+check("http client: headers on the response event, a redirect followed to its body", r14.a?.status === 302 && r14.a.location === "/b" && r14.b?.body === "arrived", r14)
+
 // A banner a plugin puts absolute in the note's anchors (Pixel Banner's) flows: the text starts under it.
 const r13 = await run(async () => {
   const box = document.querySelector(".plugin-compat-anchors")

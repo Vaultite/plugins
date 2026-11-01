@@ -182,13 +182,16 @@ function httpModule(plugin: string, tls: boolean): Any {
   }
   inherits(IncomingMessage, Readable)
   IncomingMessage.prototype.setTimeout = function (this: Any) { return this }
-  const fill = (msg: Any, headers: Any, body: string) => {
+  const head = (msg: Any, headers: Any) => {
     msg.headers = Object.fromEntries(Object.entries(headers ?? {}).map(([k, v]) => [k.toLowerCase(), v]))
     msg.rawHeaders = Object.entries(headers ?? {}).flatMap(([k, v]) => (Array.isArray(v) ? v.flatMap((x) => [k, x]) : [k, String(v)]))
+  }
+  const body = (msg: Any, data: string) => {
     msg.complete = true
-    if (body) msg.push(Buffer.from(body, "base64"))
+    if (data) msg.push(Buffer.from(data, "base64"))
     msg.push(null)
   }
+  const fill = (msg: Any, headers: Any, data: string) => { head(msg, headers); body(msg, data) }
 
   const OutgoingMessage: Any = function OutgoingMessage(this: Any) { Writable.call(this); this._headers = {}; this.headersSent = false }
   inherits(OutgoingMessage, Writable)
@@ -272,9 +275,11 @@ function httpModule(plugin: string, tls: boolean): Any {
           if (r.err) throw errorFrom(r.err)
           const res = new IncomingMessage()
           Object.assign(res, { statusCode: r.status, statusMessage: r.message ?? "" })
+          // (its headers there as it's announced: clients follow a redirect's location from the response event)
+          head(res, r.headers)
           this.res = res
           this.emit("response", res)
-          fill(res, r.headers, r.body)
+          body(res, r.body)
         })
         .catch((e: Any) => this.emit("error", e))
       done()
