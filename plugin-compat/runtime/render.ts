@@ -191,7 +191,7 @@ async function renderInto(md: string, el: HTMLElement, from: string, comp: Compo
   const start = el.childNodes.length
   draw(md, el)
   const added = () => [...el.childNodes].slice(start).filter((n): n is HTMLElement => n instanceof HTMLElement)
-  const ctx = postCtx(from, comp, md)
+  const ctx = postCtx(from, comp, md, el)
   await codeBlocks(el, ctx)
   await embeds(el, from, comp, depth)
   for (const n of added()) hydrateMarkdown(n)
@@ -199,8 +199,9 @@ async function renderInto(md: string, el: HTMLElement, from: string, comp: Compo
   if (wholeFile !== null && from) wireTasks(el, from, wholeFile)
 }
 
-function postCtx(from: string, comp: Component, text: string | null): PostCtx {
-  return { docId: from, sourcePath: from, frontmatter: fmOf(from), displayMode: true, remainingNestLevel: 4,
+// (containerEl, not in Obsidian's types but on its contexts: what the Markdown is drawn into, plugins read its classes)
+function postCtx(from: string, comp: Component, text: string | null, containerEl: HTMLElement): PostCtx {
+  return { docId: from, sourcePath: from, frontmatter: fmOf(from), displayMode: true, remainingNestLevel: 4, containerEl,
     addChild: (c) => comp.addChild(c),
     getSectionInfo: (el) => {
       if (text === null) return null
@@ -291,7 +292,7 @@ export function watchAppMarkdown() {
     const from = el.closest<HTMLElement>("[data-markdown-from], [data-embed], [data-note-preview], [data-preview-path], [data-path]")
     const path = from?.dataset.markdownFrom ?? from?.dataset.embed ?? from?.dataset.notePreview ?? from?.dataset.previewPath ?? from?.dataset.path ?? ""
     for (const a of el.querySelectorAll<HTMLAnchorElement>("a[data-wiki]")) { a.classList.add("internal-link"); a.setAttribute("data-href", a.dataset.wiki ?? "") }
-    const ctx = postCtx(path, new Component(), null)
+    const ctx = postCtx(path, new Component(), null, from ?? el)
     // (a note's callout or table in the editor: its section is where the editor has it now)
     if (lines) ctx.getSectionInfo = () => { const l = lines(); return l && { text: l.doc, lineStart: l.lineStart, lineEnd: l.lineEnd } }
     void postProcess(el, ctx)

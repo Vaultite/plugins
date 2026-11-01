@@ -119,3 +119,4 @@ wikipedia-search	picks	Search modal lists Wikipedia articles; Link article write
 obsidian-zoom	picks	Zoom in on a list item shows only it and its children, with a breadcrumb; zoom out restores
 music-code-blocks	picks	An abc code block draws its score
 scales-chords	picks	A tab block bolds lines' chords and draws their pictures (scales-chords.com)
+pexels-banner	views	A note with banner: frontmatter shows its banner above the text

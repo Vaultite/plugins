@@ -291,6 +291,30 @@ check("reading: a callout and a table the editor draws get their sections", draw
   && drawnSec("table") === JSON.stringify(["table", cat("| Gem"), cat("| Ruby"), true]), { r11, cl })
 await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__drawnFn) })
 
+// A post-processor's context has containerEl, what the Markdown is drawn into (Pixel Banner reads its classes).
+const r12 = await run(async (o, app) => {
+  const into = document.createElement("div"), seen = []
+  const fn = (el, ctx) => { seen.push(ctx.containerEl === into) }
+  o.MarkdownPreviewRenderer.registerPostProcessor(fn)
+  await o.MarkdownRenderer.render(app, "Some **text**", into, "Api test/C.md", new o.Component())
+  o.MarkdownPreviewRenderer.unregisterPostProcessor(fn)
+  return seen
+})
+check("post-processors get containerEl: the element drawn into", r12.length > 0 && r12.every(Boolean), r12)
+
+// A banner a plugin puts absolute in the note's anchors (Pixel Banner's) flows: the text starts under it.
+const r13 = await run(async () => {
+  const box = document.querySelector(".plugin-compat-anchors")
+  if (!box) return { box: false }
+  const b = box.createDiv({ cls: "pixel-banner-image", attr: { style: "position: absolute; top: 0; left: 0; right: 0; height: 120px; z-index: -1" } })
+  document.querySelector(".file-view").style.setProperty("--pixel-banner-content-start", "125px")
+  await new Promise((r) => setTimeout(r, 100))
+  const text = document.querySelector(".cm-content").getBoundingClientRect().top, under = b.getBoundingClientRect().bottom, shown = getComputedStyle(box).display
+  b.remove()
+  return { box: true, shown, below: text >= under }
+})
+check("a plugin's banner in the note's anchors pushes the text below it", r13.box && r13.shown !== "none" && r13.below, r13)
+
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)
 const mine = errs.filter((e) => !e.includes("obsidian-plugin:") && !e.includes("Request failed, status"))
