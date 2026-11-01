@@ -283,6 +283,8 @@ class Plugins extends Events {
   async disablePlugin(id: string) { unloadPlugin(id); this.enabledPlugins.delete(id); return true }
   async enablePluginAndSave(id: string) { const r = await post<Installed>("plugin-compat/enable", { id, on: true }).catch(() => null); return r?.allowed ? this.enablePlugin(id) : false }
   async disablePluginAndSave(id: string) { await post("plugin-compat/enable", { id, on: false }).catch(() => {}); return this.disablePlugin(id) }
+  // (Obsidian's Settings ▸ Uninstall: off, then its files gone; Translate wraps it to clear its own keys)
+  async uninstallPlugin(id: string) { await this.disablePluginAndSave(id); await post("ops/plugin-compat.uninstall", { id }).catch(() => {}); delete this.manifests[id] }
   async loadPlugin(id: string) { return this.enablePlugin(id) }
   async unloadPlugin(id: string) { return this.disablePlugin(id) }
   async checkForUpdates() { return {} }
