@@ -9,7 +9,7 @@ import { Prec } from "@codemirror/state"
 import { EditorView } from "@codemirror/view"
 import "./obsidian.css"
 import { activeEditor, Editor, editorExtension, setEditorShown, setInfoOf, suggestExtension } from "./runtime/editor.ts"
-import { appOf, changed, loaded, loadPlugin, prefetch, skipped, missedOf, Platform, registered, results, runObsidian, setSettingsOpener, summaryOf, syncProperties, unloadPlugin, type Manifest } from "./runtime/host.ts"
+import { appOf, changed, loaded, loadPlugin, prefetch, runCli, skipped, missedOf, Platform, registered, results, runObsidian, setSettingsOpener, summaryOf, syncProperties, unloadPlugin, type Manifest } from "./runtime/host.ts"
 import { LooseStatus, NoteActions, ViewActions } from "./actions.tsx"
 import type { FileExplorerView } from "./runtime/explorer.ts"
 import { obsidianTokens } from "./runtime/tags.ts"
@@ -499,6 +499,7 @@ export default definePlugin({
   ambient: { status: { title: "Obsidian plugins' status bar", render: () => <LooseStatus /> } },
   fileRows: () => (appOf().workspace.internal.find((l) => l.view.getViewType() === "file-explorer")?.view as FileExplorerView | undefined)?.fileRows() ?? {},
   reading: readingBlocks,
+  answers: { cli: (m) => runCli(m.command, m.flags) },
   editor: (ctx) => [ctx.kind === "markdown" ? obsidianTokens() : [], editorExtension(ctx.path, ctx.kind === "markdown"), hotkeysFirst, suggestExtension(registered.suggests, () => activeEditor(), () => appOf().workspace.getActiveFile())],
   // (one menu for all: a plugin turned off has unloaded its handler)
   editorMenu: ({ view }) => {

@@ -90,7 +90,11 @@ export class Plugin extends Component {
     tell()
   }
   registerBasesView(type: string) { miss(this.manifest.id, `registerBasesView(${type})`); return false }
-  registerCliHandler() { miss(this.manifest.id, "registerCliHandler") }
+  registerCliHandler(command: string, description: string, flags: CliHandler["flags"], handler: CliHandler["handler"]) {
+    const h = { plugin: this.manifest.id, description, flags, handler }
+    cliHandlers.set(command, h)
+    this.register(() => { if (cliHandlers.get(command) === h) cliHandlers.delete(command) })
+  }
   onUserEnable() {}
   onExternalSettingsChange() {}
   async loadData() { return datas.get(this.manifest.id) ?? null }
@@ -243,6 +247,21 @@ export function summaryOf(id: string): Result {
 }
 
 export const missedOf = (id: string) => missedBy.get(id) ?? {}
+
+type CliHandler = { plugin: string; description: string; flags: Record<string, { value?: string; description: string; required?: boolean }> | null
+  handler: (params: Record<string, string>) => string | Promise<string> }
+/** Commands of Obsidian's CLI plugins answer (registerCliHandler), run by `vau plugin-compat cli`. */
+const cliHandlers = new Map<string, CliHandler>()
+/** A plugin's CLI command run as Obsidian's CLI does (flags as text, a bare one "true"), or, without one, the list. */
+export async function runCli(command: unknown, flags: unknown) {
+  if (!command) return [...cliHandlers].map(([c, h]) => ({ command: c, plugin: h.plugin, description: h.description, flags: h.flags ?? {} }))
+  const h = cliHandlers.get(String(command))
+  if (!h) throw new Error(`no Obsidian plugin that's on has the command '${command}': vau plugin-compat cli lists them`)
+  const params = Object.fromEntries(Object.entries(flags && typeof flags === "object" ? flags : {}).map(([k, v]) => [k, v === true ? "true" : String(v)]))
+  const missing = Object.entries(h.flags ?? {}).filter(([k, f]) => f.required && !(k in params)).map(([k]) => `--${k}`)
+  if (missing.length) throw new Error(`${command} needs ${missing.join(", ")}`)
+  return { output: String((await h.handler(params)) ?? "") }
+}
 
 /** A plugin's styles under the app's utilities (the `plugins` layer): its `.hidden` mustn't hide the app's `md:flex`. */
 function layered(css: string) {

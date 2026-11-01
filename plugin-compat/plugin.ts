@@ -110,6 +110,29 @@ plugin.op({
   run: () => store().list().map(({ id, manifest, enabled, allowed, here }) => ({ id, name: manifest.name, version: manifest.version, enabled, allowed, from: here ? "here" : "other-app" })),
 })
 
+type CliRow = { command: string; plugin: string; description: string; flags: Record<string, { value?: string; description: string; required?: boolean }> }
+plugin.op({
+  id: "plugin-compat.cli",
+  summary: "Run a command an Obsidian plugin adds to Obsidian's CLI, in the user's open window; without one, list them",
+  help: "Flags go as they would to Obsidian's CLI: vau plugin-compat cli templater:create-from-template --template Templates/Day.md. The plugin must be on and an app window open.",
+  kind: "write",
+  // (the window's own writes take the vault: held here, they'd wait for this op to end)
+  lock: false,
+  params: { command: { type: "string", description: "the command, e.g. templater:create-from-template" }, flags: { type: "object", description: "its flags" } },
+  args: ["command"],
+  rest: "flags",
+  cli: "plugin-compat cli",
+  run: async ({ command, flags }, ctx) => {
+    try { return await ctx.ui({ action: "plugin-compat:cli", command, flags: flags ?? {}, timeout: 120 }) } catch (e) {
+      if (e instanceof OpError && e.status === 409) throw new OpError("Obsidian plugins run in the app: open it (browser or desktop) first", 409)
+      throw e
+    }
+  },
+  text: (r) => Array.isArray(r)
+    ? (r as CliRow[]).map((c) => `${c.command} (${c.plugin}): ${c.description}${Object.entries(c.flags).map(([k, f]) => `\n  --${k}${f.value ? ` ${f.value}` : ""}${f.required ? " (required)" : ""}: ${f.description}`).join("")}`).join("\n") || "No Obsidian plugin that's on adds a CLI command."
+    : (r as { output: string }).output,
+})
+
 plugin.op({
   id: "plugin-compat.enable",
   owner: "Obsidian plugins",

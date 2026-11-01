@@ -2,7 +2,7 @@
 // metadata, links, the file manager, the adapter, ES5 subclasses, the editor's positions, post-processors over a note
 // being read. WRITES "Api test/": lab only.
 //   node behaviour.mjs <base url>
-import { palette, qa, until, wait } from "../../../qa.mjs"
+import { apiAt, palette, qa, until, wait } from "../../../qa.mjs"
 
 const { args: [B0], browser, check, done } = await qa(import.meta.url)
 const B = B0.endsWith("/") ? B0 : `${B0}/`
@@ -150,6 +150,17 @@ const probeReport = await until(async () => Object.values(await (await fetch(`${
   .flatMap((c) => c?.results ?? []).find((x) => x.id === "probe" && x.editorExtensions), 20000, 1000).catch(() => null)
 check("the load report says a plugin added editor extensions", !!probeReport, probeReport)
 check("absent settings files read as none, not a 404", r4c.status === 200 && r4c.body.base64 === null, r4c)
+
+// Obsidian's CLI: a plugin's command, run from vau in the open window with its flags as text (writing as it goes).
+await run(async (o, app, _a) => {
+  window.__probe.plugin.registerCliHandler("probe:echo", "Says its flags back", { name: { value: "<name>", description: "who", required: true }, loud: { description: "shout" } },
+    async (p) => `hi ${p.name}${p.loud === "true" ? "!" : ""} (${(await app.vault.create(`Api test/Cli ${Date.now()}.md`, p.name)).path})`)
+})
+const api = apiAt(B), cli = (body) => api("POST", "ops/plugin-compat.cli", body).catch((e) => ({ error: String(e) }))
+const listed = await cli({}), echoed = await cli({ command: "probe:echo", flags: { name: "Alice", loud: true } }), short = await cli({ command: "probe:echo" })
+const res = (r) => r?.result ?? r
+check("cli: a plugin's command is listed, runs with its flags, and says what it needs", res(listed)?.some?.((c) => c.command === "probe:echo" && c.flags.name.required)
+  && /^hi Alice! \(Api test\/Cli \d+\.md\)$/.test(res(echoed)?.output ?? "") && /needs --name/.test(JSON.stringify(short)), { listed, echoed, short })
 
 // The editor: a note with frontmatter, positions in the whole file's lines.
 await page.evaluate(() => { location.hash = `#file/${encodeURIComponent("Api test/B.md")}` })
