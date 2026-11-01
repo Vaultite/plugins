@@ -90,6 +90,8 @@ class CoreView extends FileView {
   type: string
   constructor(leaf: WorkspaceLeaf, type: string) { super(leaf); this.type = type; this.allowNoFile = true }
   getViewType() { return this.type }
+  // (a note the app shows without its editor in front: read, as Obsidian's MarkdownView in reading view)
+  getMode() { return "preview" }
 }
 export class EditableFileView extends FileView {}
 export class TextFileView extends EditableFileView {
@@ -215,7 +217,7 @@ export class WorkspaceLeaf extends Events {
     this.side = side
     this.fresh = fresh
     const ws = app.workspace as Workspace | undefined
-    this.parent = side === "main" ? ws?.rootSplit : side === "left" ? ws?.leftSplit : ws?.rightSplit
+    this.parent = side === "main" ? ws?.rootSplit : (side === "left" ? ws?.leftSplit : ws?.rightSplit)?.tabs
     this.view = new EmptyView(this)
   }
   get containerEl() { return this.view.containerEl }
@@ -275,7 +277,7 @@ export class WorkspaceLeaf extends Events {
   }
   getDisplayText() { return this.view.getDisplayText() }
   getIcon() { return this.view.getIcon() }
-  getRoot() { return this.side === "main" ? this.app.workspace.rootSplit : this.parent }
+  getRoot() { return this.side === "main" ? this.app.workspace.rootSplit : this.parent?.getRoot?.() ?? this.parent }
   getContainer() { return this.app.workspace.rootSplit }
   getEphemeralState() { return this.view.getEphemeralState?.() ?? {} }
   setEphemeralState(s: any) { this.view.setEphemeralState?.(s) }
@@ -373,13 +375,26 @@ class Split extends WorkspaceSplit {
   // (Obsidian's window component, loaded while its window is open: plugins tie per-window parts to it)
   component = new Component()
   get containerEl() { return (this.side === "main" ? rootEl() : null) ?? this.el }
-  constructor(ws: Workspace, side: WorkspaceLeaf["side"]) { super(ws); this.side = side; this.component.load() }
-  get children(): any[] { return this.ws.allLeaves().filter((l: WorkspaceLeaf) => l.side === this.side) }
+  /** A sidebar's one tab group, as Obsidian's sidedocks hold their leaves (Make.md walks leftSplit's groups). */
+  tabs: SideTabs | null = null
+  constructor(ws: Workspace, side: WorkspaceLeaf["side"]) { super(ws); this.side = side; this.component.load(); if (side !== "main") this.tabs = new SideTabs(this) }
+  leavesHere(): any[] { return this.ws.allLeaves().filter((l: WorkspaceLeaf) => l.side === this.side) }
+  get children(): any[] { return this.tabs ? [this.tabs] : this.leavesHere() }
   expand() { this.collapsed = false }
   collapse() { this.collapsed = true }
   toggle() { this.collapsed = !this.collapsed }
   getRoot() { return this }
   getContainer() { return this.ws.rootSplit }
+}
+
+class SideTabs extends WorkspaceParent {
+  split: Split
+  constructor(split: Split) { super(); this.split = split; this.parent = split; this.el.className = "workspace-tabs" }
+  get children(): any[] { return this.split.leavesHere() }
+  // (only a plugin's leaf goes: the app's own panels stay)
+  removeChild(item: any) { if (this.split.ws.leaves.includes(item)) item.detach() }
+  getRoot() { return this.split }
+  getContainer() { return this.split.getContainer() }
 }
 
 const focusedTab = () => {

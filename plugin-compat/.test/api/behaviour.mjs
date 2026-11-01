@@ -372,6 +372,14 @@ const r13 = await run(async () => {
 })
 check("a plugin's banner in the note's anchors pushes the text below it", r13.box && r13.shown !== "none" && r13.below, r13)
 
+// Sidebars hold their leaves in a tab group, as Obsidian's sidedocks do (Make.md walks them); a leaf there still has
+// its sidebar as its root.
+const r17 = await run(async (o, app) => {
+  const ws = app.workspace, groups = ws.leftSplit.children, leaves = groups[0]?.children ?? []
+  return { groups: groups.length, leaves: leaves.length, root: leaves.every((l) => l.getRoot() === ws.leftSplit && l.parent === groups[0]) }
+})
+check("a sidebar's leaves are in its tab group, their root the sidebar", r17.groups === 1 && r17.leaves > 0 && r17.root, r17)
+
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)
 const mine = errs.filter((e) => !e.includes("obsidian-plugin:") && !e.includes("Request failed, status"))
