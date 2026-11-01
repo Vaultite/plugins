@@ -1,12 +1,12 @@
 {
- "at": "2026-11-01T13:45:04.307Z",
+ "at": "2026-11-01T13:57:01.231Z",
  "app": "eebae263",
- "compat": "46f83671",
+ "compat": "1a78e9e4",
  "client": "web, desktop size, headless Chrome",
  "of": 300,
  "counts": {
-  "pass": 287,
-  "partial": 11,
+  "pass": 289,
+  "partial": 9,
   "fail": 2,
   "standin": 0
  },
@@ -1405,13 +1405,11 @@
    "downloads": 407880,
    "version": "4.2.9",
    "verdict": "partial",
-   "why": "missed app.workspace.protocolHandler",
-   "missed": [
-    "app.workspace.protocolHandler"
-   ],
+   "why": "%c05:54:27.379%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+   "missed": [],
    "errors": [
-    "%c05:42:28.425%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
-    "%c05:42:28.428%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
+    "%c05:54:27.379%c %cERR%c %cmx/obsidian/main-daemon%c Initialization failed: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed",
+    "%c05:54:27.382%c %cERR%c %cmx/obsidian/main-daemon%c Failed to auto-load main daemon: %o color:#888;  background:#DC3545;color:white;padding:1px 4px;border-radius:2px;  color:#666;  R3: Main daemon module not installed"
    ],
    "registered": {
     "commands": 100,
@@ -2762,7 +2760,7 @@
    "errors": [],
    "registered": {
     "commands": 19,
-    "views": 2,
+    "views": 6,
     "codeBlocks": 0,
     "settings": true,
     "ribbon": 0,
@@ -4155,17 +4153,14 @@
    "repo": "pfrankov/obsidian-local-gpt",
    "downloads": 106313,
    "version": "4.3.13",
-   "verdict": "partial",
-   "why": "missed app.aiProviders",
-   "missed": [
-    "app.aiProviders"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 0,
     "views": 0,
     "codeBlocks": 0,
-    "settings": false,
+    "settings": true,
     "ribbon": 0,
     "statusBar": 0,
     "postProcessors": 0,
@@ -4348,10 +4343,10 @@
    "downloads": 98201,
    "version": "2.103.0",
    "verdict": "partial",
-   "why": "DG:  Sun, 01 Nov 2026 13:43:49 GMT Initial settings sync failed Error: Could not get file .env from repository /",
+   "why": "DG:  Sun, 01 Nov 2026 13:55:43 GMT Initial settings sync failed Error: Could not get file .env from repository /",
    "missed": [],
    "errors": [
-    "DG:  Sun, 01 Nov 2026 13:43:49 GMT Initial settings sync failed Error: Could not get file .env from repository /"
+    "DG:  Sun, 01 Nov 2026 13:55:43 GMT Initial settings sync failed Error: Could not get file .env from repository /"
    ],
    "registered": {
     "commands": 15,
@@ -5092,10 +5087,8 @@
    "downloads": 80026,
    "version": "1.4.9",
    "verdict": "partial",
-   "why": "missed app.plugins.uninstallPlugin",
-   "missed": [
-    "app.plugins.uninstallPlugin"
-   ],
+   "why": "Obsidian plugin translate: TypeError: Cannot read properties of undefined (reading 'selected_languages')",
+   "missed": [],
    "errors": [
     "Obsidian plugin translate: TypeError: Cannot read properties of undefined (reading 'selected_languages')",
     "Obsidian plugin translate: TypeError: Cannot read properties of undefined (reading 'available_languages')",
@@ -5183,11 +5176,8 @@
    "repo": "leonezz/obsidian-tasks-calendar-wrapper",
    "downloads": 79091,
    "version": "0.3.7",
-   "verdict": "partial",
-   "why": "missed require(jquery)",
-   "missed": [
-    "require(jquery)"
-   ],
+   "verdict": "pass",
+   "missed": [],
    "errors": [],
    "registered": {
     "commands": 2,
