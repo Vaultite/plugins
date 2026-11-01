@@ -186,3 +186,11 @@ function bodyClasses() {
   theme()
   new MutationObserver(theme).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
 }
+
+/** `el` moved into `parent`, keeping what's live in it (an iframe's page, a video) where the browser can: a plain append
+ *  reloads a moved iframe, as a view's element goes between its tab and the parking place. */
+export function moveInto(parent: Element, el: Element) {
+  const keep = (parent as any).moveBefore
+  if (keep && parent.isConnected && el.isConnected && el.ownerDocument === parent.ownerDocument) { try { keep.call(parent, el, null); return } catch { /* not movable so */ } }
+  parent.append(el)
+}

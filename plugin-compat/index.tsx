@@ -17,6 +17,7 @@ import { readingBlocks, renderMarkdown, watchAppMarkdown } from "./runtime/rende
 import { routeWindowOpen, runUri } from "./runtime/uri.ts"
 import { Menu, MenuItem, setIcon, prefetchIcons } from "./runtime/ui.ts"
 import { Component, fromB64, type Events } from "./runtime/core.ts"
+import { moveInto } from "./runtime/dom.ts"
 import { parking, portals, portalsChanged, rootEl, viewName, type WorkspaceLeaf } from "./runtime/workspace.ts"
 
 type Installed = { id: string; manifest: Manifest & { authorUrl?: string }; enabled: boolean; styles: boolean; hash: string; allowed: boolean; here: boolean
@@ -76,11 +77,12 @@ function Fence({ lang, ctx }: { lang: string; ctx: BlockCtx }) {
 /** A leaf's view, its own element put into the page while drawn; told when its size changes. */
 function LeafHost({ leaf }: { leaf: WorkspaceLeaf }) {
   const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
+  // (a layout effect: moved in and back out while both places are in the page, so an iframe in it keeps its page)
+  useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
     const view = leaf.view
-    el.append(view.containerEl)
+    moveInto(el, view.containerEl)
     void leaf.opening()
     // (a side view laid out to fill its pane, a chat, has no height of its own in a stacked sidebar: it gets some)
     const fill = () => { if (leaf.side !== "main" && !el.classList.contains("mod-fill") && view.containerEl.scrollHeight < 120) el.classList.add("mod-fill") }
@@ -88,7 +90,7 @@ function LeafHost({ leaf }: { leaf: WorkspaceLeaf }) {
     ro.observe(el)
     setTimeout(fill, 1500)
     // (still open, out of sight: parked in the page, as a hidden tab's view is in Obsidian)
-    return () => { ro.disconnect(); if (leaf.opened && leaf.view === view) parking().append(view.containerEl); else view.containerEl.remove() }
+    return () => { ro.disconnect(); if (leaf.opened && leaf.view === view) moveInto(parking(), view.containerEl); else view.containerEl.remove() }
   }, [leaf, leaf.view])
   return <div ref={ref} className="plugin-compat-leaf workspace-leaf mod-active" data-type={leaf.view.getViewType()} />
 }
@@ -232,14 +234,16 @@ function viewTitle(type: string, arg = "") {
 
 function defOf(p: Installed): HostedPlugin {
   const app = appOf(), ws = app.workspace, id = p.id, hid = hosted(id), r = results.get(id)
-  const types = [...registered.views].filter(([, o]) => o === id).map(([t]) => t)
-  const ribbon = registered.ribbon.filter((x) => x.plugin === id)
+  // (what it registered is under its manifest's id, which its folder's name needn't be, as in Obsidian)
+  const own = (x: string) => x === id || x === p.manifest.id
+  const types = [...registered.views].filter(([, o]) => own(o)).map(([t]) => t)
+  const ribbon = registered.ribbon.filter((x) => own(x.plugin))
   const commands: PluginCommand[] = [
-    ...[...registered.commands].filter(([, c]) => c.plugin === id).map(([cid, { cmd }]) => ({ id: hosted(cid), name: cmd.name, keys: keysOf(cid),
+    ...[...registered.commands].filter(([, c]) => own(c.plugin)).map(([cid, { cmd }]) => ({ id: hosted(cid), name: cmd.name, keys: keysOf(cid),
       ...(cmd.icon ? { icon: iconNamed(cmd.icon) } : {}), when: () => runObsidian(app, cid, true), run: () => { runObsidian(app, cid) } })),
     ...ribbon.map((x, i) => ({ id: `${hid}:ribbon-${i}`, name: `${p.manifest.name}: ${x.title}`, label: x.title, icon: iconNamed(x.icon), run: () => x.run(new MouseEvent("click")) })),
   ]
-  const fences = Object.fromEntries([...registered.fences].filter(([, f]) => f.plugin === id).map(([lang]) => [lang, (ctx: BlockCtx) => <Fence lang={lang} ctx={ctx} />]))
+  const fences = Object.fromEntries([...registered.fences].filter(([, f]) => own(f.plugin)).map(([lang]) => [lang, (ctx: BlockCtx) => <Fence lang={lang} ctx={ctx} />]))
   // (an Obsidian view fills its leaf: the whole pane, no padding or scrolling of the tab's own)
   const views = Object.fromEntries(types.map((t) => [viewName(t), {
     full: true, icon: iconNamed(viewIcon(t)), iconFor: () => iconNamed(viewIcon(t)), title: (arg: string) => viewTitle(t, arg),
@@ -251,7 +255,7 @@ function defOf(p: Installed): HostedPlugin {
     actions: () => <ViewActions leaf={ws.leaves.find((l) => l.side !== "main" && l.view.getViewType() === t) ?? null} />,
     render: () => <SideLeaf type={t} panel={`${hid}:${t}`} />,
   }]))
-  const formats = Object.fromEntries([...registered.extensions].filter(([, x]) => x.plugin === id).map(([ext, x]) => [ext, {
+  const formats = Object.fromEntries([...registered.extensions].filter(([, x]) => own(x.plugin)).map(([ext, x]) => [ext, {
     exts: [ext], icon: iconNamed(viewIcon(x.type)), layout: "pane" as const, render: ({ path }: { path: string }) => <MainLeaf type={x.type} arg={path} />,
   }]))
   const problem = r?.state === "failed" || r?.state === "skipped" ? [r.error ?? "It couldn't load"] : []
@@ -262,7 +266,7 @@ function defOf(p: Installed): HostedPlugin {
     on: p.enabled, waiting: p.enabled && !p.allowed && (p.changed ? "changed" : "new"), problems: problem, replaces: { obsidian: [id] },
     commands, fences, views, sidebar, formats,
     ...(ribbon.length ? { header: { ribbon: { sort: 60, render: (ctx: SidebarCtx) => <Ribbon plugin={id} ctx={ctx} /> } } } : {}),
-    ...(registered.statusBar.some((s) => s.plugin === id) ? { ambient: { status: { title: p.manifest.name, render: () => <StatusItems plugin={id} /> } } } : {}),
+    ...(registered.statusBar.some((s) => own(s.plugin)) ? { ambient: { status: { title: p.manifest.name, render: () => <StatusItems plugin={p.manifest.id} /> } } } : {}),
     ...(registered.settingTabs.has(id) ? { settingsPanel: () => <SettingTab plugin={id} /> } : {}),
     ...([...registered.protocolPlugins.values()].includes(id) ? { schemeLink: (url: string) => runUri(url, id) } : {}),
   }

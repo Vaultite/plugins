@@ -494,6 +494,24 @@ const r23 = await run(async (o, app) => {
 })
 check("a Menu subclass is drawn as Obsidian's DOM menu, keys and all; a plain one is the app's", r23.shown && r23.sel === "Ruby" && r23.ran.join() === "ruby" && r23.closed && !r23.plainDrawn && r23.rows === 1, r23)
 
+// A plugin's view with a frame keeps the frame's page while its tab is left and come back to (moved, not reloaded:
+// Annotator's viewer lives in one).
+// (the lab's probe from api/probe, as it is now: an older copy has no frame view)
+const probeFrame = await page.evaluate(() => !!window.app.viewRegistry.viewByType["probe-frame"])
+await run(async (o, app) => {
+  window.__labLeaf = app.workspace.getLeaf(true)
+  await window.__labLeaf.setViewState({ type: "probe-frame", active: true })
+})
+const framed = () => page.evaluate(() => { const f = window.__labLeaf.view.contentEl.querySelector("iframe"); return { shown: !!f?.closest(".plugin-compat-leaf"), parked: !!f?.closest(".plugin-compat-parking"), mark: f?.contentWindow?.__mark ?? null } })
+const r24a = await until(async () => { const r = await framed(); return r.shown && r }, 8000) || await framed()
+await page.evaluate(() => { window.__labLeaf.view.contentEl.querySelector("iframe").contentWindow.__mark = "kept" })
+await run(async (o, app) => { await app.workspace.openLinkText("Api test/B.md", "", true) })
+const r24b = await until(async () => { const r = await framed(); return r.parked && r }, 8000) || await framed()
+await run(async (o, app) => { await app.workspace.revealLeaf(window.__labLeaf) })
+const r24 = await until(async () => { const r = await framed(); return r.shown && r }, 8000) || await framed()
+await run(async (o, app) => { window.__labLeaf.detach() })
+check("a plugin view's frame keeps its page across leaving its tab", probeFrame && r24a.shown && r24b.parked && r24.shown && r24.mark === "kept", probeFrame ? { r24a, r24b, r24 } : "the lab's probe is older than api/probe: copy it in again")
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {

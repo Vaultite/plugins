@@ -7,7 +7,7 @@ obsidian-markmind	works	works	mindmap-plugin notes open as its mind map. Shares 
 obsidian-enhancing-mindmap	works	works	mindmap-plugin notes open as an editable mind map
 advanced-canvas	n/a	n/a	Extends Obsidian's own canvas view (internals); Vaultite's canvas isn't Obsidian's. Loads, its commands are there
 make-md	works	works	Its navigator lists the vault, opens notes and folder spaces. Its inline context in the editor needs Obsidian's .cm-sizer (absent)
-obsidian-annotator	partly	partly	Its view takes notes with annotation-target and opens; its hypothes.is viewer inside the iframe stays blank (not investigated further)
+obsidian-annotator	works	untested	a note with annotation-target opens its viewer: the PDF in pdf.js with Hypothesis's sidebar, an annotation or page note saved into the note as Annotator writes it; the viewer keeps its page when its tab is left and come back to. Phone not tried
 pdf-plus	n/a	n/a	Extends Obsidian's PDF viewer (internals); Vaultite draws PDFs itself. Loads without breaking anything
 media-extended	partly	n/a	Desktop only. Loads; its main daemon is an Electron helper installed into Obsidian's app folder, so its setup modal shows each start and playback features that need it don't run. Not checked further
 image-converter	works	partly	Pasted image converted to webp and linked (editor-paste). On a phone the app's own paste handled it (not traced)
