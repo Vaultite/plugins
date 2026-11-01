@@ -57,7 +57,8 @@ try {
             try { const leaf = app.workspace.getLeaf("tab"); await leaf.setViewState({ type, active: true }); await sleep(1200); leaf.detach(); o.views++ } catch (e) { console.error(`Obsidian plugin ${id}: opening ${type}: ${e?.stack ?? e}`) }
           }
           const tab = app.setting.pluginTabs.find((t) => t?.plugin?.manifest?.id === id)
-          if (tab) { try { tab.containerEl.replaceChildren(); await tab.display(); await sleep(300); tab.hide?.(); o.settings = true } catch (e) { console.error(`Obsidian plugin ${id}: its settings: ${e?.stack ?? e}`) } }
+          // (in the page, as Obsidian's settings sheet has it: colour pickers and editors measure their parents)
+          if (tab) { try { tab.containerEl.replaceChildren(); document.body.append(tab.containerEl); await tab.display(); await sleep(300); tab.hide?.(); tab.containerEl.remove(); o.settings = true } catch (e) { console.error(`Obsidian plugin ${id}: its settings: ${e?.stack ?? e}`) } }
         }
         return out
       }, ids.map((id) => ({ id, views: got.find((x) => x.id === id)?.views })))
