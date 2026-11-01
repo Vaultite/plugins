@@ -51,6 +51,15 @@ function sendBatch() {
       .then((r) => part.forEach((x, j) => x.ok(r.results[j] ?? null)), (e) => part.forEach((x) => x.no(e)))
   }
 }
+/** Notes' text as last read, for cachedRead. A change to one drops its read still on the way: that text is older. */
+class Texts extends Map<string, string> {
+  reading = new Map<string, Promise<string>>()
+  set(p: string, t: string) { this.reading.delete(p); return super.set(p, t) }
+  delete(p: string) { this.reading.delete(p); return super.delete(p) }
+}
+// Bytes of unread notes a first read brings along: a plugin reading every note one at a time (Dataview's importer)
+// waits for one request per this much, not per note.
+const READ_AHEAD = 128 * 1024
 const absent = (p: string) => Object.assign(new Error(`ENOENT: no such file or directory, '${p}'`), { code: "ENOENT" })
 
 /** The server's view of any vault file as bytes (plugin.ts fs/*), hidden ones and .obsidian/ (the overlay) too. */
@@ -80,7 +89,7 @@ export class Vault extends Events {
   configDir = ".obsidian"
   files = new Map<string, TAbstractFile>()
   root: TFolder
-  text = new Map<string, string>() // what was read, for cachedRead
+  text = new Texts()
   meta: MetadataCache
   name = "Vault"
   config: Record<string, unknown> = { ...CONFIG }
@@ -248,12 +257,35 @@ export class Vault extends Events {
   }
   checkPath(p: string) { if (/[\\:*?"<>|]/.test(p.split("/").pop() ?? "")) throw new Error("File name cannot contain any of the following characters: * \" \\ / < > : | ?") }
 
-  async read(f: TFile) {
-    const t = await raw.text(f.path)
-    this.text.set(f.path, t)
-    return t
+  /** A file's text from the server: one request for every read of it on the way, kept unless it changed meanwhile. */
+  private load(p: string) {
+    const reading = this.text.reading
+    const r: Promise<string> = reading.get(p) ?? raw.text(p).then((t) => { if (reading.get(p) === r) this.text.set(p, t); return t },
+      (e) => { if (reading.get(p) === r) reading.delete(p); throw e })
+    reading.set(p, r)
+    return r
   }
-  async cachedRead(f: TFile) { return this.text.get(f.path) ?? this.read(f) }
+  private ahead = "" // the last note read first, whose next notes are being sent for
+  /** The notes after `p` (wrapping round) neither read nor being read, READ_AHEAD's worth. */
+  private unread(p: string) {
+    const all = [...this.files.values()], i = all.findIndex((f) => f.path === p), out: string[] = []
+    for (let k = 1, left = READ_AHEAD; k <= all.length && left > 0; k++) {
+      const f = all[(i + k) % all.length]
+      if (f instanceof TFile && f.extension === "md" && f.path !== p && !this.text.has(f.path) && !this.text.reading.has(f.path)) { out.push(f.path); left -= f.stat.size + 100 }
+    }
+    return out
+  }
+  async read(f: TFile) { return this.load(f.path) }
+  async cachedRead(f: TFile) {
+    const t = this.text.get(f.path)
+    if (t !== undefined) return t
+    if (this.text.reading.has(f.path)) return this.load(f.path)
+    const r = this.load(f.path)
+    // (the notes after it go in a request of their own, sent next: this one isn't held up by them)
+    if (!this.ahead) setTimeout(() => { for (const p of this.unread(this.ahead)) this.load(p).catch(() => {}); this.ahead = "" })
+    this.ahead = f.path
+    return r
+  }
   async readBinary(f: TFile) { const b = await raw.read(f.path); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer }
   /** Writes a note through the app (its merge and history); any other file as it is. */
   private async put(p: string, data: string, make: boolean) {

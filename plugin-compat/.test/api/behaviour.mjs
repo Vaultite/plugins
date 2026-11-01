@@ -72,6 +72,26 @@ check("binary round trip", r3.bin === "0,1,2,250,255" && r3.b64 === "AAEC+v8=", 
 check("adapter on hidden files", r3.read === '{"a":1}' && r3.ex && r3.list?.files?.includes(".api-test/state.json") && r3.gone, r3)
 check("attachment path follows app.json", r3.cfg === "Attachments" && r3.att === "Attachments/pic.png", r3)
 
+// cachedRead: reads asked together (and the notes read ahead with them) each get their own file's text, and a note
+// changed elsewhere, while a read of it is on its way, reads as it is now once its modify event is out.
+const rc = await run(async (o, app) => {
+  const fs = [] // (the server gives a new note frontmatter)
+  for (let i = 0; i < 30; i++) fs.push(await app.vault.create(`Api test/C${i}.md`, `cached ${i}\n`))
+  app.vault.text.clear()
+  const first = await app.vault.cachedRead(fs[5]), all = await Promise.all([...fs, ...fs].map((f) => app.vault.cachedRead(f)))
+  app.vault.text.delete(fs[1].path)
+  const modified = new Promise((r) => { const ref = app.vault.on("modify", (f) => { if (f === fs[1]) { app.vault.offref(ref); r(true) } }) })
+  const old = app.vault.cachedRead(fs[1])
+  await fetch(`${location.origin}/api/file`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ path: fs[1].path, text: "changed 1\n" }) })
+  const heard = await Promise.race([modified, new Promise((r) => setTimeout(() => r(false), 10000))])
+  await old
+  const after = await app.vault.cachedRead(fs[1])
+  await app.vault.modify(fs[2], "changed 2\n")
+  return { first, own: all.every((t, i) => t.endsWith(`\ncached ${i % 30}\n`)), heard, after, mine: await app.vault.cachedRead(fs[2]) }
+})
+check("cachedRead: concurrent reads each return their own file's text", rc.first?.endsWith("\ncached 5\n") && rc.own, rc)
+check("cachedRead: current text after a modify", rc.heard && /^changed 1\n?$/.test(rc.after) && rc.mine === "changed 2\n", rc)
+
 const r4 = await run(async (o, app) => {
   function Old(a, m) { o.Plugin.call(this, a, m); this.mine = 1 }
   Old.prototype = Object.create(o.Plugin.prototype); Old.prototype.constructor = Old
