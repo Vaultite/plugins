@@ -368,8 +368,10 @@ class Split extends WorkspaceSplit {
   collapsed = false
   win = window
   doc = document
+  // (Obsidian's window component, loaded while its window is open: plugins tie per-window parts to it)
+  component = new Component()
   get containerEl() { return (this.side === "main" ? rootEl() : null) ?? this.el }
-  constructor(ws: Workspace, side: WorkspaceLeaf["side"]) { super(ws); this.side = side }
+  constructor(ws: Workspace, side: WorkspaceLeaf["side"]) { super(ws); this.side = side; this.component.load() }
   get children(): any[] { return this.ws.allLeaves().filter((l: WorkspaceLeaf) => l.side === this.side) }
   expand() { this.collapsed = false }
   collapse() { this.collapsed = true }

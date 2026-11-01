@@ -322,6 +322,18 @@ const r14 = await run(async () => {
 })
 check("http client: headers on the response event, a redirect followed to its body", r14.a?.status === 302 && r14.a.location === "/b" && r14.b?.body === "arrived", r14)
 
+// The window's component (Obsidian's container.component): per-window parts plugins add to it load (Quick Explorer's
+// and Hover Editor's services, from pjeby's ophidian).
+const r16 = await run(async (o, app) => {
+  const c = app.workspace.rootSplit.getContainer().component, child = new o.Component()
+  let loaded = false
+  child.onload = () => { loaded = true }
+  c.addChild(child)
+  c.removeChild(child)
+  return { has: !!c, loaded }
+})
+check("the window's container has a loaded component plugins add to", r16.has && r16.loaded, r16)
+
 // A plugin's modal holds the focus as the app's sheets do, without a ring around the whole sheet.
 const r15 = await run(async (o, app) => {
   const m = new o.Modal(app)

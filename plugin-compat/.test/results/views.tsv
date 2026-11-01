@@ -21,8 +21,9 @@ obsidian-style-settings	works	works	a snippet's @settings listed; changing a sli
 homepage	works	works	opens the configured note on start
 cmdr	works	partly	page header buttons run; phones have no status bar (as Obsidian mobile)
 note-toolbar	works	works	toolbar under the note's properties (noteTop); its buttons run commands
-obsidian-hover-editor	partly	n/a	loads; links show the app's own page preview, not its floating editor (it replaces Obsidian's popover internals)
+obsidian-hover-editor	partly	n/a	loads and its commands run; links show the app's own page preview, and a popover's note opens as a tab: its floating editor needs a note editor drawn in its popover and the app's link hovers handed to it (not yet)
 callout-manager	partly	partly	settings and custom callouts work; the built-in list comes from Obsidian's own app.css, which isn't here
 obsidian-admonition	works	works	
 mermaid-tools	works	works	its toolbar view inserts elements into the note
 pexels-banner	works	untested	Pixel Banner: a note's banner (vault image, URL or keyword) shows under its title and properties, as the app has banners, the text below it in editing and reading; its icons, settings and commands
+quick-explorer	partly	n/a	its path of the open note shows in the status bar and follows it, its preview toggle works; clicking a folder opens nothing yet (its menus subclass Obsidian's own keyboard menu, which the app's menu stands in for)
