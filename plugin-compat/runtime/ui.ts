@@ -962,6 +962,8 @@ export class PagePreviewInstance {
     try { this.onLinkHover(o.hoverParent, o.targetEl as HTMLElement, o.linktext ?? "", o.sourcePath ?? "", o.state) } finally { hovering = null }
   }
   onLinkHover(_parent: any, targetEl: HTMLElement, linktext: string, sourcePath: string, _state?: any) { hoverLink({ targetEl, linktext, sourcePath }) }
+  // (its options are the hover sources' Ctrl/Cmd overrides, which PDF++ reads by this name)
+  get overrides() { return this.options ?? {} }
 }
 
 /** Whether a plugin has taken page preview's onLinkHover (patched on its prototype, or its own). */

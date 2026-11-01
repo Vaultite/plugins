@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { get, getStore, post } from "@vaultite"
 import moment from "../lib/moment.js"
-import { Component, miss, missedBy, watched } from "./core.ts"
+import { absentStill, Component, miss, missedBy, watched } from "./core.ts"
 import { installDom } from "./dom.ts"
 import { App } from "./app.ts"
 import { moduleFor } from "./module.ts"
@@ -256,7 +256,10 @@ export function summaryOf(id: string): Result {
     suggests: registered.suggests.filter((s) => owners.get(s) === id).length, missed: missedOf(id) }
 }
 
-export const missedOf = (id: string) => missedBy.get(id) ?? {}
+export const missedOf = (id: string) => {
+  const still = absentStill.get(id)
+  return Object.fromEntries(Object.entries(missedBy.get(id) ?? {}).filter(([what]) => still?.get(what)?.() ?? true))
+}
 
 type CliHandler = { plugin: string; description: string; flags: Record<string, { value?: string; description: string; required?: boolean }> | null
   handler: (params: Record<string, string>) => string | Promise<string> }

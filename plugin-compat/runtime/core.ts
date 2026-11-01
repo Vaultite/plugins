@@ -64,9 +64,12 @@ export function es5<T extends abstract new (...a: any[]) => any>(C: T): T {
 
 export type Missed = Record<string, number>
 export const missedBy = new Map<string, Missed>()
-export const miss = (plugin: string, what: string) => {
+/** Whether a name read before it was there is still missing (a flag a plugin reads, then sets itself, isn't a miss). */
+export const absentStill = new Map<string, Map<string, () => boolean>>()
+export const miss = (plugin: string, what: string, still?: () => boolean) => {
   let m = missedBy.get(plugin); if (!m) missedBy.set(plugin, m = {})
   m[what] = (m[what] ?? 0) + 1
+  if (still) { let s = absentStill.get(plugin); if (!s) absentStill.set(plugin, s = new Map()); s.set(what, still) }
 }
 
 // (and what other plugins put on the app, which Obsidian hasn't either: the AI Providers plugin's aiProviders)
@@ -80,7 +83,7 @@ export function watched<T extends object>(target: T, plugin: string, label: stri
     get(t, k, r) {
       const v = Reflect.get(t, k, t)
       if (typeof k === "symbol" || SKIP.has(k)) return v
-      if (v === undefined && !(k in t)) miss(plugin, `${label}.${k}`)
+      if (v === undefined && !(k in t)) miss(plugin, `${label}.${k}`, () => !(k in t))
       if (deep.includes(k) && v && typeof v === "object") {
         if (!kids.has(k)) kids.set(k, watched(v, plugin, `${label}.${k}`))
         return kids.get(k)

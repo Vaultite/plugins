@@ -79,7 +79,7 @@ export const raw = {
 const CONFIG: Record<string, unknown> = { useMarkdownLinks: false, newLinkFormat: "shortest", attachmentFolderPath: "/", tabSize: 4, useTab: true,
   vimMode: false, readableLineLength: true, showLineNumber: false, foldHeading: true, foldIndent: true, alwaysUpdateLinks: true, newFileLocation: "root",
   newFileFolderPath: "/", userIgnoreFilters: [], strictLineBreaks: false, spellcheck: true, livePreview: true, defaultViewMode: "source",
-  propertiesInDocument: "visible", smartIndentList: true, autoPairBrackets: true, autoPairMarkdown: true, showFrontmatter: false, trashOption: "local",
+  propertiesInDocument: "visible", mobileToolbarCommands: [], smartIndentList: true, autoPairBrackets: true, autoPairMarkdown: true, showFrontmatter: false, trashOption: "local",
   promptDelete: true, showUnsupportedFiles: false, rightToLeft: false, autoConvertHtml: true, showInlineTitle: true, showViewHeader: true,
   // (appearance.json's, which Obsidian reads through the same getConfig; no Obsidian theme is on here)
   cssTheme: "", baseFontSize: 16, accentColor: "", enabledCssSnippets: [], interfaceFontFamily: "", textFontFamily: "", monospaceFontFamily: "",
@@ -579,6 +579,8 @@ const dirOf = (p: string) => (p.includes("/") ? p.slice(0, p.lastIndexOf("/")) :
 
 export class FileManager {
   vault: Vault
+  // (Obsidian's per-extension link rewriters on rename; Datacore adds one: the app updates links itself)
+  linkUpdaters: Record<string, unknown> = {}
   constructor(v: Vault) { this.vault = v }
   /** The note's frontmatter as an object for `fn` to change, written back (gone when left empty). */
   async processFrontMatter(f: TFile, fn: (fm: any) => void, _o?: unknown) {
