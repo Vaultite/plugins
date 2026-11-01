@@ -123,3 +123,4 @@ pexels-banner	views	A note with banner: frontmatter shows its banner above the t
 quick-explorer	views	The open note's folders as a path; clicking one browses it in cascading menus
 execute-code	editor	A code block in reading view runs and shows its output
 novel-word-count	views	Word counts after each note and folder in the file tree
+mousewheel-image-zoom	editor	Alt + wheel over a picture in a note resizes it (its link's size)

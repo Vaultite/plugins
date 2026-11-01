@@ -20,3 +20,4 @@ obsidian-auto-link-title	works	works	pasting a URL makes [title](url) (computers
 note-refactor-obsidian	works	works	
 obsidian-plugin-toc	works	works	
 execute-code	works	n/a	Desktop only. Reading view gives each supported code block a Run button (on hover, as in Obsidian); bash and js run on the computer through the bridge, their output under the block; a language whose program is missing says so. Its experimental persistent output can't find the block (the app wraps code blocks)
+mousewheel-image-zoom	partly	n/a	loads, its settings work; Alt and the wheel over a picture in a note don't resize it: it knows a note's own pictures by Obsidian's app:// addresses, and the app's have their own
