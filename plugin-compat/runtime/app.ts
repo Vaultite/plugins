@@ -365,6 +365,19 @@ const markdownMaker = (leaf: any) => Object.assign(Object.create(ws.MarkdownView
 /** Obsidian's own media views' makers: a stand-in of the type (the app draws pictures, sounds and films itself). */
 const coreMaker = (type: string) => (leaf: any) => ({ leaf, app: leaf?.app, getViewType: () => type })
 
+/** Obsidian's loading indicator, whose class plugins make their own from (draw.io's, in its view while it loads): a quiet
+ *  line of text where it's put. */
+class LoadProgress {
+  el = createEl("div", { cls: "progress-bar plugin-compat-progress" })
+  private message = this.el.createDiv({ cls: "progress-bar-message" })
+  showTimeout = 0
+  setMessage(m: string) { this.message.setText(m); return this }
+  setProgress(_done?: number, _total?: number) { return this }
+  setUnknownProgress() { return this }
+  show() { return this }
+  hide() { this.el.remove(); return this }
+}
+
 /** Views by type and the file extensions they open (registerView, registerExtensions). */
 class ViewRegistry extends Events {
   app: App
@@ -445,7 +458,7 @@ export class App {
   mobileToolbar = { update() {}, containerEl: document.createElement("div") }
   mobileNavbar = { containerEl: document.createElement("div"), isVisible: false, show() {}, hide() {} }
   account = { email: "", name: "", company: "" }
-  loadProgress = { show() {}, hide() {}, setMessage() {}, setProgress() {} }
+  loadProgress = new LoadProgress()
   renderContext = {}
   constructor() {
     this.vault = new vault.Vault()

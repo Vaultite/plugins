@@ -14,3 +14,4 @@ image-converter	works	partly	Pasted image converted to webp and linked (editor-p
 obsidian-advanced-slides	works	n/a	Desktop only. Its first start downloads reveal.js (a zip, through GitHub's redirect) into its folder; the preview pane beside the note shows the deck from its local server and follows edits
 obsidian-custom-frames	works	works	A frame opens as its pane: Electron's <webview> is an iframe here (sites refusing frames show nothing)
 obsidian-memos	partly	partly	Thino: onboarding, its view and capture work (a memo goes into today's daily note as `- HH:mm text`, the box clears, the app's font); its list shows only the newest memo's text, older ones their time alone (closed source, its list's own rendering)
+drawio-obsidian	partly	n/a	its new diagram file is made (.svg) but its editor doesn't open: it opens it in the note's own leaf, which compat keeps for the note (opening the .svg from the tree shows the app's picture)

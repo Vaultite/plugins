@@ -594,6 +594,13 @@ const r26 = await run(async (o, app) => {
 })
 check("the app's tree takes the classes plugins put on the left sidebar, its list a .nav-files-container", r26.list && r26.active && r26.off, r26)
 
+// Obsidian's loading indicator is a class plugins can make their own from (draw.io's view does, while it loads).
+const r27 = await run(async (o, app) => {
+  const own = new (Object.getPrototypeOf(app.loadProgress).constructor)()
+  return { el: own.el instanceof HTMLElement, chain: own.setMessage("Loading diagram") === own && own.show() === own && own.hide() === own }
+})
+check("app.loadProgress's class makes working indicators", r27.el && r27.chain, r27)
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {
