@@ -1,0 +1,301 @@
+rank	id	repo	downloads	name
+1	obsidian-excalidraw-plugin	zsviczian/obsidian-excalidraw-plugin	8828062	Excalidraw
+2	templater-obsidian	silentvoid13/Templater	6069496	Templater
+3	dataview	blacksmithgu/obsidian-dataview	5238268	Dataview
+4	obsidian-tasks-plugin	obsidian-tasks-group/obsidian-tasks	4544058	Tasks
+5	obsidian-git	vinzent03/obsidian-git	3384647	Git
+6	table-editor-obsidian	tgrosinger/advanced-tables-obsidian	3329617	Advanced Tables
+7	calendar	liamcain/obsidian-calendar-plugin	3236748	Calendar
+8	copilot	logancyang/obsidian-copilot	3114245	Copilot
+9	obsidian-style-settings	obsidian-community/obsidian-style-settings	2815495	Style Settings
+10	obsidian-kanban	obsidian-community/obsidian-kanban	2800011	Kanban
+11	realclaudian	yishentu/claudian	2589856	Claudian
+12	tasknotes	callumalpass/tasknotes	2508942	TaskNotes
+13	remotely-save	remotely-save/remotely-save	2347976	Remotely Save
+14	quickadd	chhoumann/quickadd	2293297	QuickAdd
+15	obsidian-icon-folder	florianwoelki/obsidian-iconize	2289210	Iconize
+16	editing-toolbar	pkm-er/obsidian-editing-toolbar	2114660	Editing Toolbar
+17	omnisearch	scambier/obsidian-omnisearch	2081300	Omnisearch
+18	obsidian-minimal-settings	kepano/obsidian-minimal-settings	1872340	Minimal Theme Settings
+19	obsidian-importer	obsidianmd/obsidian-importer	1869814	Importer
+20	obsidian-outliner	vslinko/obsidian-outliner	1474374	Outliner
+21	homepage	mirnovov/obsidian-homepage	1418458	Homepage
+22	obsidian-linter	platers/obsidian-linter	1261738	Linter
+23	smart-connections	brianpetro/obsidian-smart-connections	1256773	Smart Connections
+24	recent-files-obsidian	tgrosinger/recent-files-obsidian	1225665	Recent Files
+25	tag-wrangler	pjeby/tag-wrangler	1143965	Tag Wrangler
+26	obsidian42-brat	tfthacker/obsidian42-brat	1141316	BRAT
+27	notebook-navigator	johansan/notebook-navigator	1102367	Notebook Navigator
+28	obsidian-livesync	vrtmrz/obsidian-livesync	1069068	Self-hosted LiveSync
+29	obsidian-admonition	ebullient/obsidian-admonition	1010385	Admonition
+30	advanced-canvas	developer-mike/obsidian-advanced-canvas	963796	Advanced Canvas
+31	obsidian-day-planner	ivan-lednev/obsidian-day-planner	913441	Day Planner
+32	obsidian-mind-map	lynchjames/obsidian-mind-map	903434	Mind Map
+33	make-md	make-md/makemd	884446	make.md
+34	pdf-plus	ryotaushio/obsidian-pdf-plus	871865	PDF++
+35	obsidian-advanced-slides	mszturc/obsidian-advanced-slides	841333	Advanced Slides
+36	obsidian-local-rest-api	coddingtonbear/obsidian-local-rest-api	829660	Local REST API with MCP
+37	cmdr	jsmorabito/obsidian-commander	816067	Commander
+38	periodic-notes	liamcain/obsidian-periodic-notes	791021	Periodic Notes
+39	highlightr-plugin	chetachiezikeuzor/Highlightr-Plugin	744856	Highlightr
+40	obsidian-latex-suite	artisticat1/obsidian-latex-suite	699669	Latex Suite
+41	obsidian-advanced-uri	vinzent03/obsidian-advanced-uri	690779	Advanced URI
+42	various-complements	tadashi-aikawa/obsidian-various-complements-plugin	637576	Various Complements
+43	obsidian-hover-editor	nothingislost/obsidian-hover-editor	629122	Hover Editor
+44	obsidian-spaced-repetition	st3v3nmw/obsidian-spaced-repetition	625779	Spaced Repetition
+45	better-word-count	lukeleppan/better-word-count	625741	Better Word Count
+46	obsidian-markmind	markmindckm/obsidian-markmind	621850	Markmind
+47	obsidian-annotator	elias-sundqvist/obsidian-annotator	605146	Annotator
+48	obsidian-zotero-desktop-connector	obsidian-community/obsidian-zotero-integration	596768	Zotero Integration
+49	obsidian-textgenerator-plugin	nhaouari/obsidian-textgenerator-plugin	592091	Text Generator
+50	obsidian-meta-bind-plugin	mprojectscode/obsidian-meta-bind-plugin	590293	Meta Bind
+51	obsidian-pandoc	oliverbalfour/obsidian-pandoc	565120	Pandoc Plugin
+52	image-converter	xryul/obsidian-image-converter	557718	Image Converter
+53	nldates-obsidian	obsidian-community/nldates	534417	Natural Language Dates
+54	darlal-switcher-plus	darlal/obsidian-switcher-plus	517954	Quick Switcher++
+55	obsidian-emoji-toolbar	oliveryh/obsidian-emoji-toolbar	506678	Emoji Toolbar
+56	url-into-selection	denolehov/obsidian-url-into-selection	506236	Paste URL into selection
+57	buttons	shabegom/buttons	492620	Buttons
+58	obsidian-memos	quorafind/Obsidian-Thino	481749	Thino
+59	folder-notes	lostpaul/obsidian-folder-notes	480507	Folder notes
+60	obsidian-hider	kepano/obsidian-hider	477327	Hider
+61	obsidian-full-calendar	obsidian-community/obsidian-full-calendar	473532	Full Calendar
+62	obsidian-checklist-plugin	delashum/obsidian-checklist-plugin	470801	Checklist
+63	obsidian-enhancing-export	mokeyish/obsidian-enhancing-export	468329	Enhancing Export
+64	terminal	polyipseity/obsidian-terminal	465897	Terminal
+65	note-toolbar	chrisgurney/obsidian-note-toolbar	462589	Note Toolbar
+66	breadcrumbs	michaelpporter/breadcrumbs	429595	Breadcrumbs
+67	media-extended	aidenlx/media-extended	407880	Media Extended
+68	obsidian-auto-link-title	zolrath/obsidian-auto-link-title	391321	Auto Link Title
+69	obsidian-tracker	pyrochlore/obsidian-tracker	370565	Tracker
+70	better-export-pdf	l1xnan/obsidian-better-export-pdf	370236	Better Export PDF
+71	mermaid-tools	dartungar/obsidian-mermaid	368555	Mermaid Tools
+72	easy-typing-obsidian	yaozhuwa/easy-typing-obsidian	368062	Easy Typing
+73	obsidian-5e-statblocks	obsidian-ttrpg-community/fantasy-statblocks	367696	Fantasy Statblocks
+74	oz-image-plugin	ozntel/oz-image-in-editor-obsidian	367182	Image in Editor
+75	pretty-properties	anareaty/pretty-properties	362343	Pretty Properties
+76	metadata-menu	mdelobelle/metadatamenu	360213	Metadata Menu
+77	obsidian-quiet-outline	guopenghui/obsidian-quiet-outline	359435	Quiet Outline
+78	obsidian-banners	noatpad/obsidian-banners	358977	Banners
+79	excalibrain	zsviczian/excalibrain	358125	ExcaliBrain
+80	obsidian-reminder-plugin	uphy/obsidian-reminder	356113	Reminder
+81	file-tree-alternative	ozntel/file-tree-alternative	355738	File Tree Alternative
+82	datacore	blacksmithgu/datacore	354290	Datacore
+83	note-refactor-obsidian	lynchjames/note-refactor-obsidian	350698	Note Refactor
+84	text-extractor	scambier/obsidian-text-extractor	343754	Text Extractor
+85	obsidian-charts	phibr0/obsidian-charts	334188	Charts
+86	obsidian-languagetool-plugin	clemens-e/obsidian-languagetool-plugin	326669	LanguageTool Integration
+87	agent-client	rait-09/obsidian-agent-client	320010	Agent Client
+88	obsidian-leaflet-plugin	javalent/obsidian-leaflet	319079	Leaflet
+89	file-explorer-note-count	ozntel/file-explorer-note-count	306493	File Explorer Note Count
+90	colored-text	erincayaz/obsidian-colored-text	297452	Colored Text
+91	obsidian-dice-roller	obsidian-ttrpg-community/dice-roller	288222	Dice Roller
+92	obsidian-custom-frames	ellpeck/ObsidianCustomFrames	281751	Custom Frames
+93	obsidian-tagfolder	vrtmrz/obsidian-tagfolder	271919	TagFolder
+94	iconic	gfxholo/iconic	266368	Iconic
+95	obsidian-another-quick-switcher	tadashi-aikawa/obsidian-another-quick-switcher	258771	Another Quick Switcher
+96	colored-tags	pfrankov/obsidian-colored-tags	255391	Colored Tags
+97	readwise-official	readwiseio/obsidian-readwise	252800	Readwise Official
+98	code-styler	mayurankv/Obsidian-Code-Styler	246706	Code Styler
+99	cmenu-plugin	chetachiezikeuzor/cMenu-Plugin	242935	cMenu
+100	obsidian-enhancing-mindmap	markmindckm/obsidian-enhancing-mindmap	241479	Enhancing Mindmap
+101	obsidian-citation-plugin	hans/obsidian-citation-plugin	240319	Citations
+102	nutstore-sync	nutstore/obsidian-nutstore-sync	240080	Nutstore Sync
+103	obsidian-book-search-plugin	anpigon/obsidian-book-search-plugin	237665	Book Search
+104	find-unlinked-files	vinzent03/find-unlinked-files	233824	Find orphaned files and broken links
+105	obsidian-text-format	benature/obsidian-text-format	233024	Text Format
+106	obsidian-file-color	ecustic/obsidian-file-color	232652	File Color
+107	obsidian-dictionary-plugin	phibr0/obsidian-dictionary	231540	Dictionary
+108	obsidian-plugin-toc	hipstersmoothie/obsidian-plugin-toc	230856	Table of Contents
+109	callout-manager	eth-p/obsidian-callout-manager	228184	Callout Manager
+110	system3-relay	no-instructions/Relay	226046	Relay
+111	supercharged-links-obsidian	mdelobelle/obsidian_supercharged_links	225131	Supercharged Links
+112	multi-column-markdown	ckrobinson/multi-column-markdown	224146	Multi-Column Markdown
+113	custom-sort	sebastianmc/obsidian-custom-sort	224124	Custom File Explorer sorting
+114	drawio-obsidian	zapthedingbat/drawio-obsidian	221114	Diagrams
+115	ink	daledesilva/obsidian_ink	220933	Ink
+116	sheet-plus	ljcoder2015/obsidian-sheet-plus	218665	Sheet Plus
+117	quick-latex	joeyuping/quick_latex_obsidian	211452	Quick Latex
+118	obsidian-excel-to-markdown-table	ganesshkumar/obsidian-excel-to-markdown-table	208930	Excel to Markdown Table
+119	obsidian-weread-plugin	zhaohongxuan/obsidian-weread-plugin	206944	Weread
+120	novel-word-count	isaaclyman/novel-word-count-obsidian	204047	Novel word count
+121	remember-cursor-position	dy-sh/obsidian-remember-cursor-position	203551	Remember cursor position
+122	google-calendar	yukigasai/obsidian-google-calendar	201929	Google Calendar
+123	calendarium	javalent/calendarium	200657	Calendarium
+124	google-drive-sync	richardx366/Obsidian-Google-Drive	197989	Google Drive Sync
+125	meld-encrypt	meld-cp/obsidian-encrypt	197604	Meld Encrypt
+126	longform	kevboh/longform	194560	Longform
+127	pexels-banner	jparkerweb/pixel-banner	192640	Pixel Banner
+128	card-board	roovo/obsidian-card-board	185036	CardBoard
+129	todoist-sync-plugin	jamiebrynes7/obsidian-todoist-plugin	183379	Todoist Sync
+130	heatmap-calendar	richardsl/heatmap-calendar-obsidian	180506	Heatmap Calendar
+131	obsidian-task-progress-bar	taskgenius/taskgenius-plugin	179132	Task Genius
+132	obsidian-paste-image-rename	reorx/obsidian-paste-image-rename	178818	Paste image rename
+133	obsidian-map-view	esm7/obsidian-map-view	178568	Map View
+134	smart-composer	glowingjade/obsidian-smart-composer	178138	Smart Composer
+135	fast-note-sync	haierkeys/obsidian-fast-note-sync	177210	Fast Note Sync
+136	obsidian-smart-typography	mgmeyers/obsidian-smart-typography	176323	Smart Typography
+137	obsidian-local-images-plus	sergei-korneev/obsidian-local-images-plus	176184	Local Images Plus
+138	mousewheel-image-zoom	nicojeske/mousewheel-image-zoom	171703	Mousewheel Image zoom
+139	quick-explorer	pjeby/quick-explorer	171232	Quick Explorer
+140	obsidian-plugin-update-tracker	swar8080/obsidian-plugin-update-tracker	170717	Plugin Update Tracker
+141	obsidian-kindle-plugin	hadynz/obsidian-kindle-plugin	170229	Kindle Highlights
+142	execute-code	twibiral/obsidian-execute-code	169518	Execute Code
+143	automatic-table-of-contents	johansatge/obsidian-automatic-table-of-contents	169142	Automatic Table Of Contents
+144	initiative-tracker	obsidian-ttrpg-community/initiative-tracker	165161	Initiative Tracker
+145	obsidian-plantuml	joethei/obsidian-plantuml	165098	PlantUML
+146	pane-relief	pjeby/pane-relief	164593	Pane Relief
+147	canvas-mindmap	quorafind/Obsidian-Canvas-MindMap	162439	Canvas Mindmap
+148	webpage-html-export	kosmosisdire/obsidian-webpage-export	160695	Webpage HTML Export
+149	consistent-attachments-and-links	dy-sh/obsidian-consistent-attachments-and-links	157792	Consistent Attachments and Links
+150	oz-clear-unused-images	ozntel/oz-clear-unused-images-obsidian	157487	Clear Unused Images
+151	obsidian-vimrc-support	esm7/obsidian-vimrc-support	157138	Vimrc Support
+152	chatgpt-md	bramses/chatgpt-md	152762	ChatGPT MD
+153	floating-toc	pkm-er/obsidian-floating-toc-plugin	152418	floating toc
+154	rss-dashboard	amatya-aditya/obsidian-rss-dashboard	152386	RSS Dashboard
+155	obsidian-rollover-daily-todos	lumoe/obsidian-rollover-daily-todos	152163	Rollover Daily Todos
+156	metaedit	chhoumann/MetaEdit	151054	MetaEdit
+157	obsidian-footnotes	michabrugger/obsidian-footnotes	150811	Footnote Shortcut
+158	journals	srg-kostyrko/obsidian-journal	149184	Journals
+159	lazy-plugins	alangrainger/obsidian-lazy-plugins	146885	Lazy Loader
+160	emoji-shortcodes	phibr0/obsidian-emoji-shortcodes	144667	Emoji Shortcodes
+161	obsidian-list-callouts	mgmeyers/obsidian-list-callouts	142138	List Callouts
+162	folder-note-plugin	xpgo/obsidian-folder-note-plugin	141678	Folder Note
+163	operon	hasanyilmaz/operon	141041	Operon
+164	obsidian-image-toolkit	obsidian-community/obsidian-image-toolkit	140799	Image Toolkit
+165	obsidian42-strange-new-worlds	tfthacker/obsidian42-strange-new-worlds	140395	Strange New Worlds
+166	juggl	hemile/juggl	139962	Juggl
+167	obsidian-image-auto-upload-plugin	renmu123/obsidian-image-auto-upload-plugin	139445	Image auto upload
+168	waypoint	idreesinc/Waypoint	137309	Waypoint
+169	obsidian-read-it-later	dominikpieper/obsidian-ReadItLater	137150	ReadItLater
+170	obsidian-custom-attachment-location	mnaoumov/obsidian-custom-attachment-location	136755	Custom Attachment Location
+171	obsidian-omnivore	omnivore-app/obsidian-omnivore	133720	Omnivore
+172	obsidian-mindmap-nextgen	james-tindal/obsidian-mindmap-nextgen	132790	Mindmap NextGen
+173	harper	automattic/harper-obsidian-plugin	129873	Harper
+174	obsidian-markdown-formatting-assistant-plugin	reocin/obsidian-markdown-formatting-assistant-plugin	129222	Markdown Formatting Assistant
+175	calendar-bases	edrickleong/obsidian-calendar-bases	128917	Calendar Bases
+176	file-cleaner-redux	husjon/obsidian-file-cleaner-redux	127171	File Cleaner Redux
+177	surfing	pkm-er/Obsidian-Surfing	127122	Surfing
+178	auto-note-mover	farux/obsidian-auto-note-mover	126737	Auto Note Mover
+179	docxer	developer-mike/obsidian-docxer	126247	Docxer
+180	markdown-table-editor	ganesshkumar/obsidian-table-editor	125322	Markdown Table Editor
+181	multi-properties	technohiker/obsidian-multi-properties	123069	Multi Properties
+182	share-note	alangrainger/share-note	121414	Share Note
+183	yolo	lapis0x0/obsidian-yolo	119976	YOLO
+184	cm-typewriter-scroll-obsidian	deathau/cm-typewriter-scroll-obsidian	117156	Typewriter Scroll
+185	simple-canvasearch	ddalexb/obsidian-simple-canvasearch	114823	Simple CanvaSearch
+186	obsidian-relative-line-numbers	nadavspi/obsidian-relative-line-numbers	113875	Relative Line Numbers
+187	obsidian-zoom	vslinko/obsidian-zoom	113564	Zoom
+188	obsidian-extract-pdf-highlights	akaalias/obsidian-extract-pdf-highlights	113551	PDF Highlights
+189	obsidian-contextual-typography	mgmeyers/obsidian-contextual-typography	113187	Contextual Typography
+190	obsidian-reading-time	avr/obsidian-reading-time	112778	Reading Time
+191	obsidian-html-plugin	nuthrash/obsidian-html-plugin	112603	HTML Reader
+192	obsidian-link-embed	seraphli/obsidian-link-embed	112190	Link Embed
+193	obsidian-icons-plugin	visini/obsidian-icons-plugin	110823	Icons
+194	typewriter-mode	davisriedel/obsidian-typewriter-mode	110581	Typewriter Mode
+195	convert-url-to-iframe	fhachez/obsidian-convert-url-to-iframe	110231	Convert url to preview (iframe)
+196	actions-uri	czottmann/obsidian-actions-uri	106783	Actions URI
+197	local-gpt	pfrankov/obsidian-local-gpt	106313	Local GPT
+198	dragger	ariestar/obsidian-dragger	105297	Dragger
+199	hotkeysplus-obsidian	argenos/hotkeysplus-obsidian	101059	Hotkeys++
+200	flexplorer	kh4f/flexplorer	100869	Flexplorer
+201	obsidian-shellcommands	taitava/obsidian-shellcommands	100419	Shell commands
+202	number-headings-obsidian	onlyafly/number-headings-obsidian	100226	Number Headings
+203	tldraw	tldraw/obsidian-plugin	99821	tldraw
+204	file-explorer-plus	kelszo/obsidian-file-explorer-plus	99457	File Explorer++
+205	obsidian-chartsview-plugin	caronchen/obsidian-chartsview-plugin	98515	Charts View
+206	digitalgarden	oleeskild/obsidian-digital-garden	98201	Digital Garden
+207	any-block	any-block/any-block	96654	AnyBlock
+208	hotkey-helper	pjeby/hotkey-helper	96586	Hotkey Helper
+209	obsidian-timeline	george-debug/obsidian-timeline	96067	Timeline
+210	css-editor	zachatoo/obsidian-css-editor	95684	CSS Editor
+211	fast-text-color	superschnizel/obsidian-fast-text-color	95214	Fast Text Color
+212	workspaces-plus	jsmorabito/obsidian-workspaces-plus	94653	Workspaces Plus
+213	local-backup	velviagris/obsidian-local-backup	94480	Local Backup
+214	obsidian-columns	tnichols217/obsidian-columns	94233	Columns
+215	vertical-tabs	oxdc/obsidian-vertical-tabs	93976	Vertical Tabs
+216	editor-width-slider	mugishomp/obsidian-editor-width-slider	92170	Editor Width Slider
+217	zoom-map	jareika/zoom-map	91906	TTRPG Tools - Maps
+218	cycle-through-panes	vinzent03/tab-switcher	91394	Tab Switcher
+219	claude-sidebar	derek-larson14/obsidian-claude-sidebar	91009	Claude Sidebar
+220	gemini-scribe	allenhutchison/obsidian-gemini	90406	Gemini Scribe
+221	obsidian-pandoc-reference-list	obsidian-community/obsidian-pandoc-reference-list	90132	Pandoc Reference List
+222	excel	ljcoder2015/obsidian-excel	89626	Excel
+223	zoottelkeeper-obsidian-plugin	akosbalasko/zoottelkeeper-obsidian-plugin	88896	Zoottelkeeper Plugin
+224	attachment-management	trganda/obsidian-attachment-management	88049	Attachment Management
+225	obsidian-completr	tth05/obsidian-completr	87526	Completr
+226	project-manager	dotpm/obsidian-pm	87002	dotpm
+227	smart-random-note	erichalldev/obsidian-smart-random-note	86253	Smart Random Note
+228	copy-url-in-preview	nomarcub/obsidian-copy-url-in-preview	84795	Image Context Menus
+229	custom-font-loader	pourmand1376/obsidian-custom-font	83171	Custom Font Loader
+230	dynamic-views	churnish/dynamic-views	83029	Dynamic Views
+231	zotlit	aidenlx/zotlit	82521	ZotLit
+232	obsidian-front-matter-title-plugin	snezhig/obsidian-front-matter-title	81213	Front Matter Title
+233	auto-card-link	nekoshita/obsidian-auto-card-link	81168	Auto Card Link
+234	open-tab-settings	jesse-r-s-hines/obsidian-open-tab-settings	81061	Open Tab Settings
+235	links	mii-key/obsidian-links	80718	Links
+236	obsidian-import-json	farling42/obsidian-import-json	80542	JSON-CSV Importer
+237	extended-graph	elsatam/obsidian-extended-graph	80515	Extended Graph
+238	obsidian-media-db-plugin	mprojectscode/obsidian-media-db-plugin	80510	Media DB
+239	obsidian-plugin-todo	larslockefeer/obsidian-plugin-todo	80427	Vault Todos
+240	obsidian-clipper	jgchristopher/obsidian-clipper	80322	Clipper
+241	translate	fevol/obsidian-translate	80026	Translate
+242	task-board	tu2-atmanand/Task-Board	79992	Task Board
+243	snipd-official	snipd-app/snipd-obsidian	79971	Snipd Official
+244	home-tab	olrenso/obsidian-home-tab	79799	Home tab
+245	tasks-calendar-wrapper	leonezz/obsidian-tasks-calendar-wrapper	79091	Tasks Calendar Wrapper
+246	update-time-on-edit	beaussan/update-time-on-edit-obsidian	78837	Update time on edit
+247	cm-chs-patch	aidenlx/cm-chs-patch	78630	Simplified Chinese Word Splitting
+248	obsidian-sort-and-permute-lines	vinzent03/obsidian-sort-and-permute-lines	78341	Sort and Permute lines
+249	flashcards-obsidian	reuseman/flashcards-obsidian	78143	Flashcards
+250	3d-graph	alexw00/obsidian-3d-graph	77801	3D Graph
+251	charted-roots	banisterious/obsidian-charted-roots	77687	Charted Roots
+252	slash-commander	alephpiece/obsidian-slash-commander	77319	Slash Commander
+253	obsidian-mkdocs-publisher	enveloppe/obsidian-enveloppe	77294	Enveloppe
+254	obsidian-focus-mode	ryanpcmcquen/obsidian-focus-mode	76481	Focus Mode
+255	numerals	gtg922r/obsidian-numerals	75243	Numerals
+256	smart-lookup	brianpetro/smart-lookup-obsidian	75225	Smart Lookup
+257	modalforms	danielo515/obsidian-modal-form	74400	Modal forms
+258	table-extended	aidenlx/table-extended	74214	Table Extended
+259	codeblock-customizer	mugiwara85/CodeblockCustomizer	73233	Codeblock Customizer
+260	obsidian-filename-heading-sync	dvcrn/obsidian-filename-heading-sync	73118	Filename Heading Sync
+261	smart-second-brain	s2b-dev/smart-second-brain	72859	Smart Second Brain
+262	remotely-secure	sboesen/remotely-sync	72767	Remotely Sync
+263	obsidian-copy-block-link	mgmeyers/obsidian-copy-block-link	72483	Copy Block Link
+264	customjs	saml-dev/obsidian-custom-js	72060	CustomJS
+265	better-pdf-plugin	mszturc/obsidian-better-pdf-plugin	70635	Better PDF Plugin
+266	js-engine	mprojectscode/obsidian-js-engine-plugin	70617	JS Engine
+267	code-emitter	mokeyish/obsidian-code-emitter	70548	Code Emitter
+268	global-search-and-replace	mahmoudfawzykhalil/obsidian-global-search-and-replace	70380	Global Search and Replace
+269	obsidian-underline	benature/obsidian-underline	70366	Underline
+270	maps	obsidianmd/obsidian-maps	70340	Maps
+271	hearth	ondreu/Hearth	70032	Hearth
+272	chronology	canna71/obsidian-chronology	69912	Chronology
+273	link-favicon	joethei/obsidian-link-favicon	69785	Link Favicons
+274	beautitab	andrewmcgivery/obsidian-beautitab	68901	Beautitab
+275	vscode-editor	sunxvming/obsidian-vscode-editor	68724	VSCode Editor
+276	obsidian-export-image	zhouhua/obsidian-export-image	68709	Export Image plugin
+277	lean-terminal	sdkasper/lean-obsidian-terminal	68607	Lean Terminal
+278	podnotes	chhoumann/PodNotes	67957	PodNotes
+279	obsidian-trash-explorer	proog/obsidian-trash-explorer	67945	Trash Explorer
+280	obsidian-douban-plugin	wanxp/obsidian-douban	67850	Douban
+281	obsidian-statusbar-pomo	kzhovn/statusbar-pomo-obsidian	67846	Status Bar Pomodoro Timer
+282	sheets	niconekoru/obsidan-advanced-table-xt	67734	Sheets Extended
+283	image-captions	alangrainger/obsidian-image-captions	67661	Image Captions
+284	big-calendar	quorafind/Obsidian-Big-Calendar	67592	Big Calendar
+285	contribution-graph	vran-dev/obsidian-contribution-graph	67390	Contribution Graph
+286	password-protection	qing3962/password-protection	67106	Password Protection
+287	karpathywiki	gd4ai/obsidian-llm-wiki	66849	Karpathy LLM Wiki
+288	fit	joshuakto/fit	66619	Fit
+289	ai-providers	pfrankov/obsidian-ai-providers	66395	AI Providers
+290	obsidian-collapse-all-plugin	nathonius/obsidian-collapse-all	65839	Collapse All
+291	review-obsidian	ryanjamurphy/review-obsidian	65378	Review
+292	aprils-automatic-timelines	april-gras/obsidian-auto-timelines	64920	April Automatic Timelines
+293	obsidian-epub-plugin	caronchen/obsidian-epub-plugin	64643	ePub Reader
+294	taskchute-plus	hiroyaiizuka/taskchute-for-obsidian	64562	TaskChute Plus
+295	obsidian-table-generator	quorafind/Obsidian-Table-Generator	64493	Table Generator
+296	obsidian-icon-shortcodes	aidenlx/obsidian-icon-shortcodes	63842	Icon Shortcodes
+297	hot-reload	pjeby/hot-reload	63466	Hot Reload
+298	chronos	clairefro/obsidian-plugin-chronos	63463	Chronos Timeline
+299	obsidian-tikzjax	artisticat1/obsidian-tikzjax	63414	TikZJax
+300	ninja-cursor	vrtmrz/ninja-cursor	63097	Ninja Cursor

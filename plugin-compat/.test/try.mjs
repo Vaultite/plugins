@@ -48,7 +48,7 @@ try {
     for (const id of ids) {
       const r = got.find((x) => x.id === id)
       Object.assign(report.plugins[id], r ? { state: r.state, error: r.error, ms: r.ms, commands: seen[id].commands, views: r.views, codeBlocks: r.fences, settings: r.settings,
-        ribbon: r.ribbon, statusBar: r.statusBar, postProcessors: r.postProcessors, editorExtensions: r.editorExtensions, suggests: r.suggests, missed: r.missed }
+        ribbon: r.ribbon, statusBar: r.statusBar, postProcessors: r.postProcessors, editorExtensions: r.editorExtensions, suggests: r.suggests, missed: r.missed, thrown: r.thrown }
         : { state: "not loaded" }, { errors: errs.filter((e) => e.by === id).map((e) => e.text).slice(0, 10) })
     }
     report.unattributed = errs.filter((e) => !ids.includes(e.by)).map((e) => e.text).slice(0, 20)
