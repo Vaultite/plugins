@@ -161,7 +161,28 @@ export class FileExplorerView extends ItemView {
     if (changed) { this.rows = { ...this.rows }; fileRowsChanged() }
   }
   /** What the app's tree draws on its rows (fileRows). */
-  fileRows() { return this.rows }
+  fileRows() { requestAnimationFrame(() => this.markTree()); return this.rows }
+  // The app's tree as Obsidian's explorer is to plugins' styles: its list a .nav-files-container, inside the classes
+  // plugins put on this view or on the left sidebar it's in (Novel Word Count's "active", its counts' styles under it).
+  private bases = new Map<HTMLElement, Set<string>>()
+  private marked: string[] = []
+  markTree() {
+    const holders = [this.containerEl, this.app?.workspace?.leftSplit?.containerEl].filter((e): e is HTMLElement => e instanceof HTMLElement)
+    for (const el of holders) {
+      if (this.bases.has(el)) continue
+      this.bases.set(el, new Set(el.classList))
+      new MutationObserver(() => this.markTree()).observe(el, { attributes: true, attributeFilter: ["class"] })
+    }
+    const extra = [...new Set(holders.flatMap((el) => [...el.classList].filter((c) => !this.bases.get(el)!.has(c))))]
+    for (const list of document.querySelectorAll<HTMLElement>("ul:has(> li [data-tree-path])")) {
+      list.classList.add("nav-files-container")
+      const host = list.parentElement
+      if (!host) continue
+      for (const c of this.marked) if (!extra.includes(c)) host.classList.remove(c)
+      if (extra.length) host.classList.add(...extra)
+    }
+    this.marked = extra
+  }
 }
 
 /** A row nothing changes, for comparing. */

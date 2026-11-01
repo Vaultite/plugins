@@ -370,3 +370,5 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
 .plugin-compat-inline .cm-editor.cm-focused { outline: none; }
 .plugin-compat-inline .cm-editor .cm-scroller { font-family: var(--font-text, var(--font-sans)); line-height: 1.5; }
 .plugin-compat-inline .cm-editor .cm-content { caret-color: var(--primary); }
+/* What a plugin's styles put after a row's name in the app's tree (Novel Word Count's count): its own width at the row's end, muted. */
+.nav-files-container :is(.nav-file-title, .nav-folder-title)::after { flex: none; max-width: 45%; margin-right: 8px; color: var(--muted-foreground); font-size: 11px; }

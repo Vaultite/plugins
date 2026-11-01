@@ -581,6 +581,19 @@ const r25 = await run(async (o, app) => {
 })
 check("a plugin's inline Markdown editor clears and uses the app's text", r25.had === "Opal" && r25.after === "" && !/monospace/.test(r25.font), r25)
 
+// The app's tree as Obsidian's explorer to plugins' styles: its rows in a .nav-files-container, under the classes a
+// plugin puts on the left sidebar (Novel Word Count's "active"), taken off again with them.
+const r26 = await run(async (o, app) => {
+  const side = app.workspace.leftSplit.containerEl, row = () => document.querySelector("[data-tree-path]")
+  side.classList.add("lab-active")
+  await new Promise((r) => setTimeout(r, 300))
+  const on = { list: !!row()?.closest(".nav-files-container"), active: !!row()?.closest(".lab-active") }
+  side.classList.remove("lab-active")
+  await new Promise((r) => setTimeout(r, 300))
+  return { ...on, off: !row()?.closest(".lab-active") }
+})
+check("the app's tree takes the classes plugins put on the left sidebar, its list a .nav-files-container", r26.list && r26.active && r26.off, r26)
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {
