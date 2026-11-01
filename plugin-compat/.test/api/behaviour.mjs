@@ -512,6 +512,23 @@ const r24 = await until(async () => { const r = await framed(); return r.shown &
 await run(async (o, app) => { window.__labLeaf.detach() })
 check("a plugin view's frame keeps its page across leaving its tab", probeFrame && r24a.shown && r24b.parked && r24.shown && r24.mark === "kept", probeFrame ? { r24a, r24b, r24 } : "the lab's probe is older than api/probe: copy it in again")
 
+// A plugin's own Markdown editor (Obsidian's, from a note embed's editMode: Thino's memo box) clears, and writes in the
+// app's text, not CodeMirror's monospace.
+const r25 = await run(async (o, app) => {
+  const box = document.body.createDiv({ attr: { style: "position: fixed; left: 0; top: 0; width: 300px" } })
+  const embed = app.embedRegistry.embedByExtension.md({ app, containerEl: box }, null, "")
+  embed.editable = true
+  embed.set("Opal")
+  embed.showEditor()
+  const ed = embed.editMode, had = ed.get()
+  ed.clear()
+  const font = getComputedStyle(box.querySelector(".cm-scroller")).fontFamily
+  embed.unload?.()
+  box.remove()
+  return { had, after: ed.get(), font }
+})
+check("a plugin's inline Markdown editor clears and uses the app's text", r25.had === "Opal" && r25.after === "" && !/monospace/.test(r25.font), r25)
+
 // The app's root as Obsidian's .app-container, the window's size (plugins measure it); a plugin's own popover styles
 // win over the defaults here.
 const r22 = await page.evaluate(() => {

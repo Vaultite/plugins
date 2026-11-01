@@ -347,7 +347,7 @@ export class InlineMarkdownEditor extends Component {
   constructor(app: any, containerEl: HTMLElement, owner: any) {
     super()
     this.app = app; this.containerEl = containerEl; this.owner = owner
-    this.editorEl = containerEl.createDiv({ cls: "markdown-source-view cm-s-obsidian mod-cm6 is-live-preview is-readable-line-width" })
+    this.editorEl = containerEl.createDiv({ cls: "markdown-source-view cm-s-obsidian mod-cm6 is-live-preview is-readable-line-width plugin-compat-inline" })
     this.cm = new EditorView({ parent: this.editorEl, state: EditorState.create({ doc: "", extensions: this.extensions() }) })
     this.editor = new Editor({ view: this.cm, kind: "markdown" } as OpenEditor)
     this.info.cm = this.cm
@@ -367,6 +367,8 @@ export class InlineMarkdownEditor extends Component {
   set(text: string, clear = false) {
     this.cm.dispatch({ changes: { from: 0, to: this.cm.state.doc.length, insert: text }, ...(clear ? { selection: { anchor: 0 } } : {}) })
   }
+  /** Emptied, as Obsidian's (Thino's editor once a memo is saved). */
+  clear() { this.set("", true) }
   focus() { this.cm.focus() }
   getSelection() { return this.editor.getSelection() }
   destroy() { this.cm.destroy(); this.editorEl.remove() }

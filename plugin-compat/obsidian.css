@@ -365,3 +365,8 @@ input.prompt-input, .prompt-input-container input { width: 100%; height: 44px !i
 .plugin-compat-anchors:has(> .pixel-banner-image) { position: relative; isolation: isolate; padding-top: var(--pixel-banner-content-start, 355px); margin-bottom: 8px; }
 /* Obsidian's .app-container (the app's root): the window's size, as plugins measure it (Hover Editor keeps its popovers in it). */
 #root.app-container { min-height: 100dvh; }
+/* Plugins' own Markdown editors (InlineMarkdownEditor: Thino's, Kanban's cards): the app's text, not CodeMirror's monospace. */
+.plugin-compat-inline .cm-editor { background: transparent; }
+.plugin-compat-inline .cm-editor.cm-focused { outline: none; }
+.plugin-compat-inline .cm-editor .cm-scroller { font-family: var(--font-text, var(--font-sans)); line-height: 1.5; }
+.plugin-compat-inline .cm-editor .cm-content { caret-color: var(--primary); }
