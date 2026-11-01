@@ -450,6 +450,25 @@ const r20 = await run(async (o, app) => {
 check("a leaf in a plugin's split: the note's editor there, saved, walked, detached", r20.inSplit && r20.isMd && r20.saved && r20.walked?.join() === "true" && r20.gone, r20)
 check("a leaf in a plugin's split opens no tab", (await tabs()) === tabsBefore, { tabsBefore, after: await tabs() })
 
+// A floating leaf put into the workspace's own panes (Hover Editor's "dock"): its note in a new tab, nothing left floating.
+const tabsBeforeDock = await tabs()
+const r20c = await run(async (o, app) => {
+  const f = await app.vault.create("Api test/Dock.md", "# Dock\n")
+  const split = new o.WorkspaceSplit(app.workspace, "vertical")
+  const box = document.body.createDiv()
+  box.append(split.containerEl)
+  const leaf = app.workspace.createLeafInParent(split, 0)
+  await leaf.openFile(f)
+  leaf.parentSplit.removeChild(leaf)
+  app.workspace.rootSplit.insertChild(-1, leaf)
+  await new Promise((r) => setTimeout(r, 1500))
+  let floating = 0
+  app.workspace.iterateAllLeaves((l) => { if (l.floatEl) floating++ })
+  box.remove()
+  return { floating, front: app.workspace.getActiveFile()?.path }
+})
+check("a floating leaf docked in the workspace opens its note in a tab", r20c.floating === 0 && r20c.front === "Api test/Dock.md" && (await tabs()) === tabsBeforeDock + 1, { r20c, tabsBeforeDock, after: await tabs() })
+
 // A picture in a leaf of a plugin's split: Obsidian's image view, the picture in it (Hover Editor on an image link).
 const r20b = await run(async (o, app) => {
   const png = Uint8Array.from(atob("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="), (c) => c.charCodeAt(0))

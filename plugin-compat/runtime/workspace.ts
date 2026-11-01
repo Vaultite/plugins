@@ -234,6 +234,7 @@ export class WorkspaceLeaf extends Events {
   }
   /** A leaf in a split a plugin made (Hover Editor's popover): drawn in its own element there, never a tab. */
   floatEl: HTMLElement | null = null
+  get parentSplit() { return this.parent }
   get containerEl() { return this.floatEl ?? this.view.containerEl }
   get key() { return `${viewName(this.view.getViewType())}${this.arg ? `/${this.arg}` : ""}` }
   getViewState() { return { type: this.view.getViewType(), state: this.view.getState?.() ?? {}, active: this.app.workspace.activeLeaf === this, pinned: this.pinned } }
@@ -376,6 +377,8 @@ export class WorkspaceParent extends WorkspaceItem {
   // (a split a plugin made holds its floating leaves' elements and its splits', as Obsidian's: Hover Editor's popover)
   private holds(item: any) { return !appOwned(this) && (!!item?.floatEl || (item instanceof WorkspaceParent && !appOwned(item))) }
   insertChild(i: number, item: any) {
+    // (a floating leaf put in the app's own panes: docked, its file in a tab of its own, as Hover Editor's "dock")
+    if (item?.floatEl && appOwned(this)) { void item.app.workspace.dock(item); return }
     item.parent = this
     this.kids.splice(i, 0, item)
     if (this.holds(item)) this.el.insertBefore(item.containerEl, this.el.children[i] ?? null)
@@ -648,6 +651,19 @@ export class Workspace extends Events {
       try { await l.view.setState?.(s.state ?? {}, { history: false }) } catch (e) { console.error(e) }
     }
     if (eState) l.view.setEphemeralState?.(eState)
+    this.trigger("layout-change")
+  }
+  /** A floating leaf moved into the workspace: its file opens in a new tab, the leaf is a main one from then on. */
+  async dock(l: WorkspaceLeaf) {
+    if (!l.floatEl || !this.floating.delete(l)) return
+    const path = l.view?.file?.path
+    await l.closeView()
+    this.unfloat(l)
+    l.floatEl.remove()
+    l.floatEl = null
+    l.parent = this.rootSplit
+    l.view = new EmptyView(l)
+    if (path) this.showFile(path, true)
     this.trigger("layout-change")
   }
   private unfloat(l: WorkspaceLeaf) {
