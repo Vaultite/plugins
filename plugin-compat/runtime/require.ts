@@ -19,7 +19,7 @@ function absent(plugin: string, spec: string): any {
   })
 }
 
-const OPTIONAL = new Set(["bufferutil", "utf-8-validate", "fsevents", "encoding"])
+const OPTIONAL = new Set(["bufferutil", "utf-8-validate", "fsevents", "encoding", "esprima"])
 
 const t = (k: string | string[], o?: any) => (typeof o === "string" ? o : o?.defaultValue ?? (Array.isArray(k) ? k[0] : k))
 const i18next: any = { createInstance: () => ({ ...i18next, init: async () => t }), cloneInstance: () => i18next, t, language: "en", languages: ["en"], isInitialized: true, options: { lng: "en" }, init: async () => t, use: () => i18next, on() {}, off() {},
