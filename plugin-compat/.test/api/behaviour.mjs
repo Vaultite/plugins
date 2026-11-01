@@ -238,6 +238,26 @@ const r10 = await until(async () => { const r = await shown(); return r.seen.inc
 check("editing: the note's source, the block's children unloaded", r10.seen?.includes("unloaded") && !r10.drawn && r10.lines.some((l) => l.includes("mark me")), r10)
 await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__readingFn) })
 
+// Reading: a callout and a table, which the editor draws itself, get their sections too.
+await run(async (o, app) => {
+  await app.vault.create("Api test/C.md", "# Drawn\n\n> [!note] Opal\n> Kept in the safe.\n\n| Gem | Carat |\n| --- | --- |\n| Ruby | 2 |\n")
+  const seen = window.__drawnSeen = []
+  window.__drawnFn = (el, ctx) => {
+    const what = el.querySelector(".callout") ? "callout" : el.querySelector("table") ? "table" : null
+    const info = what && ctx.getSectionInfo(el)
+    if (info) seen.push([what, info.lineStart, info.lineEnd, info.text.includes("\n# Drawn\n")])
+  }
+  o.MarkdownPreviewRenderer.registerPostProcessor(window.__drawnFn)
+})
+await page.evaluate(() => { location.hash = `#file/${encodeURIComponent("Api test/C.md")}` })
+const r11 = await until(() => page.evaluate(() => { const s = window.__drawnSeen; return s.some((x) => x[0] === "callout") && s.some((x) => x[0] === "table") && s }), 10000)
+  || await page.evaluate(() => window.__drawnSeen)
+const cl = (await run(async (o, app) => app.vault.read(app.vault.getFileByPath("Api test/C.md")))).split("\n"), cat = (t) => cl.findIndex((l) => l.startsWith(t))
+const drawnSec = (what) => JSON.stringify(r11.find((x) => x[0] === what))
+check("reading: a callout and a table the editor draws get their sections", drawnSec("callout") === JSON.stringify(["callout", cat("> [!note]"), cat("> Kept"), true])
+  && drawnSec("table") === JSON.stringify(["table", cat("| Gem"), cat("| Ruby"), true]), { r11, cl })
+await run(async (o) => { o.MarkdownPreviewRenderer.unregisterPostProcessor(window.__drawnFn) })
+
 await run(async (o, app) => { for (const f of [...app.vault.getFiles()].filter((f) => f.path.startsWith("Api test/"))) await app.vault.delete(f) })
 // (other plugins' own errors, on load, aren't this script's)
 const mine = errs.filter((e) => !e.includes("obsidian-plugin:") && !e.includes("Request failed, status"))

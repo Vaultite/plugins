@@ -286,12 +286,15 @@ export function watchAppMarkdown() {
   follow(root, "")
   ;(window as any).__obsidianCompat = { ...ui, renderMarkdown, CM } // (for QA and debugging in the console)
   const ws = app()?.workspace, ref = ws?.on?.("hover-link", ui.hoverLink)
-  const stop = onMarkdownDrawn((el) => {
+  const stop = onMarkdownDrawn((el, lines) => {
     if (!registered.postProcessors.length || el.closest(".markdown-rendered")) return
     const from = el.closest<HTMLElement>("[data-markdown-from], [data-embed], [data-note-preview], [data-preview-path], [data-path]")
     const path = from?.dataset.markdownFrom ?? from?.dataset.embed ?? from?.dataset.notePreview ?? from?.dataset.previewPath ?? from?.dataset.path ?? ""
     for (const a of el.querySelectorAll<HTMLAnchorElement>("a[data-wiki]")) { a.classList.add("internal-link"); a.setAttribute("data-href", a.dataset.wiki ?? "") }
-    void postProcess(el, postCtx(path, new Component(), null))
+    const ctx = postCtx(path, new Component(), null)
+    // (a note's callout or table in the editor: its section is where the editor has it now)
+    if (lines) ctx.getSectionInfo = () => { const l = lines(); return l && { text: l.doc, lineStart: l.lineStart, lineEnd: l.lineEnd } }
+    void postProcess(el, ctx)
   })
   return () => { stop(); if (ref) ws.offref(ref) }
 }
