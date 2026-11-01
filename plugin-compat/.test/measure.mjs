@@ -1,7 +1,8 @@
 // Compatibility measured: the most downloaded Obsidian plugins, each installed from its release and loaded headless
 // (try.mjs, in batches; any that doesn't pass is tried again alone), written to measured/ as data.
 //   node measure.mjs top [N]                 the list to measure: Obsidian's N most downloaded (measured/top.tsv)
-//   node measure.mjs run [--batch 10] [--port 8962] [--only id,id] [--first N]   measure them: measured/results.json, a line in history.tsv
+//   node measure.mjs run [--batch 10] [--port 8962] [--only id,id] [--first N] [--open]   measure them: measured/results.json, a line in history.tsv
+//     (--open: each one's views opened and its settings drawn too, try.mjs --open)
 //   node measure.mjs gaps [N]                what they reach for that isn't here, by the downloads of the plugins that do
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
@@ -34,10 +35,11 @@ function verdict(p) {
   return { verdict: "pass" }
 }
 
+const OPEN = args.includes("--open")
 function tryBatch(ids, port, n) {
   const out = path.join("/var/tmp", `compat-batch-${port}-${n}.json`)
   try {
-    execFileSync(process.execPath, [path.join(HERE, "try.mjs"), ...ids, "--port", String(port), "--out", out],
+    execFileSync(process.execPath, [path.join(HERE, "try.mjs"), ...ids, "--port", String(port), "--out", out, ...(OPEN ? ["--open"] : [])],
       { stdio: ["ignore", "ignore", "inherit"], timeout: 300000, env: { ...process.env, TMPDIR: process.env.TMPDIR ?? "/var/tmp" } })
   } catch (e) { console.error(`batch ${n} (${ids.join(",")}): ${String(e.message).split("\n")[0]}`) }
   try { return JSON.parse(fs.readFileSync(out, "utf8")) } catch { return { plugins: {} } } finally { fs.rmSync(out, { force: true }) }
@@ -90,11 +92,11 @@ if (cmd === "top") {
   const count = (v) => plugins.filter((p) => p.verdict === v).length
   const counts = { pass: count("pass"), partial: count("partial"), fail: count("fail"), standin: count("standin") }
   const at = new Date().toISOString(), app = git(APP), compat = git(HERE)
-  fs.writeFileSync(RESULTS, JSON.stringify({ at, app, compat, client: "web, desktop size, headless Chrome", of: plugins.length, counts, plugins }, null, 1) + "\n")
-  if (!fs.existsSync(HISTORY)) fs.writeFileSync(HISTORY, "at\tapp\tplugin-compat\tmeasured\tpass\tpartial\tfail\tstandin\n")
+  fs.writeFileSync(RESULTS, JSON.stringify({ at, app, compat, client: "web, desktop size, headless Chrome", checks: OPEN ? "load, views, settings" : "load", of: plugins.length, counts, plugins }, null, 1) + "\n")
+  if (!fs.existsSync(HISTORY)) fs.writeFileSync(HISTORY, "at\tapp\tplugin-compat\tmeasured\tpass\tpartial\tfail\tstandin\tchecks\n")
   // (what Browse shows for those nobody tried by hand: a verdict on loading, never "works")
   fs.writeFileSync(path.join(HERE, "..", "measured.json"), JSON.stringify(Object.fromEntries(plugins.map((p) => [p.id, { pass: "loads", partial: "partly", fail: "no", standin: "unneeded" }[p.verdict]])), null, 1) + "\n")
-  fs.appendFileSync(HISTORY, [at, app, compat, rows.length, counts.pass, counts.partial, counts.fail, counts.standin].join("\t") + "\n")
+  fs.appendFileSync(HISTORY, [at, app, compat, rows.length, counts.pass, counts.partial, counts.fail, counts.standin, OPEN ? "load, views, settings" : "load"].join("\t") + "\n")
   console.log(`${plugins.length} plugins: ${counts.pass} pass, ${counts.partial} partial, ${counts.fail} fail, ${counts.standin} stand-in`)
 } else if (cmd === "gaps") {
   const { plugins } = JSON.parse(fs.readFileSync(RESULTS, "utf8"))
@@ -108,6 +110,6 @@ if (cmd === "top") {
   for (const g of [...gaps.values()].sort((a, b) => b.downloads - a.downloads).slice(0, Number(args[0] ?? 40)))
     console.log(`${String(g.downloads).padStart(9)} ${String(g.plugins.length).padStart(3)}  ${g.key}\n             ${g.plugins.slice(0, 8).join(" ")}`)
 } else {
-  console.error("node measure.mjs top [N] | run [--batch 10] [--port 8962] [--only ids] [--first N] | gaps [N]")
+  console.error("node measure.mjs top [N] | run [--batch 10] [--port 8962] [--only ids] [--first N] [--open] | gaps [N]")
   process.exit(2)
 }

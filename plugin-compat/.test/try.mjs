@@ -1,7 +1,9 @@
 // Obsidian plugins tried as a user would: each installed from GitHub (plugin-compat.install, its id in Obsidian's list or
 // owner/repo) on a throwaway lab (lab.mjs, isolated), turned on, loaded in Chrome; prints JSON: per plugin, whether it
 // loaded, its errors, what it registered (commands, views, code blocks, settings...) and what of the API it missed.
-//   node try.mjs <id|owner/repo>... [--port 8962] [--out file.json] [--keep: leave the lab up]
+// --open: then opens each one's views in a tab and draws its settings tab, as a user would next (what they throw or miss
+// counts too).
+//   node try.mjs <id|owner/repo>... [--port 8962] [--out file.json] [--keep: leave the lab up] [--open]
 import { execFileSync } from "node:child_process"
 import fs from "node:fs"
 import path from "node:path"
@@ -9,7 +11,8 @@ import { apiAt, qa, until, wait } from "../../qa.mjs"
 
 const { args, browser } = await qa(import.meta.url)
 const opt = (name, dflt) => { const i = args.indexOf(`--${name}`); if (i < 0) return dflt; const v = args[i + 1]; args.splice(i, 2); return v }
-const keep = args.includes("--keep") ? (args.splice(args.indexOf("--keep"), 1), true) : false
+const flag = (name) => (args.includes(`--${name}`) ? (args.splice(args.indexOf(`--${name}`), 1), true) : false)
+const keep = flag("keep"), open = flag("open")
 const port = Number(opt("port", "8962")), out = opt("out", "")
 const wanted = args.filter(Boolean)
 if (!wanted.length) { console.error("node try.mjs <id|owner/repo>... [--port N] [--out file] [--keep]"); process.exit(2) }
@@ -41,7 +44,24 @@ try {
     const mine = async () => Object.values(await api("GET", "plugin-compat/report")).find((v) => v?.client?.startsWith("web") && Date.parse(v.at) >= started)
     await until(async () => ((await mine())?.results.length ?? 0) >= ids.length, 120000, 1000)
     await wait(4000) // (what plugins do once the layout is ready)
-    const got = (await mine())?.results ?? []
+    let got = (await mine())?.results ?? []
+    if (open) {
+      report.opened = await page.evaluate(async (list) => {
+        const out = {}, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), app = window.app
+        for (const { id, views } of list) {
+          const o = out[id] = { views: 0, settings: false }
+          for (const type of views ?? []) {
+            try { const leaf = app.workspace.getLeaf("tab"); await leaf.setViewState({ type, active: true }); await sleep(1200); leaf.detach(); o.views++ } catch (e) { console.error(`Obsidian plugin ${id}: opening ${type}: ${e?.stack ?? e}`) }
+          }
+          const tab = app.setting.pluginTabs.find((t) => t?.plugin?.manifest?.id === id)
+          if (tab) { try { tab.containerEl.replaceChildren(); await tab.display(); await sleep(300); tab.hide?.(); o.settings = true } catch (e) { console.error(`Obsidian plugin ${id}: its settings: ${e?.stack ?? e}`) } }
+        }
+        return out
+      }, ids.map((id) => ({ id, views: got.find((x) => x.id === id)?.views })))
+      // (the page says what was missed again within 10 s of a change)
+      await wait(11000)
+      got = (await mine())?.results ?? got
+    }
     const seen = await page.evaluate((ids) => Object.fromEntries(ids.map((id) => [id, {
       commands: Object.keys(window.app.commands.commands).filter((k) => k.startsWith(`${id}:`)),
     }])), ids)

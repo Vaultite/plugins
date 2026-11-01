@@ -1,4 +1,4 @@
-at	app	plugin-compat	measured	pass	partial	fail	standin
-2026-11-01T13:18:48.614Z	a1aa7d56	1fe068b9	300	272	25	3	0
-2026-11-01T13:33:12.430Z	a1aa7d56	d58acdbd	300	281	17	2	0
-2026-11-01T13:45:04.307Z	eebae263	46f83671	300	287	11	2	0
+at	app	plugin-compat	measured	pass	partial	fail	standin	checks
+2026-11-01T13:18:48.614Z	a1aa7d56	1fe068b9	300	272	25	3	0	load
+2026-11-01T13:33:12.430Z	a1aa7d56	d58acdbd	300	281	17	2	0	load
+2026-11-01T13:45:04.307Z	eebae263	46f83671	300	287	11	2	0	load
