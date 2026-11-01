@@ -188,7 +188,11 @@ export async function loadPlugin(id: string, manifest: Manifest, hash = "") {
     const papp = watched(app, id, "app", ["vault", "workspace", "metadataCache", "fileManager", "plugins", "internalPlugins", "commands", "setting", "keymap"])
     const mod = watched(moduleFor(papp as App), id, "obsidian")
     const module = { exports: {} as any }
-    main(scopeFor(id, mod), module, module.exports)
+    const scope = scopeFor(id, mod)
+    // (Electron's window has Node's process, which bundles test as they start: `globalThis.process || stub`)
+    const g = globalThis as any, hadProcess = "process" in g
+    if (Platform.isDesktopApp && !hadProcess) g.process = scope.process
+    try { main(scope, module, module.exports) } finally { if (!hadProcess) delete g.process }
     const Cls = module.exports.default ?? module.exports
     if (typeof Cls !== "function") throw new Error("main.js exports no Plugin class")
     const p: Plugin = new Cls(papp, { ...manifest, dir: `.obsidian/plugins/${id}` })
