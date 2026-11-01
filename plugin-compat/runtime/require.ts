@@ -19,7 +19,7 @@ function absent(plugin: string, spec: string): any {
   })
 }
 
-const OPTIONAL = new Set(["bufferutil", "utf-8-validate", "fsevents", "encoding", "esprima"])
+const OPTIONAL = new Set(["bufferutil", "utf-8-validate", "fsevents", "encoding", "esprima", "@emotion/is-prop-valid"])
 
 const t = (k: string | string[], o?: any) => (typeof o === "string" ? o : o?.defaultValue ?? (Array.isArray(k) ? k[0] : k))
 const i18next: any = { createInstance: () => ({ ...i18next, init: async () => t }), cloneInstance: () => i18next, t, language: "en", languages: ["en"], isInitialized: true, options: { lng: "en" }, init: async () => t, use: () => i18next, on() {}, off() {},
@@ -59,7 +59,8 @@ export function scopeFor(plugin: string, mod: any) {
     // (no Electron on a phone, as in Obsidian's mobile app: plugins test for it)
     if (bare === "electron" || bare === "@electron/remote") return null
     // (native add-ons libraries try and do without, as in Obsidian, which hasn't them either: not a miss)
-    if (OPTIONAL.has(bare)) throw Object.assign(new Error(`Cannot find module '${spec}'`), { code: "MODULE_NOT_FOUND" })
+    // (and moment's locales, which it looks for beside itself: English is in it)
+    if (OPTIONAL.has(bare) || /^\.\/locale\//.test(bare)) throw Object.assign(new Error(`Cannot find module '${spec}'`), { code: "MODULE_NOT_FOUND" })
     miss(plugin, `require(${spec})`)
     return absent(plugin, spec)
   }

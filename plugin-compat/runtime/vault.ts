@@ -252,6 +252,16 @@ export class Vault extends Events {
   getAllLoadedFiles() { return [this.root, ...this.files.values()] }
   getAllFolders(root = false) { return [...(root ? [this.root] : []), ...[...this.files.values()].filter((f): f is TFolder => f instanceof TFolder)] }
   getConfig(k: string) { return k === "theme" && !("theme" in this.config) ? (document.body.classList.contains("theme-dark") ? "obsidian" : "moonstone") : this.config[k] }
+  // (Obsidian's own, which plugins that back up or swap its settings use: a file in .obsidian/ by name, and JSON by path)
+  async readConfigJson(name: string) {
+    try {
+      const { base64 } = await get<{ base64: string | null }>(`plugin-compat/config/read?optional=1&${q(`.obsidian/${name}.json`)}`)
+      return base64 === null ? null : JSON.parse(new TextDecoder().decode(unb64(base64)))
+    } catch { return null }
+  }
+  async writeConfigJson(name: string, data: unknown) { await post("plugin-compat/config/write", { path: `.obsidian/${name}.json`, base64: b64(toBytes(JSON.stringify(data, null, 2))) }) }
+  async readJson(path: string) { return JSON.parse(await raw.text(path)) }
+  async writeJson(path: string, data: unknown, pretty = true) { await raw.write(path, JSON.stringify(data, null, pretty ? 2 : undefined)) }
   setConfig(k: string, v: unknown) {
     if (v === undefined) delete this.config[k]; else this.config[k] = v
     const own = Object.fromEntries(Object.entries(this.config).filter(([key, val]) => JSON.stringify(CONFIG[key]) !== JSON.stringify(val)))
