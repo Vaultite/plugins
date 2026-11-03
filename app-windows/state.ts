@@ -1,5 +1,5 @@
 // What the tabs share: apps' names and windows' titles (for the tabs' titles), news of a window going.
-import { capitalize, getTabLayout, viewsChanged, type AppInfo, type TabLayout } from "@vaultite"
+import { allPanes, capitalize, getTabLayout, viewsChanged, type AppInfo } from "@vaultite"
 
 /** A tab's arg: the app, and the window it holds once it has one (`com.brave.Browser:1234`). */
 export function parse(arg: string) {
@@ -30,10 +30,7 @@ export function setWindowTitle(wid: number, title: string) {
 }
 /** The app tabs' args (`<bundle>[:<window>]`). */
 export function appTabs() {
-  const out: string[] = []
-  const walk = (n: TabLayout["root"]) => { if ("tabs" in n) out.push(...n.tabs.filter((t) => t.to.startsWith("view:app/")).map((t) => t.to.slice(9))); else n.kids.forEach(walk) }
-  walk(getTabLayout().root)
-  return out
+  return allPanes(getTabLayout()).filter((p) => p.to.startsWith("view:app/")).map((p) => p.to.slice(9))
 }
 /** A tab's title: the app's name, and its window's title too while another tab shows the same app. */
 export function tabTitle(arg: string) {

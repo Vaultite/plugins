@@ -2,7 +2,7 @@
 // split is its plugin's sidebar panel, and each open note's editor is a MarkdownView leaf.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createElement, type ReactNode } from "react"
-import { closeView, currentEditor, currentFile, editorAt, FileEditor, getStore, getTabLayout, isDesktop, openAt, openFile, openInSplit, openView, panesOf } from "@vaultite"
+import { closeView, currentEditor, currentFile, editorAt, FileEditor, getStore, focusedPane, getTabLayout, isDesktop, openAt, openFile, openInSplit, openView, shownTab } from "@vaultite"
 import type { EditorView } from "@codemirror/view"
 import { Component, Events } from "./core.ts"
 import { createEl, hidden } from "./dom.ts"
@@ -438,11 +438,7 @@ class SideTabs extends WorkspaceParent {
   getContainer() { return this.split.getContainer() }
 }
 
-const focusedTab = () => {
-  const w = getTabLayout()
-  const g = panesOf(w.root).find((x) => x.id === w.focus)
-  return g?.tabs.find((t) => t.id === g.active) ?? null
-}
+const focusedTab = () => { const t = shownTab(getTabLayout()); return t ? focusedPane(t) : null }
 const tabTo = () => focusedTab()?.to ?? ""
 
 export class Workspace extends Events {
