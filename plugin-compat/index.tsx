@@ -277,7 +277,21 @@ async function refresh() { list = await get<Installed[]>("plugin-compat/plugins"
 let loading = 0
 // (the window's first picture of the vault: plugins load after it, as in Obsidian, even when turned on meanwhile)
 let pictured: Promise<unknown> = Promise.resolve()
+// Dormant until an Obsidian plugin is on: the vault's picture and Obsidian's explorer (a hidden row per file) cost a big
+// vault's load hundreds of ms, and their upkeep every change, for nothing while none runs.
+let awake: Promise<void> | null = null
+const wake = () => awake ??= (async () => {
+  const app = appOf()
+  prefetchIcons()
+  pictured = app.vault.refresh()
+  await pictured
+  syncProperties(app)
+})()
 async function sync() {
+  if (!awake && !list.some((p) => p.enabled)) { rehost(); return }
+  const waking = !awake
+  let fresh = false
+  await wake()
   loading++
   try {
     await pictured
@@ -291,6 +305,7 @@ async function sync() {
       if (run && !loaded.has(p.id) && results.get(p.id)?.state === "skipped") results.delete(p.id)
       if (run && !loaded.has(p.id) && !results.has(p.id)) {
         await loadPlugin(p.id, p.manifest, p.hash)
+        fresh = true
         // (the page answers the user between plugins)
         await new Promise((r) => setTimeout(r))
       }
@@ -299,6 +314,19 @@ async function sync() {
   } finally { loading-- }
   appOf().workspace.setReady()
   rehost()
+  if (waking || fresh) await woke()
+}
+/** Plugins loaded (at the start, or turned on or allowed since): as Obsidian once its layout is ready, they're told
+ *  which note is in front. */
+async function woke() {
+  const app = appOf(), ws = app.workspace, f = ws.getActiveFile()
+  if (f) ws.recent = [f.path, ...ws.recent.filter((p) => p !== f.path)].slice(0, 50)
+  ws.trigger("file-open", f)
+  leafChanged()
+  ws.trigger("active-leaf-change", ws.activeLeaf)
+  if (f) void app.vault.cachedRead(f).catch(() => {})
+  if (isDesktop()) await restoreSidebars().catch(() => {})
+  void report()
 }
 const run = (op: string, id: string) => post(`ops/plugin-compat.${op}`, { id })
 type Found = { available: boolean; total: number; entries: { id: string; name: string; author: string; description: string; repo: string; downloads: number
@@ -401,18 +429,9 @@ function Runtime({ seen }: { seen: unknown }) {
     setEditorShown(leafChanged)
     const resize = () => app.workspace.trigger("resize")
     addEventListener("resize", resize)
-    prefetchIcons()
-    pictured = app.vault.refresh()
     void (async () => {
-      await pictured
-      syncProperties(app)
       await refresh()
       await sync()
-      // (as Obsidian once its layout is ready: plugins loaded since are told which note is in front)
-      app.workspace.trigger("file-open", app.workspace.getActiveFile())
-      app.workspace.trigger("active-leaf-change", app.workspace.activeLeaf)
-      if (isDesktop()) await restoreSidebars().catch(() => {})
-      void report()
     })()
     return () => {
       hosting = false
@@ -423,10 +442,11 @@ function Runtime({ seen }: { seen: unknown }) {
       hostPlugins(HOST, null)
     }
   }, [])
-  useVaultChange((paths) => { void app.vault.refresh(paths) })
+  useVaultChange((paths) => { if (awake) void app.vault.refresh(paths) })
   useEffect(() => {
     // (a file left before it was drawn isn't announced after the one shown since)
     let gone = false
+    if (!awake) return
     void (async () => {
       // (a file made a moment ago may not have reached this window's picture yet: a hidden window hears changes late)
       if (focused.path && !app.vault.getFileByPath(focused.path)) await app.vault.refresh([focused.path]).catch(() => {})
@@ -480,6 +500,8 @@ function Embedded({ path, from }: { path: string; from: string }) {
   return <div ref={ref} className="markdown-rendered plugin-compat-embed" />
 }
 
+const NO_ROWS = {}
+
 // A note an Obsidian plugin's view takes when it opens (its patch of setViewState: Kanban's boards), drawn in its tab.
 const taken = new Map<string, FileFormat>()
 function fileFormat(path: string): FileFormat | null {
@@ -502,7 +524,7 @@ export default definePlugin({
   noteTop: { anchors: { render: (f) => <NoteAnchors path={f.path} /> } },
   fileBar: { actions: { render: (f) => <NoteActions path={f.path} /> } },
   ambient: { status: { title: "Obsidian plugins' status bar", render: () => <LooseStatus /> } },
-  fileRows: () => (appOf().workspace.internal.find((l) => l.view.getViewType() === "file-explorer")?.view as FileExplorerView | undefined)?.fileRows() ?? {},
+  fileRows: () => (awake && (appOf().workspace.internal.find((l) => l.view.getViewType() === "file-explorer")?.view as FileExplorerView | undefined)?.fileRows()) || NO_ROWS,
   reading: readingBlocks,
   answers: { cli: (m) => runCli(m.command, m.flags) },
   editor: (ctx) => [ctx.kind === "markdown" ? obsidianTokens() : [], editorExtension(ctx.path, ctx.kind === "markdown"), hotkeysFirst, suggestExtension(registered.suggests, () => activeEditor(), () => appOf().workspace.getActiveFile())],
