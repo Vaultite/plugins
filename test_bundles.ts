@@ -18,7 +18,7 @@ const builtIns = fs.readdirSync(path.join(APP, "bundles")).filter((d) => fs.exis
 /** The keys the app's bundles say in one of their files (appearance.json, editor.json, newtab.json). */
 const keysIn = (rel: string) => new Set(builtIns.flatMap((b) => Object.keys(json(path.join(APP, "bundles", b, rel)) ?? {})))
 const looks = keysIn("appearance.json"), FILES = ["editor", "newtab"].map((n) => [n, keysIn(`${n}.json`)] as const)
-const { LOOK_KEYS: lookKeys, LOOK: lookDefaults } = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)) as { LOOK_KEYS: string[]; LOOK: Record<string, unknown> }
+const { LOOK_KEYS: lookKeys, LOOK: lookDefaults, PERSONAL_LOOK: personal } = (await import(pathToFileURL(path.join(APP, "core", "look.ts")).href)) as { LOOK_KEYS: string[]; LOOK: Record<string, unknown>; PERSONAL_LOOK: string[] }
 /** What a restyle may hold besides its card. */
 const RESTYLE = new Set(["bundle.json", "appearance.json", "preview.png", "preview-dark.png", "themes", "snippets"])
 const settings = new Set(builtIns.flatMap((b) => {
@@ -48,6 +48,10 @@ for (const id of ids) {
     const missing = [...[...looks].filter((k) => !Object.hasOwn(look, k)).map((k) => `appearance ${k}`), ...[...settings].filter((k) => !own.has(k)),
       ...FILES.flatMap(([n, keys]) => { const o = json(path.join(at, `${n}.json`)) ?? {}; return [...keys].filter((k) => !Object.hasOwn(o, k)).map((k) => `${n} ${k}`) })]
     check(`${rel}: states every appearance key, editor and new tab key and plugin setting the app's bundles set`, !missing.length, missing)
+    const theirs = Object.keys(look).filter((k) => personal.includes(k))
+    check(`${rel}: leaves the user's own look alone (theme, colours, fonts: the app's core/look.ts PERSONAL_LOOK)`, !theirs.length, theirs)
+    const kind = json(path.join(at, "bundle.json"))?.kind
+    check(`${rel}: says its kind, a pack or a layout`, kind === "pack" || kind === "layout", kind)
   }
 
   // Applied for real: Vaultite's plugins it installs come from this checkout (a made-up GitHub), at their tags.
