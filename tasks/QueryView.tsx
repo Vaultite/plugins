@@ -1,10 +1,10 @@
 // A ```tasks block: the query run on the server, its tasks drawn as a checklist under their groups. Ticking one writes
 // its note (tasks.complete: the done date, a recurrence's next); the pencil opens the form. Sizes that differ by screen
 // are both variants (max-md: / md:): the app's plain classes sit above a plugin's.
-import { useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Ban, CalendarDays, Check, ChevronDown, ChevronsDown, ChevronsUp, ChevronUp, CircleCheck, CirclePlus, CircleX, Gauge, Hourglass, ListChecks, Minus,
   Pencil, PlaneTakeoff, Repeat, type LucideIcon } from "lucide-react"
-import { cn, dateText, Loading, Markdown, notifyError, op, openAt, Panel, parse, useLive, useVaultChange, type BlockCtx } from "@vaultite"
+import { cn, dateText, Loading, Markdown, notifyError, op, openAt, Panel, parse, useLive, useVaultChange, useVirtual, type BlockCtx } from "@vaultite"
 import { editTask } from "./target.ts"
 import type { Answer, Shown } from "./types.ts"
 
@@ -57,7 +57,7 @@ function Meta({ icon: Icon, text, tip, tint, short }: { icon: LucideIcon; text: 
 
 const key = (t: Shown) => `${t.path}\0${t.line}\0${t.text}`
 
-function TaskRow({ t, a, symbol, toggle }: { t: Shown; a: Answer; symbol: string; toggle: () => void }) {
+function TaskRow({ t, a, symbol, toggle, vi, indent }: { t: Shown; a: Answer; symbol: string; toggle: () => void; vi?: number; indent?: number }) {
   const { hide, short } = a.layout
   const shows = (what: string) => !hide.includes(what)
   const done = symbol === "x" || symbol === "X" || symbol === "-"
@@ -83,7 +83,7 @@ function TaskRow({ t, a, symbol, toggle }: { t: Shown; a: Answer; symbol: string
   const name = t.path.split("/").pop()!.replace(/\.md$/, "")
   const description = shows("tags") ? t.description : t.description.replace(/(^|\s)#[^\s#]+/g, "").trim()
   return (
-    <li data-task-row={`${t.path}:${t.line}`} data-status={symbol} className="group flex items-start gap-2.5 max-md:py-1 md:py-0.5">
+    <li data-task-row={`${t.path}:${t.line}`} data-status={symbol} data-vi={vi} style={indent ? { paddingLeft: indent } : undefined} className="group flex items-start gap-2.5 max-md:py-1 md:py-0.5">
       <TaskBox symbol={symbol} onToggle={toggle} label={done ? `Mark "${t.description}" not done` : `Mark "${t.description}" done`} />
       <div className="min-w-0 flex-1 pt-0.5 text-[17px] leading-[24px] md:pt-0 md:text-[14px] md:leading-[20px]">
         <span className={cn("break-words", done && "text-muted-foreground line-through decoration-[color-mix(in_srgb,var(--muted-foreground)_60%,transparent)]")}>
@@ -111,9 +111,31 @@ function TaskRow({ t, a, symbol, toggle }: { t: Shown; a: Answer; symbol: string
   )
 }
 
+const heading = (n: string, i: number, first: boolean, vi?: number) => (
+  <div key={`h${i}`} role="heading" aria-level={4 + i} data-tasks-group data-vi={vi}
+    className={cn("pt-3 pb-1 text-[15px] font-semibold md:text-[13px]", i > 0 && "text-muted-foreground", first && "pt-0")} style={{ paddingLeft: i * 12 }}>
+    {n}
+  </div>
+)
+/** Each group's new headings and its tasks, in order, as one run (a long list's rows). */
+type Line = { key: string; head?: { name: string; level: number; first: boolean }; task?: Shown; indent: number }
+function linesOf(a: Answer): Line[] {
+  const out: Line[] = []
+  let last: string[] = []
+  a.groups.forEach((g, gi) => {
+    g.names.forEach((n, i) => { if (last.slice(0, i + 1).join("\0") !== g.names.slice(0, i + 1).join("\0")) out.push({ key: `h${gi}:${i}`, head: { name: n, level: i, first: gi === 0 && i === 0 }, indent: 0 }) })
+    last = g.names
+    for (const t of g.tasks) out.push({ key: `${gi}\0${key(t)}`, task: t, indent: Math.max(0, g.names.length - 1) * 12 })
+  })
+  return out
+}
+// Past this many, only the rows near the screen are drawn (a dashboard's overdue tasks drew thousands of elements).
+const LONG = 120
+
 /** A query's result, without its card: what the block and the preview draw. */
 export function TaskList({ a, onToggle, pending = {} }: { a: Answer; onToggle?: (t: Shown) => void; pending?: Record<string, string> }) {
   let last: string[] = []
+  const long = a.groups.reduce((n, g) => n + g.tasks.length, 0) > LONG
   return (
     <div data-tasks-result className="min-w-0">
       {a.explain && <pre data-tasks-explain className="mb-3 overflow-x-auto rounded-[8px] bg-foreground/[0.04] p-3 text-[13px] leading-[18px] whitespace-pre-wrap text-muted-foreground">{a.explain}</pre>}
@@ -123,13 +145,8 @@ export function TaskList({ a, onToggle, pending = {} }: { a: Answer; onToggle?: 
         </div>
       )}
       {!a.problems.length && !a.groups.length && <p className="text-[15px] text-muted-foreground md:text-[13px]">No tasks match.</p>}
-      {a.groups.map((g, gi) => {
-        const heads = g.names.map((n, i) => (last.slice(0, i + 1).join("\0") === g.names.slice(0, i + 1).join("\0") ? null : (
-          <div key={`h${i}`} role="heading" aria-level={4 + i} data-tasks-group
-            className={cn("pt-3 pb-1 text-[15px] font-semibold md:text-[13px]", i > 0 && "text-muted-foreground", gi === 0 && i === 0 && "pt-0")} style={{ paddingLeft: i * 12 }}>
-            {n}
-          </div>
-        )))
+      {long ? <LongList a={a} onToggle={onToggle} pending={pending} /> : a.groups.map((g, gi) => {
+        const heads = g.names.map((n, i) => (last.slice(0, i + 1).join("\0") === g.names.slice(0, i + 1).join("\0") ? null : heading(n, i, gi === 0 && i === 0)))
         last = g.names
         return (
           <div key={gi}>
@@ -142,6 +159,23 @@ export function TaskList({ a, onToggle, pending = {} }: { a: Answer; onToggle?: 
       })}
     </div>
   )
+}
+
+/** A long result: its headings and tasks in one list, drawn near the screen (core/virtual.ts), spaces for the rest. */
+function LongList({ a, onToggle, pending }: { a: Answer; onToggle?: (t: Shown) => void; pending: Record<string, string> }) {
+  const list = useRef<HTMLUListElement>(null)
+  const lines = useMemo(() => linesOf(a), [a])
+  const keys = useMemo(() => lines.map((l) => l.key), [lines])
+  const v = useVirtual(list, keys, { estimate: 24 })
+  const out = []
+  for (const { index: i, gap } of v.slots) {
+    const l = lines[i]
+    if (gap > 0.5) out.push(<li key={`gap:${i}`} role="none" aria-hidden style={{ height: gap }} />)
+    out.push(l.head ? <li key={l.key} role="none" data-vi={i}>{heading(l.head.name, l.head.level, l.head.first)}</li>
+      : <TaskRow key={l.key} t={l.task!} a={a} vi={i} indent={l.indent} symbol={pending[key(l.task!)] ?? l.task!.symbol} toggle={() => onToggle?.(l.task!)} />)
+  }
+  if (v.rest > 0.5) out.push(<li key="rest" role="none" aria-hidden style={{ height: v.rest }} />)
+  return <ul ref={list}>{out}</ul>
 }
 
 export function countText(a: Answer) {
