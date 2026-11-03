@@ -25,30 +25,30 @@
     "cursor": {
       "name": "Cursor",
       "source": "Vaultite/plugins/cursor",
-      "tag": "cursor/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "77bab6cf7a4edcd7"
+      "tag": "cursor/v1.0.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "d5cfdafb3c2f0e3a"
     },
     "dispatch": {
       "name": "Dispatch",
       "source": "Vaultite/plugins/dispatch",
-      "tag": "dispatch/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "994fa6c06576657b"
+      "tag": "dispatch/v1.1.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "938f4a7182e9e703"
     },
     "grok-bot": {
       "name": "Grok Bot",
       "source": "Vaultite/plugins/grok-bot",
-      "tag": "grok-bot/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "1781a0c2b115b2ad"
+      "tag": "grok-bot/v1.0.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "38e0117e8c2d9791"
     },
     "hermes": {
       "name": "Hermes",
       "source": "Vaultite/plugins/hermes",
-      "tag": "hermes/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "effa6ce6cf101ed5"
+      "tag": "hermes/v1.0.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "106a7b31e376a6be"
     },
     "lessons": {
       "name": "Lessons",
@@ -60,23 +60,23 @@
     "muse": {
       "name": "Muse",
       "source": "Vaultite/plugins/muse",
-      "tag": "muse/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "53aff2a35b2f3c6a"
+      "tag": "muse/v1.0.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "2e704c077baa7d78"
     },
     "openclaw": {
       "name": "OpenClaw",
       "source": "Vaultite/plugins/openclaw",
-      "tag": "openclaw/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "1d4757be1fa99a4b"
+      "tag": "openclaw/v1.0.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "a72252a671fbbf51"
     },
     "opencode": {
       "name": "OpenCode",
       "source": "Vaultite/plugins/opencode",
-      "tag": "opencode/v1.0.0",
-      "commit": "c0e2c49325d6173e599b5420f174ed650d8c4773",
-      "hash": "42ba5d71ce69be6a"
+      "tag": "opencode/v1.2.1",
+      "commit": "32571527d9c44ec164d1b3b154ff93f92b02fffd",
+      "hash": "fe83eb97eb965655"
     },
     "projects": {
       "name": "Projects",
