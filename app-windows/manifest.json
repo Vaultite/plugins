@@ -3,10 +3,10 @@
   "icon": "app-window",
   "name": "App windows",
   "description": "Other Mac apps in a tab of the desktop app, next to your notes: Spotify, Messages, any app with a window. The app's own window is kept right behind the tab, so it works as it always does; closing the tab gives it back where it was. While one shows, ⌃⌘P opens the palette from any app.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
-  "apiVersion": 4,
+  "apiVersion": 6,
   "desktopApp": true,
   "disclosures": {
     "shell": true
