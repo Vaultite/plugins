@@ -73,7 +73,7 @@ export function Value({ v, from }: { v: Wire; from: string }): ReactNode {
     case "date": return <span className="tabular-nums">{fmtDate(v.iso)}</span>
     case "dur": return <>{v.text}</>
     // (an open task: its Do it, as on a task's line)
-    case "item": return <span className="group/dv-item"><Markdown text={v.text} inline from={from} />{v.status === " " && v.path && <DoIt task={{ path: v.path, line: v.line + 1, text: v.text }} className="ml-1 align-baseline opacity-0 group-hover/dv-item:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}</span>
+    case "item": return <span className="group/dv-item"><Markdown text={v.text} inline from={from} />{v.status === " " && v.path && <DoIt task={{ path: v.path, text: v.text }} className="ml-1 align-baseline opacity-0 group-hover/dv-item:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}</span>
     case "obj": return <span className="text-muted-foreground">{plain(v)}</span>
     default: return <span className="text-muted-foreground">function</span>
   }
@@ -289,7 +289,7 @@ function TaskRow({ t, ticked, tick, from }: { t: Task; ticked: Record<string, st
         <span className={cn("min-w-0 flex-1 text-[15px] leading-[22px]", done && "text-muted-foreground line-through decoration-muted-foreground/60")}>
           <TaskText text={t.text} from={from} />
         </span>
-        {status === " " && <DoIt task={{ path: t.path, line: t.line + 1, text: t.text }} className="opacity-0 group-hover/dv-task:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}
+        {status === " " && <DoIt task={{ path: t.path, text: t.text }} className="opacity-0 group-hover/dv-task:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}
       </div>
       {t.children.length > 0 && <ul className="pl-[26px]">{t.children.map((c) => <TaskRow key={`${c.path}:${c.line}`} t={c} ticked={ticked} tick={tick} from={from} />)}</ul>}
     </li>

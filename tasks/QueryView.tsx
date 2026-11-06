@@ -101,7 +101,7 @@ function TaskRow({ t, a, symbol, toggle, vi, indent }: { t: Shown; a: Answer; sy
           </span>
         )}
       </div>
-      {symbol === " " && <DoIt task={{ path: t.path, line: t.line + 1, text: t.text }} className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}
+      {symbol === " " && <DoIt task={{ path: t.path, line: t.line, text: t.text }} className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}
       {shows("edit button") && (
         <button type="button" aria-label="Edit task" data-tip="Edit task" data-task-edit onClick={() => editTask({ path: t.path, line: t.line, text: t.text })}
           className="grid shrink-0 cursor-pointer place-items-center rounded-[6px] text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground max-md:-my-1.5 max-md:size-11 md:-my-0.5 md:size-6 md:opacity-[0] md:group-hover:opacity-100 md:focus-visible:opacity-100">
