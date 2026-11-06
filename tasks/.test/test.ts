@@ -6,6 +6,7 @@ import { nextDate, parseRule } from "../recur.ts"
 import { tasksIn } from "../scan.ts"
 import { changeStatus, DEFAULT_PREFS, fullDescription, newTaskLine, parseTask, serialize, withField } from "../task.ts"
 import { parseQuery, runQuery, urgency } from "../query.ts"
+import { check, done, serve } from "../../testkit.ts"
 
 let failed = 0, passed = 0
 function test(name: string, fn: () => void) {
@@ -310,3 +311,24 @@ test("urgency", () => {
 
 console.log(`${passed} passed, ${failed} failed`)
 if (failed) process.exitCode = 1
+
+// ---------- on a server: the vault's notes as it read them, each line as written (what a tick checks)
+const s = await serve(["tasks"])
+try {
+  s.write("Lists/Edges.md", "---\ntitle: Edges\n---\n\n  - [ ] Indented first 📅 2026-10-06\n# Later\n- [ ] Trailing last  ")
+  s.write("Lists/Windows.md", "- [ ] Written on Windows\r\n- [x] Done there\r\n")
+  const list = async () => ((await s.api("POST", "ops/tasks.list", { query: "path includes Lists" }))[1].groups as { tasks: { path: string; line: number; text: string }[] }[]).flatMap((g) => g.tasks)
+  let got = await list()
+  const first = got.find((t) => t.text.includes("Indented")), last = got.find((t) => t.text.includes("Trailing"))
+  check("a note's first and last lines as written, on their lines", first?.line === 5 && first.text === "  - [ ] Indented first 📅 2026-10-06" &&
+    last?.line === 7 && last.text === "- [ ] Trailing last  ", got)
+  check("a note with Windows line ends", got.some((t) => t.path === "Lists/Windows.md" && t.line === 1 && t.text === "- [ ] Written on Windows"), got)
+  const [c] = await s.api("POST", "ops/tasks.complete", { path: "Lists/Edges.md", line: last!.line, expect: last!.text })
+  check("ticked by the line it was shown as", c === 200 && /- \[x\] Trailing last/.test(s.read("Lists/Edges.md")), [c, s.read("Lists/Edges.md")])
+  s.write("Lists/Edges.md", "- [ ] Changed outside\n")
+  got = await list()
+  check("a change made outside the app, at once", got.some((t) => t.text === "- [ ] Changed outside") && !got.some((t) => t.text.includes("Indented")), got)
+} finally {
+  s.stop()
+}
+done()

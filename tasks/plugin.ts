@@ -41,9 +41,7 @@ function allTasks(): Found[] {
     seen.add(rel)
     let f = files.get(rel)
     if (!f || f.ns !== e.stat.ns || f.filter !== filter) {
-      let text = ""
-      try { text = fs.readFileSync(v.abs(rel), "utf8") } catch { /* gone, or not downloaded yet */ }
-      f = { ns: e.stat.ns, filter, tasks: text.includes("[") ? tasksIn(text, rel, filter) : [] }
+      f = { ns: e.stat.ns, filter, tasks: tasksOf(rel, e, filter) }
       files.set(rel, f)
     }
     out.push(...f.tasks)
@@ -51,6 +49,16 @@ function allTasks(): Found[] {
   for (const k of files.keys()) if (!seen.has(k)) files.delete(k)
   all = { version: v.version, filter, tasks: out }
   return out
+}
+
+/** A note's tasks, from the text the vault read (an app before Entry.text, or a header that broke: from disk). */
+function tasksOf(rel: string, e: { text?: string; broken: boolean }, filter: string): Found[] {
+  let text = typeof e.text === "string" && !e.broken ? e.text : null
+  if (text === null) {
+    text = ""
+    try { text = fs.readFileSync(plugin.vault.abs(rel), "utf8") } catch { /* gone, or not downloaded yet */ }
+  }
+  return text.includes("[") ? tasksIn(text, rel, filter) : []
 }
 
 /** A task as the app and agents get it. */
