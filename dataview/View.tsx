@@ -3,7 +3,7 @@
 import { memo, useEffect, useMemo, useState, type ReactNode } from "react"
 import { CalendarDays, ChevronLeft, ChevronRight, CircleCheck, Code, List, Table2 } from "lucide-react"
 import {
-  addDays, cn, dateText, dow, Empty, Loading, Markdown, notifyError, numberText, openFile, Panel, parse, post, range, today, useLive, useVaultChange,
+  addDays, cn, dateText, DoIt, dow, Empty, Loading, Markdown, notifyError, numberText, openFile, Panel, parse, post, range, today, useLive, useVaultChange,
   weekStart, type BlockCtx,
 } from "@vaultite"
 import type { Wire } from "./values"
@@ -72,7 +72,8 @@ export function Value({ v, from }: { v: Wire; from: string }): ReactNode {
       ) : <span className="text-muted-foreground">{linkName(v)}</span>
     case "date": return <span className="tabular-nums">{fmtDate(v.iso)}</span>
     case "dur": return <>{v.text}</>
-    case "item": return <Markdown text={v.text} inline from={from} />
+    // (an open task: its Do it, as on a task's line)
+    case "item": return <span className="group/dv-item"><Markdown text={v.text} inline from={from} />{v.status === " " && v.path && <DoIt task={{ path: v.path, line: v.line + 1, text: v.text }} className="ml-1 align-baseline opacity-0 group-hover/dv-item:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}</span>
     case "obj": return <span className="text-muted-foreground">{plain(v)}</span>
     default: return <span className="text-muted-foreground">function</span>
   }
@@ -278,7 +279,7 @@ function TaskRow({ t, ticked, tick, from }: { t: Task; ticked: Record<string, st
   const checked = status !== null && status !== " ", done = status === "x" || status === "X"
   return (
     <li data-dv-task={`${t.path}:${t.line}`} data-status={status ?? ""}>
-      <div className="flex min-h-7 items-start gap-2 py-0.5 pointer-coarse:min-h-11 pointer-coarse:items-center">
+      <div className="group/dv-task flex min-h-7 items-start gap-2 py-0.5 pointer-coarse:min-h-11 pointer-coarse:items-center">
         {status !== null ? (
           <input type="checkbox" checked={checked} onChange={() => tick(t)} aria-label={checked ? "Mark as not done" : "Mark as done"} data-status={status}
             className={cn("mt-[3px] size-[18px] shrink-0 cursor-pointer appearance-none rounded-full border-[1.5px] border-muted-foreground/70 pointer-coarse:mt-0", checked && !done && "opacity-60",
@@ -288,6 +289,7 @@ function TaskRow({ t, ticked, tick, from }: { t: Task; ticked: Record<string, st
         <span className={cn("min-w-0 flex-1 text-[15px] leading-[22px]", done && "text-muted-foreground line-through decoration-muted-foreground/60")}>
           <TaskText text={t.text} from={from} />
         </span>
+        {status === " " && <DoIt task={{ path: t.path, line: t.line + 1, text: t.text }} className="opacity-0 group-hover/dv-task:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100" />}
       </div>
       {t.children.length > 0 && <ul className="pl-[26px]">{t.children.map((c) => <TaskRow key={`${c.path}:${c.line}`} t={c} ticked={ticked} tick={tick} from={from} />)}</ul>}
     </li>
