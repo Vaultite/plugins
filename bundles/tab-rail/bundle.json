@@ -1,0 +1,8 @@
+{
+  "name": "Tab rail",
+  "description": "Your open tabs down the right edge of the window, as a browser's vertical tabs, your favourite pages as tiles above them and no headings in the way, so the page gets the rest. Search and your files stay on the left, slid out of the way until the pointer reaches the window's edge.",
+  "icon": "panel-right",
+  "tint": "indigo",
+  "kind": "layout",
+  "guide": "Guides/How Tab rail works.md"
+}

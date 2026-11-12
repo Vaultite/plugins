@@ -2,10 +2,11 @@
   "density": "compact",
   "sidebarScroll": "panels",
   "panelDividers": false,
+  "panelHeadings": "shown",
   "snippets": [],
   "fileIcons": true,
   "tabBar": true,
-  "paneTitles": true,
+  "paneTabBars": true,
   "dimPanes": true, "paneCards": false,
   "rails": true,
   "peekShade": false,
@@ -15,6 +16,7 @@
   "statusBarMore": [],
   "statusBarLeft": null,
   "fileBar": null,
+  "fileBarHidden": [],
   "sidebarHeader": null,
   "pullActions": null
 }

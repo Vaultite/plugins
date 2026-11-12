@@ -1,0 +1,11 @@
+{
+  "left": [
+    "search:search",
+    "files:files"
+  ],
+  "right": [
+    "pages:pages",
+    "tabs:tabs"
+  ],
+  "collapsed": []
+}

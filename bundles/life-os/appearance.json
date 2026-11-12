@@ -2,18 +2,20 @@
   "density": "comfortable",
   "sidebarScroll": "panels",
   "panelDividers": false,
+  "panelHeadings": "shown",
   "snippets": [
     "Serif titles"
   ],
   "fileIcons": true,
   "tabBar": true,
-  "paneTitles": false, "dimPanes": true, "paneCards": false,
+  "paneTabBars": false, "dimPanes": true, "paneCards": false,
   "rails": true, "peekShade": false, "sidebarButtons": false, "fileBarFade": "off",
   "lineNumbers": false,
   "statusBar": null,
   "statusBarMore": [],
   "statusBarLeft": null,
   "fileBar": null,
+  "fileBarHidden": [],
   "sidebarHeader": null,
   "pullActions": null
 }

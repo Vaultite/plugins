@@ -71,7 +71,8 @@ for (const id of ids) {
     const lock = conf("plugins-lock")
     check(`${rel}: installed from Vaultite/plugins at their tags`, Object.keys(install).every((p) => lock[p]?.tag?.startsWith(`${p}/v`)), lock)
     // (the setup it makes: the same over Zen as over the sample's; a restyle's, Zen's with its keys)
-    const setup = (but: string[] = []) => JSON.stringify({ look: Object.fromEntries(Object.entries(conf("appearance")).filter(([k]) => !but.includes(k))),
+    // (the look by key: a key the app's layouts leave at its default is written after the others, wherever it was)
+    const setup = (but: string[] = []) => JSON.stringify({ look: Object.fromEntries(Object.entries(conf("appearance")).filter(([k]) => !but.includes(k)).sort(([a], [b]) => (a < b ? -1 : 1))),
       sidebars: conf("sidebars"), pinned: conf("pages").pinned, editor: conf("editor"), newtab: conf("newtab"),
       settings: [...settings].map((k) => { const [p, key] = k.split("."); return [k, conf(`plugins/${p}/data`)[key] ?? null] }) })
     if (restyle) {
