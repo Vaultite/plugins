@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-11-11T14:14:22.060Z",
+  "generated": "2026-11-12T08:02:00.946Z",
   "plugins": [
     {
       "id": "today",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -41,7 +41,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -73,7 +73,7 @@
       "stars": 0,
       "released": "2026-11-06T21:30:39Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -105,7 +105,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -137,7 +137,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -174,7 +174,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -206,7 +206,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -233,7 +233,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -264,7 +264,7 @@
       "stars": 0,
       "released": "2026-11-04T00:02:23Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,7 +303,7 @@
       "stars": 0,
       "released": "2026-10-16T22:54:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -336,7 +336,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -362,7 +362,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -393,7 +393,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -422,7 +422,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -451,7 +451,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -481,7 +481,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -512,7 +512,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -541,7 +541,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -573,7 +573,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -600,7 +600,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -632,7 +632,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -664,7 +664,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -693,7 +693,7 @@
       "stars": 0,
       "released": "2026-10-20T20:46:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -720,7 +720,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -752,7 +752,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -789,7 +789,7 @@
       "stars": 0,
       "released": "2026-10-17T05:13:58Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -822,7 +822,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -853,7 +853,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -882,7 +882,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -913,7 +913,7 @@
       "stars": 0,
       "released": "2026-11-06T08:02:18Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -945,7 +945,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -977,7 +977,7 @@
       "stars": 0,
       "released": "2026-10-19T05:08:18Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1003,7 +1003,7 @@
       "stars": 0,
       "released": "2026-11-04T00:02:23Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1033,7 +1033,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-10T14:50:02Z",
+      "pushed": "2026-11-12T08:01:49Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1060,10 +1060,10 @@
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "bundles/agents",
-      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "address": "Vaultite/plugins/bundles/agents@5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "commit": "90a594014a2721df0045b052d97acde6a6fa5809",
+      "address": "Vaultite/plugins/bundles/agents@90a594014a2721df0045b052d97acde6a6fa5809",
       "stars": 0,
-      "updated": "2026-11-04T08:32:18Z",
+      "updated": "2026-11-12T08:01:47Z",
       "topics": [
         "vaultite-plugin"
       ],
@@ -1158,77 +1158,15 @@
       }
     },
     {
-      "name": "Full glass",
-      "description": "A translucent window all the way through, over any setup: the desktop shows through the sidebars and bars, and more lightly through notes, terminals, canvases and the app's pages, so they still read. Web pages, PDFs, images and video stay solid. In the Mac and Windows 11 apps.",
-      "author": "Vaultite",
-      "repo": "Vaultite/plugins",
-      "dir": "bundles/full-glass",
-      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "address": "Vaultite/plugins/bundles/full-glass@5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "stars": 0,
-      "updated": "2026-11-04T08:32:18Z",
-      "topics": [
-        "vaultite-plugin"
-      ],
-      "runsCode": false,
-      "installs": [],
-      "icon": "layers-2",
-      "tint": "indigo",
-      "kind": "look",
-      "sketch": {
-        "theme": null,
-        "scheme": null,
-        "panels": null,
-        "home": [],
-        "shape": {
-          "tabBar": null,
-          "rails": null,
-          "floating": null,
-          "glass": "pages"
-        }
-      }
-    },
-    {
-      "name": "Glass",
-      "description": "A translucent window over any setup: the desktop shows through the sidebars, the tab bar and the status bar, blurred and in your colour scheme, while pages stay solid. In the Mac and Windows 11 apps.",
-      "author": "Vaultite",
-      "repo": "Vaultite/plugins",
-      "dir": "bundles/glass",
-      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "address": "Vaultite/plugins/bundles/glass@5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "stars": 0,
-      "updated": "2026-11-04T08:32:18Z",
-      "topics": [
-        "vaultite-plugin"
-      ],
-      "runsCode": false,
-      "installs": [],
-      "icon": "blend",
-      "tint": "teal",
-      "kind": "look",
-      "sketch": {
-        "theme": null,
-        "scheme": null,
-        "panels": null,
-        "home": [],
-        "shape": {
-          "tabBar": null,
-          "rails": null,
-          "floating": null,
-          "glass": "sidebars"
-        }
-      }
-    },
-    {
       "name": "Life OS",
       "description": "Your days, people and health: routines, workouts, meals, sleep and reading, logged by your AI. With a home page of boards, tables and a calendar over your notes, projects and books.",
       "author": "Vaultite",
       "repo": "Vaultite/plugins",
       "dir": "bundles/life-os",
-      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
-      "address": "Vaultite/plugins/bundles/life-os@5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "commit": "90a594014a2721df0045b052d97acde6a6fa5809",
+      "address": "Vaultite/plugins/bundles/life-os@90a594014a2721df0045b052d97acde6a6fa5809",
       "stars": 0,
-      "updated": "2026-11-04T08:32:18Z",
+      "updated": "2026-11-12T08:01:47Z",
       "topics": [
         "vaultite-plugin"
       ],
@@ -1309,6 +1247,109 @@
           "rails": true,
           "floating": false,
           "glass": null
+        }
+      }
+    },
+    {
+      "name": "Tab rail",
+      "description": "Your open tabs down the right edge of the window, as a browser's vertical tabs, your favourite pages as tiles above them and no headings in the way, so the page gets the rest. Search and your files stay on the left, slid out of the way until the pointer reaches the window's edge.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "bundles/tab-rail",
+      "commit": "90a594014a2721df0045b052d97acde6a6fa5809",
+      "address": "Vaultite/plugins/bundles/tab-rail@90a594014a2721df0045b052d97acde6a6fa5809",
+      "stars": 0,
+      "updated": "2026-11-12T08:01:47Z",
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "runsCode": false,
+      "installs": [],
+      "icon": "panel-right",
+      "tint": "indigo",
+      "kind": "layout",
+      "sketch": {
+        "theme": null,
+        "scheme": null,
+        "panels": {
+          "left": [
+            "search:search",
+            "files:files"
+          ],
+          "right": [
+            "pages:pages",
+            "tabs:tabs"
+          ],
+          "collapsed": []
+        },
+        "home": null,
+        "shape": {
+          "tabBar": false,
+          "rails": false,
+          "floating": false,
+          "glass": null
+        }
+      }
+    },
+    {
+      "name": "Full glass",
+      "description": "A translucent window all the way through, over any setup: the desktop shows through the sidebars and bars, and more lightly through notes, terminals, canvases and the app's pages, so they still read. Web pages, PDFs, images and video stay solid. In the Mac and Windows 11 apps.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "bundles/full-glass",
+      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "address": "Vaultite/plugins/bundles/full-glass@5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "stars": 0,
+      "updated": "2026-11-04T08:32:18Z",
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "runsCode": false,
+      "installs": [],
+      "icon": "layers-2",
+      "tint": "indigo",
+      "kind": "look",
+      "sketch": {
+        "theme": null,
+        "scheme": null,
+        "panels": null,
+        "home": [],
+        "shape": {
+          "tabBar": null,
+          "rails": null,
+          "floating": null,
+          "glass": "pages"
+        }
+      }
+    },
+    {
+      "name": "Glass",
+      "description": "A translucent window over any setup: the desktop shows through the sidebars, the tab bar and the status bar, blurred and in your colour scheme, while pages stay solid. In the Mac and Windows 11 apps.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "bundles/glass",
+      "commit": "5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "address": "Vaultite/plugins/bundles/glass@5c1d8cd8cc9babee758fda68cb3a091d53819062",
+      "stars": 0,
+      "updated": "2026-11-04T08:32:18Z",
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "runsCode": false,
+      "installs": [],
+      "icon": "blend",
+      "tint": "teal",
+      "kind": "look",
+      "sketch": {
+        "theme": null,
+        "scheme": null,
+        "panels": null,
+        "home": [],
+        "shape": {
+          "tabBar": null,
+          "rails": null,
+          "floating": null,
+          "glass": "sidebars"
         }
       }
     }
