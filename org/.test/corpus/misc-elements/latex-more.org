@@ -1,0 +1,34 @@
+\begin{equation}
+  E = mc^2
+\end{equation}
+
+- item
+  \begin{align}
+  a &= b
+  \end{align}
+
+\begin{equation}
+
+blank inside
+
+\end{equation}
+
+\begin{a}
+\begin{b}
+\end{b}
+\end{a}
+
+\begin{a}
+\begin{a}
+\end{a}
+\end{a}
+
+text \begin{x}
+\end{x}
+
+\begin{x}y
+\end{x}
+\begin{}
+\end{}
+\begin{x*y}
+\end{x*y}

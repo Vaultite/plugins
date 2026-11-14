@@ -1,0 +1,23 @@
+| a | b |
+|---+---|
+| 1 | 2 |
+#+TBLFM: $2=$1*2
+#+tblfm: @2$1=3
+  #+TBLFM: indented
+
+after
+
+| x |
+#+TBLFM:
+
+| y |
+#+TBLFM:nospace
+
+| z |
+#+TBLFM: 
+#+TBLFM:   lead and trail  
+
+| w |
+#+TBLFM: one
+
+#+TBLFM: after a blank

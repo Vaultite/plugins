@@ -1,0 +1,15 @@
+- a
+  :drawer:
+at column zero
+
+
+still inside
+:end:
+  more
+- b
+  :PROPERTIES:
+:x: 1
+  :END:
+- c
+  :open:
+not closed

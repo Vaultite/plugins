@@ -1,0 +1,6 @@
+%%(diary-float t 4 2)
+ %%(x)
+%%x
+%%(a) trailing
+%%(a)   
+%%(org-anniversary 1956  5 14) Birthday

@@ -1,0 +1,11 @@
+#+begin_comment
+,* a
+,#+b
+Some *text* here.
+#+end_comment
+
+#+BEGIN_COMMENT
+#+END_COMMENT
+#+begin_comment with params
+x
+#+end_comment

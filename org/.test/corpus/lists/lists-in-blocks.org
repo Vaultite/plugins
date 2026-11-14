@@ -1,0 +1,11 @@
+- a
+  #+begin_quote
+- inner list
+  - nested
+  #+end_quote
+  after quote
+- b
+  #+begin_center
+  1. centered
+  2. list
+  #+end_center

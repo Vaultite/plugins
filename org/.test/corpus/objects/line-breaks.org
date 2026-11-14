@@ -1,0 +1,20 @@
+x a\\ b\\
+c \\
+\\\
+d\\  
+e \\x f\\	
+g\\
+
+\\
+h
+
+x \\\\
+i \\ \\
+j\\\\\
+k
+
+#+begin_verse
+ a \\
+b\\   
+   c
+#+end_verse

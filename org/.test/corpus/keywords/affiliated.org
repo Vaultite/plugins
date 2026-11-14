@@ -1,0 +1,15 @@
+#+NAME: foo
+#+CAPTION[short]: long *cap*
+#+CAPTION: second
+#+ATTR_HTML: :width 10
+#+ATTR_HTML: :alt x
+#+HEADER: :var x=1
+#+HEADER: :var y=2
+#+RESULTS[abc]: res
+#+PLOT: a
+#+PLOT: b
+Para
+
+#+NAME: lonely
+
+#+TITLE: Hi *x*

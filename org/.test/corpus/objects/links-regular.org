@@ -1,0 +1,18 @@
+x [[a b
+c]] [[a\]b]] [[a\\b]] [[a\b]] [[a]b]] [[a][b]c]] [[a][b]]] [[a][]] [[]] [[ ]] [[a] [b]] [[https://x.y][[[nested]]]] [[x][https://y.z]] [[x][<http://y.z>]] [[x][*b* /i/ \alpha $m$ [fn:1] <2024-01-01>]]
+
+x [[file:a.org::#cid]] [[file:a.org::/re/]] [[file:a.org::(ref)]] [[a.org::text]] [[file:a.org]] [[file:/a b.org]] [[docview:a.pdf::3]] [[file+emacs:a.org::3]] [[FILE:a.org]] [[Https://x]] [[shell:ls *.org]] [[elisp:(+ 1 2)]] [[help:org-mode]] [[news:x]] [[doi:10.1/x]] [[info:org#Links]] [[unknown:x]] [[./a.org]] [[../a]] [[a/b]] [[a.org::*h]]
+
+x [[ fuzzy ]] [[  a   b  ]] [[#a b]] [[(a b)]] [[*a b]] [[id:a b]] [[ id:a]] [[https:]] [[https:x]] [[file:]] [[:x]] [[file:a::]] [[file:a::b::c]]
+
+x [[a  
+  b]] [[a\\]] [[a\\\]b]] [[a\[b]] [[a\[b\]]] [[a][b
+c]] [[~]] [[.]] [[..]] [[~u/x]] [[C:/x]] [[./]] [[/]] [[File:a]] [[ID:x]] [[MAILTO:x]] [[Shell:x]] [[file:a.org::]] [[a][\[b\]]] [[x][a\]b]]
+
+x [[https://x.org/a\]b][d\]e]] [[a:b]] [[elisp:]] [[file:x][file:y]] [[#]] [[()]] [[(a]] [[*]] [[**a]] [[id:]] [[file:a.org::*a b]] [[file:a b.org::c d]] [[attachment:a]]
+
+x [[~x]] [[.../x]] [[./x::y]] [[File+Sys:x]] [[FILE+emacs:x::3]] [[~/a.org::12]] [[a\]] [[a\\\\]] [[\]] [[a][b]][[c]] [[a][ b ]] [[a][[b]]] [[a][b[c]d]]
+
+x [[https://orgmode.org][The Org project]] [[file:orgmanual.org]] [[Regular links]] [[id:6e5c8a3b-1f2d-4e0a-9b7c-0d1e2f3a4b5c][a note]] [[mailto:a@b.c][mail me]] [[https://x.y/a?b=c&d=e#f][query]]
+
+x [[x][a_b *c*  ]] [[x][ *a* ]] [[x][=v=]] [[x][~c~ src_py{1} call_f() {{{m}}} @@html:a@@ [1/2]]] [[é][ü]] [[😀]] [[x][😀]]

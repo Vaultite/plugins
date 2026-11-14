@@ -1,0 +1,10 @@
+- a
+| table at column zero ends the list |
+- b
+  | table in b |
+- c
+  text
+  | table ends the paragraph |
+  more
+| x |
+- after table

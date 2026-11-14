@@ -1,0 +1,24 @@
+#+begin_foo:bar
+x
+#+end_foo:bar
+#+begin_a.b
+y
+#+end_a.b
+#+begin_SRC2
+z
+#+end_src2
+#+begin_srcx
+w
+#+end_srcx
+#+begin_quote2
+q
+#+end_quote2
+#+begin_examples
+e
+#+end_examples
+#+begin_Center
+c
+#+end_CENTER
+#+begin_VERSE
+Some *verse*
+#+end_verse

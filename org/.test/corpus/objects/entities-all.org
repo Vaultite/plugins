@@ -1,0 +1,67 @@
+Every entity Emacs knows, bare, with {} and followed by a letter.
+
+x \Agrave \agrave{} \Aacutex \aacute \Acirc{} \acircx \Amacr \amacr{} \Atildex \atilde \Auml{} \aumlx
+
+x \Aring \AA{} \aringx \AElig \aelig{} \Ccedilx \ccedil \Egrave{} \egravex \Eacute \eacute{} \Ecircx
+
+x \ecirc \Euml{} \eumlx \Igrave \igrave{} \Iacutex \iacute \Idot{} \inodotx \Icirc \icirc{} \Iumlx
+
+x \iuml \Ntilde{} \ntildex \Ograve \ograve{} \Oacutex \oacute \Ocirc{} \ocircx \Otilde \otilde{} \Oumlx
+
+x \ouml \Oslash{} \oslashx \OElig \oelig{} \Scaronx \scaron \szlig{} \Ugravex \ugrave \Uacute{} \uacutex
+
+x \Ucirc \ucirc{} \Uumlx \uuml \Yacute{} \yacutex \Yuml \yuml{} \fnofx \real \image{} \weierpx
+
+x \ell \imath{} \jmathx \Alpha \alpha{} \Betax \beta \Gamma{} \gammax \Delta \delta{} \Epsilonx
+
+x \epsilon \varepsilon{} \Zetax \zeta \Eta{} \etax \Theta \theta{} \thetasymx \vartheta \Iota{} \iotax
+
+x \Kappa \kappa{} \Lambdax \lambda \Mu{} \mux \nu \Nu{} \Xix \xi \Omicron{} \omicronx
+
+x \Pi \pi{} \Rhox \rho \Sigma{} \sigmax \sigmaf \varsigma{} \Taux \Upsilon \upsih{} \upsilonx
+
+x \Phi \phi{} \varphix \Chi \chi{} \acutexx \Psi \psi{} \taux \Omega \omega{} \pivx
+
+x \varpi \partial{} \alefsymx \aleph \gimel{} \bethx \dalet \ETH{} \ethx \THORN \thorn{} \dotsx
+
+x \cdots \hellip{} \middotx \iexcl \iquest{} \shyx \ndash \mdash{} \quotx \acute \ldquo{} \rdquox
+
+x \bdquo \lsquo{} \rsquox \sbquo \laquo{} \raquox \lsaquo \rsaquo{} \circx \vert \vbar{} \brvbarx
+
+x \S \sect{} \Px \para \amp{} \ltx \gt \tilde{} \slashx \plus \under{} \equalx
+
+x \asciicirc \dagger{} \dagx \Dagger \ddag{} \nbspx \ensp \emsp{} \thinspx \curren \cent{} \poundx
+
+x \yen \euro{} \EURx \dollar \USD{} \copyx \reg \trade{} \minusx \pm \plusmn{} \timesx
+
+x \frasl \colon{} \divx \frac12 \frac14{} \frac34x \permil \sup1{} \sup2x \sup3 \radic{} \sumx
+
+x \prod \micro{} \macrx \deg \prime{} \Primex \infin \infty{} \propx \propto \not{} \negx
+
+x \land \wedge{} \lorx \vee \cap{} \cupx \smile \frown{} \intx \therefore \there4{} \becausex
+
+x \sim \cong{} \simeqx \asymp \approx{} \nex \neq \equiv{} \triangleqx \le \leq{} \gex
+
+x \geq \lessgtr{} \lesseqgtrx \ll \Ll{} \lllx \gg \Gg{} \gggx \prec \preceq{} \preccurlyeqx
+
+x \succ \succeq{} \succcurlyeqx \sub \subset{} \supx \supset \nsub{} \subex \nsup \supe{} \setminusx
+
+x \forall \exist{} \existsx \nexist \nexists{} \emptyx \emptyset \isin{} \inx \notin \ni{} \nablax
+
+x \ang \angle{} \perpx \parallel \sdot{} \cdotx \lceil \rceil{} \lfloorx \rfloor \lang{} \rangx
+
+x \langle \rangle{} \hbarx \mho \larr{} \leftarrowx \gets \lArr{} \Leftarrowx \uarr \uparrow{} \uArrx
+
+x \Uparrow \rarr{} \tox \rightarrow \rArr{} \Rightarrowx \darr \downarrow{} \dArrx \Downarrow \harr{} \leftrightarrowx
+
+x \hArr \Leftrightarrow{} \crarrx \hookleftarrow \arccos{} \arcsinx \arctan \arg{} \cosx \cosh \cot{} \cothx
+
+x \csc \det{} \dimx \exp \gcd{} \homx \inf \ker{} \lgx \lim \liminf{} \limsupx
+
+x \ln \log{} \maxx \min \Pr{} \secx \sin \sinh{} \tanx \tanh \bull{} \bulletx
+
+x \star \lowast{} \astx \odot \oplus{} \otimesx \check \checkmark{} \ordfx \ordm \cedil{} \olinex
+
+x \uml \zwnj{} \zwjx \lrm \rlm{} \smileyx \blacksmile \sad{} \frownyx \clubs \clubsuit{} \spadesx
+
+x \spadesuit \hearts{} \heartsuitx \diams \diamondsuit{} \diamondx \Diamond \loz{}

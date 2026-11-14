@@ -1,0 +1,6 @@
+#+TODO: À_FAIRE EN-COURS | FAIT ✓
+* À_FAIRE Écrire
+* EN-COURS Lire
+* FAIT Fini
+* ✓ coche
+* TODO défaut

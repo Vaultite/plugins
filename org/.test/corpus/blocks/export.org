@@ -1,0 +1,16 @@
+#+begin_export html
+<b>bold</b>
+#+end_export
+#+begin_export
+x
+#+end_export
+#+BEGIN_EXPORT LaTeX
+,* a
+\textbf{x}
+#+END_EXPORT
+#+begin_export latex extra
+x
+#+end_export
+#+begin_export   md   
+y
+#+end_export

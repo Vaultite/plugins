@@ -1,0 +1,9 @@
+x src_py{} src_py{a{b}c} src_py[a]{b} src_py[a [b]]{c} src_py {x} src_{x} src_py{a xsrc_py{b} src_py-3{x} src_é{x} src_py{a
+b} src_py[a]{b}x src_a[b
+
+x src_python[:exports both]{print("hi")} src_sh{echo $HOME} src_elisp{(+ 1 2)} src_c{int x = {1};} src_py[]{x} src_py[{]{x} src_py{x}} src_py]{x} _src_py{x} *src_py{x}*
+
+x src_a]{x} src_a}{x} src_a({x} src_a)[b]{x} src_py[a
+  b]{c
+  d} src_py[ a  b ]{x} src_py[a  
+  b]{x} src_py[  ]{x} 😀src_py{x} 中src_py{x} αsrc_py{x}

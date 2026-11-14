@@ -1,0 +1,11 @@
+#+call: a
+* H
+:D:
+#+call: a
+:END:
+after
+- item
+  #+call: a
+- two
+
+#+call: last

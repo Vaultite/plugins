@@ -1,0 +1,7 @@
+- a
+  #+NAME: inner
+  - b
+  - c
+- d
+  #+CAPTION: t
+  | x |

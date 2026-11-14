@@ -1,0 +1,157 @@
+/* An Org file as a note: .note-prose gives the text, lists, tables, code and links; this adds the note's headings (the
+   editor's sizes and colours), folding as the folding plugin draws it, and Org's own parts (keywords, dates, drawers). */
+.org-doc { position: relative; }
+.org-doc .org-doctitle { font-size: 24px; line-height: 30px; font-weight: 700; text-wrap: balance; overflow-wrap: anywhere; margin: 0 0 16px; }
+@media (min-width: 768px) { .org-doc .org-doctitle { font-size: 28px; line-height: 34px; } }
+.org-doc .org-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: -8px 0 20px; font-size: 0.875em; color: var(--muted-foreground); }
+
+.org-doc .org-meta > span + span::before { content: "·"; margin-right: 8px; }
+
+/* Headings: the editor's (.vau-editor .cm-h1...), with a note's spacing around them. */
+.org-doc .org-h { position: relative; margin: 28px 0 10px; font-weight: 700; overflow-wrap: anywhere; scroll-margin-top: calc(var(--vau-panel-top, 40px) + 12px); }
+.org-doc > .org-sec:first-child > .org-h, .org-doc > .org-doctitle + .org-sec > .org-h, .org-doc > .org-meta + .org-sec > .org-h { margin-top: 0; }
+.org-doc .org-h1 { font-size: 1.625em; line-height: 1.31; color: oklch(from var(--h1) var(--ink-l) c h); }
+.org-doc .org-h2 { font-size: 1.3125em; line-height: 1.333; color: oklch(from var(--h2) var(--ink-l) c h); }
+.org-doc .org-h3 { font-size: 1.125em; line-height: 1.39; font-weight: 600; color: oklch(from var(--h3) var(--ink-l) c h); margin-top: 20px; }
+.org-doc :is(.org-h4, .org-h5, .org-h6) { font-size: 1em; line-height: 1.44; font-weight: 600; margin-top: 18px; }
+.org-doc .org-h4 { color: oklch(from var(--h4) var(--ink-l) c h); }
+.org-doc .org-h5 { color: oklch(from var(--h5) var(--ink-l) c h); }
+.org-doc .org-h6 { color: oklch(from var(--h6) var(--ink-l) c h); }
+.org-doc :is(.org-h1, .org-h2, .org-h3) { font-family: var(--font-heading); }
+.org-doc .org-h.is-done .org-title-text { color: var(--muted-foreground); }
+.org-doc .org-h.is-cancelled .org-title-text { text-decoration: line-through; text-decoration-thickness: 1px; }
+.org-doc .org-sec.is-dim > :not(.org-sec) { opacity: 0.55; }
+.org-doc.compact .org-h { margin: 18px 0 6px; }
+.org-doc.compact .org-h1 { font-size: 1.3em; }
+.org-doc.compact .org-h2 { font-size: 1.15em; }
+.org-doc.compact :is(.org-h3, .org-h4, .org-h5, .org-h6) { font-size: 1em; }
+
+/* Folding: the chevron in the margin on hover, always while folded; … stands for what's hidden. */
+.org-doc .org-fold { position: absolute; left: -22px; top: 0; height: 1lh; width: 18px; display: grid; place-items: center; border-radius: 4px;
+  color: var(--muted-foreground); opacity: 0; transition: opacity 120ms; cursor: pointer; }
+.org-doc .org-fold svg { transition: transform 120ms; }
+.org-doc .org-h:hover > .org-fold, .org-doc .org-fold:focus-visible, .org-doc .org-fold.is-folded { opacity: 1; }
+.org-doc .org-fold:hover { color: var(--foreground); background: color-mix(in srgb, var(--foreground) 6%, transparent); }
+.org-doc .org-fold.is-folded svg { transform: rotate(-90deg); }
+.org-doc .org-more { display: inline-block; margin: 0 6px; padding: 0 6px; border-radius: 5px; vertical-align: middle; cursor: pointer;
+  background: color-mix(in srgb, var(--foreground) 7%, transparent); color: var(--muted-foreground); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; font-weight: 500; }
+.org-doc .org-more:hover { background: color-mix(in srgb, var(--foreground) 12%, transparent); color: var(--foreground); }
+@media (hover: none), (max-width: 767px) {
+  .org-doc .org-fold { display: none; }
+  .org-doc .org-h:has(> .org-fold) { cursor: pointer; }
+}
+
+/* Keywords and priorities: compact chips in their colour, sized off the heading but never tiny. */
+:is(.org-doc, .org-live) :is(.org-kw, .org-prio) { display: inline-block; position: relative; top: -0.12em; margin-right: 0.4em; padding: 0 0.45em; border-radius: var(--radius-chip, 4px);
+  font-family: var(--font-sans); font-size: max(11px, 0.56em); line-height: 1.7; font-weight: 650; letter-spacing: 0.02em; vertical-align: middle; white-space: nowrap;
+  color: oklch(from var(--t) var(--ink-l) c h); background: color-mix(in srgb, var(--t) 15%, transparent); }
+:is(.org-doc, .org-live) .org-kw.is-done { background: color-mix(in srgb, var(--t) 11%, transparent); }
+:is(.org-doc, .org-live) button.org-kw { cursor: pointer; }
+:is(.org-doc, .org-live) button.org-kw:hover { background: color-mix(in srgb, var(--t) 24%, transparent); }
+:is(.org-doc, .org-live) .org-prio { padding: 0; min-width: 1.75em; text-align: center; background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--t) 45%, transparent); }
+:is(.org-doc, .org-live) .org-tags { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 0.5em; vertical-align: middle; position: relative; top: -0.1em;
+  font-family: var(--font-sans); font-size: max(12px, 0.56em); line-height: 1.6; font-weight: 500; }
+:is(.org-doc, .org-live) .org-tags a.tag { padding: 0 6px; }
+
+/* Planning dates and timestamps. */
+.org-doc .org-planning { display: flex; flex-wrap: wrap; gap: 6px; margin: -2px 0 12px; }
+:is(.org-doc, .org-live) .org-chip, :is(.org-doc, .org-live) .org-time { --t: var(--muted-foreground); display: inline-flex; align-items: center; gap: 5px; border-radius: 6px; white-space: nowrap;
+  font-family: var(--font-sans); font-size: 13px; line-height: 22px; font-weight: 500; font-variant-numeric: tabular-nums; }
+:is(.org-doc, .org-live) .org-chip { padding: 0 8px; color: oklch(from var(--t) var(--ink-l) c h); background: color-mix(in srgb, var(--t) 10%, transparent); }
+:is(.org-doc, .org-live) .org-chip-word { font-weight: 600; }
+:is(.org-doc, .org-live) .org-chip-note { opacity: 0.8; font-weight: 500; }
+:is(.org-doc, .org-live) .org-chip-note::before { content: "·"; margin-right: 5px; }
+:is(.org-doc, .org-live) .org-chip-repeat { opacity: 0.75; }
+:is(.org-doc, .org-live) .org-chip.is-overdue { --t: var(--red); }
+:is(.org-doc, .org-live) .org-chip.is-soon { --t: var(--orange); }
+:is(.org-doc, .org-live) .org-chip.is-later { --t: var(--blue); }
+:is(.org-doc, .org-live) .org-chip.is-quiet { --t: var(--muted-foreground); }
+:is(.org-doc, .org-live) .org-time { --t: var(--primary); padding: 0 6px; vertical-align: 1px; line-height: 20px; color: oklch(from var(--t) var(--ink-l) c h); background: color-mix(in srgb, var(--t) 9%, transparent); }
+:is(.org-doc, .org-live) .org-time.is-quiet { --t: var(--muted-foreground); }
+.org-doc .org-clock { display: flex; align-items: center; gap: 6px; font-size: 0.875em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.org-doc .org-clock-for { margin-left: auto; font-weight: 600; color: var(--foreground); }
+
+/* Statistics cookies: a small bar and the count. */
+:is(.org-doc, .org-live) .org-cookie { display: inline-flex; align-items: center; gap: 6px; margin: 0 0.15em; position: relative; top: -0.08em; vertical-align: middle;
+  font-family: var(--font-sans); font-size: max(12px, 0.56em); line-height: 1.6; font-weight: 600; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+:is(.org-doc, .org-live) .org-cookie-bar { position: relative; width: 2.6em; height: 5px; border-radius: 3px; overflow: hidden; background: color-mix(in srgb, var(--foreground) 12%, transparent); }
+:is(.org-doc, .org-live) .org-cookie-bar > span { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--notes, var(--primary)); }
+:is(.org-doc, .org-live) .org-cookie.is-full { color: oklch(from var(--green) var(--ink-l) c h); }
+:is(.org-doc, .org-live) .org-cookie.is-full .org-cookie-bar > span { background: var(--green); }
+
+/* Drawers: closed, a quiet line saying what's inside. */
+.org-doc .org-drawer { margin: 0 0 2px; font-size: 0.875em; }
+.org-doc .org-drawer:has(+ :not(.org-drawer)) { margin-bottom: 12px; }
+.org-doc .org-drawer-head { display: inline-flex; align-items: center; gap: 4px; margin-left: -2px; padding: 1px 6px 1px 2px; border-radius: 6px;
+  color: var(--muted-foreground); font-weight: 500; cursor: pointer; }
+.org-doc .org-drawer-head:hover { color: var(--foreground); background: color-mix(in srgb, var(--foreground) 6%, transparent); }
+.org-doc .org-drawer-fold { transition: transform 120ms; }
+.org-doc .org-drawer.is-open .org-drawer-fold { transform: rotate(90deg); }
+.org-doc .org-drawer-note { margin-left: 4px; font-weight: 400; opacity: 0.8; }
+.org-doc .org-drawer-body { margin: 6px 0 0 6px; padding-left: 12px; border-left: 1.5px solid color-mix(in srgb, var(--foreground) 10%, transparent); }
+.org-doc .org-drawer-body > :last-child { margin-bottom: 0; }
+.org-doc .org-props { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; }
+.org-doc .org-props dt { color: var(--muted-foreground); font-family: var(--font-code); font-size: 0.92em; }
+.org-doc .org-props dd { margin: 0; overflow-wrap: anywhere; }
+
+/* A checkbox item's own list starts under its text, past the box. */
+.org-doc li:has(> input[type="checkbox"]) > :is(ul, ol) { padding-left: calc(20px + 0.5em + 1.35em); }
+/* Lists: checked items quieter, as the editor's done tasks; a half-done box shows a dash. */
+.org-doc li + li { margin-top: 2px; }
+.org-doc li.is-done > .org-item-text, .org-doc dt.is-done { color: var(--muted-foreground); text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--muted-foreground) 60%, transparent); }
+/* A nested list's guide: a faint line down from its parent's bullet or box. */
+.org-doc li > :is(ul, ol) { position: relative; }
+.org-doc li > :is(ul, ol)::before { content: ""; position: absolute; top: 2px; bottom: 2px; left: -0.85em; width: 1px; background: color-mix(in srgb, var(--foreground) 14%, transparent); }
+.org-doc li:has(> input[type="checkbox"]) > :is(ul, ol)::before { left: 10px; }
+.org-doc .org-tight { margin-bottom: 4px; }
+.org-doc li > :is(p, ul, ol, dl, .md-code, .md-table-view, blockquote) { margin: 6px 0 0; }
+.org-doc input[type="checkbox"][data-trans] { border-color: var(--notes); background: var(--notes) center / 12px no-repeat
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6h6' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.org-doc .org-dl { margin: 0 0 14px; }
+.org-doc .org-dl dt { font-weight: 600; }
+.org-doc .org-dl dd { margin: 0 0 6px 1.35em; }
+.org-doc .org-dl dd > :last-child { margin-bottom: 0; }
+
+/* Tables, pictures and named blocks: a caption under them. */
+.org-doc .org-figure { margin: 0 0 14px; }
+.org-doc .org-figure > :is(.md-table-view, .md-code) { margin-bottom: 0; }
+.org-doc .org-caption { margin-top: 6px; font-size: 0.875em; color: var(--muted-foreground); }
+.org-doc .org-img { display: block; max-width: 100%; border-radius: 10px; }
+.org-doc tbody + tbody { border-top: 1.5px solid var(--border); }
+
+/* Blocks. */
+.org-doc .org-verse { white-space: pre-wrap; padding-left: 14px; }
+.org-doc .org-center { text-align: center; }
+.org-doc .org-center > :last-child { margin-bottom: 14px; }
+.org-doc .org-math { margin: 0 0 14px; overflow-x: auto; }
+.org-doc .org-strike { color: var(--muted-foreground); }
+.org-doc .org-quiet { color: var(--muted-foreground); }
+.org-doc .org-target { scroll-margin-top: calc(var(--vau-panel-top, 40px) + 12px); }
+
+/* Footnotes: where they're written, numbered as referenced. */
+.org-doc .org-fn { display: flex; gap: 8px; margin: 0 0 8px; font-size: 0.88em; color: var(--muted-foreground); scroll-margin-top: calc(var(--vau-panel-top, 40px) + 12px); }
+.org-doc .org-fn-n { flex: none; min-width: 1.2em; font-weight: 600; text-decoration: none; padding: 0; color: oklch(from var(--primary) var(--ink-l) c h); cursor: pointer; }
+.org-doc .org-fn-body > :last-child { margin-bottom: 0; }
+.org-doc .org-notes { margin-top: 20px; padding-top: 10px; border-top: 0.5px solid var(--border); }
+
+/* Where a jump lands: a moment's tint. */
+.org-doc .org-flash { animation: org-flash 1.2s ease-out; border-radius: 4px; }
+@keyframes org-flash { from { background: color-mix(in srgb, var(--yellow) 35%, transparent); } to { background: transparent; } }
+
+/* Embedded in a note: inside its frame's padding. */
+.org-doc.org-embed { padding: 0 14px 12px; }
+
+/* The Plugins page's preview: small, no margin chevrons. */
+.org-doc.org-preview { padding: 14px 18px; }
+.org-doc.org-preview .org-fold { display: none; }
+
+/* Live preview (editor/live.ts): the editor's own look; chips as in reading; a block's begin and end lines out of the way. */
+.org-live .org-live-chip { display: inline; }
+.org-live .cm-org-gone { font-size: 0; line-height: 0; }
+.org-live .cm-task[data-trans] { border-color: var(--notes); background: var(--notes) center / 11px no-repeat
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6h6' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.org-live .cm-org-link { cursor: pointer; }
+.org-live .org-tags a.tag { color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); border-radius: 6px; padding: 0 6px; text-decoration: none; cursor: pointer; }
+/* A nested item's indent, wider than its two spaces, in both editors. */
+.vau-editor .cm-org-indent { letter-spacing: 0.6em; }

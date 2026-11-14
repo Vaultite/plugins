@@ -1,0 +1,11 @@
+- [ ] open
+- [X] done
+- [-] partial
+- [x] lowercase is not a checkbox
+- [ ]
+- [X]
+- [X]no space
+- [  ] two spaces
+- [?] other
+-  [X]  wide
+1. [X] ordered

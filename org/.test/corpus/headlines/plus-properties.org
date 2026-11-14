@@ -1,0 +1,10 @@
+* H
+:PROPERTIES:
+:A+: 1
+:A+: 2
+:a+: 3
+:B: x
+:B+: y
+:B+: z
+:C+: only
+:END:

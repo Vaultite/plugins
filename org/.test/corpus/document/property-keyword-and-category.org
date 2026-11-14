@@ -1,0 +1,2 @@
+#+CATEGORY: kw
+#+PROPERTY: CATEGORY fromprop

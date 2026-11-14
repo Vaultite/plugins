@@ -1,0 +1,21 @@
+* H1
+
+
+* H2   
+* TODO  [#B]  COMMENT  Title here   :a:b_c@#%:  
+** DONE
+*** COMMENT
+* COMMENTx
+*  
+* [#A]
+* TODO [#1] t
+* TODO [#65] u
+* Footnotes
+* TODO Footnotes
+* x :ARCHIVE:
+*** TODO	Tab sep
+* :tag:
+* t :a::b:
+* x :é:
+* a:b:
+*

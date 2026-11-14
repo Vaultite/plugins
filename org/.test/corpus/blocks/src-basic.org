@@ -1,0 +1,17 @@
+#+BEGIN_SRC emacs-lisp -n 10 -r -l "(ref:%s)" :tangle yes :results output
+  (+ 1 2)
+,* star
+,#+end_src
+#+END_SRC
+
+#+begin_src
+x
+#+end_src
+#+begin_src python +n -i -k
+	tab
+#+end_src
+
+
+#+begin_src sh
+#+end_src
+Text after.

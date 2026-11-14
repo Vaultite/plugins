@@ -1,0 +1,64 @@
+* Scheduled
+SCHEDULED: <2026-03-01 Sun>
+* Deadline
+DEADLINE: <2026-03-02 Mon>
+* Closed
+CLOSED: [2026-03-03 Tue 10:00]
+* All three, any order
+CLOSED: [2026-03-03 Tue] DEADLINE: <2026-03-02 Mon> SCHEDULED: <2026-03-01 Sun>
+* Indented
+    SCHEDULED: <2026-03-01 Sun>
+* With times and repeaters
+SCHEDULED: <2026-03-01 Sun 09:00 +1w> DEADLINE: <2026-03-05 Thu -2d>
+* Repeated keyword
+SCHEDULED: <2026-03-01 Sun> SCHEDULED: <2026-03-08 Sun>
+* No space after colon
+DEADLINE:<2026-03-02 Mon>
+* Junk after
+SCHEDULED: <2026-03-01 Sun> and then some words
+* No timestamp
+SCHEDULED: soon
+* Lowercase keyword
+deadline: <2026-03-02 Mon>
+* Mixed case
+Scheduled: <2026-03-01 Sun>
+* Glued keyword
+SCHEDULED: <2026-03-01 Sun> xDEADLINE: <2026-03-02 Mon>
+* Text first
+Text SCHEDULED: <2026-03-01 Sun>
+* After a blank line
+
+SCHEDULED: <2026-03-01 Sun>
+* Second line
+SCHEDULED: <2026-03-01 Sun>
+DEADLINE: <2026-03-02 Mon>
+* Blank lines after planning
+SCHEDULED: <2026-03-01 Sun>
+
+
+Body.
+* Planning then drawer
+SCHEDULED: <2026-03-01 Sun>
+:PROPERTIES:
+:ID: p1
+:END:
+Body.
+* Planning, blank, drawer
+DEADLINE: <2026-03-02 Mon>
+
+:PROPERTIES:
+:ID: p2
+:END:
+* Drawer then planning
+:PROPERTIES:
+:ID: p3
+:END:
+SCHEDULED: <2026-03-01 Sun>
+* Inactive scheduled
+SCHEDULED: [2026-03-01 Sun]
+* Planning with subheading
+SCHEDULED: <2026-03-01 Sun>
+** Child
+DEADLINE: <2026-03-02 Mon>
+* Planning at end of file
+CLOSED: [2026-03-03 Tue]

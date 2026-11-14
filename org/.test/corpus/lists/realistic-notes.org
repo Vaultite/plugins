@@ -1,0 +1,39 @@
+* Project Lighthouse
+Notes from the kickoff with Alice Park.
+
+- Goals for the quarter
+  1. Ship the beta [0/3]
+     - [ ] onboarding flow
+     - [-] billing
+       - [X] invoices
+       - [ ] refunds
+     - [ ] docs
+  2. Hire two engineers
+  3. [@5] Plan the offsite
+
+- Open questions
+  + who owns the migration?
+  + do we need a staging cluster?
+
+    Probably, given the load tests.
+  + budget :: still unknown, ask finance
+
+- Glossary
+  - SLA :: service level agreement
+  - SLO :: service level objective,
+    the target we measure against
+  - error budget ::
+    what's left of the SLO
+
+
+** Decisions
+1) Postgres over MySQL
+2) Weekly releases
+   - Tuesdays
+   - with a rollback plan
+     #+begin_src sh
+./deploy --rollback
+     #+end_src
+3) No Friday deploys
+
+Next steps are in the tracker.

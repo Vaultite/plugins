@@ -1,0 +1,8 @@
+text
+| a table ends the paragraph |
+text
+  | indented too |
+more
++--+
++--+
+after a border

@@ -1,0 +1,4 @@
+:PROPERTIES:
+:ID: doc
+:END:
+SCHEDULED: <2026-01-01 Thu>

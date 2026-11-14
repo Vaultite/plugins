@@ -1,0 +1,16 @@
+- term :: definition
+- other term :: its text
+
+- t1 :: t2 :: last wins
+- a::b :: inner colons
+- a ::b not a tag
+- ::x not a tag
+- :: x not a tag
+- tag at end ::
+- tag with trailing space :: 
+- two  spaces  :: x
+- tab	:: y
+- [X] checked :: tag
+- [@2] :: not a tag
+- [X] :: not a tag
+1. ordered :: no tag

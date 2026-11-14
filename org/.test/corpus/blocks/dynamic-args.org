@@ -1,0 +1,20 @@
+#+begin: x 
+#+end:
+#+begin: x  
+#+end:
+#+begin: x   
+#+end:
+#+begin: x 	
+#+end:
+#+begin: x   a
+#+end:
+#+begin: x		a
+#+end:
+#+begin: x  a  
+#+end:
+#+begin:   x
+#+end:
+#+begin: 	x		y
+#+end:
+#+begin: columnview :id global :hlines 1
+#+end:

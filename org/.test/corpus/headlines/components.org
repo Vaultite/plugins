@@ -1,0 +1,29 @@
+* TODO [#B] COMMENT x
+* TODO  COMMENT y
+* [#B]  COMMENT z
+*  COMMENT w
+* COMMENT	v
+* COMMENT :t:
+* COMMENT
+* TODO [#64] a
+* TODO [#0] b
+* TODO [#10] c
+* TODO [#a] d
+* TODO [#Z] e
+* [#B]x
+* TODO[#A] f
+* TODO [#A]
+* TODO :tag:
+* TODO
+* DONE COMMENT [#A] g
+* todo h
+* T t :a:b: 
+* T t	:a:
+* T t :a b:
+* T t :a:b
+* T t ::
+* T t :a:  :b:
+*	 tab
+** 
+* x :tagé:
+* x :_:

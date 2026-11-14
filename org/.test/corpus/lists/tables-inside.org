@@ -1,0 +1,11 @@
+- a
+  | x | y |
+  |---+---|
+  | 1 | 2 |
+  #+TBLFM: $2=$1
+- b
+  - c
+    | z |
+
+- d
+| col zero ends it |

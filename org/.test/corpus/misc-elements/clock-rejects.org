@@ -1,0 +1,75 @@
+x
+
+CLOCK: [2024-01-01 Mon 10:00-11:30] => 1:30
+
+x
+
+CLOCK: <2024-01-01 Mon 10:00>
+
+x
+
+CLOCK:
+
+x
+
+CLOCK: [2024-01-01 Mon 10:00] extra
+
+x
+
+CLOCK: [2024-01-01 Mon 10:00]--[2024-01-01 Mon 11:30] => 1:30 x
+
+x
+
+CLOCK: [2024-01-01 Mon 10:00]--[2024-01-01 Mon 11:30] =>1:30
+
+x
+
+CLOCK: [2024-01-01 Mon 10:00]--[2024-01-01 Mon 11:30]=> 1:30
+
+x
+
+CLOCK:[2024-01-01 Mon]
+
+x
+
+CLOCK: =>
+
+x
+
+CLOCK: => 1:3
+
+x
+
+CLOCK: x
+
+x
+
+CLOCK: [garbage]
+
+x
+
+CLOCK: [2024-1-1 Mon]
+
+x
+
+CLOCK: [2024-01-01 Mon]--[2024-01-02 Tue] => 1:300
+
+x
+
+CLOCK: [2024-01-01 Mon] => 1:30
+
+x
+
+CLOCK: =>  -1:30
+
+x
+
+CLOCK: [2024-01-01 Mon]--garbage
+
+x
+
+CLOCK: =>1:30
+
+x
+
+CLOCK: [2024-01-01 Mon] x [2024-01-02 Tue]

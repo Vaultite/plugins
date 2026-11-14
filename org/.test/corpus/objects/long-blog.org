@@ -1,0 +1,40 @@
+#+TITLE: Why I write in plain text
+#+DATE: <2024-02-10 Sat>
+
+* Plain text lasts
+I've kept notes since 2009. The *formats* changed (Evernote, then Notion, then back to files) but the
+/text/ survived only where it was _plain_. A file like =notes.org= opens in any editor, on any machine,
+in 30 years. Compare that to +proprietary databases+ "the cloud".
+
+Some links I keep coming back to:
+- https://orgmode.org, the home page;
+- <https://www.gnu.org/software/emacs/manual/html_node/org/index.html> for the manual;
+- [[https://karl-voit.at/2017/09/23/orgmode-as-markup-only/][Org as markup only]] by Karl Voit;
+- [[file:~/notes/archive.org::*2019][my 2019 archive]] and [[id:2f1c1a36-0b8e-4d6b-9a7e-3f6f9a1b2c3d][the index]].
+
+* Tables and checklists
+| Tool     | Since | Still used? |
+|----------+-------+-------------|
+| Evernote |  2009 | no          |
+| Notion   |  2018 | /barely/    |
+| Org      |  2020 | *yes*       |
+
+- [X] Export old notes [3/3]
+- [-] Clean up tags [50%]
+  - [X] merge =:work:= and =:job:=
+  - [ ] drop =:misc:=
+
+* Footnotes and asides
+Writing every day[fn:daily] matters more than the tool.[fn::Though a good tool helps.] On mobile I use
+a small app that syncs over Git; conflicts are rare.
+
+#+begin_verse
+  So much depends
+upon a plain *text* file
+    glazed with /rain/ water
+#+end_verse
+
+My schedule: weekly review <2024-02-11 Sun 18:00 +1w>, monthly <2024-03-01 Fri ++1m>, and the
+yearly one [2024-12-31 Tue]. Times like 9:30 or 21:00 outside brackets are just text.
+
+[fn:daily] Even 10 minutes. Seriously -- it compounds. See also [[*Plain text lasts][the first section]].

@@ -1,0 +1,10 @@
+* A
+** A1
+*** A1a
+text
+** A2
+* B
+*** B deep first
+** B2
+**** B2 deep
+* C

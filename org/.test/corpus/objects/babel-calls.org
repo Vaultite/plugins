@@ -1,0 +1,11 @@
+x call_f() call_f(a,b) call_f[h]() call_f()[e] call_f call_f[](x) call_f(a(b)c) call_f(a()) call_f(a
+b) call_ f() call_é() xcall_f() call_a.b() call_f()x call_f[a[b]c]() call_f [h]()
+
+x call_square(x=4)[:results raw] call_f[:var x=1](y=2)[:exports both] call_f(() call_f()) call_f[)]() call_f(x)[] call_f(x)[ call_f(x)[a call_ff() _call_f() -call_f() *call_f()*
+
+x call_f:h](x=1)[:e] call_f](x) call_f)(x) call_f[a(x) call_f[(x) call_f[a
+  b](c
+  d)[e
+  f] call_g(a
+b) call_h(a  
+  b) call_f[a   b]() call_f[ a ]() call_f[a	b]() call_f()[ x ] call_f[ ]() 😀call_f() 中call_f() écall_f()

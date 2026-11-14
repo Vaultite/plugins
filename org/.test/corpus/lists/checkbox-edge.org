@@ -1,0 +1,7 @@
+-  [X]  wide checkbox
+- [ ]tight
+- [-]
+- [X] [X] two
+- [@1]
+- [@1] 
+- [@1][X] tight both

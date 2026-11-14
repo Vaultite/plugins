@@ -28,6 +28,9 @@ plugin (`vau docs vault-plugins`, the app's `plugins/CLAUDE.md`). The app's chec
 - Comments at most 2 lines; docs short. No one's personal data: made-up names (Alice Park, Lighthouse).
 
 ## Plugins
+- **Org Mode**: its parser matches Emacs node for node: `node org/.test/conform.ts` (Emacs's trees cached in
+  `org/.test/expected/`, redone where `emacs` is installed). Clean room: from the spec and Emacs's output, never Org's
+  Lisp source or tests.
 - **Git**: runs the user's git in the vault's folder (`git.ts`: argv, its own session, prompts off; ops are the API,
   the panel uses them too). Tests and QA use throwaway repositories (a bare one in a temp folder as the remote) with
   `GIT_CONFIG_GLOBAL` pointing at a made-up author, never the machine's config or GitHub.

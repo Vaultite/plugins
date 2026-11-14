@@ -1,0 +1,30 @@
+* Budget
+#+NAME: budget
+#+CAPTION: Monthly budget
+| Category  | Planned | Actual | Diff |
+|-----------+---------+--------+------|
+| Rent      |    1200 |   1200 |    0 |
+| Food 🍕   |     400 |    452 |  -52 |
+| Transport |     100 |     80 |   20 |
+|-----------+---------+--------+------|
+| Total     |    1700 |   1732 |  -32 |
+#+TBLFM: $4=$2-$3::@>$2=vsum(@I..@II)
+#+TBLFM: @>$3=vsum(@I..@II)
+
+Some text after.
+| quick | table |
+text right after a table
+
+** Layout
++----------+----------+
+| Left     | Right    |
++==========+==========+
+| a        | b        |
++----------+----------+
+
+- in a list
+  | x | y |
+  |---|---|
+  | 1 | 2 |
+
+  | second | table |

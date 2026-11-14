@@ -1,0 +1,5 @@
+#+SEQ_TODO: A
+#+TYP_TODO: B C
+* A x
+* B y
+* C z

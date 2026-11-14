@@ -1,0 +1,12 @@
+x https://a.b/c, https://a.b/c. https://a.b/c/ https://a.b/c- (https://a.b/c) https://a.b/(x(y)z) https://a.b/[x] xhttps://a.b é https://a.b_c https://a.b?q=1&r=2#f https:// https:x file:a.org mailto:a@b.c news:comp shell:ls id:abc elisp:(foo) help:x doi:10/x info:emacs unknown:x HTTPS://A.B Https://x
+
+x _https://a.b_ *https://a.b* "https://a.b" 'https://a.b' -https://a.b https://a.b:8080/x https://é.b/ö https://a.b/😀 https://a.b/x;y https://a.b/x' https://a.b/x" https://a.b/x>y https://a.b/x<y https://a.b/x|y https://a.b/~u https://a.b/x=y https://a.b/% https://a.b/x%
+
+x https://a.b/(a(b(c)d)e) https://a.b/<x> https://a.b/(x https://a.b/x) https://a.b/x? https://a.b/x! https://a.b/x: https://a.b/x* https://a.b/x+ https://a.b/x_ https://a.b/x$ https://a.b/x# https://a.b/x& https://a.b/x@ https://a.b/x\ https://a.b/x^ https://a.b/x` https://a.b/x~ https://a.b/x{ https://a.b/x}
+
+x see https://orgmode.org. And http://example.com/path/to/page.html?x=1, or ftp://files.example.org/pub/.
+Also file:~/notes.org::*Heading and file:/tmp/x.txt::42 and news:comp.emacs and shell:echo and shortdoc:x and eww:x and w3m:x and doi:10.1000/182 and bbdb:x and irc:x and info:org#Links
+
+x 1https://a.b a.https://a.b a-https://a.b a/https://a.b (https://a.b) [https://a.b] {https://a.b} <https://a.b https://a.b> https://a.b,https://c.d
+
+x éhttps://a.b αhttps://a.b 中https://a.b аhttps://a.b 😀https://a.b ﬁhttps://a.b 1https://a.b _https://a.b 日本https://a.b ひhttps://a.b ꙮhttps://a.b 한https://a.b ðhttps://a.b

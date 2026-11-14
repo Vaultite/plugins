@@ -1,0 +1,29 @@
+\begin{align*}
+a
+\end{align*}
+  \begin{eq}[opt] x
+  y
+  \end{eq}   trailing
+\begin{a}\end{a}
+\begin{x}
+\end{y}
+\end{x}
+\begin{bad name}
+\end{bad name}
+  \begin{eq}[opt] x
+  y
+  \end{eq}
+para
+\begin{eq}
+\end{eq}  
+\begin{eq*}
+\end{eq*}
+\BEGIN{x}
+\END{x}
+\begin{x}
+foo \end{x}
+\begin{x} y \end{x}
+\begin{x}
+\end{X}
+\begin{nope}
+never closed

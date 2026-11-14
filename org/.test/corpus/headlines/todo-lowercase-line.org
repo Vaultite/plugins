@@ -1,0 +1,4 @@
+#+todo: lower case
+* lower a
+* case b
+* TODO c

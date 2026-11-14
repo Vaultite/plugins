@@ -1,0 +1,51 @@
+#+NAME: src
+#+begin_src sh
+echo
+#+end_src
+
+#+NAME: tbl
+#+CAPTION: A table
+| a | b |
+
+#+NAME: lst
+- item
+
+#+name: quote
+#+begin_quote
+q
+#+end_quote
+
+#+name: dyn
+#+begin: x
+#+end:
+
+#+name: rule
+-----
+
+#+name: latex
+\begin{equation}
+x
+\end{equation}
+
+#+name: unterminated
+#+begin_src: x
+
+#+NAME: a
+#+NAME: b
+
+#+CAPTION[s]:
+#+CAPTION: x
+p
+
+#+RESULTS[abc]:
+p
+
+#+RESULT[x]: v
+p
+
+#+CAPTION:
+-----
+
+#+CAPTION: x
+#+CAPTION:
+p

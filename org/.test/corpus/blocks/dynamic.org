@@ -1,0 +1,19 @@
+:dyn:
+#+BEGIN: clocktable :scope file :maxlevel 2
+| a |
+#+END:
+#+begin: x
+#+end: trailing
+#+BEGIN:  
+#+END:
+#+BEGIN: dyn  :a   1  
+#+END:
+#+begin: dyn
+
+x
+#+end:
+#+begin: x   
+#+end:
+#+begin: x
+#+END
+#+end:

@@ -1,0 +1,8 @@
+# a
+# b
+
+# c
+:PROPERTIES:
+:CATEGORY: z
+:END:
+#+CATEGORY: k

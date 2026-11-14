@@ -1,0 +1,30 @@
+- item
+  #+NAME: in-item
+  #+begin_src sh
+  echo
+  #+end_src
+- item two
+  #+CAPTION: dangling
+- item three
+
+#+begin_quote
+#+NAME: inquote
+| x |
+#+CAPTION: at end of quote
+#+end_quote
+
+:DRAWER:
+#+ATTR_HTML: :class x
+[[file:img.png]]
+#+NAME: at drawer end
+:END:
+
+* Heading
+#+NAME: first in section
+Text.
+** Sub
+:PROPERTIES:
+:ID: x
+:END:
+#+NAME: after props
+- a

@@ -1,0 +1,7 @@
+[fn:1] - not an item, mid line
+  - item in footnote
+
+#+begin_quote
+  - indented in quote
+- less indented
+#+end_quote

@@ -1,0 +1,9 @@
+#+begin_src org
+#+TODO: INSRC
+#+end_src
+#+begin_quote
+#+TODO: QUOTED
+#+end_quote
+* INSRC a
+* QUOTED b
+* TODO c

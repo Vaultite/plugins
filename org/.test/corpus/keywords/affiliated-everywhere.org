@@ -1,0 +1,65 @@
+#+NAME: d
+:DRAWER:
+x
+:END:
+
+#+NAME: dyn
+#+BEGIN: clocktable
+#+END:
+
+#+NAME: fn
+[fn:1] def
+
+#+NAME: fw
+: fixed
+
+#+NAME: t
+| a |
+
+#+NAME: l
+- item
+
+#+NAME: latex
+\begin{x}
+\end{x}
+
+#+NAME: call
+#+CALL: f(x=1)
+
+#+NAME: kw
+#+OPTIONS: toc:nil
+
+#+NAME: verse
+#+begin_verse
+v
+#+end_verse
+
+#+NAME: ex
+#+begin_example
+e
+#+end_example
+
+#+NAME: exp
+#+begin_export html
+<p>
+#+end_export
+
+#+NAME: cb
+#+begin_comment
+c
+#+end_comment
+
+#+NAME: sb
+#+begin_aside
+s
+#+end_aside
+
+#+NAME: c
+#+begin_center
+c
+#+end_center
+
+#+NAME: diary
+%%(diary-anniversary 10 31 1948)
+
+#+NAME: after

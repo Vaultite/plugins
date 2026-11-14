@@ -1,0 +1,13 @@
+#+TITLE: Hello
+* TODO [#A] Heading one :work:home:
+SCHEDULED: <2026-11-13 Fri>
+:PROPERTIES:
+:CUSTOM_ID: one
+:END:
+Some *bold* text and [[https://x.com][a link]].
+
+- item 1
+- [X] item 2
+| a | b |
+|---+---|
+| 1 | 2 |

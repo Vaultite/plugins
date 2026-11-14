@@ -1,0 +1,8 @@
+- a
+  :drawer:
+  - inside drawer
+  :end:
+- b
+  #+begin_example
+  - not an item
+  #+end_example

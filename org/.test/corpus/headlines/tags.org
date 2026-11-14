@@ -1,0 +1,23 @@
+* Simple :a:
+* Many :a:b:c:d:
+* Symbols :a_b:c@d:e#f:g%h:
+* Digits :123:4a:
+* Spaces before   :a:
+* Tabs before	:a:
+* Trailing spaces :a:   
+* Not tags:a:
+* Broken :a b:
+* Brackets :[a]:
+* Dash :a-b:
+* Dot :a.b:
+* Only colon :
+* Two colons ::
+* Three colons :::
+* Empty inside :a::b:
+* :only:tags:
+** TODO :kw:then:tags:
+* Archive :ARCHIVE:
+* Archive lower :archive:
+* Archive mixed :work:ARCHIVE:x:
+* Title with :colon: inside text
+* Tag then text :a: text

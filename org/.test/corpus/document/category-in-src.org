@@ -1,0 +1,3 @@
+#+begin_src org
+#+CATEGORY: insrc
+#+end_src

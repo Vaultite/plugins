@@ -1,0 +1,16 @@
+| a | b |
+|a|b
+|  | x  y  |  
+|-+-|
+| a\|b | c
+|
+
+| *bold* https://x.y | a_{[fn:2]} | [[x][y]] | [fn::a] | call_f() | \\ |
+| <2024-01-01> | <<t>> | <<<cell radio>>> | {{{m}}} | @@html:x@@ | [cite:@k] | $x$ | \alpha | [1/2] | src_py{1} |
+| cell radio |	tab	|é😀|  |   |
+|=a= ~b~ +c+ /d/ _e_|x^2|
+
+  | indented | table |
+
+| [[a|b]] | =a|b= | $a|b$ | \vert | a \vert b |
+| *a | b* | [fn::x|y] | <2024-01-02 Tue|x> |

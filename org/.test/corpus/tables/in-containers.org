@@ -1,0 +1,9 @@
+:drawer:
+| a |
+:end:
+#+begin_quote
+| b |
+|---|
+#+end_quote
+[fn:1] | c |
+| d |

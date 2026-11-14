@@ -1,0 +1,23 @@
+[fn:1] One.
+[fn:a-b_c] Two
+continues
+
+still two
+
+
+after two blank
+[fn:3]
+[fn:4]
+
+  [fn:5] indented
+[fn:] empty label
+[fn:x]no space
+[fn:y]
+- list
+#+begin_quote
+q
+#+end_quote
+[fn:z] a
+* H
+[fn:last] x
+

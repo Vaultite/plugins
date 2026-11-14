@@ -1,0 +1,11 @@
+x \foo \foo* \foo{a} \foo[b] \foo[b]{c} \foo{a}{b} \foo{a{b}c} \foo[a[b]] \foo{} \foo[] \foo*{x} \foo1 \foo{a
+b} \alpha[x] \foox
+
+x \(a\) \( \) \(\) \[a\] \[a
+b\] \(a \[b\) c\] \(unterminated
+
+x \(a
+b
+c\) \[x\]\[y\] \(\(a\)\) \enlargethispage{2\baselineskip} \ref{fig:1} \cite[p.~3]{knuth} \textbf{bold *b*}
+
+x \foo** \foo*a \a \b{ \c[ \d} \e] \FOO{x}[y] \foo{x}é \foo{é}

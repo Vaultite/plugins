@@ -1,0 +1,7 @@
+- *bold* term :: def
+- =code= :: verbatim term
+- [[https://example.com][link]] :: a link
+- émoji 🎉 :: unicode
+- Größe :: ü
+
+After.

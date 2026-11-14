@@ -1,0 +1,29 @@
+#+TITLE: Notes on spectral methods
+#+AUTHOR: A. Researcher
+
+* Introduction
+Spectral methods expand $u(x) = \sum_{k=0}^{N} \hat{u}_k \phi_k(x)$ in a basis $\{\phi_k\}$. For smooth
+$u$ the error decays like $O(e^{-cN})$ [cite:@trefethen2000; @boyd2001 ch. 2], far faster than the
+$O(N^{-p})$ of finite differences [cite/t:see @leveque2007].
+
+The Chebyshev points are \[x_j = \cos\left(\frac{j\pi}{N}\right), \quad j = 0, \dots, N\] and the
+differentiation matrix $D_N$ has entries $(D_N)_{ij} = \frac{c_i}{c_j} \frac{(-1)^{i+j}}{x_i - x_j}$.
+
+\begin{equation}
+\int_{-1}^{1} f(x)\, dx \approx \sum_{j} w_j f(x_j)
+\end{equation}
+
+* Results
+- Convergence :: errors below 10^{-12} for N = 32 (see Fig. [[fig:conv]])
+- Cost :: O(N^2) per step, or O(N \log N) with the FFT
+- Caveat :: Gibbs oscillations near jumps; filtering helps[fn:1]
+
+#+CAPTION: Convergence of the Chebyshev method for $u = e^{x}\sin(5x)$.
+#+NAME: fig:conv
+[[file:figures/convergence.png]]
+
+Water is H_2O, carbon dioxide CO_2, and ions like Ca^{2+} or SO_4^{2-} appear in the samples.
+Temperatures ranged 20\deg{}C to 25\deg{}C; \pm 0.1 accuracy. Costs: \euro{}30 and \pound{}25.
+
+* References
+[fn:1] Filtering multiplies $\hat{u}_k$ by $\sigma(k/N)$, see [cite:@gottlieb1997].

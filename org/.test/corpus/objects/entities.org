@@ -1,0 +1,12 @@
+x \alpha \alphax \alpha1 \alpha{} \alpha{}x \Alpha \ALPHA \alpha* \alpha_b \alpha-b \alpha
+\_  a \_ \_ b \- \nbsp \nbspx \there4 \frac12 \sup2 \deg \pm \hbar \hellip \textbackslash
+
+x \to \rightarrow \Rightarrow \leftrightarrow \infty \sum \int \partial \nabla \setminus \smile \frown \loz \clubs \euro \copy \reg \trade \laquo \raquo \ldquo \rdquo \ndash \mdash \shy \zwnj \zwj \lrm \rlm
+
+x \frac12x \frac14 \frac34 \frac13 \sup1 \sup3 \there4x \alpha\beta \alpha\\ \alpha{}{} \alpha{x} \alpha}{ \Agrave\agrave \AA \aa \AElig \oslash \ss \szlig
+
+x \_ \_	x \_                     y \_                         z
+
+x a\alpha b \alpha. (\alpha) "\alpha" \alphaé \alpha😀 \alpha'
+
+x \sup2AA \sup2x \sup34 \frac341 \there41 \there4x \frac12{} \frac32 \sup4 \sup2{}x

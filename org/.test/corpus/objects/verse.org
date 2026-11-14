@@ -1,0 +1,18 @@
+#+begin_verse
+  Great clouds overhead
+Tiny *black birds* rise and fall \\
+	Snow covers Emacs
+     ---AlexSchroeder
+#+end_verse
+
+#+begin_verse
+[[https://x.y][link]] <2024-01-02> [fn:1] $x$ a_b \alpha
+https://plain.x
+  *bold across
+  lines* end
+#+end_verse
+
+#+BEGIN_VERSE
+#+END_VERSE
+
+[fn:1] Def.

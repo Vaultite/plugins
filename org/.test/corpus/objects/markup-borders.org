@@ -1,0 +1,36 @@
+*a* x*b* (*c*) -*d*- '*e*' "*f*" {*g*} [*h*] <*i*> ,*j*, .*k*. :*l*: ;*m*; !*n*! ?*o*? \*p*\ |*q*|
+
+*a*b *c*. *d*, *e*; *f*: *g*! *h*? *i*' *j*) *k*} *l*[ *m*" *n*\ *o*- *p*( *q*] *r*>
+
+x * a* *a * * * ** *** **a** ***a*** *a*b*c* *a *b* c*
+
+x * a* *a * *a*
+
+x *a*  b	*c*	d *e*
+
+x *a\*b* *a\\* *\alpha* *a*_b *a*^b a_*b* a^*b*
+
+x a* *b* *(c)* *-d-* *{e}* *[f]* *"g"* *'h'* *.i.*
+
+x  *a*bc*d* *a**b* *a*,b* *a* *
+
+x **
+
+x/a/ /a/x /a b/ / a/ /a /
+
+x 1*2*3 a*b c*d xé*a* é*a*é *é* *😀* 😀*a*
+
+x *a* *a
+
+x ** a ** b**c** *a
+ b*
+
+/a/ _b_ +c+ =d= ~e~ x/y/z a/b/ 1+2+3 _a_b_
+
+x *a*. *a*.. *a*.b *a*- *a*-b *a*x *a*1 *a** *a*/
+
+x	*tab*	(	*a*	) *a* *b**c* *x*!y
+
+x  *a b c d e f g h i j k l m n o p q r s t u v w x y z*
+
+x [[x][*a\\*]] *b\\* /c\\/ _d \\_

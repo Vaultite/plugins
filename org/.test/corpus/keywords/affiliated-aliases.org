@@ -1,0 +1,37 @@
+#+NAME: x
+#+TITLE: y
+
+#+NAME: a
+#+CALL: f()
+
+#+name:    trimmed   
+#+Attr_Html: :a   
+#+attr_x-y_1: v
+#+ATTR_: bad
+#+ATTR_é: bad2
+#+header:  h1  
+#+HEADERS: h2
+#+label: lab
+#+srcname: sn
+#+tblname: tn
+#+resname: rn
+#+source: so
+#+result: r
+#+caption[]: c1
+#+caption[a [b] c]: c2
+#+caption[a]b]: c3
+#+results[ x ]:   val  
+para
+
+#+NAME: before-blank
+
+#+NAME: n
+[fn:1] fd
+
+#+NAME: n
+%%(diary)
+
+#+NAME: n
+:D:
+x
+:END:

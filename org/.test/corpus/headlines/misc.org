@@ -1,0 +1,42 @@
+* x
+[#A] y
+* COMMENT Footnotes
+* Footnotes :t:
+* footnotes
+* COMMENT	
+* H
+
+:PROPERTIES:
+:ID: x
+:END:
+* H2
+
+SCHEDULED: <2026-01-01 Thu>
+* H3
+SCHEDULED: <2026-01-01 Thu>
+
+:PROPERTIES:
+:ID: y
+:END:
+* H4
+scheduled: <2026-01-01 Thu>
+* H5
+x SCHEDULED: <2026-01-01 Thu>
+* H6
+SCHEDULED: <2026-01-01 Thu> xDEADLINE: <2026-01-02 Fri>
+* H7
+SCHEDULED: <2026-01-01 Thu>
+DEADLINE: <2026-01-02 Fri>
+* H8
+SCHEDULED: <2026-01-01 Thu>
+
+
+text
+* H9
+CLOSED: <2026-01-01 Thu> SCHEDULED: [2026-01-01 Thu] DEADLINE:	<2026-01-01 Thu>
+* H10
+#+begin_example
+#+CATEGORY: ex
+#+TODO: NEXT
+#+end_example
+* NEXT y

@@ -1,0 +1,7 @@
+- a
+ *bold* continues
+ - star item? no, dash item
+ * star item
+- b
+  * star in b
+  - dash in b

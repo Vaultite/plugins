@@ -1,0 +1,24 @@
+[fn:1] a
+#+begin_src sh
+x
+
+
+y
+[fn:2] in block
+#+end_src
+
+[fn:3] b
+  
+	
+after ws blanks
+[fn:4] c
+
+
+
+
+four blanks
+[fn:5]
+
+
+x
+[fn:6]   

@@ -1,0 +1,10 @@
+- a
+  #+BEGIN: clocktable
+x
+#+END:
+  more
+- b
+  #+begin:
+empty name
+#+end:
+  after

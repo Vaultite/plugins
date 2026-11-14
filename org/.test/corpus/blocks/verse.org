@@ -1,0 +1,14 @@
+#+begin_verse
+    There was an old man of the Cape
+   Who made himself garments of /crepe/.
+       When asked, "Do they tear?"
+,* not unescaped
+#+end_verse
+
+#+BEGIN_VERSE
+#+END_VERSE
+#+begin_verse
+
+  v
+
+#+end_verse

@@ -1,0 +1,25 @@
+#+TITLE: Weekly
+* This week
+- [X] Groceries :: milk, eggs, 🍞
+- [ ] Call Bob
+  - about the trip
+  - and the 🎸 lessons
+
+- [ ] Taxes
+  :LOGBOOK:
+  - Note taken on [2026-11-10 Tue 09:00] \\
+    started
+  :END:
+  | item     | amount |
+  |----------+--------|
+  | receipts |     12 |
+  #+TBLFM: $2=vsum(@2..@-1)
+- [-] Garden
+	- tab-indented child
+	- another
+
+* Someday
+  1. Learn Rust
+  2. Read /Gödel, Escher, Bach/
+     a. not a sublist
+  10. Ten

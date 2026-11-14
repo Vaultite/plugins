@@ -1,0 +1,15 @@
+#+begin_src emacs-lisp
+(message "hi")
+#+end_src
+#+BEGIN_SRC C++ :includes <iostream>
+int main() {}
+#+END_SRC
+#+Begin_Src python   :session  *py*  
+print(1)
+#+End_Src
+#+begin_src	sh
+echo
+#+end_src
+#+begin_src 日本語 :x
+y
+#+end_src

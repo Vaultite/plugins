@@ -1,0 +1,9 @@
+#+CAPTION[短い]: Un *café* 😀 long
+#+NAME: naïve-名前
+#+ATTR_HTML: :alt "émoji 🎉"
+#+RESULTS[🔑]: résultat
+Paragraph 😀 with ünïcode.
+
+#+TITLE: 😀 Title 😀
+#+AUTHOR: Zoë
+#+call: fonction(x="é")[:var y=😀]

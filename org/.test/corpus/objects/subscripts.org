@@ -1,0 +1,20 @@
+x a_b a_bc a_1 a_b1 a_-1 a_+b a_- a_, a_b,c a_b.c a_b. a_b\c a_\alpha a_{b} a_{b{c}d} a_(b) a_(b(c)) a_{ } a_{} a_() a_*
+
+x _a a__b a_b_c a^b^c a_b^c ^a a ^b a^ b a^{b *c*} a^(i^th, i is odd) A_i,j x^-2 x^{y^{z}} p^*
+
+x (_text_) (*t*) a_é a_😀 é_a 😀_a a_b_ a^2.5 a_2. a_x,y, a_{b
+c} a_{b}c a^{b}^{c}
+
+x a\_b a\\_b 1_000 foo_bar_baz foo_bar_ \alpha_b \alpha{}_b $x$_b *a*_b [[l]]_b
+
+x a_\alpha{} a_\_ a_{\alpha} a_(\alpha) a_-- a_+- a_b, a_b... a_bé a_éb
+
+x (_a b *_b* _b a_{b a_(b a_{{{b}}} a_{a{b{c{d}}}} a_((((x)))) a^{[[l]]} a_{https://x.y} a^{[fn:1]}
+
+_a at start, ^b too
+
+x a^+ a^+1 a^-a a^.5 a^,b a^\\ a^1.2.3 a^1,2, a_x.y.z. a_\x a_\\x a_b\\ H_2O CO_2 e^{i\pi} 10^{-3}
+
+x k^\foo{x} k^\foo k^\alpha k_\foo k_\foo{x} k_b\foo{x} a_\alpha{} k^\fooé k^\foo, k^\foo. k^\c k^b\c k^\\c k^.\c k^,a k^1\foo k^\1 k_\1 k^\a1 k_\a1 k^-\c k_-\c k^+b k^\a
+
+x a_{{{b}}} a_{a{b{c}}} a_{a{b{c{d}}}} a_(((x))) a_((((x)))) a_{a}}  a_{a{b}c{d}e} a_(a(b)c(d)e) a^{[[l]]} a_{https://x.y} a^{[fn:1]}

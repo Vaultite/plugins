@@ -1,0 +1,30 @@
+#+KEY:value
+#+KEY:
+#+KEY:   spaced   
+  #+indented: x
+#+K EY: v
+#+KEY[x]: v
+#+key: lower
+#+Title: héllo 😀
+#+NAME[x]: v
+#+begin_src: x
+#+end_src: x
+#+: x
+#+KEY::x
+#+KEY: a:b
+#+results: kw
+#+ATTR_HTML: alone
+#+CAPTION: alone *b*
+
+#+caption: before blank
+#+K-EY: v
+#+ KEY: v
+#+KEY : v
+#+KEY:	v	
+#+end:
+#+begin:
+#+begin:
+#+end:
+#+TODO: TODO | DONE
+#+STARTUP: overview
+#+OPTIONS: toc:nil num:t

@@ -1,0 +1,13 @@
+{
+  "id": "org",
+  "icon": "list-tree",
+  "name": "Org Mode",
+  "description": "Org Mode files: .org files open as documents you read and edit in live preview, with folding headings, TODO keywords, priorities, tags, schedules, checkboxes, tables, code blocks and links, parsed exactly as Emacs parses them. Search, embeds, the graph and AIs read them too.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 10,
+  "category": "formats",
+  "disclosures": {},
+  "replaces": { "obsidian": ["obsidian-org-mode", "orgmode-cm6", "org-reader", "org-live"] }
+}

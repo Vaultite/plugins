@@ -1,0 +1,14 @@
+- a
+  #+begin_src
+x at column zero ends it
+- b
+  #+BEGIN_SRC
+#+end_src
+  case differs
+- c
+  #+begin_src
+x
+  #+end_src junk
+y
+#+end_src
+  more

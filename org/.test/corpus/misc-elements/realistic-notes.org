@@ -1,0 +1,100 @@
+#+TITLE: Project notes
+#+AUTHOR: Alice Park
+#+OPTIONS: toc:2 num:nil ^:{}
+#+STARTUP: overview
+#+PROPERTY: header-args:python :session *lighthouse* :results output
+
+# This file collects notes for the Lighthouse project.
+# Last reviewed in the autumn.
+
+* Overview
+:PROPERTIES:
+:CUSTOM_ID: overview
+:END:
+Lighthouse is a small service.[fn:arch] It keeps a log of events.
+
+#+CAPTION: The architecture, drawn by hand
+#+NAME: fig:arch
+#+ATTR_HTML: :width 600px
+#+ATTR_LATEX: :width 0.8\textwidth
+[[file:arch.png]]
+
+-----
+
+* Tasks
+** TODO Write the importer
+SCHEDULED: <2024-03-04 Mon>
+:LOGBOOK:
+CLOCK: [2024-03-04 Mon 09:12]--[2024-03-04 Mon 11:40] =>  2:28
+CLOCK: [2024-03-01 Fri 14:00]--[2024-03-01 Fri 15:05] =>  1:05
+:END:
+
+#+NAME: importer
+#+HEADER: :var path="events.csv"
+#+begin_src python :results value
+import csv
+with open(path) as f:
+    rows = list(csv.reader(f))
+len(rows)
+#+end_src
+
+#+RESULTS: importer
+: 1204
+
+** DONE Pick a database
+CLOSED: [2024-02-20 Tue 10:00]
+#+begin_quote
+Use the simplest thing that works.
+#+end_quote
+
+#+begin_comment
+We tried three, see the old notes.
+#+end_comment
+
+* Math
+\begin{equation}
+\label{eq:rate}
+r = \frac{n}{t}
+\end{equation}
+
+The rate in [[eq:rate]] stays below 10.
+
+* Diary
+%%(diary-anniversary 3 14 2020) Lighthouse is %d years old
+
+* Reference
+#+BEGIN: clocktable :scope file :maxlevel 2
+#+CAPTION: Clock summary at [2024-03-05 Tue 09:00]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *3:33* |
+#+END:
+
+#+begin_example
+$ lighthouse import events.csv
+1204 rows
+#+end_example
+
+: $ lighthouse --version
+: 0.3.1
+
+#+begin_export html
+<div class="note">Exported as is.</div>
+#+end_export
+
+#+begin_verse
+  Small lights
+     on a long coast
+#+end_verse
+
+#+begin_aside :title "A note"
+Special blocks hold elements.
+
+- like this list
+#+end_aside
+
+* Footnotes
+[fn:arch] See the [[*Overview][overview]] for the drawing.
+
+[fn:2] A second note,
+over two lines.

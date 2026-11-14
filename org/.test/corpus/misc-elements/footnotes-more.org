@@ -1,0 +1,28 @@
+Text with ref[fn:1] and [fn:long-name].
+
+[fn:1] Number label.
+
+[fn:long-name] Word label
+with a second line.
+
+- and a list
+- in it
+
+[fn:日本] Unicode label.
+[fn:😀] emoji label?
+[fn:a b] space in label
+[fn:x:y] colon
+[fn:_] underscore
+[fn:-] hyphen
+ [fn:2] leading space
+
+[fn:3]   
+
+  
+[fn:4]
+#+begin_quote
+quoted
+#+end_quote
+:DRAWER:
+in drawer
+:END:

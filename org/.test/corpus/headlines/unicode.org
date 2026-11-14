@@ -1,0 +1,8 @@
+* Café crème :français:
+* TODO Émoji 🎉 title :party:
+* 日本語の見出し :日本:
+* Tag with emoji :🎉:
+* Mixed 🎉 :a:b:
+** DONE Ünïcödé
+Text with ü and 🎉 here.
+*** Ω :Ω:

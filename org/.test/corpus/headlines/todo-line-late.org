@@ -1,0 +1,5 @@
+* TODO a
+#+TODO: LATER | GONE
+* LATER b
+* GONE c
+* TODO d

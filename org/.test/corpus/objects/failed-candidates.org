@@ -1,0 +1,10 @@
+x [[x *b* y]b] [[a][b *c*]x] [fn:a *b*] [cite:x *b*] <<a *b* >> <<<a *b* >>> {{{m *b*}}} @@x *b*@ $a *b* $
+
+x [[a\]] *b* [[a][ *c* ] *d* <2024-01-02 Tue *e*> <*f*> [*g*] [2024-01-02 *h* \alpha]
+
+x *a [[b]] c *d* e* *a [[b c* d]] e* /a <2024-01-02 b/ c>/ =a [[b= c]]= ~a {{{b~ c}}}~
+
+x call_f(*a*) src_py{*a*} [fn::*a* [fn::*b*]] [[x][*a* [fn::b]]] *[[x][a*]]* _a [[b_]] c_
+
+x *a\\
+b* /a $b/$ c/ +a [cite:@k+] b+ _a <<t_>> b_

@@ -1,0 +1,11 @@
+#+TODO: NEXT(n) WAIT(w@/!) | CANCELLED(c@)
+#+TODO: BUG FEATURE | FIXED
+* NEXT a
+* WAIT b
+* CANCELLED c
+* BUG d
+* FEATURE e
+* FIXED f
+* TODO g
+* DONE h
+* WAIT(w) i

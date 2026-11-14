@@ -1,0 +1,7 @@
+| a |
+|-
+|-x anything
+|---+---|
+|- 
+| - not a rule
+|	-

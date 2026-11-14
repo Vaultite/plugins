@@ -1,0 +1,13 @@
+Para before.
+
+#+begin_src sh
+echo never closed
+
+Another paragraph.
+#+begin_src sh
+echo closed later
+#+end_src
+#+begin_src python
+x
+#+end_sh
+#+end_src

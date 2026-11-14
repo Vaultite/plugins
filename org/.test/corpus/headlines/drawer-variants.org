@@ -1,0 +1,15 @@
+* H
+:PROPERTIES:
+:ID: 1
+:END:
+:PROPERTIES:
+:ID: 2
+:END:
+** Sub
+:properties:
+:END:
+*** Sub-sub
+  :PROPERTIES:
+  :Effort: 0:30
+  :END:
+  SCHEDULED: <2026-01-01 Thu>

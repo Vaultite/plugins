@@ -1,0 +1,23 @@
+* A
+SCHEDULED: <2026-01-01 Thu>
+* B
+  
+SCHEDULED: <2026-01-01 Thu>
+* C
+SCHEDULED: <2026-01-01 Thu>  
+:PROPERTIES:  
+:ID: c
+:END:  
+
+* D :tag:
+DEADLINE: <2026-01-01 Thu> CLOSED: [2026-01-01 Thu]
+** E
+CLOSED: [2026-01-01 Thu]
+:PROPERTIES:
+:ID: e
+:END:
+*** F
+:PROPERTIES:
+:ID: f
+:END:
+SCHEDULED: <2026-01-01 Thu>

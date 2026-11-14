@@ -1,0 +1,9 @@
+| a |
+- item after table
+| b |
+  - indented item after table
+
+- item
+| table |
+
+  | indented table after blank |

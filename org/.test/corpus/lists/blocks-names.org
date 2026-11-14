@@ -1,0 +1,16 @@
+- a
+  #+begin_src python
+  - not an item
+
+
+  #+end_src
+- b
+  #+BEGIN_QUOTE
+  quoted
+  #+END_QUOTE
+
+- c
+  #+begin_verse
+  a
+  #+end_src
+  #+end_verse

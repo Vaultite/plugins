@@ -1,0 +1,16 @@
+text
+- item ends the paragraph
+text
+    - deeper item
+text
+-
+text
+ 1. numbered
+
+paragraph
+ * star
+- a
+  text
+  - b
+  more text
+  1) c

@@ -1,0 +1,13 @@
+* TODO Task
+* DONE Finished
+* TODO
+* DONE
+* TODO  extra spaces
+* TODO	tab after
+* TODOish word
+* todo lower
+* Todo mixed
+* NEXT not a keyword
+* DONE TODO both
+* TODO DONE both
+* TODO [#A] :tag:

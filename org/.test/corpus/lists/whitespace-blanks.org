@@ -1,0 +1,8 @@
+- a
+  
+- whitespace-only line between
+	
+	
+- tab-only lines end it
+- 	
+  bullet with trailing tab

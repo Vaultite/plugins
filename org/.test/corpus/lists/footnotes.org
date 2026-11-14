@@ -1,0 +1,12 @@
+- a
+[fn:1] a footnote ends it
+
+- b
+  [fn:2] indented is not a footnote
+
+[fn:3] text
+- list in a footnote
+- two
+
+
+[fn:4] next

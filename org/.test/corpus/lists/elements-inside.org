@@ -1,0 +1,9 @@
+- a
+  : fixed
+  # comment
+  #+keyword: v
+  -----
+- b
+  \begin{equation}
+x
+\end{equation}

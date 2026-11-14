@@ -1,0 +1,28 @@
+#+begin_quote
+
+  inner
+
+#+begin_quote
+nested
+#+end_quote
+
+#+end_quote
+
+#+begin_quote
+#+begin_center
+- a list
+- in a center
+
+| a | table |
+#+end_center
+#+end_quote
+#+begin_center
+#+begin_src sh
+#+end_center
+#+end_src
+#+end_center
+#+begin_note
+#+begin_warning
+Deep.
+#+end_warning
+#+end_note

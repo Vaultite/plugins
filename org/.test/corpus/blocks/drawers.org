@@ -1,0 +1,31 @@
+:LOGBOOK:
+
+CLOCK: [2024-01-01 Mon 10:00]--[2024-01-01 Mon 11:30] =>  1:30
+
+:END:
+
+  :Some-name_2:   
+  text
+  :end:   
+:EMPTY:
+:END:
+:A:
+:B:
+inner
+:END:
+:END:
+:dyn:
+x
+:END:
+:PROPERTIES:
+:x: 1
+:END:
+:é:
+z
+:END:
+:BLANKS:
+
+
+:END:
+:NOPE:
+never closed

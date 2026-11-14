@@ -1,0 +1,12 @@
+Before any headline.
+
+Second paragraph.
+* A
+Section of A.
+** A.1
+Section of A.1.
+
+** A.2
+* B
+** B.1
+Text.

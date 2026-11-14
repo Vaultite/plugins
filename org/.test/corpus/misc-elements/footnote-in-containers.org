@@ -1,0 +1,11 @@
+#+begin_quote
+[fn:1] inside quote
+second line
+
+[fn:2] another
+#+end_quote
+:D:
+[fn:3] in drawer
+:END:
+- item
+[fn:4] after item

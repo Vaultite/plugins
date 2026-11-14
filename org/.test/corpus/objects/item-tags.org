@@ -1,0 +1,13 @@
+- *bold* tag :: description
+- [[https://x.y][link]] tag :: d
+- term with \alpha and $x$ :: d
+- <2024-01-02> :: when
+- a \\ b :: line break in tag
+- [fn:1] tag :: d
+- [ ] [1/2] checkbox *b* :: d
+- =code :: x= :: weird
+- [[a :: b]] :: link with separator
+- tag with radio words :: and <<<radio words>>> here
+- https://x.y :: plain link tag
+
+[fn:1] Def.

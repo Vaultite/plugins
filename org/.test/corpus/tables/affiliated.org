@@ -1,0 +1,8 @@
+#+NAME: tbl
+#+CAPTION: A table
+| a |
+#+TBLFM: $1=1
+
+#+NAME: second
+
+| b |

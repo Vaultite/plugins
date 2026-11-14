@@ -1,0 +1,29 @@
+#+PROPERTY: header-args :exports both
+
+* Setup
+#+NAME: square
+#+begin_src emacs-lisp :var x=2
+(* x x)
+#+end_src
+
+#+CALL: square(x=4)
+
+#+RESULTS:
+: 16
+
+#+CALL: square[:results raw](x=5) :exports results
+#+CALL: square(x=6)
+#+RESULTS:
+: 36
+
+#+call: square
+Followed by text: Emacs takes it as the call's end header.
+
+#+name: dangling-results
+#+results: square
+
+#+HEADER: :exports none
+#+HEADERS: :results silent
+#+begin_src sh
+echo hidden
+#+end_src

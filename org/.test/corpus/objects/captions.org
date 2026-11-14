@@ -1,0 +1,18 @@
+#+CAPTION: A *bold* caption with [[https://x.y][a link]] and [fn:1] and \\ break
+#+NAME: tbl
+| a |
+
+#+CAPTION[Short *one*]: Long /caption/
+#+CAPTION: Second caption line
+#+begin_src emacs-lisp
+(+ 1 2)
+#+end_src
+
+#+CAPTION: <2024-01-02> and $x$ and a_b and https://plain.x
+[[file:image.png]]
+
+#+TITLE: *not parsed* https://x.y
+#+AUTHOR: Someone
+#+DATE: <2024-01-02>
+
+[fn:1] Def.

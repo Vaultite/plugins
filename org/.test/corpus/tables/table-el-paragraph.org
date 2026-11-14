@@ -1,0 +1,15 @@
+text
++-+
+|a|
+
+text
++-
+more
+
+text
++--+ y
+more
+
+text
+  +-+
+more

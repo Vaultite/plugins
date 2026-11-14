@@ -1,0 +1,11 @@
+* H
+:PROPERTIES:
+:CUSTOM_ID: id-1
+:END:
+
+
+* H2
+  :PROPERTIES:
+  :CUSTOM_ID: id-2
+  :END:
+  Body indented.

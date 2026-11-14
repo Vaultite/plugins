@@ -1,0 +1,7 @@
+x [fn:1] [fn:a] [fn:] [fn::] [fn:: ] [fn::a [b] c] [fn::a [b c] [fn:x:a
+b] [fn:é] [fn:a b] [fn:a:] [fn:a::b] [fn::[fn::nested]] [fn::*b* [[l]]] [FN:1] [fn:1]x
+
+x Text[fn:2] and[fn:long-name_1] more [fn:inline:An *inline* definition with a [[https://x.y][link]].] end [fn::anonymous [1/2] <2024-01-01>]
+
+x [fn:😀] [fn:a$b] [fn:a%b] [fn:a'b] [fn:a.b] [fn:a+b] [fn:1 ] [fn: 1] [fn:x:[a][b]] [fn::a\\
+b]

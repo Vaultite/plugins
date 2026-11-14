@@ -1,0 +1,4 @@
+:PROPERTIES:
+:CATEGORY: p
+:END:
+#+CATEGORY: k

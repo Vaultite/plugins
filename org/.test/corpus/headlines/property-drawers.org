@@ -1,0 +1,93 @@
+* Basic
+:PROPERTIES:
+:CUSTOM_ID: basic
+:Effort: 1:00
+:END:
+* Lower-case markers
+:properties:
+:id: low
+:end:
+* Mixed-case markers
+:Properties:
+:ID: mixed
+:End:
+* Indented
+   :PROPERTIES:
+   :ID: ind
+      :DEEP: more
+   :END:
+* Empty drawer
+:PROPERTIES:
+:END:
+* Empty drawer, blank after
+:PROPERTIES:
+:END:
+
+
+Text.
+* Trailing text on marker
+:PROPERTIES: x
+:ID: no
+:END:
+* Unclosed
+:PROPERTIES:
+:ID: open
+* Closed by next headline only
+:PROPERTIES:
+:ID: open2
+** Child
+:END:
+* Blank line inside
+:PROPERTIES:
+:ID: a
+
+:END:
+* Plain text inside
+:PROPERTIES:
+just text
+:END:
+* After pre-blank
+
+:PROPERTIES:
+:ID: late
+:END:
+* After text
+Text.
+:PROPERTIES:
+:ID: textfirst
+:END:
+* Values
+:PROPERTIES:
+:EMPTY:
+:SPACES:    lots of space    
+:URL: https://example.com/a:b?c=d
+:COLONS: a:b:c
+:MULTI: one two  three
+:PLUS: a
+:PLUS+: b
+:plus+: c
+:END:
+* Duplicate keys
+:PROPERTIES:
+:dup: first
+:DUP: second
+:Dup: third
+:END:
+* Unicode
+:PROPERTIES:
+:LIEU: Café
+:EMOJI: 🎉
+:CLÉ: valeur
+:END:
+* Drawer, then a second one
+:PROPERTIES:
+:ONE: 1
+:END:
+:PROPERTIES:
+:TWO: 2
+:END:
+* Drawer then text
+:PROPERTIES:
+:ID: then
+:END:
+Body after.

@@ -1,0 +1,11 @@
+#+LINK: gh https://github.com/%s
+#+LINK: wiki https://en.wikipedia.org/wiki/
+#+LINK: enc https://x.y/?q=%h
+#+LINK: local ./notes/
+
+x [[gh:emacs]] [[gh]] gh:x [[wiki:Org-mode]] [[wiki]] [[enc:a b]] [[local:a.org]] [[gh:org/repo][Repo]] [[GH:x]] [[gh:]] [[nope:x]]
+
+#+LINK: two https://x.y/%s/%s
+#+LINK: Up https://u.v/
+
+x [[enc:a/b!c(d)é~_.-*]] [[two:a]] [[up:x]] [[Up:x]] [[enc]]

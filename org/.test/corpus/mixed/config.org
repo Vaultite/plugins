@@ -1,0 +1,67 @@
+#+TITLE: Emacs configuration
+#+PROPERTY: header-args :tangle init.el
+#+STARTUP: content
+#+OPTIONS: toc:nil
+
+* Introduction
+This file is my literate configuration. Each section tangles into =init.el=.
+
+* Package management
+:PROPERTIES:
+:header-args: :tangle init.el :results silent
+:END:
+** Bootstrap
+#+begin_src emacs-lisp
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+#+end_src
+
+** use-package
+#+NAME: use-package
+#+begin_src emacs-lisp :tangle no
+(require 'use-package)
+#+end_src
+
+* UI
+** Theme                                                               :look:
+#+begin_src emacs-lisp
+(load-theme 'modus-operandi t)
+#+end_src
+** Fonts                                                               :look:
+*** Mono
+#+begin_src emacs-lisp
+(set-face-attribute 'default nil :family "Iosevka" :height 140)
+#+end_src
+*** Variable
+** COMMENT Disabled tweaks
+#+begin_src emacs-lisp
+(setq visible-bell t)
+#+end_src
+
+* Org
+** Agenda files
+:PROPERTIES:
+:CUSTOM_ID: agenda-files
+:END:
+#+begin_src emacs-lisp
+(setq org-agenda-files '("~/org/agenda.org"))
+#+end_src
+** TODO Capture templates [0/2]
+- [ ] Inbox template
+- [ ] Journal template
+** Keywords
+#+begin_example
+#+TODO: TODO NEXT | DONE
+#+end_example
+
+* Keybindings
+| Key     | Command          |
+|---------+------------------|
+| C-c a   | org-agenda       |
+| C-c c   | org-capture      |
+
+* Local variables                                                  :noexport:
+# Local Variables:
+# eval: (setq-local org-confirm-babel-evaluate nil)
+# End:

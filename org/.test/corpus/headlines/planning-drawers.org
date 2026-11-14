@@ -1,0 +1,49 @@
+* A
+SCHEDULED: <2026-01-01 Thu>
+* B
+  DEADLINE: <2026-01-02 Fri> SCHEDULED: <2026-01-01 Thu>   CLOSED: [2026-01-03 Sat]
+:PROPERTIES:
+:ID: x
+:END:
+text
+* C
+
+SCHEDULED: <2026-01-01 Thu>
+* D
+:PROPERTIES:
+:a: 1
+:A+: 2
+:b+:
+:c:
+:empty:   
+: bad
+:END:
+* E
+SCHEDULED: <2026-01-01 Thu> junk
+* F
+DEADLINE: x
+* G
+SCHEDULED:<2026-01-01 Thu>
+* H
+CLOSED: [2026-01-03 Sat] CLOSED: [2026-01-04 Sun]
+* I
+:properties:
+:foo: bar baz  
+:end:
+* J
+text
+:PROPERTIES:
+:x: y
+:END:
+* K
+:PROPERTIES:
+:x: y
+* L
+:PROPERTIES:
+:END:
+
+* M
+# c
+:PROPERTIES:
+:x: y
+:END:

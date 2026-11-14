@@ -1,0 +1,28 @@
+#+begin_quote
+A quote.
+
+With two paragraphs.
+#+end_quote
+
+#+BEGIN_CENTER
+Centered.
+#+END_CENTER
+#+begin_center
+#+end_center
+#+begin_foo bar baz
+f
+#+end_foo
+#+begin_special-x :a
+#+end_special-x
+#+begin_foo a  
+x
+#+end_foo
+#+begin_foo   
+x
+#+end_foo
+#+begin_quote   params here  
+x
+#+end_quote
+#+begin_é
+accented name
+#+end_é

@@ -1,0 +1,15 @@
+* COMMENT Plain
+* COMMENT
+* COMMENT  
+* COMMENT	tab
+* COMMENTED not
+* comment lower
+* TODO COMMENT with kw
+* TODO [#A] COMMENT with priority
+* [#A] COMMENT priority then comment
+* TODO [#A]  COMMENT two spaces
+* COMMENT :tag:
+* COMMENT COMMENT twice
+** COMMENT Sub
+Body under commented.
+*** Child of commented

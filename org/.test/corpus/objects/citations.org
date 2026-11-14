@@ -1,0 +1,10 @@
+x [cite:@a] [cite:@a;@b] [cite: @a ; @b ] [cite:pre @a suf] [cite:gp;@a;gs] [cite:gp; pre @a suf; @b;gs] [cite/style:@a] [cite/s/v:@a] [cite/s/v/w:@a] [cite/:@a] [cite:] [cite:x] [cite:@] [cite:@a.b-c:d?e!f] [cite:@a,b] [cite:*b* @a /i/] [cite:@a [fn:1]] [cite:[x] @a] [cite:@a@b] [cite:a@b] [CITE:@a] [cite:@a
+@b] [cite:;@a] [cite:@a;] [cite:pre;;@a]
+
+x [cite:*b* [fn:1] https://x.y \alpha <2024-01-01> {{{m}}};@a;*s* https://z.w] [cite:p [[l]] @a s [[l]]] [cite:@a [x;y] z] [cite:@a;  ;@b] [cite:  ] [cite:@a ;] [cite:pre ; @a ; suf ]
+
+x [cite/t:see;@source1;@source2;by Smith /et al./] [cite/t:see @foo p. 7;@bar pp. 4;by foo] [cite/a/f:c.f.;the very important @@atkey @ once;the crucial @baz vol. 3]
+
+x [cite:@é] [cite:@a_b] [cite:@a=b] [cite:@a"b] [cite:@a\b] [cite:@a]b] [cite:@a|b] [cite:@a<b>] [cite:@a{b}] [cite:@a(b)] [cite:@a'b] [cite:@a`b] [cite:@a~b] [cite:@a^b] [cite:@a#b] [cite:@a&b] [cite:@a%b] [cite:@a$b] [cite:@a*b] [cite:@a+b] [cite/St_y-le:@a] [cite/é:@a] [cite:@a@] [cite:@@a]
+
+x [cite:@a;b;c] [cite:@a;b;c;@d] [cite:a;@b;c;d] [cite:a;b;@c] [cite:@a; b ;@c] [cite:@a;b] [cite:x;@a;b;c;d;e] [cite:@a;;] [cite:@a;;;] [cite:;;@a] [cite:@a b;c @d;e] [cite:@a;*b* [[l]];c] [cite:@a;\alpha;] [cite/t:pre;@k1 s;k2;suf]

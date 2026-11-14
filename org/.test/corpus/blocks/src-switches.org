@@ -1,0 +1,100 @@
+#+begin_src sh -i
+#+end_src
+#+begin_src sh -n -i
+#+end_src
+#+begin_src sh -r
+#+end_src
+#+begin_src sh -k
+#+end_src
+#+begin_src sh -r -k
+#+end_src
+#+begin_src sh -n -10 +n 3 -l "x"
+#+end_src
+#+begin_src sh -nx
+#+end_src
+#+begin_src sh -ix
+#+end_src
+#+begin_src sh -ki
+#+end_src
+#+begin_src sh x -i
+#+end_src
+#+begin_src sh -i-n
+#+end_src
+#+begin_src sh -l "a" -l "b"
+#+end_src
+#+begin_src sh -l "" -n
+#+end_src
+#+begin_src sh +n 3
+#+end_src
+#+begin_src sh -n  10 -i
+#+end_src
+#+begin_src sh -n10
+#+end_src
+#+begin_src sh :x -n
+#+end_src
+#+begin_src sh -r-k
+#+end_src
+#+begin_src sh -k -i -r
+#+end_src
+#+begin_src sh -l x
+#+end_src
+#+begin_src sh -l "a
+#+end_src
+#+begin_src sh -i  -n
+#+end_src
+#+begin_src sh -n 2  :p  1 
+#+end_src
+#+begin_src sh --i
+#+end_src
+#+begin_src sh -n 1 2
+#+end_src
+#+begin_src sh -l "x-i"
+#+end_src
+#+begin_src sh -l "a -i"
+#+end_src
+#+begin_src sh -l "-r"
+#+end_src
+#+begin_src sh -l "-k" -n
+#+end_src
+#+begin_src sh -n 0
+#+end_src
+#+begin_src sh +n
+#+end_src
+#+begin_src sh -l  "x"
+#+end_src
+#+begin_src sh -l "x"y
+#+end_src
+#+begin_src sh -n	3
+#+end_src
+#+begin_src sh -n	-i
+#+end_src
+#+begin_src sh -l "-ix"
+#+end_src
+#+begin_src sh -l "+n 4"
+#+end_src
+#+begin_src sh  -n
+#+end_src
+#+begin_src sh -n 5x
+#+end_src
+#+begin_src sh   -i
+#+end_src
+#+begin_src sh -N 3
+#+end_src
+#+begin_src sh -I
+#+end_src
+#+begin_src sh -K -R
+#+end_src
+#+begin_src sh -L "x"
+#+end_src
+#+begin_src sh  
+#+end_src
+#+begin_src sh :a b -n
+#+end_src
+#+begin_src sh	:a
+#+end_src
+#+begin_src 	-n
+#+end_src
+#+begin_src -n
+#+end_src
+#+begin_src sh -n 3 :var x=1 :results "a b"
+#+end_src

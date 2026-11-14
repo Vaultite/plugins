@@ -1,0 +1,11 @@
+Paragraph start
+*bold* text at the start of a line
+ * indented star
+*	tab after star
+**no space
+*
+**
+text
+* Real one
+*bold* again
+  ** indented stars

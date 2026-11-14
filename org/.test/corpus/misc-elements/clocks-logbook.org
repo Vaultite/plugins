@@ -1,0 +1,11 @@
+* TODO Task
+:LOGBOOK:
+CLOCK: [2024-01-02 Tue 09:00]--[2024-01-02 Tue 10:15] =>  1:15
+CLOCK: [2024-01-01 Mon 14:00]--[2024-01-01 Mon 15:30] =>  1:30
+- Note taken on [2024-01-01 Mon 15:31] \\
+  A note.
+CLOCK: [2024-01-03 Wed 08:00]
+:END:
+Text
+CLOCK: [2024-01-04 Thu 08:00]--[2024-01-04 Thu 09:00] =>  1:00
+More text

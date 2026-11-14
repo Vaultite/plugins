@@ -1,0 +1,10 @@
+#+TODO: A | B
+#+SEQ_TODO: C
+#+typ_todo: E F | G
+* A x
+* B x
+* C x
+* E x
+* F x
+* G x
+* TODO x

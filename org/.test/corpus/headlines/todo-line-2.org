@@ -1,0 +1,11 @@
+#+TODO: A B |
+* A x
+* B x
+* C x
+* D x
+* | x
+* X|Y x
+* X x
+* Y x
+* TODO x
+* DONE x

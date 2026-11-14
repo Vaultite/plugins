@@ -1,0 +1,40 @@
+*multi
+line* *three
+line
+bold*
+
+=a*b*= ~c /d/~ =x= y= =a=b= =a =b= =x
+y= =a==
+
+x *a
+b
+c
+d
+e*
+
+x /one
+two
+three
+four
+five
+six
+seven
+eight
+nine
+ten/
+
+x =a
+ b= ~c
+	d~ *e
+f*
+
+x *a
+
+b*
+
+x *a
+*b
+c* d
+
+x _a
+_ b_

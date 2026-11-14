@@ -1,0 +1,9 @@
+
+
+# comment
+#c2
+:PROPERTIES:
+:CATEGORY: cat
+:foo: bar
+:END:
+text

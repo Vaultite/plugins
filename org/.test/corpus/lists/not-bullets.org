@@ -1,0 +1,10 @@
+a. not a list
+b) nor this
+A. upper
+
+1.5 not a bullet
+1.x neither
+-x no space
++x no space
+
+*bold* not a bullet

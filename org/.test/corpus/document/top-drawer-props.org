@@ -1,0 +1,9 @@
+:PROPERTIES:
+:CATEGORY: work
+:ID: abc
+:custom: lower
+:END:
+#+TITLE: Doc
+
+Intro.
+* H

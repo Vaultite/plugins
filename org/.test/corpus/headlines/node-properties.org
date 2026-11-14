@@ -1,0 +1,41 @@
+* A
+:PROPERTIES:
+:a: 1
+:A+: 2
+:b+:
+:c:
+:empty:   
+  :indented:  v  
+:with space: x
+:x:y
+:ü: ok
+:END:
+* B
+:PROPERTIES:
+: bad
+:END:
+* C
+:PROPERTIES:
+:+: v
+:END:
+* D
+:PROPERTIES:
+::: v
+:END:
+* E
+:PROPERTIES:
+:x: 1
+
+:END:
+* F
+:PROPERTIES:
+:X: 1
+:x: 2
+:Y: a
+:Y+: b
+:END:
+* G
+  :PROPERTIES:  
+  :k: v
+  :END:   
+after

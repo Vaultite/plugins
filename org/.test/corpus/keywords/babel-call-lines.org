@@ -1,0 +1,93 @@
+#+call: a b c
+text
+
+#+call: a b c
+
+text
+
+#+call: a(x)
+text
+
+#+call: a(x) tail
+text
+
+#+call: a[h]
+text
+
+#+CALL:
+text
+
+#+CALL:
+
+text
+
+#+CALL:   
+text more
+
+#+call: a(x
+text)
+
+#+call: a[x
+text]
+
+#+call: a b c   
+zz(q)
+
+#+call: (x)
+
+#+call: [h](x)
+
+#+call:a
+
+  #+call: a   
+
+#+call: a b c
+  text  
+
+#+call: a b c
+ 
+text
+
+#+call: a
+(x)
+
+#+call: a
+[h](x)
+
+#+call: a (x)
+
+#+call: a [h] (x) [e]
+
+#+call: a(x) 
+next
+
+#+call: a(x)[e]
+next
+
+#+CALL: 	
+  
+next
+
+#+call: a
+#+name: q
+
+#+call: a(b)c(d)
+
+#+call: a]b
+
+#+call: a(x)]
+
+#+call: a[x
+
+#+call: a(x
+
+#+call: a(x="a)b")
+
+#+call: a[x="]"](y)
+
+#+call: a
+  (x)
+
+#+call: a(\))
+
+#+call: a(x) [e]

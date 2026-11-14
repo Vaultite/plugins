@@ -1,0 +1,65 @@
+#+TITLE: Agenda
+#+TODO: TODO NEXT(n) WAITING(w@/!) | DONE(d!) CANCELLED(c@)
+#+PRIORITIES: A E C
+#+CATEGORY: agenda
+#+STARTUP: overview
+
+* Inbox
+** TODO Call Alice Park about the Lighthouse contract :phone:work:
+SCHEDULED: <2026-11-14 Sat 10:00>
+** NEXT [#A] Draft the quarterly review :writing:
+DEADLINE: <2026-11-20 Fri -3d> SCHEDULED: <2026-11-16 Mon>
+:PROPERTIES:
+:EFFORT:   2:00
+:CREATED:  [2026-11-10 Tue 09:12]
+:END:
+- [ ] Outline
+- [ ] First pass
+- [X] Gather numbers
+
+** WAITING Reply from the printer :errand:
+:PROPERTIES:
+:WAITING_ON: Bob
+:END:
+:LOGBOOK:
+- State "WAITING"    from "TODO"       [2026-11-09 Mon 15:30] \\
+  Sent the files, waiting for a quote.
+:END:
+
+* Projects
+** Lighthouse                                                       :project:
+:PROPERTIES:
+:CATEGORY: lighthouse
+:ID:       7f9c2e1a-0000-4000-8000-000000000001
+:END:
+*** DONE [#B] Kickoff meeting                                        :meeting:
+CLOSED: [2026-11-02 Mon 11:05] SCHEDULED: <2026-11-02 Mon 10:00>
+:LOGBOOK:
+CLOCK: [2026-11-02 Mon 10:00]--[2026-11-02 Mon 11:00] =>  1:00
+:END:
+Notes from the meeting:
+1. Budget agreed.
+2. Timeline: two sprints.
+
+*** TODO Write the spec
+DEADLINE: <2026-11-27 Fri>
+**** NEXT Section on data model
+**** TODO Section on API
+*** CANCELLED Old approach                                          :ARCHIVE:
+CLOSED: [2026-11-01 Sun 18:00]
+- State "CANCELLED"  from "TODO"       [2026-11-01 Sun 18:00] \\
+  Superseded.
+** COMMENT Side project
+*** TODO Hidden task
+* Habits
+** TODO Morning run                                                   :health:
+SCHEDULED: <2026-11-13 Fri 07:00 .+1d>
+:PROPERTIES:
+:STYLE:    habit
+:LAST_REPEAT: [2026-11-12 Thu 07:40]
+:END:
+** TODO Weekly review
+SCHEDULED: <2026-11-15 Sun ++1w>
+
+* Footnotes
+[fn:1] Remember the budget cap.

@@ -1,0 +1,10 @@
+text
+-----
+
+-----
+-----
+- not a rule, a list
+------ trailing tab	
+	-----	
+-----
+

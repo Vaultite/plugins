@@ -1,0 +1,32 @@
+#+begin_example -n 5x
+#+end_example
+#+begin_example x-n 3
+#+end_example
+#+begin_example a+n7
+#+end_example
+#+begin_example -l "q" -n
+#+end_example
+#+begin_example -i
+#+end_example
+#+begin_example x-i
+#+end_example
+#+begin_example -ri
+#+end_example
+#+begin_example -N
+#+end_example
+#+begin_example -I
+#+end_example
+#+begin_example   -n 3  
+#+end_example
+#+begin_example -K
+#+end_example
+#+begin_example -r
+#+end_example
+#+begin_example -k
+#+end_example
+#+begin_example +n 10 -i
+#+end_example
+#+begin_example -l "x" -r -k
+#+end_example
+#+begin_example -n0
+#+end_example

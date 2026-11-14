@@ -1,0 +1,30 @@
+#+NAME: a
+CLOCK: [2026-01-01 Thu 10:00]
+#+NAME: b
+: fixed
+#+NAME: c
+-----
+#+NAME: d
+%%(diary-float t 4 2)
+#+NAME: e
+#+CALL: foo()
+#+NAME: f
+[fn:1] def
+
+#+NAME: g
+| t |
+#+NAME: h
+#+begin_comment
+x
+#+end_comment
+#+NAME: i
+\begin{equation}
+x
+\end{equation}
+#+NAME: j
+#+BEGIN: clocktable
+#+END:
+#+NAME: k
+SCHEDULED: <2026-01-01 Thu>
+#+NAME: l
+  

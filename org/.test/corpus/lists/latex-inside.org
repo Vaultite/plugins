@@ -1,0 +1,9 @@
+- a
+  \begin{equation}
+  - x
+  \end{equation}
+  after
+- b
+  \begin{align}
+at column zero
+\end{align}

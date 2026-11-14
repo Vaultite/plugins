@@ -1,0 +1,21 @@
+#+begin_example
+   ,* a
+  ,#+b
+ ,#x
+,,,#+c
+,:x
+#+end_example
+#+begin_example -n
+  ex
+#+end_example
+#+BEGIN_EXAMPLE -l "(ref:%s)" -k :x
+code (ref:one)
+#+END_EXAMPLE
+#+begin_example foo
+#+end_example
+#+begin_example   
+#+end_example
+#+begin_example  x 
+#+end_example
+#+begin_example -n 3  
+#+end_example

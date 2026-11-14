@@ -1,0 +1,3 @@
+#+PROPERTY: CATEGORY fromprop
+#+PROPERTY: ID docid
+* H

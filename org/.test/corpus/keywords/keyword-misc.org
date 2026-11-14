@@ -1,0 +1,12 @@
+#+INCLUDE: "./other.org" :minlevel 1
+#+MACRO: version 1.0
+#+LATEX_HEADER: \usepackage{amsmath}
+#+HTML_HEAD: <link rel="stylesheet" href="x.css" />
+#+PROPERTY: header-args :results silent
+#+FILETAGS: :a:b:
+#+KEY: value with #+ inside
+#+KEY: value: with: colons
+#+TBLFM: $1=2
+#+KEY:no-space-value
+	#+TABBED: v
+#+LAST: no newline at end

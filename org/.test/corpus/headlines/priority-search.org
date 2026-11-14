@@ -1,0 +1,13 @@
+* TODO abc [#A] def
+* x [#A]
+* x [#A] :t:
+* x :t: [#A]
+* 	TODO x
+* TODO 	x
+* x [#A] COMMENT y
+* COMMENT [#A] y
+* TODO COMMENT [#A] y
+* [#A] TODO y
+* a [#A]b
+* [[#A]] link
+* x [#a] y

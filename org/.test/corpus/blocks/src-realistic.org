@@ -1,0 +1,27 @@
+* Code
+#+NAME: fib
+#+HEADER: :var n=10
+#+BEGIN_SRC python :results output :exports both
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+print(fib(n))
+#+END_SRC
+
+#+RESULTS: fib
+: 55
+
+#+begin_src emacs-lisp -n -r :tangle init.el
+(setq x 1)          (ref:x)
+(message "%s" x)
+#+end_src
+
+#+begin_src org
+,#+TITLE: inner doc
+,* Inner heading
+,** Inner sub
+Some text.
+#+end_src

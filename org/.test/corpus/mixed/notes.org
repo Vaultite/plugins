@@ -1,0 +1,68 @@
+#+title: Reading notes
+#+author: Alice Park
+#+filetags: :reading:notes:
+
+Some notes on books and papers, kept loosely.
+
+* Books
+** /Thinking in Systems/ — Donella Meadows                       :systems:book:
+:PROPERTIES:
+:AUTHOR: Donella Meadows
+:YEAR: 2008
+:RATING: 5
+:END:
+
+A system is more than the sum of its parts.
+
+#+begin_quote
+A system is an interconnected set of elements that is coherently organized
+in a way that achieves something.
+#+end_quote
+
+*** Stocks and flows
+- Stock :: the memory of the history of changing flows.
+- Flow :: the rate of change.
+
+*** Leverage points
+1. Constants, parameters, numbers.
+2. Buffers.
+3. Stock-and-flow structures.
+
+** Café culture in Vienna 🎉                                        :history:
+Short essay on the coffee houses.
+
+| Café       | Founded | District |
+|------------+---------+----------|
+| Central    |    1876 | 1        |
+| Sperl      |    1880 | 6        |
+
+* Papers
+** TODO Read "Attention is all you need"                             :ml:toread:
+** DONE Read "A relational model of data" [100%]
+CLOSED: [2026-10-01 Thu]
+- [X] Abstract
+- [X] Sections 1-3
+
+Key idea: data independence.
+
+#+begin_src sql
+SELECT name FROM people WHERE city = 'Vienna';
+#+end_src
+
+* Quotes
+# Quotes I like; source in brackets.
+#+begin_verse
+Great is the art of beginning,
+  but greater is the art of ending.
+#+end_verse
+
+* Ideas
+** An idea with no body
+** Another idea
+:PROPERTIES:
+:ID: idea-2
+:END:
+
+
+** Last idea, after blank lines
+Fin.

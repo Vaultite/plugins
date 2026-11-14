@@ -1,0 +1,80 @@
+* :a: 1
+:PROPERTIES:
+:a: 1
+:END:
+* :A+: 2
+:PROPERTIES:
+:A+: 2
+:END:
+* :b+:
+:PROPERTIES:
+:b+:
+:END:
+* :c:
+:PROPERTIES:
+:c:
+:END:
+* :empty:   
+:PROPERTIES:
+:empty:   
+:END:
+*   :indented:  v  
+:PROPERTIES:
+  :indented:  v  
+:END:
+* :with space: x
+:PROPERTIES:
+:with space: x
+:END:
+* :x:y
+:PROPERTIES:
+:x:y
+:END:
+* :ü: ok
+:PROPERTIES:
+:ü: ok
+:END:
+* :a:b: c
+:PROPERTIES:
+:a:b: c
+:END:
+* :a:	tab
+:PROPERTIES:
+:a:	tab
+:END:
+* :a::
+:PROPERTIES:
+:a::
+:END:
+* :a:x
+:PROPERTIES:
+:a:x
+:END:
+* :: x
+:PROPERTIES:
+:: x
+:END:
+* :a+b: c
+:PROPERTIES:
+:a+b: c
+:END:
+* :+:
+:PROPERTIES:
+:+:
+:END:
+* :++: x
+:PROPERTIES:
+:++: x
+:END:
+* :a:	
+:PROPERTIES:
+:a:	
+:END:
+* :END: x
+:PROPERTIES:
+:END: x
+:END:
+* :a: :b:
+:PROPERTIES:
+:a: :b:
+:END:

@@ -1,0 +1,15 @@
+x <https://a.b c> <https://a.b
+  c> <file:a b.org::x> <unknown:x> <https:> <https://a.b>x <a <https://a.b>> <mailto:x@y> <id:a> <http://a.b<c> <https://x
+ y
+z>
+
+x <https://a.b
+> <https://a.b
+   > <HTTPS://X> <File+sys:/x::y> <shell:ls -l | wc> <https://a.b>> <<https://a.b>> <https://a.b>-<https://c.d>
+
+x <doi:10.1/x> <info:emacs#Top> <help:org-mode> <elisp:(message "hi")> <news:x> <ftp://f.org/x> <bibtex:x> <docview:a.pdf::3>
+
+x <https://a.b  
+  c> <file:x 	
+	y> <https://a b 
+ c d>
