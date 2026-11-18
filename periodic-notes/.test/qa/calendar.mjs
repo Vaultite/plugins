@@ -13,7 +13,7 @@ const read = (p) => (existsSync(`${VAULT}/${p}`) ? readFileSync(`${VAULT}/${p}`,
 const pad = (n) => String(n).padStart(2, "0"), now = new Date()
 const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`, today = iso(now)
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "periodic-notes")
 await req("PATCH", "config/plugin/periodic-notes", { weekly: true, weekNumbers: true, dailyTemplate: "Qa daily", confirmCreate: true })
 await req("POST", "file", { path: "Templates/Qa daily.md", text: "---\ntags: [journal]\n---\n## {{date:dddd D MMMM}}\n\n- [ ] Plan the day\n" })

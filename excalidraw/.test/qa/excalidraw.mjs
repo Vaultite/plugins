@@ -19,7 +19,7 @@ const scene = { type: "excalidraw", version: 2, source: "qa", appState: { viewBa
   { id: "qa-text", type: "text", x: 50, y: 32, width: 100, height: 25, text: "Hello", originalText: "Hello", fontSize: 20, fontFamily: 5, textAlign: "center", verticalAlign: "middle", containerId: "qa-box", strokeColor: "#1e1e1e", seed: 2 },
 ] }
 // Workspaces keep tabs that would take the page's address over: none during the run (put back at the end).
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 await req("DELETE", `file?path=${encodeURIComponent("Qa drawings")}`)
 await req("POST", "file", { path: DRAWING, text: JSON.stringify(scene, null, 2) })
 await req("POST", "file", { path: NOTE, text: `A picture:\n\n![[${DRAWING}|300]]\n` })

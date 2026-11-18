@@ -12,7 +12,7 @@ const settings = () => req("GET", "config/plugin/icons")
 const NOTE = "Notes/Lisbon trip.md", BASE = "Notes/Books/Reading list.base"
 const noteWas = readFileSync(`${VAULT}/${NOTE}`, "utf8")
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "icons")
 await req("PATCH", "config/plugin/icons", { icons: null })
 

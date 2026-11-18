@@ -29,7 +29,7 @@ function note(p, text, ago) {
   const t = new Date(now - ago); fs.utimesSync(abs(p), t, t)
 }
 const WORDS = "lighthouse harbour morning tide notebook coffee garden river letter window paper autumn station meadow lantern".split(" ")
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 for (const p of (await (await req("GET", "state")).json()).pinned ?? []) if (p.startsWith(`${F}/`)) await req("POST", "pins", { path: p, pinned: false })
 fs.rmSync(abs(F), { recursive: true, force: true })
 for (let i = 0; i < 500; i++) {
@@ -168,7 +168,7 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   check("a wide sidebar has the two panes side by side", li.x > pl.x + pl.width - 2 && Math.abs(li.y - pl.y) < 40, [pl, li])
   await page.screenshot({ path: `${OUT}nn-panel-wide.png` })
   // Folded to the icon rail: its icon opens the panel beside it, side by side.
-  await page.keyboard.press("Meta+\\"); await wait(500)
+  await page.keyboard.press(`${process.platform === "darwin" ? "Meta" : "Control"}+\\`); await wait(500)
   await page.locator('[data-flyout-icon="notebook-navigator:navigator"]').click(); await wait(600)
   const [fp, fl] = [await page.locator("[data-flyout] [data-nn-places]").boundingBox(), await page.locator("[data-flyout] [data-nn-list]").boundingBox()]
   check("in the icon rail, a flyout with the two panes side by side", !!fp && !!fl && fl.x > fp.x + fp.width - 2, [fp, fl])

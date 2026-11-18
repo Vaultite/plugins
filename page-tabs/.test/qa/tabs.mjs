@@ -8,7 +8,7 @@ mkdirSync(OUT, { recursive: true })
 mkdirSync(`${VAULT}/Qa tabs`, { recursive: true })
 writeFileSync(`${VAULT}/Qa tabs/Harbor.md`, "---\ntab: List\ntabs: [Harbor map]\n---\n\nThe boats in a list.\n")
 writeFileSync(`${VAULT}/Qa tabs/Harbor map.md`, "---\ntab: Map\n---\n\nThe boats on a map.\n")
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "page-tabs")
 
 const phone = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }

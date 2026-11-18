@@ -39,7 +39,7 @@ elements.push({ id: "qa-title", type: "text", x: 0, y: -80, width: 400, height: 
   fontSize: 36, fontFamily: 5, textAlign: "left", verticalAlign: "top", strokeColor: "#1e1e1e", seed: 99 })
 const scene = { type: "excalidraw", version: 2, source: "qa", appState: { viewBackgroundColor: "#ffffff" }, files, elements }
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 await req("DELETE", `file?path=${encodeURIComponent(DIR)}`)
 const made = await req("POST", "file", { path: DRAWING, text: JSON.stringify(scene, null, 2) })
 check(`a drawing of ${mb()} MB is written through the API`, made.ok && Number(mb()) > 25, made.status)

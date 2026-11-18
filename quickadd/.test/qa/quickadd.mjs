@@ -12,7 +12,7 @@ const req = (method, p, body) => fetch(`${B}api/${p}`, { method, headers: { "Con
 const read = (p) => (existsSync(`${VAULT}/${p}`) ? readFileSync(`${VAULT}/${p}`, "utf8") : "")
 const today = new Date().toLocaleDateString("sv"), NOTE = "Notes/Lisbon trip.md"
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "quickadd")
 await req("POST", "file", { path: "Templates/Qa meeting.md", text: "---\ntype: note\n---\n# {{title}}\n\nTopic: {{VALUE:Topic}}, from {{LINKCURRENT}}\n" })
 await req("PATCH", "config/plugin/quickadd", { choices: [
