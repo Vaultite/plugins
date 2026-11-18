@@ -1,7 +1,7 @@
 // The calendar (a sidebar panel, a tab): a month of daily notes as dots (their length; a ring: tasks left open), today
 // marked, week numbers; a click opens a day's, week's, month's, quarter's or year's note, making it (asked first) when
 // it isn't there. Commands open this period's note, or the next or previous one there is of the open one.
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { CalendarDays, ChevronLeft, ChevronRight, Dot } from "lucide-react"
 import {
   cn, confirmDialog, currentFile, dateText, definePlugin, formatDate, getStore, Loading, notify, notifyError, op, openFile, openView,
@@ -67,9 +67,19 @@ const dots = (n: number, open: number) => (
   </span>
 )
 
+/** The folders a month's notes are in (its days', weeks', the month's, quarter's and year's). */
+function foldersOf(m: Month) {
+  const notes = [m.monthNote, m.quarterNote, m.yearNote, ...m.weeks.flatMap((w) => [w.note, ...w.days.map((d) => d.note)])]
+  return new Set(notes.flatMap((n) => (n ? [n.path.slice(0, Math.max(0, n.path.lastIndexOf("/")))] : [])))
+}
+
 function Calendar({ file }: { file: string }) {
   const [month, setMonth] = useState(() => iso(new Date()).slice(0, 7))
-  const { data: m, error } = useLive<Month>(`periodic-notes/month?month=${month}`, undefined, true)
+  // Asked again when a file in its notes' folders changes, not on every edit elsewhere.
+  const folders = useRef<Set<string> | null>(null)
+  const { data: m, error } = useLive<Month>(`periodic-notes/month?month=${month}`, undefined,
+    (p) => !folders.current || folders.current.has(p.slice(0, Math.max(0, p.lastIndexOf("/")))))
+  folders.current = m ? foldersOf(m) : null
   if (!m) return <Loading error={error && "Couldn't read the calendar."} className="px-1.5 text-[13px]" />
   const first = day(m.month), move = (n: number) => setMonth(iso(new Date(first.getFullYear(), first.getMonth() + n, 1)).slice(0, 7))
   const nav = "flex size-6 cursor-pointer items-center justify-center rounded-[5px] text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground"
