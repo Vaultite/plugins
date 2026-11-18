@@ -25,3 +25,6 @@ The plugins named after Obsidian community plugins are Vaultite's own, written t
 none of those plugins' code, which the user downloads from its authors when they choose the original. Obsidian is a
 trademark of Dynalist Inc., and the logos in plugins' `icon.svg` (Excalidraw, Git, Cursor, OpenCode, Muse) are
 trademarks of their owners; none of them is affiliated with or endorses Vaultite.
+
+`logseq/` reads and writes Logseq's file format (pages, journals, `config.edn`); it contains none of Logseq's code, and Logseq
+is not affiliated with or endorsing Vaultite.

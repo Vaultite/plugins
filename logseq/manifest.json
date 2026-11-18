@@ -1,0 +1,20 @@
+{
+  "id": "logseq",
+  "icon": "network",
+  "name": "Logseq",
+  "description": "Brings a Logseq graph in and takes notes back out: pages become notes (namespaces as folders), journals daily notes, blocks nested lists with their properties, block refs links to the block, TODO/DOING/DONE tasks in the Tasks plugin's format with their dates, simple queries Tasks or Dataview queries, and assets attachments. Importing again adds only what's new; exporting writes a graph Logseq opens.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 10,
+  "minAppVersion": "0.14.0",
+  "category": "writing",
+  "tint": "teal",
+  "runsOnServer": true,
+  "disclosures": { "outsideVault": true },
+  "enhances": ["daily-notes"],
+  "forAgents": "Moving a Logseq graph in: `logseq_import` (its folder or zip; `logseq_job` follows it). Back out: `logseq_export` (a folder, to a folder or .zip). How each thing maps: `vau docs logseq`.",
+  "settings": {
+    "folder": { "type": "string", "folder": true, "default": "Logseq", "label": "Folder", "description": "where a graph's pages go (its journals go where daily notes do, its assets in the attachments folder)" }
+  }
+}
