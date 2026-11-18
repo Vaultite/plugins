@@ -7,9 +7,9 @@ import { indentMore, indentLess, cursorLineUp, cursorLineDown, cursorCharLeft, c
   cursorLineBoundaryBackward, cursorLineBoundaryForward, deleteCharBackward, deleteCharForward, insertNewlineAndIndent, undo, redo, selectAll, toggleComment, cursorDocStart, cursorDocEnd,
   moveLineUp, moveLineDown } from "@codemirror/commands"
 import { foldAll, unfoldAll, toggleFold } from "@codemirror/language"
-import { markdown, insertNewlineContinueMarkup } from "@codemirror/lang-markdown"
 import { currentEditor, runCommandById, type OpenEditor, onTabLayoutChange } from "@vaultite"
 import { Component } from "./core.ts"
+import { md } from "./heavy.ts"
 import { PopoverSuggest } from "./ui.ts"
 import * as ws from "./workspace.ts"
 
@@ -20,7 +20,7 @@ const COMMANDS: Record<string, (v: EditorView) => boolean> = {
   goStart: cursorLineBoundaryBackward, goEnd: cursorLineBoundaryForward, indentMore, indentLess, newlineAndIndent: insertNewlineAndIndent,
   deleteLine: (v) => { const l = v.state.doc.lineAt(v.state.selection.main.head); v.dispatch({ changes: { from: l.from, to: Math.min(l.to + 1, v.state.doc.length) } }); return true },
   undo, redo, selectAll, toggleComment, goDocStart: cursorDocStart, goDocEnd: cursorDocEnd, delCharBefore: deleteCharBackward, delCharAfter: deleteCharForward,
-  swapLineUp: moveLineUp, swapLineDown: moveLineDown, toggleFold, foldAll, unfoldAll, newlineAndIndentContinueMarkdownList: insertNewlineContinueMarkup,
+  swapLineUp: moveLineUp, swapLineDown: moveLineDown, toggleFold, foldAll, unfoldAll, newlineAndIndentContinueMarkdownList: (v) => !!md?.insertNewlineContinueMarkup(v),
 }
 
 export class Editor {
@@ -107,7 +107,7 @@ export class Editor {
     this.transaction({ changes })
   }
   exec(cmd: string) { COMMANDS[cmd]?.(this.cm) }
-  newlineAndIndentContinueMarkdownList() { if (!insertNewlineContinueMarkup(this.cm)) insertNewlineAndIndent(this.cm) }
+  newlineAndIndentContinueMarkdownList() { if (!md?.insertNewlineContinueMarkup(this.cm)) insertNewlineAndIndent(this.cm) }
   newlineAndIndentOnly() { insertNewlineAndIndent(this.cm) }
   getDoc() { return this }
   get containerEl() { return this.cm.dom }
@@ -361,7 +361,7 @@ export class InlineMarkdownEditor extends Component {
     return [editorInfoField.init(() => this.info), editorEditorField, editorLivePreviewField, tracker, slot.of(flat()), this.local.of([]),
       EditorView.updateListener.of((u) => this.onUpdate(u, u.docChanged))]
   }
-  buildLocalExtensions(): Extension[] { return [markdown(), history(), drawSelection(), EditorView.lineWrapping, keymap.of([...defaultKeymap, ...historyKeymap])] }
+  buildLocalExtensions(): Extension[] { return [md?.markdown() ?? [], history(), drawSelection(), EditorView.lineWrapping, keymap.of([...defaultKeymap, ...historyKeymap])] }
   onUpdate(_u: unknown, _changed: boolean) {}
   get() { return this.cm.state.doc.toString() }
   set(text: string, clear = false) {

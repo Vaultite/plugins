@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { commandList, get, notify, offeredCommand, openView, post, runCommandById } from "@vaultite"
 import { Component, Events, fromB64 } from "./core.ts"
-import { Vim } from "@replit/codemirror-vim"
+import { vim } from "./heavy.ts"
 import { cm5 } from "./cm5.ts"
 import { createEl } from "./dom.ts"
 import { loadPlugin, unloadPlugin } from "./host.ts"
@@ -559,11 +559,9 @@ export function installGlobals() {
   const lang = (localStorage.getItem("language") || navigator.language || "en").split("-")[0]
   w.i18next ??= i18n(lang)
   w.CodeMirror ??= cm5()
-  // (CodeMirror's Vim, always there in Obsidian. Not an import(): a chunk sharing the app's CodeMirror with this
-  // module made Vaultite 0.6.0 run the module before CodeMirror loaded, and its classes extended undefined)
+  // (CodeMirror's Vim, always there in Obsidian: heavy.ts, loaded as the runtime wakes, after the app's CodeMirror)
   w.CodeMirrorAdapter ??= { commands: {} }
-  w.CodeMirrorAdapter.Vim ??= Vim
-  w.CodeMirror.Vim ??= Vim
+  if (vim) { w.CodeMirrorAdapter.Vim ??= vim.Vim; w.CodeMirror.Vim ??= vim.Vim }
 }
 
 /** The plugin settings tab on screen (in its plugin's sheet), if any. */

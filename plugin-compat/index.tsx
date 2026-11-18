@@ -18,6 +18,7 @@ import { routeWindowOpen, runUri } from "./runtime/uri.ts"
 import { Menu, MenuItem, setIcon, prefetchIcons } from "./runtime/ui.ts"
 import { Component, fromB64, type Events } from "./runtime/core.ts"
 import { moveInto } from "./runtime/dom.ts"
+import { loadHeavy } from "./runtime/heavy.ts"
 import { parking, portals, portalsChanged, rootEl, viewName, type WorkspaceLeaf } from "./runtime/workspace.ts"
 
 type Installed = { id: string; manifest: Manifest & { authorUrl?: string }; enabled: boolean; styles: boolean; hash: string; allowed: boolean; here: boolean
@@ -282,6 +283,7 @@ let pictured: Promise<unknown> = Promise.resolve()
 let awake: Promise<void> | null = null
 const wake = () => awake ??= (async () => {
   const app = appOf()
+  void loadHeavy()
   prefetchIcons()
   pictured = app.vault.refresh()
   await pictured
