@@ -1,7 +1,6 @@
 // The navigator: places (shortcuts, recent, folders, tags) beside or above the notes of the one picked, like Apple
 // Notes or Bear. Rows, menus, drag, selection and the keyboard are the app's; only the two panes are laid out here.
 import { memo, useEffect, useId, useMemo, useReducer, useRef, useState } from "react"
-import { parse as parseYaml } from "yaml"
 import { ArrowUpDown, ChevronRight, FileText, Folder, FolderInput, History, Library, Hash, SquarePen, Star, StarOff, Trash2, Copy, type LucideIcon } from "lucide-react"
 import {
   cn, copyText, createFile, dateText, deleteFile, edgeScroller, FilterField, fileMenu, filesMenu, freeName, get, inArchive, isDesktop, isHidden, menuBelow, menuFor,
@@ -61,6 +60,7 @@ function useFound(q: string, folder: string | null) {
 
 /** Add a tag to notes' frontmatter `tags` (those without it), with Undo. */
 async function tagNotes(paths: string[], tag: string) {
+  const { parse: parseYaml } = await import("yaml") // (only here: loaded when a note is first dropped on a tag)
   const was: [string, unknown][] = []
   for (const p of paths) {
     try {
