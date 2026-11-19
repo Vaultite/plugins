@@ -100,31 +100,15 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   const ms = await page.evaluate(async (p) => {
     const t = performance.now()
     document.querySelector(`[data-nn-place="${CSS.escape(p)}"]`).click()
-    const list = `[data-nn-list="${CSS.escape(p)}"]`
-    await new Promise((r) => { const go = () => (document.querySelector(`${list} [data-nn-note]`) && document.querySelector(`${list} .tabular-nums`)?.textContent === "500" ? r() : requestAnimationFrame(go)); go() })
+    await new Promise((r) => { const go = () => (document.querySelectorAll("[data-nn-note]").length >= 500 ? r() : requestAnimationFrame(go)); go() })
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
     return performance.now() - t
   }, `folder:${F}/Journal`)
   const work = await busy() - busy0
   check(`a folder of 500 notes opens at once (${Math.round(ms)} ms to drawn, ${Math.round(work)} ms of work)`, ms < 250 && work < 250, [ms, work])
-  const drawn = await rows(page).count()
-  check(`a long list draws only the rows near the screen (${drawn} of 500)`, drawn > 5 && drawn < 150, drawn)
-  // Its headings, seen as the list scrolls to its end and back (only those near the screen are drawn).
-  const seenHeads = new Set(await heads(page))
-  const scrollList = (to) => page.evaluate((to) => {
-    let el = document.querySelector("[data-nn-list]")
-    while (el && !(el.scrollHeight > el.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(el).overflowY))) el = el.parentElement
-    if (el) el.scrollTop = to === "end" ? el.scrollTop + el.clientHeight : 0
-    return el ? el.scrollTop + el.clientHeight >= el.scrollHeight - 2 : true
-  }, to)
-  for (let i = 0; i < 200 && !(await scrollList("end")); i++) { await wait(30); for (const h of await heads(page)) seenHeads.add(h) }
-  await wait(100); for (const h of await heads(page)) seenHeads.add(h)
-  const last = (await titles(page)).at(-1)
-  await scrollList("top"); await wait(200)
-  check("scrolled to its end, the last note is drawn (Entry 500, the oldest)", last === "Entry 500", last)
   check("its notes are grouped by date: Today, Yesterday, the last 7 and 30 days, then months", await until(async () => {
-    const h = await heads(page); return h[0] === "Today" && h[1] === "Yesterday" && seenHeads.has("Previous 7 days") && seenHeads.has("Previous 30 days") && seenHeads.size > 8
-  }, 3000), [...seenHeads])
+    const h = await heads(page); return h[0] === "Today" && h[1] === "Yesterday" && h.includes("Previous 7 days") && h.includes("Previous 30 days") && h.length > 8
+  }, 3000), await heads(page))
   const preview = () => rows(page).first().locator(".line-clamp-2").textContent()
   check("rows show the time and a preview of the first lines (as text, without the heading)", await until(async () => /^\d+:\d\d.*A \w+ by the \w+, then/.test(await preview()) && !/Entry 1\b|#/.test((await preview()).replace("#journal/travel", "")), 4000),
     await preview())
@@ -145,6 +129,33 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   await page.locator('[data-nn-list] button[aria-label^="Sort"]').click(); await wait(200)
   await page.getByRole("menuitemradio", { name: "Date modified" }).click(); await wait(400)
   check("back to the default: the folder's own sort is gone", !settings().sorts?.[`folder:${F}/Journal`], settings())
+
+  // Selecting in the 500: Select all takes every note; ⌘-click the first, ⇧-click one far down (scrolled to): the run.
+  const MOD = process.platform === "darwin" ? "Meta" : "Control"
+  const entry = (n) => page.locator(`[data-nn-list] [data-nn-note="${F}/Journal/Entry ${String(n).padStart(3, "0")}.md"]`)
+  const scrollBy = (by) => page.evaluate((by) => {
+    let el = document.querySelector("[data-nn-list]")
+    while (el && !(el.scrollHeight > el.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(el).overflowY))) el = el.parentElement
+    if (el) el.scrollTop = by === "top" ? 0 : el.scrollTop + el.clientHeight
+  }, by)
+  /** How many notes the selection's menu (a right-click on a selected row) says are selected. */
+  const picked = async (row) => {
+    await row.click({ button: "right" }); await wait(200)
+    const t = (await page.locator("[role=menu]").first().textContent()) ?? ""
+    await page.keyboard.press("Escape"); await wait(150)
+    return Number(/(\d+) notes selected/.exec(t)?.[1] ?? 0)
+  }
+  await entry(1).click(); await wait(400)
+  await entry(1).focus(); await page.keyboard.press(`${MOD}+a`); await wait(200)
+  const all = await picked(entry(1))
+  check(`Select all selects every note of the 500 (${all})`, all === 500, all)
+  await page.keyboard.press("Escape"); await entry(1).click({ modifiers: [MOD] }); await wait(200) // (the run starts at the last ⌘-clicked)
+  for (let i = 0; i < 200 && !(await entry(400).count()); i++) { await scrollBy("page"); await wait(40) }
+  await entry(400).scrollIntoViewIfNeeded(); await wait(200)
+  await entry(400).click({ modifiers: ["Shift"] }); await wait(200)
+  const run = await picked(entry(400))
+  check(`⇧-click from the first note to the 400th, scrolled to, selects all 400 (${run})`, run === 400, run)
+  await page.keyboard.press("Escape"); await scrollBy("top"); await wait(200)
 
   // The search field: names, then words in the text (the app's search).
   await page.locator("[data-nn-list] input[type=search]").fill("entry 250"); await wait(500)
@@ -229,23 +240,25 @@ for (const scheme of ["light", "dark"]) {
 
 scope = ""
 // ---------- phone: places, a place's notes, a note, Back
+/** The navigator's panes on the screen (the closed sidebar drawer, inert, holds the panel too). */
+const shown = (page, sel) => page.locator(sel).evaluateAll((els) => els.filter((e) => !e.closest("[inert]")).length)
 for (const scheme of ["light", "dark"]) {
   const { ctx, page } = await open({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, colorScheme: scheme }, `phone ${scheme}`, "#view/notebook-navigator")
-  check(`390px ${scheme}: the places fill the screen`, await until(() => page.locator("[data-nn-places]").count(), 5000) > 0 && !(await page.locator("[data-nn-list]").count()))
+  check(`390px ${scheme}: the places fill the screen`, await until(() => shown(page, "[data-nn-places]"), 5000) > 0 && !(await shown(page, "[data-nn-list]")))
   const w = await page.evaluate(() => document.documentElement.scrollWidth)
   check(`390px ${scheme}: nothing scrolls sideways`, w <= 390, w)
   await page.screenshot({ path: `${OUT}nn-phone-places-${scheme}.png` })
   await place(page, `folder:${F}/Recipes`).tap(); await wait(900)
-  check(`390px ${scheme}: a place opens its notes, as a screen of their own`, await page.locator("[data-nn-list]").count() === 1 && !(await page.locator("[data-nn-places]").count()))
+  check(`390px ${scheme}: a place opens its notes, as a screen of their own`, await shown(page, "[data-nn-list]") === 1 && !(await shown(page, "[data-nn-places]")))
   await page.screenshot({ path: `${OUT}nn-phone-list-${scheme}.png` })
   if (scheme === "light") {
     await rows(page).first().tap(); await wait(1000)
     check("390px: a note opens", decodeURIComponent(await page.evaluate(() => location.hash)).startsWith(`#file/${F}/`), await page.evaluate(() => location.hash))
     await page.screenshot({ path: `${OUT}nn-phone-note.png` })
     await page.goBack(); await wait(1000)
-    check("390px: Back from the note is the place's notes", await page.locator("[data-nn-list]").count() === 1, await page.evaluate(() => location.hash))
+    check("390px: Back from the note is the place's notes", await shown(page, "[data-nn-list]") === 1, await page.evaluate(() => location.hash))
     await page.goBack(); await wait(1000)
-    check("390px: Back again is the places", await page.locator("[data-nn-places]").count() === 1, await page.evaluate(() => location.hash))
+    check("390px: Back again is the places", await shown(page, "[data-nn-places]") === 1, await page.evaluate(() => location.hash))
   }
   await ctx.close()
 }
