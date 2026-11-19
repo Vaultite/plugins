@@ -3,7 +3,7 @@
   "icon": "calendar-days",
   "name": "Periodic notes",
   "description": "A month calendar in the sidebar: each day with dots for its daily note's length and its open tasks, a click opening or making it. Daily, weekly, monthly, quarterly and yearly notes, each with its folder, name format and template, and commands to open them.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Vaultite",
   "repo": "Vaultite/plugins",
   "category": "writing",
