@@ -1,13 +1,12 @@
 // The navigator: places (shortcuts, recent, folders, tags) beside or above the notes of the one picked, like Apple
 // Notes or Bear. Rows, menus, drag, selection and the keyboard are the app's; only the two panes are laid out here.
-import { memo, useEffect, useId, useMemo, useReducer, useState } from "react"
-import { parse as parseYaml } from "yaml"
+import { memo, useEffect, useId, useMemo, useReducer, useRef, useState } from "react"
 import { ArrowUpDown, ChevronRight, FileText, Folder, FolderInput, History, Library, Hash, SquarePen, Star, StarOff, Trash2, Copy, type LucideIcon } from "lucide-react"
 import {
   cn, copyText, createFile, dateText, deleteFile, edgeScroller, FilterField, fileMenu, filesMenu, freeName, get, inArchive, isDesktop, isHidden, menuBelow, menuFor,
   moveManyInto, askMove, newNoteFolder, notify, notifyError, openFile, openingSoon, openInSplit, openItem, openNew, openView, PanelFold, post, rawUrl,
   readFile, rowMenu, selectClick, selectedAttr, selectionFor, setProperty, SidebarHeading, SidebarRow, snippet, splitFm, startDrag, stem,
-  useDrag, useDropHit, useDropTarget, useOpenedFiles, usePluginSettings, useScopedState, useSelectable, useSelected, useWorkspaceVersion, workspacePins,
+  useDrag, useDropHit, useDropTarget, useOpenedFiles, usePluginSettings, useScopedState, useSelectable, useSelected, useVirtual, useWorkspaceVersion, workspacePins,
   type DragItem, type MenuItem, type Store,
 } from "@vaultite"
 import { folderOf, folderTree, groupNotes, nameOf, notesIn, SORTS, sortNotes, tagTree, timeOf, type Node, type Note, type Place, type Sort } from "./model.ts"
@@ -30,20 +29,19 @@ function usePinned(store: Store) {
   return useMemo(() => new Set(list), [list.join("\n")]) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
-// ---------- previews: asked of the server for the notes listed, once per change of each ----------
+// ---------- previews: asked of the server for the notes drawn, once per change of each ----------
 const previews = new Map<string, { m: number; text: string; image: string }>()
-/** Its number goes up as previews come in. */
+/** The rows' previews, asked a moment after they're drawn (a scroll's rows at once); its number goes up as they come in. */
 function usePreviews(notes: Note[]) {
   const [n, redraw] = useReducer((n: number) => n + 1, 0)
   useEffect(() => {
     const want = notes.filter((n) => previews.get(n.path)?.m !== n.mtime)
     if (!want.length) return
-    let live = true
-    post<Record<string, [string, string]>>(`${ID}/previews`, { paths: want.map((n) => n.path) }).then((r) => {
+    const t = setTimeout(() => post<Record<string, [string, string]>>(`${ID}/previews`, { paths: want.map((n) => n.path) }).then((r) => {
       for (const n of want) { const x = r[n.path]; if (x) previews.set(n.path, { m: n.mtime, text: snippet(x[0]), image: x[1] }) }
-      if (live) redraw()
-    }, () => {})
-    return () => { live = false }
+      redraw()
+    }, () => {}), 30)
+    return () => clearTimeout(t)
   }, [notes])
   return n
 }
@@ -62,6 +60,7 @@ function useFound(q: string, folder: string | null) {
 
 /** Add a tag to notes' frontmatter `tags` (those without it), with Undo. */
 async function tagNotes(paths: string[], tag: string) {
+  const { parse: parseYaml } = await import("yaml") // (only here: loaded when a note is first dropped on a tag)
   const was: [string, unknown][] = []
   for (const p of paths) {
     try {
@@ -195,13 +194,13 @@ function when(t: number) {
   return dateText(d, d.getFullYear() === now.getFullYear() ? DAY : DAY_YEAR)
 }
 
-const NoteRow = memo(function NoteRow({ note, sort, active, folder, preview, dragged }: {
-  note: Note; sort: Sort; active: boolean; folder: string | null; preview?: { text: string; image: string }; dragged: boolean }) {
+const NoteRow = memo(function NoteRow({ note, sort, active, folder, preview, dragged, vi }: {
+  note: Note; sort: Sort; active: boolean; folder: string | null; preview?: { text: string; image: string }; dragged: boolean; vi?: number }) {
   const p = note.path
   const picked = useSelected(ID, p)
   const there = folderOf(p)
   return (
-    <a href={`#file/${encodeURIComponent(p)}`} data-keyrow data-nn-note={p} data-select-key={p} {...selectedAttr(picked)}
+    <a href={`#file/${encodeURIComponent(p)}`} data-keyrow data-nn-note={p} data-select-key={p} data-vi={vi} {...selectedAttr(picked)}
       onClick={(e) => { e.preventDefault(); if (!selectClick(e, ID, p, active ? p : null)) openFile(p, { newTab: e.metaKey || e.ctrlKey }) }}
       onAuxClick={(e) => { if (e.button === 1) { e.preventDefault(); openFile(p, { newTab: true }) } }}
       onPointerDown={(e) => {
@@ -214,7 +213,7 @@ const NoteRow = memo(function NoteRow({ note, sort, active, folder, preview, dra
         openItem(() => openFile(p, { newTab: true }), isDesktop() ? () => openInSplit(`file:${p}`, "right") : undefined),
         ...fileMenu(p, { phone: !isDesktop() }).map((it, i) => (i ? it : { ...it, sep: true })),
       ]))}
-      className={cn("flex gap-2 rounded-[6px] px-1.5 py-1.5 [contain-intrinsic-size:auto_58px] [content-visibility:auto]",
+      className={cn("flex gap-2 rounded-[6px] px-1.5 py-1.5", vi === undefined && "[contain-intrinsic-size:auto_58px] [content-visibility:auto]",
         active ? "bg-foreground/[0.08]" : "hover:bg-foreground/[0.04]", dragged && "opacity-50")}>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[13px] leading-5 font-medium">{stem(p)}</span>
@@ -240,7 +239,6 @@ function List({ store, notes, s, save, place, active }: { store: Store; notes: N
   const folder = folderPlace(place)
   const all = useMemo(() => notesIn(notes, place, deep, place === "recent" ? recent : []), [notes, place, deep, place === "recent" && recent.join("\n")]) // eslint-disable-line react-hooks/exhaustive-deps
   const sorted = useMemo(() => (place === "recent" ? all : sortNotes(all, sort)), [all, sort, place])
-  const seen = usePreviews(sorted)
   const found = useFound(q, folder || null)
   const words = q.toLowerCase().split(/\s+/).filter(Boolean)
   const shown = useMemo(() => (words.length ? sorted.filter((n) => words.every((w) => stem(n.path).toLowerCase().includes(w)) || found?.has(n.path)) : sorted),
@@ -270,16 +268,22 @@ function List({ store, notes, s, save, place, active }: { store: Store; notes: N
         {place !== "recent" && button("New note", SquarePen, () => void newNote(store, place))}
       </div>
       <FilterField value={q} onChange={setQ} placeholder="Search notes" />
-      <Rows groups={groups} sort={sort} active={active} folder={place.startsWith("folder:") ? folder : null} dragged={dragged} seen={seen} />
+      <Rows groups={groups} sort={sort} active={active} folder={place.startsWith("folder:") ? folder : null} dragged={dragged} />
       {!shown.length && <p className="px-1.5 py-1 text-[13px] text-tertiary">{q ? "No notes match." : "No notes here yet."}</p>}
     </div>
   )
 }
 
-/** The list's rows under their headings (`seen`: previews that came in since, drawn again). */
-const Rows = memo(function Rows({ groups, sort, active, folder, dragged }: {
-  groups: ReturnType<typeof groupNotes>; sort: Sort; active: string; folder: string | null; dragged: string; seen: number }) {
+/** The list's rows under their headings; a long one (a big vault's All notes) drawn near the screen only (the app's
+ *  useVirtual), its previews asked as rows come into view. */
+const LONG = 150
+const Rows = memo(function Rows(props: { groups: ReturnType<typeof groupNotes>; sort: Sort; active: string; folder: string | null; dragged: string }) {
+  return props.groups.reduce((n, g) => n + g.notes.length, 0) > LONG ? <LongRows {...props} /> : <ShortRows {...props} />
+})
+
+function ShortRows({ groups, sort, active, folder, dragged }: { groups: ReturnType<typeof groupNotes>; sort: Sort; active: string; folder: string | null; dragged: string }) {
   const out = new Set(dragged.split("\n"))
+  usePreviews(useMemo(() => groups.flatMap((g) => g.notes), [groups]))
   return (
     <div data-select-list={ID} className="flex flex-col">
       {groups.map((g) => (
@@ -292,7 +296,28 @@ const Rows = memo(function Rows({ groups, sort, active, folder, dragged }: {
       ))}
     </div>
   )
-})
+}
+
+type Line = { key: string; head?: string; note?: Note }
+function LongRows({ groups, sort, active, folder, dragged }: { groups: ReturnType<typeof groupNotes>; sort: Sort; active: string; folder: string | null; dragged: string }) {
+  const out = new Set(dragged.split("\n"))
+  const list = useRef<HTMLDivElement>(null)
+  const lines = useMemo(() => groups.flatMap((g): Line[] => [...(g.label ? [{ key: `head:${g.label}`, head: g.label }] : []), ...g.notes.map((n) => ({ key: n.path, note: n }))]), [groups])
+  const keys = useMemo(() => lines.map((l) => l.key), [lines])
+  const v = useVirtual(list, keys, { estimate: 64, keep: [active] })
+  const shownKey = v.slots.map((s) => keys[s.index]).join("\n")
+  const shown = useMemo(() => v.slots.flatMap((s) => (lines[s.index].note ? [lines[s.index].note!] : [])), [shownKey, lines]) // eslint-disable-line react-hooks/exhaustive-deps
+  usePreviews(shown)
+  const rows = []
+  for (const { index: i, gap } of v.slots) {
+    const l = lines[i]
+    if (gap > 0.5) rows.push(<div key={`gap:${i}`} aria-hidden className="pointer-events-none shrink-0" style={{ height: gap }} />)
+    rows.push(l.head ? <h3 key={l.key} data-vi={i} className="px-1.5 pt-2 pb-0.5 text-[11px] font-semibold text-muted-foreground">{l.head}</h3>
+      : <NoteRow key={l.key} vi={i} note={l.note!} sort={sort} active={l.key === active} folder={folder} preview={previews.get(l.key)} dragged={out.has(l.key)} />)
+  }
+  if (v.rest > 0.5) rows.push(<div key="rest" aria-hidden className="pointer-events-none shrink-0" style={{ height: v.rest }} />)
+  return <div ref={list} data-select-list={ID} className="flex flex-col">{rows}</div>
+}
 
 // ---------- the two panes ----------
 /** `panel`: in the sidebar (side by side once it's wide, else stacked); `tab`: a tab of its own, each pane scrolling;

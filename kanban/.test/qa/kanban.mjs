@@ -17,7 +17,7 @@ const read = () => readFileSync(path.join(VAULT, BOARD), "utf8")
 const lanes = () => k.parseBoard(read()).lanes.map((l) => l.cards.map((c) => c.text.split("\n")[0]))
 const reset = async () => { await req("PUT", "file", { path: BOARD, text: SAMPLE }); await wait(900) }
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 await req("DELETE", `file?path=${encodeURIComponent(F)}`)
 await req("POST", "file", { path: BOARD, text: SAMPLE })
 await req("POST", "file", { path: `${F}/Alice Park.md`, text: "A person the board links to.\n" })

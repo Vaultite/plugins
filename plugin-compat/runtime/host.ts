@@ -16,6 +16,7 @@ import * as ws from "./workspace.ts"
 
 export { App, runObsidian, setSettingsOpener } from "./app.ts"
 import { installGlobals } from "./app.ts"
+import { loadHeavy } from "./heavy.ts"
 export * from "./state.ts"
 import { Platform, registered, tell, type Manifest, type ObsCommand } from "./state.ts"
 
@@ -178,6 +179,8 @@ export function prefetch(id: string, hash: string) {
 }
 
 export async function loadPlugin(id: string, manifest: Manifest, hash = "") {
+  await loadHeavy()
+  installGlobals() // (Vim, now there)
   const app = appOf()
   const started = performance.now()
   const result: Result = { id, name: manifest.name, version: manifest.version, state: "ok", ms: 0, commands: 0, views: [], fences: [], settings: false, ribbon: 0, statusBar: 0, postProcessors: 0, editorExtensions: false, suggests: 0, missed: {} }

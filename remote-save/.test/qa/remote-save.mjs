@@ -13,7 +13,7 @@ const api = apiAt(B, { "X-Vaultite-Client": "app/qa" })
 const KEY = "AKIDQAEXAMPLE", SECRET = "qa-secret-not-real-0123456789"
 const s3 = await fakeS3("qa-vault", { [KEY]: SECRET })
 const NOTE = "Qa remote save.md"
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "remote-save")
 for (const r of (await api("GET", "remote-save")).remotes) await api("DELETE", `remote-save/remotes/${r.id}`)
 await api("DELETE", `file?path=${encodeURIComponent(NOTE)}`)

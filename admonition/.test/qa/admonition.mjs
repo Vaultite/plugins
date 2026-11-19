@@ -29,7 +29,7 @@ Hidden until opened.
 Why? Because.
 \`\`\`
 `)
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "admonition")
 
 const phone = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }

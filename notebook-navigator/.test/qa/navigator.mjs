@@ -29,7 +29,7 @@ function note(p, text, ago) {
   const t = new Date(now - ago); fs.utimesSync(abs(p), t, t)
 }
 const WORDS = "lighthouse harbour morning tide notebook coffee garden river letter window paper autumn station meadow lantern".split(" ")
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 for (const p of (await (await req("GET", "state")).json()).pinned ?? []) if (p.startsWith(`${F}/`)) await req("POST", "pins", { path: p, pinned: false })
 fs.rmSync(abs(F), { recursive: true, force: true })
 for (let i = 0; i < 500; i++) {
@@ -100,15 +100,31 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   const ms = await page.evaluate(async (p) => {
     const t = performance.now()
     document.querySelector(`[data-nn-place="${CSS.escape(p)}"]`).click()
-    await new Promise((r) => { const go = () => (document.querySelectorAll("[data-nn-note]").length >= 500 ? r() : requestAnimationFrame(go)); go() })
+    const list = `[data-nn-list="${CSS.escape(p)}"]`
+    await new Promise((r) => { const go = () => (document.querySelector(`${list} [data-nn-note]`) && document.querySelector(`${list} .tabular-nums`)?.textContent === "500" ? r() : requestAnimationFrame(go)); go() })
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
     return performance.now() - t
   }, `folder:${F}/Journal`)
   const work = await busy() - busy0
   check(`a folder of 500 notes opens at once (${Math.round(ms)} ms to drawn, ${Math.round(work)} ms of work)`, ms < 250 && work < 250, [ms, work])
+  const drawn = await rows(page).count()
+  check(`a long list draws only the rows near the screen (${drawn} of 500)`, drawn > 5 && drawn < 150, drawn)
+  // Its headings, seen as the list scrolls to its end and back (only those near the screen are drawn).
+  const seenHeads = new Set(await heads(page))
+  const scrollList = (to) => page.evaluate((to) => {
+    let el = document.querySelector("[data-nn-list]")
+    while (el && !(el.scrollHeight > el.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(el).overflowY))) el = el.parentElement
+    if (el) el.scrollTop = to === "end" ? el.scrollTop + el.clientHeight : 0
+    return el ? el.scrollTop + el.clientHeight >= el.scrollHeight - 2 : true
+  }, to)
+  for (let i = 0; i < 200 && !(await scrollList("end")); i++) { await wait(30); for (const h of await heads(page)) seenHeads.add(h) }
+  await wait(100); for (const h of await heads(page)) seenHeads.add(h)
+  const last = (await titles(page)).at(-1)
+  await scrollList("top"); await wait(200)
+  check("scrolled to its end, the last note is drawn (Entry 500, the oldest)", last === "Entry 500", last)
   check("its notes are grouped by date: Today, Yesterday, the last 7 and 30 days, then months", await until(async () => {
-    const h = await heads(page); return h[0] === "Today" && h[1] === "Yesterday" && h.includes("Previous 7 days") && h.includes("Previous 30 days") && h.length > 8
-  }, 3000), await heads(page))
+    const h = await heads(page); return h[0] === "Today" && h[1] === "Yesterday" && seenHeads.has("Previous 7 days") && seenHeads.has("Previous 30 days") && seenHeads.size > 8
+  }, 3000), [...seenHeads])
   const preview = () => rows(page).first().locator(".line-clamp-2").textContent()
   check("rows show the time and a preview of the first lines (as text, without the heading)", await until(async () => /^\d+:\d\d.*A \w+ by the \w+, then/.test(await preview()) && !/Entry 1\b|#/.test((await preview()).replace("#journal/travel", "")), 4000),
     await preview())
@@ -134,7 +150,7 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   await page.locator("[data-nn-list] input[type=search]").fill("entry 250"); await wait(500)
   check("search: by name", JSON.stringify(await titles(page)) === JSON.stringify(["Entry 250"]), await titles(page))
   await page.locator("[data-nn-list] input[type=search]").fill("notebook"); await wait(900)
-  const n = await rows(page).count()
+  const n = Number(await page.locator("[data-nn-list] .tabular-nums").first().textContent())
   check(`search: by words in the text, within the folder (${n})`, n > 10 && n < 500, n)
   await page.locator("[data-nn-list] input[type=search]").fill(""); await wait(300)
 
@@ -168,7 +184,7 @@ const DESK = { viewport: { width: 1280, height: 860 } }
   check("a wide sidebar has the two panes side by side", li.x > pl.x + pl.width - 2 && Math.abs(li.y - pl.y) < 40, [pl, li])
   await page.screenshot({ path: `${OUT}nn-panel-wide.png` })
   // Folded to the icon rail: its icon opens the panel beside it, side by side.
-  await page.keyboard.press("Meta+\\"); await wait(500)
+  await page.keyboard.press(`${process.platform === "darwin" ? "Meta" : "Control"}+\\`); await wait(500)
   await page.locator('[data-flyout-icon="notebook-navigator:navigator"]').click(); await wait(600)
   const [fp, fl] = [await page.locator("[data-flyout] [data-nn-places]").boundingBox(), await page.locator("[data-flyout] [data-nn-list]").boundingBox()]
   check("in the icon rail, a flyout with the two panes side by side", !!fp && !!fl && fl.x > fp.x + fp.width - 2, [fp, fl])

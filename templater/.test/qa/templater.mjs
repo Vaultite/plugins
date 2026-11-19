@@ -13,7 +13,7 @@ const F = "Qa templater", TPL = `${F}/Templates`
 const read = (p) => (existsSync(`${VAULT}/${p}`) ? readFileSync(`${VAULT}/${p}`, "utf8") : "")
 const today = new Date(), iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 await req("DELETE", `file?path=${encodeURIComponent(F)}`)
 const tplBefore = (await (await req("GET", "config/plugin/templates")).json()).folder ?? null
 await req("PATCH", "config/plugin/templates", { folder: TPL })

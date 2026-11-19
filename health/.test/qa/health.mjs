@@ -6,7 +6,7 @@ import { apiAt, install, qa, SHOTS, setAsideWorkspaces, until, wait } from "../.
 const { args: [B, VAULT, OUT = SHOTS], browser, check, watch, done } = await qa(import.meta.url)
 mkdirSync(OUT, { recursive: true })
 const api = apiAt(B)
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "health")
 
 const day = (k) => new Date(Date.now() - k * 86400000).toLocaleDateString("sv")

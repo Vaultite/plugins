@@ -11,7 +11,7 @@ const op = (id, params = {}) => req("POST", `ops/${id}`, params)
 const DIR = "Qa companion drawings", DRAWING = `${DIR}/Flow.excalidraw`
 const live = () => JSON.parse(readFileSync(`${VAULT}/${DRAWING}`, "utf8")).elements.filter((e) => !e.isDeleted)
 
-const putBackWs = setAsideWorkspaces(VAULT)
+const putBackWs = setAsideWorkspaces(B)
 install(B, "excalidraw")
 vauAt(B)("plugin", "on", "companion")
 await req("PATCH", "config/plugin/companion", { mode: "pair", pause: 1 })
