@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-11-19T04:25:23.777Z",
+  "generated": "2026-11-25T15:00:30.467Z",
   "plugins": [
     {
       "id": "today",
@@ -14,7 +14,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -41,7 +41,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -73,7 +73,7 @@
       "stars": 0,
       "released": "2026-11-06T21:30:39Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -105,7 +105,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -137,7 +137,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -174,7 +174,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -206,7 +206,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -233,7 +233,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -264,7 +264,7 @@
       "stars": 0,
       "released": "2026-11-19T04:04:02Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -303,7 +303,7 @@
       "stars": 0,
       "released": "2026-11-19T04:04:02Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -336,7 +336,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -362,7 +362,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -393,7 +393,7 @@
       "stars": 0,
       "released": "2026-11-14T06:56:29Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -427,7 +427,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -456,7 +456,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -485,7 +485,7 @@
       "stars": 0,
       "released": "2026-10-10T04:23:51Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -515,7 +515,7 @@
       "stars": 0,
       "released": "2026-11-19T04:25:10Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -546,7 +546,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -575,7 +575,7 @@
       "stars": 0,
       "released": "2026-11-18T20:18:50Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -604,7 +604,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -636,7 +636,7 @@
       "stars": 0,
       "released": "2026-10-16T23:49:46Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -663,7 +663,7 @@
       "stars": 0,
       "released": "2026-10-16T22:48:32Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -695,7 +695,7 @@
       "stars": 0,
       "released": "2026-10-08T23:24:27Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -727,7 +727,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -756,7 +756,7 @@
       "stars": 0,
       "released": "2026-10-20T20:46:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -783,7 +783,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -815,7 +815,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -841,6 +841,37 @@
       "category": "developer"
     },
     {
+      "id": "gemini",
+      "name": "Gemini",
+      "description": "Your Google AI plan's Gemini limits: how much of the Gemini app's 5-hour window and week is used, and when each resets. Read from the app's Usage limits page in the agents' browser, with its Google sign-in, once you allow it; nothing saved.",
+      "author": "Vaultite",
+      "repo": "Vaultite/plugins",
+      "dir": "gemini",
+      "version": "1.0.0",
+      "tag": "gemini/v1.0.0",
+      "stars": 0,
+      "released": "2026-11-25T15:00:21Z",
+      "created": "2026-10-09T15:43:57Z",
+      "pushed": "2026-11-25T15:00:25Z",
+      "issues": {
+        "open": 0,
+        "closed": 0
+      },
+      "topics": [
+        "vaultite-plugin"
+      ],
+      "disclosures": {
+        "network": [
+          "gemini.google.com"
+        ]
+      },
+      "readme": "",
+      "score": 40,
+      "icon": "sparkles",
+      "tint": "blue",
+      "category": "ai-apps"
+    },
+    {
       "id": "excalidraw",
       "name": "Excalidraw",
       "description": "Hand-drawn diagrams and sketches: .excalidraw files open as a whiteboard, and ![[Drawing.excalidraw]] shows one in a note.",
@@ -852,7 +883,7 @@
       "stars": 0,
       "released": "2026-10-17T05:13:58Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -885,7 +916,7 @@
       "stars": 0,
       "released": "2026-10-08T23:10:01Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -916,7 +947,7 @@
       "stars": 0,
       "released": "2026-10-16T23:29:25Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -945,7 +976,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -976,7 +1007,7 @@
       "stars": 0,
       "released": "2026-11-06T08:02:18Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1008,7 +1039,7 @@
       "stars": 0,
       "released": "2026-11-03T21:13:40Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1040,7 +1071,7 @@
       "stars": 0,
       "released": "2026-10-19T05:08:18Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
@@ -1066,7 +1097,7 @@
       "stars": 0,
       "released": "2026-11-04T00:02:23Z",
       "created": "2026-10-09T15:43:57Z",
-      "pushed": "2026-11-19T04:25:19Z",
+      "pushed": "2026-11-25T15:00:25Z",
       "issues": {
         "open": 0,
         "closed": 0
