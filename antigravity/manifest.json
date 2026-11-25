@@ -1,0 +1,17 @@
+{
+  "id": "antigravity",
+  "icon": "orbit",
+  "name": "Antigravity",
+  "description": "Google's coding agent CLI (agy): your plan's limits for each model group (Gemini; Claude and GPT), how much of each 5-hour window and week is used and when each resets. Asked from agy on this machine, signed in; nothing saved.",
+  "version": "1.0.0",
+  "author": "Vaultite",
+  "repo": "Vaultite/plugins",
+  "apiVersion": 4,
+  "category": "ai-apps",
+  "ai": true,
+  "group": "coding-agents",
+  "tint": "blue",
+  "runsOnServer": true,
+  "disclosures": { "shell": true, "outsideVault": true },
+  "draws": ["agent-limits"]
+}

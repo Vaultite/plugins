@@ -29,5 +29,5 @@ trademarks of their owners; none of them is affiliated with or endorses Vaultite
 `logseq/` reads and writes Logseq's file format (pages, journals, `config.edn`); it contains none of Logseq's code, and Logseq
 is not affiliated with or endorsing Vaultite.
 
-`gemini/` reads the Gemini app's own Usage limits page in the user's browser; Gemini is a trademark of Google LLC, which
-is not affiliated with or endorsing Vaultite.
+`antigravity/` asks Google's Antigravity CLI (`agy`) for its usage; Antigravity and Gemini are trademarks of Google LLC,
+which is not affiliated with or endorsing Vaultite.
